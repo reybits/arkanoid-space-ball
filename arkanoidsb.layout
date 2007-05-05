@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="src\arkanoidsb.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="30952" topLine="973" />
+	</File>
+	<File name="src\arkanoidsb.h" open="1" top="0" tabpos="5">
+		<Cursor position="401" topLine="25" />
+	</File>
+	<File name="src\arkanoidsbgame.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="22826" topLine="671" />
+	</File>
+	<File name="src\arkanoidsbgame.h" open="0" top="0" tabpos="0">
+		<Cursor position="1220" topLine="76" />
+	</File>
+	<File name="src\ball.cpp" open="0" top="0" tabpos="10">
+		<Cursor position="16320" topLine="498" />
+	</File>
+	<File name="src\bullet.cpp" open="0" top="0" tabpos="8">
+		<Cursor position="527" topLine="6" />
+	</File>
+	<File name="src\bullet.h" open="0" top="0" tabpos="9">
+		<Cursor position="764" topLine="0" />
+	</File>
+	<File name="src\coolstring.cpp" open="0" top="0" tabpos="7">
+		<Cursor position="4794" topLine="114" />
+	</File>
+	<File name="src\energyhole.cpp" open="0" top="0" tabpos="7">
+		<Cursor position="3064" topLine="75" />
+	</File>
+	<File name="src\generatelevel.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="3531" topLine="72" />
+	</File>
+	<File name="src\glSDL.c" open="1" top="1" tabpos="9">
+		<Cursor position="25390" topLine="243" />
+	</File>
+	<File name="src\glSDL.h" open="0" top="0" tabpos="0">
+		<Cursor position="548" topLine="0" />
+	</File>
+	<File name="src\leveleditor.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="5817" topLine="100" />
+	</File>
+	<File name="src\mainmenu.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="26042" topLine="0" />
+	</File>
+	<File name="src\monster.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="5727" topLine="183" />
+	</File>
+	<File name="src\mystring.cpp" open="1" top="0" tabpos="8">
+		<Cursor position="3632" topLine="116" />
+	</File>
+	<File name="src\mystring.h" open="0" top="0" tabpos="0">
+		<Cursor position="1751" topLine="22" />
+	</File>
+	<File name="src\resource.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="1466" topLine="37" />
+	</File>
+	<File name="src\resource.h" open="0" top="0" tabpos="0">
+		<Cursor position="204" topLine="0" />
+	</File>
+	<File name="src\tutorialdlg.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="2343" topLine="39" />
+	</File>
+</CodeBlocks_layout_file>

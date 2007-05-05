@@ -1,0 +1,481 @@
+# depslib dependency file v1.0
+1164294450 source:c:\projects\arkanoidsb\src\arkanoidsb.cpp
+	"arkanoidsb.h"
+	<sys/stat.h>
+
+1164284891 c:\projects\arkanoidsb\src\arkanoidsb.h
+	<Windows.h>
+	<Winbase.h>
+	<stdlib.h>
+	"glSDL.h"
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<math.h>
+	<string.h>
+	<stdarg.h>
+	<errno.h>
+	<vector>
+	"mystring.h"
+	"bullet.h"
+	"bonus.h"
+	"ball.h"
+	"exploision.h"
+	"monster.h"
+	"generatelevel.h"
+	"arkanoidsbgame.h"
+	"mainmenu.h"
+	"random.h"
+	"energyhole.h"
+	"coolstring.h"
+	"resource.h"
+
+1164279626 c:\projects\arkanoidsb\src\glsdl.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+	"SDL_image.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1164280936 c:\projects\libs\include\sdl\sdl_platform.h
+
+1164280935 c:\projects\libs\include\sdl\begin_code.h
+
+1164280935 c:\projects\libs\include\sdl\close_code.h
+
+1164280935 c:\projects\libs\include\sdl\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_endian.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_keysym.h
+
+1164280935 c:\projects\libs\include\sdl\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164284386 c:\projects\libs\include\sdl\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164281029 c:\projects\libs\include\sdl\sdl_mixer.h
+	"SDL_types.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_byteorder.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1164280936 c:\projects\libs\include\sdl\sdl_types.h
+	"SDL_stdinc.h"
+
+1164280935 c:\projects\libs\include\sdl\sdl_byteorder.h
+	"SDL_endian.h"
+
+1163908395 c:\projects\arkanoidsb\src\mystring.h
+
+1163848237 c:\projects\arkanoidsb\src\bullet.h
+
+1163458531 c:\projects\arkanoidsb\src\bonus.h
+
+1164126538 c:\projects\arkanoidsb\src\ball.h
+
+1163565082 c:\projects\arkanoidsb\src\exploision.h
+
+1163918473 c:\projects\arkanoidsb\src\monster.h
+
+1161396237 c:\projects\arkanoidsb\src\generatelevel.h
+
+1164087606 c:\projects\arkanoidsb\src\arkanoidsbgame.h
+
+1164003326 c:\projects\arkanoidsb\src\mainmenu.h
+
+1161379872 c:\projects\arkanoidsb\src\random.h
+
+1162118180 c:\projects\arkanoidsb\src\energyhole.h
+
+1163458843 c:\projects\arkanoidsb\src\coolstring.h
+
+1163844831 c:\projects\arkanoidsb\src\resource.h
+	<SDL_rwops.h>
+	<SDL_error.h>
+	<vector>
+
+1164120050 source:c:\projects\arkanoidsb\src\arkanoidsbgame.cpp
+	"arkanoidsb.h"
+	"arkanoidsbgame.h"
+
+1164292216 source:c:\projects\arkanoidsb\src\ball.cpp
+	"arkanoidsb.h"
+	"ball.h"
+
+1163553759 source:c:\projects\arkanoidsb\src\bonus.cpp
+	"arkanoidsb.h"
+	"bonus.h"
+
+1164017310 source:c:\projects\arkanoidsb\src\bullet.cpp
+	"arkanoidsb.h"
+	"bullet.h"
+
+1163458840 source:c:\projects\arkanoidsb\src\coolstring.cpp
+	"arkanoidsb.h"
+	"coolstring.h"
+	"coolfont.hpp"
+
+1122171000 c:\projects\arkanoidsb\src\coolfont.hpp
+
+1163919109 source:c:\projects\arkanoidsb\src\energyhole.cpp
+	"arkanoidsb.h"
+	"energyhole.h"
+
+1163565417 source:c:\projects\arkanoidsb\src\exploision.cpp
+	"arkanoidsb.h"
+	"exploision.h"
+
+1164181525 source:c:\projects\arkanoidsb\src\generatelevel.cpp
+	"arkanoidsb.h"
+	"generatelevel.h"
+
+1164279679 source:c:\projects\arkanoidsb\src\glsdl.c
+	"glSDL.h"
+	<string.h>
+	<stdlib.h>
+	<math.h>
+	"SDL_opengl.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1164280936 c:\projects\libs\include\sdl\sdl_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<gl.h>
+	<glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<windows.h>
+	<stddef.h>
+
+1164284872 source:c:\projects\arkanoidsb\src\mainmenu.cpp
+	"arkanoidsb.h"
+	"mainmenu.h"
+
+1164282585 source:c:\projects\arkanoidsb\src\monster.cpp
+	"arkanoidsb.h"
+	"monster.h"
+
+1163911205 source:c:\projects\arkanoidsb\src\mystring.cpp
+	"arkanoidsb.h"
+	"mystring.h"
+
+1163845057 source:c:\projects\arkanoidsb\src\resource.cpp
+	"resource.h"
+
+1166839142 source:y:\home\projects\arkanoidsb\src\arkanoidsb.cpp
+	"arkanoidsb.h"
+	<sys/stat.h>
+
+1177599541 y:\home\projects\arkanoidsb\src\arkanoidsb.h
+	<Windows.h>
+	<Winbase.h>
+	<stdlib.h>
+	"glSDL.h"
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<math.h>
+	<string.h>
+	<stdarg.h>
+	<errno.h>
+	<vector>
+	"mystring.h"
+	"bullet.h"
+	"bonus.h"
+	"ball.h"
+	"exploision.h"
+	"monster.h"
+	"generatelevel.h"
+	"arkanoidsbgame.h"
+	"mainmenu.h"
+	"random.h"
+	"energyhole.h"
+	"coolstring.h"
+	"sinusstring.h"
+	"resource.h"
+	"tutorialdlg.h"
+	"leveleditor.h"
+	"reminderdlg.h"
+
+1177599566 y:\home\projects\arkanoidsb\src\glsdl.h
+
+1165714337 y:\home\projects\arkanoidsb\src\mystring.h
+
+1165250490 y:\home\projects\arkanoidsb\src\bullet.h
+
+1165532404 y:\home\projects\arkanoidsb\src\bonus.h
+
+1165724900 y:\home\projects\arkanoidsb\src\ball.h
+
+1165431777 y:\home\projects\arkanoidsb\src\exploision.h
+
+1165546378 y:\home\projects\arkanoidsb\src\monster.h
+
+1165558936 y:\home\projects\arkanoidsb\src\generatelevel.h
+
+1177593273 y:\home\projects\arkanoidsb\src\arkanoidsbgame.h
+
+1166434720 y:\home\projects\arkanoidsb\src\mainmenu.h
+
+1161383472 y:\home\projects\arkanoidsb\src\random.h
+
+1165345241 y:\home\projects\arkanoidsb\src\energyhole.h
+
+1165350384 y:\home\projects\arkanoidsb\src\coolstring.h
+
+1163848431 y:\home\projects\arkanoidsb\src\resource.h
+	<SDL_rwops.h>
+	<SDL_error.h>
+	<vector>
+
+1177595716 source:y:\home\projects\arkanoidsb\src\arkanoidsbgame.cpp
+	"arkanoidsb.h"
+	"arkanoidsbgame.h"
+
+1165806145 source:y:\home\projects\arkanoidsb\src\ball.cpp
+	"arkanoidsb.h"
+	"ball.h"
+
+1165532410 source:y:\home\projects\arkanoidsb\src\bonus.cpp
+	"arkanoidsb.h"
+	"bonus.h"
+
+1165340036 source:y:\home\projects\arkanoidsb\src\bullet.cpp
+	"arkanoidsb.h"
+	"bullet.h"
+
+1165780524 source:y:\home\projects\arkanoidsb\src\coolstring.cpp
+	"arkanoidsb.h"
+	"coolstring.h"
+	"coolfont.hpp"
+
+1122174600 y:\home\projects\arkanoidsb\src\coolfont.hpp
+
+1177599542 source:y:\home\projects\arkanoidsb\src\energyhole.cpp
+	"arkanoidsb.h"
+	"energyhole.h"
+
+1165433404 source:y:\home\projects\arkanoidsb\src\exploision.cpp
+	"arkanoidsb.h"
+	"exploision.h"
+
+1166422151 source:y:\home\projects\arkanoidsb\src\generatelevel.cpp
+	"arkanoidsb.h"
+	"generatelevel.h"
+
+1165273484 source:y:\home\projects\arkanoidsb\src\glsdl.c
+
+1166607622 source:y:\home\projects\arkanoidsb\src\mainmenu.cpp
+	"arkanoidsb.h"
+	"mainmenu.h"
+
+1165547880 source:y:\home\projects\arkanoidsb\src\monster.cpp
+	"arkanoidsb.h"
+	"monster.h"
+
+1165722008 source:y:\home\projects\arkanoidsb\src\mystring.cpp
+	"arkanoidsb.h"
+	"mystring.h"
+
+1164656045 source:y:\home\projects\arkanoidsb\src\resource.cpp
+	"resource.h"
+
+1164544652 y:\home\projects\arkanoidsb\src\sinusstring.h
+
+1164544658 source:y:\home\projects\arkanoidsb\src\sinusstring.cpp
+	"arkanoidsb.h"
+	"sinusstring.h"
+
+1165429899 y:\home\projects\arkanoidsb\src\tutorialdlg.h
+
+1165805569 source:y:\home\projects\arkanoidsb\src\tutorialdlg.cpp
+	"arkanoidsb.h"
+	"tutorialdlg.h"
+
+1165557404 y:\home\projects\arkanoidsb\src\leveleditor.h
+
+1166422050 source:y:\home\projects\arkanoidsb\src\leveleditor.cpp
+	"arkanoidsb.h"
+	"leveleditor.h"
+
+1165577502 y:\home\projects\arkanoidsb\src\reminderdlg.h
+
+1165578618 source:y:\home\projects\arkanoidsb\src\reminderdlg.cpp
+	"arkanoidsb.h"
+	"reminderdlg.h"
+

@@ -1,0 +1,1347 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+AFX_BALL_H__CA9466F6_E670_48F4_9FC1_437634D6E33F__INCLUDED_	src/ball.h	/^#define AFX_BALL_H__CA9466F6_E670_48F4_9FC1_437634D6E33F__INCLUDED_$/;"	d
+AFX_BONUS_H__7CA3E36C_E48B_45D0_90E2_C70408596DF2__INCLUDED_	src/bonus.h	/^#define AFX_BONUS_H__7CA3E36C_E48B_45D0_90E2_C70408596DF2__INCLUDED_$/;"	d
+AFX_BULLET_H__EC7B9A82_2C3E_4B9F_901F_C27257812739__INCLUDED_	src/bullet.h	/^#define AFX_BULLET_H__EC7B9A82_2C3E_4B9F_901F_C27257812739__INCLUDED_$/;"	d
+AFX_EXPLOISION_H__4DE8944D_5255_46A8_B55C_A8FD5124F15B__INCLUDED_	src/exploision.h	/^#define AFX_EXPLOISION_H__4DE8944D_5255_46A8_B55C_A8FD5124F15B__INCLUDED_$/;"	d
+AFX_GENERATELEVEL_H__8C33A485_AE94_4D18_8E89_0D465E446B4C__INCLUDED_	src/generatelevel.h	/^#define AFX_GENERATELEVEL_H__8C33A485_AE94_4D18_8E89_0D465E446B4C__INCLUDED_$/;"	d
+AFX_Krakout2GAME_H__92AE3841_D5BF_4537_A99B_BD3768D88454__INCLUDED_	src/arkanoidsbgame.h	/^#define AFX_Krakout2GAME_H__92AE3841_D5BF_4537_A99B_BD3768D88454__INCLUDED_$/;"	d
+AFX_MAINMENU_H__F6055D1D_17C9_4442_A253_222767E6A181__INCLUDED_	src/mainmenu.h	/^#define AFX_MAINMENU_H__F6055D1D_17C9_4442_A253_222767E6A181__INCLUDED_$/;"	d
+AFX_MONSTER_H__CCBBB237_B6DA_4D36_A5DC_17EC9BA84A4B__INCLUDED_	src/monster.h	/^#define AFX_MONSTER_H__CCBBB237_B6DA_4D36_A5DC_17EC9BA84A4B__INCLUDED_$/;"	d
+AFX_MYSTRING_H__335D7BEA_C9A6_4C30_98D8_164B1B1B2114__INCLUDED_	src/mystring.h	/^#define AFX_MYSTRING_H__335D7BEA_C9A6_4C30_98D8_164B1B1B2114__INCLUDED_$/;"	d
+AFX_SINUSSTRING_H__0CDD30E7_5A9C_4F6E_A69E_0CD5F6B61DA4__INCLUDED_	src/sinusstring.h	/^#define AFX_SINUSSTRING_H__0CDD30E7_5A9C_4F6E_A69E_0CD5F6B61DA4__INCLUDED_$/;"	d
+APIENTRY	src/glSDL.c	/^#define APIENTRY$/;"	d	file:
+APPS_EDITOR	src/arkanoidsb.h	/^enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR, APPS_EXIT };$/;"	e
+APPS_EXIT	src/arkanoidsb.h	/^enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR, APPS_EXIT };$/;"	e
+APPS_GAME	src/arkanoidsb.h	/^enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR, APPS_EXIT };$/;"	e
+APPS_INTRO	src/arkanoidsb.h	/^enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR, APPS_EXIT };$/;"	e
+APPS_MAINMENU	src/arkanoidsb.h	/^enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR, APPS_EXIT };$/;"	e
+APPS_SHOULDGETNAME	src/arkanoidsb.h	/^enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR, APPS_EXIT };$/;"	e
+Add	src/coolstring.cpp	/^void CCoolString::Add(const char *pchFormat, ...) {$/;"	f	class:CCoolString
+Add	src/coolstring.h	/^    void Add(const char *pchFormat, ...);$/;"	p	class:CCoolString
+AddBall	src/ball.cpp	/^void CBall::AddBall(int x, int y) {$/;"	f	class:CBall
+AddBall	src/ball.cpp	/^void CBall::AddBall(int x, int y, int nAngle) {$/;"	f	class:CBall
+AddBall	src/ball.h	/^	void AddBall(int x, int y);$/;"	p	class:CBall
+AddBall	src/ball.h	/^	void AddBall(int x, int y, int nAngle);$/;"	p	class:CBall
+AddBonus	src/bonus.cpp	/^void CBonus::AddBonus(int x, int y, int nType) {$/;"	f	class:CBonus
+AddBonus	src/bonus.h	/^	void AddBonus(int x, int y, int nType);$/;"	p	class:CBonus
+AddBullets	src/bullet.cpp	/^void CBullet::AddBullets(int y, int nType) {$/;"	f	class:CBullet
+AddBullets	src/bullet.h	/^	void AddBullets(int y, int nType);$/;"	p	class:CBullet
+AddDialog	src/tutorialdlg.cpp	/^void CTutorialDlg::AddDialog(int nX, int nY, int nCategory, int nMsgId) {$/;"	f	class:CTutorialDlg
+AddDialog	src/tutorialdlg.h	/^	 void AddDialog(int nX, int nY, int nCategory, int nMsgId);$/;"	p	class:CTutorialDlg
+AddEnergyHole	src/energyhole.cpp	/^void CEnergyHole::AddEnergyHole() {$/;"	f	class:CEnergyHole
+AddEnergyHole	src/energyhole.h	/^	 void AddEnergyHole();$/;"	p	class:CEnergyHole
+AddExploision	src/exploision.cpp	/^void CExploision::AddExploision(int x, int y, int nType) {$/;"	f	class:CExploision
+AddExploision	src/exploision.h	/^	void AddExploision(int x, int y, int nType);$/;"	p	class:CExploision
+AddFBs	src/ball.cpp	/^void CBall::AddFBs(int nPos) {$/;"	f	class:CBall
+AddFBs	src/ball.h	/^	void AddFBs(int nPos);$/;"	p	class:CBall
+AddGetReeadyInfo	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::AddGetReeadyInfo(const char *pchString) {$/;"	f	class:CArkanoidSBGame
+AddGetReeadyInfo	src/arkanoidsbgame.h	/^   void AddGetReeadyInfo(const char *pchString);$/;"	p	class:CArkanoidSBGame
+AddMonster	src/monster.cpp	/^void CMonster::AddMonster(int x, int y, int nType) {$/;"	f	class:CMonster
+AddMonster	src/monster.h	/^	void AddMonster(int x, int y, int nType);$/;"	p	class:CMonster
+AddMonster2	src/monster.cpp	/^void CMonster::AddMonster2() {$/;"	f	class:CMonster
+AddMonster2	src/monster.h	/^	void AddMonster2();$/;"	p	class:CMonster
+AddScore	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::AddScore(int nScore) {$/;"	f	class:CArkanoidSBGame
+AddScore	src/arkanoidsbgame.h	/^	void AddScore(int nScore);$/;"	p	class:CArkanoidSBGame
+AddToStack	src/bonus.cpp	/^void CBonus::AddToStack(int nType) {$/;"	f	class:CBonus
+AddToStack	src/bonus.h	/^	void AddToStack(int nType);$/;"	p	class:CBonus
+BOX_0	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_1	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_10	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_11	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_12	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_13	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_14	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_15	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_16	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_17	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_18	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_19	src/arkanoidsb.h	/^	BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,	   BOX_16,    BOX_17,    BOX_18,    BOX_19,$/;"	e
+BOX_2	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_20	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_21	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_22	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_23	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_24	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_25	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_26	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_27	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_28	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_29	src/arkanoidsb.h	/^	BOX_20,    BOX_21,    BOX_22,    BOX_23,    BOX_24,    BOX_25,    BOX_26,    BOX_27,    BOX_28,    BOX_29,$/;"	e
+BOX_3	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_30	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_31	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_32	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_33	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_34	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_35	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_36	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_37	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_38	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_39	src/arkanoidsb.h	/^	BOX_30,    BOX_31,    BOX_32,    BOX_33,    BOX_34,    BOX_35,    BOX_36,    BOX_37,    BOX_38,    BOX_39,$/;"	e
+BOX_4	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_40	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_41	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_42	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_43	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_44	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_45	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_46	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_47	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_48	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_49	src/arkanoidsb.h	/^	BOX_40,    BOX_41,    BOX_42,    BOX_43,    BOX_44,    BOX_45,    BOX_46,    BOX_47,    BOX_48,    BOX_49,	\/\/ animated series$/;"	e
+BOX_5	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_6	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_7	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_8	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_9	src/arkanoidsb.h	/^	BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,	\/\/ static series$/;"	e
+BOX_BOMB_0	src/arkanoidsb.h	/^	BOX_BOMB_0, BOX_BOMB_1,$/;"	e
+BOX_BOMB_1	src/arkanoidsb.h	/^	BOX_BOMB_0, BOX_BOMB_1,$/;"	e
+BOX_DBL_0	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_1	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_2	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_3	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_4	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_5	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_6	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_7	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_8	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_DBL_9	src/arkanoidsb.h	/^	BOX_DBL_0, BOX_DBL_1, BOX_DBL_2, BOX_DBL_3, BOX_DBL_4, BOX_DBL_5, BOX_DBL_6, BOX_DBL_7, BOX_DBL_8, BOX_DBL_9,$/;"	e
+BOX_END	src/arkanoidsb.h	/^	BOX_END$/;"	e
+BOX_FOU_0	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_1	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_2	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_3	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_4	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_5	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_6	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_7	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_8	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_FOU_9	src/arkanoidsb.h	/^	BOX_FOU_0, BOX_FOU_1, BOX_FOU_2, BOX_FOU_3, BOX_FOU_4, BOX_FOU_5, BOX_FOU_6, BOX_FOU_7, BOX_FOU_8, BOX_FOU_9,$/;"	e
+BOX_IM_0	src/arkanoidsb.h	/^	BOX_IM_0,  BOX_IM_1,  BOX_IM_2,$/;"	e
+BOX_IM_1	src/arkanoidsb.h	/^	BOX_IM_0,  BOX_IM_1,  BOX_IM_2,$/;"	e
+BOX_IM_2	src/arkanoidsb.h	/^	BOX_IM_0,  BOX_IM_1,  BOX_IM_2,$/;"	e
+BOX_MOV_0	src/arkanoidsb.h	/^	BOX_MOV_0, BOX_MOV_1, BOX_MOV_2,$/;"	e
+BOX_MOV_1	src/arkanoidsb.h	/^	BOX_MOV_0, BOX_MOV_1, BOX_MOV_2,$/;"	e
+BOX_MOV_2	src/arkanoidsb.h	/^	BOX_MOV_0, BOX_MOV_1, BOX_MOV_2,$/;"	e
+BOX_NONE	src/arkanoidsb.h	/^enum { BOX_NONE,$/;"	e
+BOX_SHOOT_0	src/arkanoidsb.h	/^	BOX_SHOOT_0, BOX_SHOOT_1,$/;"	e
+BOX_SHOOT_1	src/arkanoidsb.h	/^	BOX_SHOOT_0, BOX_SHOOT_1,$/;"	e
+BOX_TRD_0	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_1	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_2	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_3	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_4	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_5	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_6	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_7	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_8	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BOX_TRD_9	src/arkanoidsb.h	/^	BOX_TRD_0, BOX_TRD_1, BOX_TRD_2, BOX_TRD_3, BOX_TRD_4, BOX_TRD_5, BOX_TRD_6, BOX_TRD_7, BOX_TRD_8, BOX_TRD_9,$/;"	e
+BRICKS_HEIGHT	src/arkanoidsb.h	/^#define BRICKS_HEIGHT	/;"	d
+BRICKS_WIDTH	src/arkanoidsb.h	/^#define BRICKS_WIDTH	/;"	d
+BRICK_H	src/arkanoidsb.h	/^#define BRICK_H	/;"	d
+BRICK_W	src/arkanoidsb.h	/^#define BRICK_W	/;"	d
+BRICK_X	src/arkanoidsb.h	/^#define BRICK_X	/;"	d
+BRICK_Y	src/arkanoidsb.h	/^#define BRICK_Y	/;"	d
+B_CANCEL	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_EXIT	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_HELP	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_HIGHSCORE	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_NEWGAME	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_NEXT	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_OK	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_OPTIONS	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_PREV	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_REGISTER	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_RESTORE	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+B_STARTGAME	src/mainmenu.h	/^	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE };$/;"	e	enum:CMainMenu::<anonymous>
+BallCaptured	src/ball.cpp	/^void CBall::BallCaptured(int nIndex, bool bIsCaptured) {$/;"	f	class:CBall
+BallCaptured	src/ball.h	/^	void BallCaptured(int nIndex, bool bIsCaptured);$/;"	p	class:CBall
+Begin	src/glSDL.c	/^	void	(APIENTRY *Begin)(GLenum);$/;"	m	file:
+BindTexture	src/glSDL.c	/^	void	(APIENTRY *BindTexture)(GLenum, GLuint);$/;"	m	file:
+BlendFunc	src/glSDL.c	/^	void	(APIENTRY *BlendFunc)(GLenum, GLenum);$/;"	m	file:
+Blit	src/arkanoidsb.cpp	/^void Blit(const int nX, const int nY, SDL_Surface *pImg, SDL_Rect *pSrc) {$/;"	f
+Blit	src/arkanoidsb.h	/^extern void Blit(const int nX, const int nY, SDL_Surface *pImg, SDL_Rect *pSrc);$/;"	p
+BlitGL_htile	src/glSDL.c	/^static void BlitGL_htile(glSDL_TexInfo *txi,$/;"	f	file:
+BlitGL_hvtile	src/glSDL.c	/^static void BlitGL_hvtile(SDL_Surface *src, glSDL_TexInfo *txi,$/;"	f	file:
+BlitGL_single	src/glSDL.c	/^static __inline__ void BlitGL_single(glSDL_TexInfo *txi,$/;"	f	file:
+BlitGL_vtile	src/glSDL.c	/^static void BlitGL_vtile(glSDL_TexInfo *txi,$/;"	f	file:
+BlitStretch	src/arkanoidsb.h	/^extern void BlitStretch(int nX, int nY, SDL_Surface *pImg, SDL_Rect *pSrc, float fScale);$/;"	p
+CArkanoidSBGame	src/arkanoidsbgame.cpp	/^CArkanoidSBGame::CArkanoidSBGame() {$/;"	f	class:CArkanoidSBGame
+CArkanoidSBGame	src/arkanoidsbgame.h	/^	CArkanoidSBGame();$/;"	p	class:CArkanoidSBGame
+CArkanoidSBGame	src/arkanoidsbgame.h	/^class CArkanoidSBGame {$/;"	c
+CBall	src/ball.cpp	/^CBall::CBall() {$/;"	f	class:CBall
+CBall	src/ball.h	/^	CBall();$/;"	p	class:CBall
+CBall	src/ball.h	/^class CBall {$/;"	c
+CBonus	src/bonus.cpp	/^CBonus::CBonus() {$/;"	f	class:CBonus
+CBonus	src/bonus.h	/^	CBonus();$/;"	p	class:CBonus
+CBonus	src/bonus.h	/^class CBonus {$/;"	c
+CBullet	src/bullet.cpp	/^CBullet::CBullet() {$/;"	f	class:CBullet
+CBullet	src/bullet.h	/^	CBullet();$/;"	p	class:CBullet
+CBullet	src/bullet.h	/^class CBullet {$/;"	c
+CCoolString	src/coolstring.cpp	/^CCoolString::CCoolString() {$/;"	f	class:CCoolString
+CCoolString	src/coolstring.h	/^    CCoolString();$/;"	p	class:CCoolString
+CCoolString	src/coolstring.h	/^class CCoolString{$/;"	c
+CEnergyHole	src/energyhole.cpp	/^CEnergyHole::CEnergyHole() {$/;"	f	class:CEnergyHole
+CEnergyHole	src/energyhole.h	/^    CEnergyHole();$/;"	p	class:CEnergyHole
+CEnergyHole	src/energyhole.h	/^class CEnergyHole{$/;"	c
+CExploision	src/exploision.cpp	/^CExploision::CExploision() {$/;"	f	class:CExploision
+CExploision	src/exploision.h	/^	CExploision();$/;"	p	class:CExploision
+CExploision	src/exploision.h	/^class CExploision {$/;"	c
+CGenerateLevel	src/generatelevel.cpp	/^CGenerateLevel::CGenerateLevel() {$/;"	f	class:CGenerateLevel
+CGenerateLevel	src/generatelevel.h	/^	CGenerateLevel();$/;"	p	class:CGenerateLevel
+CGenerateLevel	src/generatelevel.h	/^class CGenerateLevel {$/;"	c
+CLONE_HORIZONTAL	src/generatelevel.h	/^	enum { CLONE_VERTICAL, CLONE_HORIZONTAL };$/;"	e	enum:CGenerateLevel::<anonymous>
+CLONE_VERTICAL	src/generatelevel.h	/^	enum { CLONE_VERTICAL, CLONE_HORIZONTAL };$/;"	e	enum:CGenerateLevel::<anonymous>
+CLevelEditor	src/leveleditor.cpp	/^CLevelEditor::CLevelEditor() {$/;"	f	class:CLevelEditor
+CLevelEditor	src/leveleditor.h	/^    CLevelEditor();$/;"	p	class:CLevelEditor
+CLevelEditor	src/leveleditor.h	/^class CLevelEditor{$/;"	c
+CMainMenu	src/mainmenu.cpp	/^CMainMenu::CMainMenu() {$/;"	f	class:CMainMenu
+CMainMenu	src/mainmenu.h	/^	CMainMenu();$/;"	p	class:CMainMenu
+CMainMenu	src/mainmenu.h	/^class CMainMenu {$/;"	c
+CMonster	src/monster.cpp	/^CMonster::CMonster() {$/;"	f	class:CMonster
+CMonster	src/monster.h	/^	CMonster();$/;"	p	class:CMonster
+CMonster	src/monster.h	/^class CMonster {$/;"	c
+CMyString	src/mystring.cpp	/^CMyString::CMyString() {$/;"	f	class:CMyString
+CMyString	src/mystring.h	/^	CMyString();$/;"	p	class:CMyString
+CMyString	src/mystring.h	/^class CMyString {$/;"	c
+COOLSTRING_H	src/coolstring.h	/^#define COOLSTRING_H$/;"	d
+COOLSTRING_MAX_LEN	src/coolstring.h	/^#define COOLSTRING_MAX_LEN	/;"	d
+CRandom	src/random.h	/^	CRandom() {$/;"	f	class:CRandom
+CRandom	src/random.h	/^	CRandom(int nSeed) {$/;"	f	class:CRandom
+CRandom	src/random.h	/^class   CRandom {$/;"	c
+CResource	src/resource.cpp	/^CResource::CResource() {$/;"	f	class:CResource
+CResource	src/resource.h	/^	CResource();$/;"	p	class:CResource
+CResource	src/resource.h	/^class CResource {$/;"	c
+CSinusString	src/sinusstring.cpp	/^CSinusString::CSinusString() {$/;"	f	class:CSinusString
+CSinusString	src/sinusstring.h	/^	CSinusString();$/;"	p	class:CSinusString
+CSinusString	src/sinusstring.h	/^class CSinusString {$/;"	c
+CTutorialDlg	src/tutorialdlg.cpp	/^CTutorialDlg::CTutorialDlg() {$/;"	f	class:CTutorialDlg
+CTutorialDlg	src/tutorialdlg.h	/^    CTutorialDlg();$/;"	p	class:CTutorialDlg
+CTutorialDlg	src/tutorialdlg.h	/^class CTutorialDlg{$/;"	c
+CalcBrickBulletsAngle	src/arkanoidsbgame.cpp	/^int CArkanoidSBGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY) {$/;"	f	class:CArkanoidSBGame
+CalcBrickBulletsAngle	src/arkanoidsbgame.h	/^   int CalcBrickBulletsAngle(int nIndex, int nX, int nY);$/;"	p	class:CArkanoidSBGame
+CalcChop	src/glSDL.c	/^static int CalcChop(SDL_Surface *s, glSDL_TexInfo *txi)$/;"	f	file:
+CalcDiameter	src/ball.cpp	/^int CBall::CalcDiameter(int nIndex) {$/;"	f	class:CBall
+CalcDiameter	src/ball.h	/^   int CalcDiameter(int nIndex);$/;"	p	class:CBall
+ChangeAllBallsSpeed	src/ball.cpp	/^void CBall::ChangeAllBallsSpeed(bool bIncrease) {$/;"	f	class:CBall
+ChangeAllBallsSpeed	src/ball.h	/^	void ChangeAllBallsSpeed(bool bIncrease);$/;"	p	class:CBall
+ChangeAngle	src/ball.cpp	/^void CBall::ChangeAngle(int nPos, bool bIncrease) {$/;"	f	class:CBall
+ChangeAngle	src/ball.h	/^	void ChangeAngle(int nPos, bool bIncrease);$/;"	p	class:CBall
+ChangeAngle	src/bullet.cpp	/^void CBullet::ChangeAngle(int nPos, bool bRotate) {$/;"	f	class:CBullet
+ChangeAngle	src/bullet.h	/^	void ChangeAngle(int nPos, bool bRotate);$/;"	p	class:CBullet
+ChangeBallAngle	src/ball.cpp	/^void CBall::ChangeBallAngle(int nPos, bool bRotate) {$/;"	f	class:CBall
+ChangeBallAngle	src/ball.h	/^	void ChangeBallAngle(int nPos, bool bRotate);$/;"	p	class:CBall
+ChangeBallSize	src/ball.cpp	/^void CBall::ChangeBallSize(int nDelta) {$/;"	f	class:CBall
+ChangeBallSize	src/ball.h	/^	void ChangeBallSize(int nDelta);$/;"	p	class:CBall
+ChangeBrick	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveAll) {$/;"	f	class:CArkanoidSBGame
+ChangeBrick	src/arkanoidsbgame.h	/^	void ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveAll = false);$/;"	p	class:CArkanoidSBGame
+ChangeMonsterAngle	src/monster.cpp	/^void CMonster::ChangeMonsterAngle(int nPos) {$/;"	f	class:CMonster
+ChangeMonsterAngle	src/monster.h	/^	void ChangeMonsterAngle(int nPos);$/;"	p	class:CMonster
+CheckForBlackList	src/arkanoidsb.cpp	/^bool CheckForBlackList(const char *pchKey) {$/;"	f
+CheckForBlackList	src/arkanoidsb.cpp	/^bool CheckForBlackList(const char *pchKey);$/;"	p	file:
+CheckRegistration	src/arkanoidsb.cpp	/^bool CheckRegistration() {$/;"	f
+CheckRegistration	src/arkanoidsb.cpp	/^bool CheckRegistration();$/;"	p	file:
+CheckRegistration	src/arkanoidsb.h	/^extern bool CheckRegistration();$/;"	p
+Clear	src/coolstring.cpp	/^void CCoolString::Clear() {$/;"	f	class:CCoolString
+Clear	src/coolstring.h	/^    void Clear();$/;"	p	class:CCoolString
+Color3ub	src/glSDL.c	/^	void	(APIENTRY *Color3ub)(GLubyte red, GLubyte green, GLubyte blue);$/;"	m	file:
+Color4ub	src/glSDL.c	/^	void	(APIENTRY *Color4ub)(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);$/;"	m	file:
+CommonQuit	src/arkanoidsb.cpp	/^void CommonQuit() {$/;"	f
+CommonQuit	src/arkanoidsb.cpp	/^void CommonQuit();$/;"	p	file:
+CreateRGBASurface	src/glSDL.c	/^static SDL_Surface *CreateRGBASurface(int w, int h)$/;"	f	file:
+CreateRGBSurface	src/glSDL.c	/^static SDL_Surface *CreateRGBSurface(int w, int h)$/;"	f	file:
+DBG	src/glSDL.c	/^#define	DBG(/;"	d	file:
+DBG2	src/glSDL.c	/^#define	DBG2(/;"	d	file:
+DBG3	src/glSDL.c	/^#define	DBG3(/;"	d	file:
+DBG4	src/glSDL.c	/^#define	DBG4(/;"	d	file:
+DBG5	src/glSDL.c	/^#define	DBG5(/;"	d	file:
+DBG6	src/glSDL.c	/^#define	DBG6(/;"	d	file:
+DELTA	src/sinusstring.cpp	/^#define	DELTA	/;"	d	file:
+DESIRED_FPS	src/arkanoidsb.h	/^#define DESIRED_FPS	/;"	d
+DeleteTextures	src/glSDL.c	/^	void	(APIENTRY *DeleteTextures)(GLsizei n, const GLuint *textures);$/;"	m	file:
+Disable	src/glSDL.c	/^	void	(APIENTRY *Disable)(GLenum cap);$/;"	m	file:
+DoBomb	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DoBomb(int nIndex) {$/;"	f	class:CArkanoidSBGame
+DoBomb	src/arkanoidsbgame.h	/^	void DoBomb(int nIndex);$/;"	p	class:CArkanoidSBGame
+DoGameActive	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DoGameActive() {$/;"	f	class:CArkanoidSBGame
+DoGameActive	src/arkanoidsbgame.h	/^	void DoGameActive();$/;"	p	class:CArkanoidSBGame
+DoGameOver	src/arkanoidsbgame.cpp	/^bool CArkanoidSBGame::DoGameOver() {$/;"	f	class:CArkanoidSBGame
+DoGameOver	src/arkanoidsbgame.h	/^	bool DoGameOver();$/;"	p	class:CArkanoidSBGame
+DoImpact	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DoImpact(int nIndex, bool bRemoveAll) {$/;"	f	class:CArkanoidSBGame
+DoImpact	src/arkanoidsbgame.h	/^	void DoImpact(int nIndex, bool bRemoveAll);$/;"	p	class:CArkanoidSBGame
+DoShoot	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DoShoot() {$/;"	f	class:CArkanoidSBGame
+DoShoot	src/arkanoidsbgame.h	/^	void DoShoot();$/;"	p	class:CArkanoidSBGame
+Draw	src/ball.cpp	/^void CBall::Draw(int nPaddleType) {$/;"	f	class:CBall
+Draw	src/ball.h	/^	void Draw(int nPaddleType);$/;"	p	class:CBall
+Draw	src/bonus.cpp	/^void CBonus::Draw() {$/;"	f	class:CBonus
+Draw	src/bonus.h	/^	void Draw();$/;"	p	class:CBonus
+Draw	src/bullet.cpp	/^void CBullet::Draw() {$/;"	f	class:CBullet
+Draw	src/bullet.h	/^	void Draw();$/;"	p	class:CBullet
+Draw	src/coolstring.cpp	/^void CCoolString::Draw() {$/;"	f	class:CCoolString
+Draw	src/coolstring.h	/^    void Draw();$/;"	p	class:CCoolString
+Draw	src/energyhole.cpp	/^void CEnergyHole::Draw() {$/;"	f	class:CEnergyHole
+Draw	src/energyhole.h	/^    void Draw();$/;"	p	class:CEnergyHole
+Draw	src/exploision.cpp	/^void CExploision::Draw(bool bBricks) {$/;"	f	class:CExploision
+Draw	src/exploision.h	/^	void Draw(bool bBricks);$/;"	p	class:CExploision
+Draw	src/leveleditor.cpp	/^void CLevelEditor::Draw() {$/;"	f	class:CLevelEditor
+Draw	src/leveleditor.h	/^    void Draw();$/;"	p	class:CLevelEditor
+Draw	src/monster.cpp	/^void CMonster::Draw() {$/;"	f	class:CMonster
+Draw	src/monster.h	/^	void Draw();$/;"	p	class:CMonster
+Draw	src/sinusstring.cpp	/^void CSinusString::Draw() {$/;"	f	class:CSinusString
+Draw	src/sinusstring.h	/^	void Draw();$/;"	p	class:CSinusString
+Draw2	src/monster.cpp	/^void CMonster::Draw2() {$/;"	f	class:CMonster
+Draw2	src/monster.h	/^	void Draw2();$/;"	p	class:CMonster
+DrawAreYouSure	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawAreYouSure() {$/;"	f	class:CArkanoidSBGame
+DrawAreYouSure	src/arkanoidsbgame.h	/^	void DrawAreYouSure();$/;"	p	class:CArkanoidSBGame
+DrawBackground	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawBackground() {$/;"	f	class:CArkanoidSBGame
+DrawBackground	src/arkanoidsbgame.h	/^    void DrawBackground();$/;"	p	class:CArkanoidSBGame
+DrawBackground	src/mainmenu.cpp	/^void CMainMenu::DrawBackground() {$/;"	f	class:CMainMenu
+DrawBackground	src/mainmenu.h	/^	void DrawBackground();$/;"	p	class:CMainMenu
+DrawBrick	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawBrick(int nIndex, bool bNextFrame, bool bNextFrameAnim) {$/;"	f	class:CArkanoidSBGame
+DrawBrick	src/arkanoidsbgame.h	/^	void DrawBrick(int nIndex, bool bNextFrame, bool bNextFrameAnim);$/;"	p	class:CArkanoidSBGame
+DrawBrick	src/mainmenu.cpp	/^void CMainMenu::DrawBrick(int nX, int nY, int nType) {$/;"	f	class:CMainMenu
+DrawBrick	src/mainmenu.h	/^	void DrawBrick(int nX, int nY, int nType);$/;"	p	class:CMainMenu
+DrawBrickBullets	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawBrickBullets() {$/;"	f	class:CArkanoidSBGame
+DrawBrickBullets	src/arkanoidsbgame.h	/^   void DrawBrickBullets();$/;"	p	class:CArkanoidSBGame
+DrawBricks	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawBricks() {$/;"	f	class:CArkanoidSBGame
+DrawBricks	src/arkanoidsbgame.h	/^	void DrawBricks();$/;"	p	class:CArkanoidSBGame
+DrawCursor	src/arkanoidsb.cpp	/^void DrawCursor() {$/;"	f
+DrawCursor	src/arkanoidsb.cpp	/^void DrawCursor();$/;"	p	file:
+DrawEnterReg	src/mainmenu.cpp	/^void CMainMenu::DrawEnterReg() {$/;"	f	class:CMainMenu
+DrawEnterReg	src/mainmenu.h	/^	void DrawEnterReg();$/;"	p	class:CMainMenu
+DrawGetReady	src/arkanoidsbgame.cpp	/^bool CArkanoidSBGame::DrawGetReady() {$/;"	f	class:CArkanoidSBGame
+DrawGetReady	src/arkanoidsbgame.h	/^   bool DrawGetReady();$/;"	p	class:CArkanoidSBGame
+DrawHighlight	src/mainmenu.cpp	/^void CMainMenu::DrawHighlight(int nPos) {$/;"	f	class:CMainMenu
+DrawHighlight	src/mainmenu.h	/^    void DrawHighlight(int nPos);$/;"	p	class:CMainMenu
+DrawIntro	src/arkanoidsb.cpp	/^bool DrawIntro() {$/;"	f
+DrawIntro	src/arkanoidsb.cpp	/^bool DrawIntro();$/;"	p	file:
+DrawMenu	src/mainmenu.cpp	/^int CMainMenu::DrawMenu() {$/;"	f	class:CMainMenu
+DrawMenu	src/mainmenu.h	/^	int DrawMenu();$/;"	p	class:CMainMenu
+DrawMenuButton	src/mainmenu.cpp	/^bool CMainMenu::DrawMenuButton(int nX, int nY, int nButtonId) {$/;"	f	class:CMainMenu
+DrawMenuButton	src/mainmenu.h	/^	bool DrawMenuButton(int nX, int nY, int nButtonId);$/;"	p	class:CMainMenu
+DrawMenuHighScore	src/mainmenu.cpp	/^void CMainMenu::DrawMenuHighScore() {$/;"	f	class:CMainMenu
+DrawMenuHighScore	src/mainmenu.h	/^	void DrawMenuHighScore();$/;"	p	class:CMainMenu
+DrawMenuMain	src/mainmenu.cpp	/^int CMainMenu::DrawMenuMain() {$/;"	f	class:CMainMenu
+DrawMenuMain	src/mainmenu.h	/^	int DrawMenuMain();$/;"	p	class:CMainMenu
+DrawMenuOptions	src/mainmenu.cpp	/^void CMainMenu::DrawMenuOptions() {$/;"	f	class:CMainMenu
+DrawMenuOptions	src/mainmenu.h	/^	void DrawMenuOptions();$/;"	p	class:CMainMenu
+DrawMenuRules	src/mainmenu.cpp	/^void CMainMenu::DrawMenuRules() {$/;"	f	class:CMainMenu
+DrawMenuRules	src/mainmenu.h	/^	void DrawMenuRules();$/;"	p	class:CMainMenu
+DrawNumber	src/mystring.cpp	/^void CMyString::DrawNumber(int nNum, int nX, int nY, int nAlign) {$/;"	f	class:CMyString
+DrawNumber	src/mystring.h	/^	void DrawNumber(int nNum, int nX, int nY, int nAlign = FONT_ALIGN_LEFT);$/;"	p	class:CMyString
+DrawPaddle	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawPaddle() {$/;"	f	class:CArkanoidSBGame
+DrawPaddle	src/arkanoidsbgame.h	/^	void DrawPaddle();$/;"	p	class:CArkanoidSBGame
+DrawPause	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawPause() {$/;"	f	class:CArkanoidSBGame
+DrawPause	src/arkanoidsbgame.h	/^	void DrawPause();$/;"	p	class:CArkanoidSBGame
+DrawReminder	src/arkanoidsbgame.cpp	/^bool CArkanoidSBGame::DrawReminder(int nReminderType) {$/;"	f	class:CArkanoidSBGame
+DrawReminder	src/arkanoidsbgame.h	/^	bool DrawReminder(int nReminderType);$/;"	p	class:CArkanoidSBGame
+DrawRestoreGame	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawRestoreGame() {$/;"	f	class:CArkanoidSBGame
+DrawRestoreGame	src/arkanoidsbgame.h	/^	void DrawRestoreGame();$/;"	p	class:CArkanoidSBGame
+DrawScreen	src/arkanoidsbgame.cpp	/^bool CArkanoidSBGame::DrawScreen() {$/;"	f	class:CArkanoidSBGame
+DrawScreen	src/arkanoidsbgame.h	/^	bool DrawScreen();$/;"	p	class:CArkanoidSBGame
+DrawStartGame	src/mainmenu.cpp	/^int CMainMenu::DrawStartGame() {$/;"	f	class:CMainMenu
+DrawStartGame	src/mainmenu.h	/^	int DrawStartGame();$/;"	p	class:CMainMenu
+DrawStatistic	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::DrawStatistic() {$/;"	f	class:CArkanoidSBGame
+DrawStatistic	src/arkanoidsbgame.h	/^	void DrawStatistic();$/;"	p	class:CArkanoidSBGame
+DrawString	src/mystring.cpp	/^void CMyString::DrawString(int nX, int nY, const char *pchString, int nAlign) {$/;"	f	class:CMyString
+DrawString	src/mystring.h	/^	void DrawString(int nX, int nY, const char *pchString, int nAlign = FONT_ALIGN_LEFT);$/;"	p	class:CMyString
+DrawStringSinus	src/mystring.cpp	/^void CMyString::DrawStringSinus(int nX, int nY, const char *pchString, int nAplituda, int nPos, int nAlign) {$/;"	f	class:CMyString
+DrawStringSinus	src/mystring.h	/^	void DrawStringSinus(int nX, int nY, const char *pchString, int nAplituda, int nPos, int nAlign = FONT_ALIGN_LEFT);$/;"	p	class:CMyString
+ENERGYHOLE_H	src/energyhole.h	/^#define ENERGYHOLE_H$/;"	d
+Enable	src/glSDL.c	/^	void	(APIENTRY *Enable)(GLenum cap);$/;"	m	file:
+EnableCursor	src/arkanoidsb.cpp	/^void EnableCursor(bool bEnable) {$/;"	f
+EnableCursor	src/arkanoidsb.h	/^extern void EnableCursor(bool bEnable);$/;"	p
+EnableShadow	src/mystring.cpp	/^void CMyString::EnableShadow(bool bEnable) {$/;"	f	class:CMyString
+EnableShadow	src/mystring.h	/^	void EnableShadow(bool bEnable = true);$/;"	p	class:CMyString
+EncodeData	src/resource.cpp	/^void CResource::EncodeData(const void *pbyData, int nLen) {$/;"	f	class:CResource
+EncodeData	src/resource.h	/^	void EncodeData(const void *pbyData, int nLen);$/;"	p	class:CResource
+EncodeDecode	src/arkanoidsb.cpp	/^void EncodeDecode(void *pData, int nLen) {$/;"	f
+EncodeDecode	src/arkanoidsb.h	/^extern void EncodeDecode(void *pData, int nLen);$/;"	p
+End	src/glSDL.c	/^	void	(APIENTRY *End)(void);$/;"	m	file:
+FAKE_MAXTEXSIZE	src/glSDL.c	/^#define	FAKE_MAXTEXSIZE	/;"	d	file:
+FONT_ALIGN_CENTER	src/mystring.h	/^	enum { FONT_ALIGN_LEFT, FONT_ALIGN_RIGHT, FONT_ALIGN_CENTER, FONT_ALIGN_JUSTIFY };$/;"	e	enum:CMyString::<anonymous>
+FONT_ALIGN_JUSTIFY	src/mystring.h	/^	enum { FONT_ALIGN_LEFT, FONT_ALIGN_RIGHT, FONT_ALIGN_CENTER, FONT_ALIGN_JUSTIFY };$/;"	e	enum:CMyString::<anonymous>
+FONT_ALIGN_LEFT	src/mystring.h	/^	enum { FONT_ALIGN_LEFT, FONT_ALIGN_RIGHT, FONT_ALIGN_CENTER, FONT_ALIGN_JUSTIFY };$/;"	e	enum:CMyString::<anonymous>
+FONT_ALIGN_RIGHT	src/mystring.h	/^	enum { FONT_ALIGN_LEFT, FONT_ALIGN_RIGHT, FONT_ALIGN_CENTER, FONT_ALIGN_JUSTIFY };$/;"	e	enum:CMyString::<anonymous>
+FadeScreen	src/arkanoidsb.cpp	/^void FadeScreen() {$/;"	f
+FadeScreen	src/arkanoidsb.h	/^extern void FadeScreen();$/;"	p
+Flush	src/glSDL.c	/^	void	(APIENTRY *Flush)(void);$/;"	m	file:
+FormatIsOk	src/glSDL.c	/^static int FormatIsOk(SDL_Surface *surface)$/;"	f	file:
+FreeMem	src/resource.cpp	/^void CResource::FreeMem(unsigned char *pbyData) {$/;"	f	class:CResource
+FreeMem	src/resource.h	/^	void FreeMem(unsigned char *pbyData);$/;"	p	class:CResource
+FreeTexInfo	src/glSDL.c	/^static void FreeTexInfo(Uint32 handle)$/;"	f	file:
+GAME_VERSION	src/arkanoidsb.h	/^#define GAME_VERSION	/;"	d
+GLSDL_FIX_SURFACE	src/glSDL.h	/^#define	GLSDL_FIX_SURFACE(/;"	d
+GLSDL_TM_HORIZONTAL	src/glSDL.h	/^	GLSDL_TM_HORIZONTAL,$/;"	e	enum:glSDL_TileModes
+GLSDL_TM_HUGE	src/glSDL.h	/^	GLSDL_TM_HUGE$/;"	e	enum:glSDL_TileModes
+GLSDL_TM_SINGLE	src/glSDL.h	/^	GLSDL_TM_SINGLE,$/;"	e	enum:glSDL_TileModes
+GLSDL_TM_VERTICAL	src/glSDL.h	/^	GLSDL_TM_VERTICAL,$/;"	e	enum:glSDL_TileModes
+GO_ITEM_X	src/arkanoidsbgame.cpp	/^#define	GO_ITEM_X	/;"	d	file:
+GO_ITEM_Y	src/arkanoidsbgame.cpp	/^#define	GO_ITEM_Y	/;"	d	file:
+GS_GAME_ACTIVE	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GS_GAME_AREYOUSURE_EXIT	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GS_GAME_OVER	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GS_GAME_PAUSED	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GS_GAME_REMINDER1	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GS_GAME_REMINDER2	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GS_GAME_RESTORE	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GS_GET_READY	src/arkanoidsbgame.h	/^	enum { GS_GAME_ACTIVE, GS_GAME_RESTORE, GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };$/;"	e	enum:CArkanoidSBGame::<anonymous>
+GenTextures	src/glSDL.c	/^	void	(APIENTRY *GenTextures)(GLsizei n, GLuint *textures);$/;"	m	file:
+Generate	src/generatelevel.cpp	/^void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {$/;"	f	class:CGenerateLevel
+Generate	src/generatelevel.h	/^	void Generate(int nLevel, bool bUseCustom);$/;"	p	class:CGenerateLevel
+Get	src/random.h	/^	int Get(int nMax) {$/;"	f	class:CRandom
+GetAngle	src/ball.cpp	/^int CBall::GetAngle(int nPos) {$/;"	f	class:CBall
+GetAngle	src/ball.h	/^	int GetAngle(int nPos);$/;"	p	class:CBall
+GetAngle	src/bullet.cpp	/^int CBullet::GetAngle(int nPos) {$/;"	f	class:CBullet
+GetAngle	src/bullet.h	/^	int GetAngle(int nPos);$/;"	p	class:CBullet
+GetBallsCount	src/ball.cpp	/^int CBall::GetBallsCount() {$/;"	f	class:CBall
+GetBallsCount	src/ball.h	/^	int GetBallsCount();$/;"	p	class:CBall
+GetBonusFromStack	src/bonus.cpp	/^int CBonus::GetBonusFromStack() {$/;"	f	class:CBonus
+GetBonusFromStack	src/bonus.h	/^	int GetBonusFromStack();$/;"	p	class:CBonus
+GetBonusesOnScreen	src/bonus.cpp	/^int CBonus::GetBonusesOnScreen() {$/;"	f	class:CBonus
+GetBonusesOnScreen	src/bonus.h	/^	int GetBonusesOnScreen();$/;"	p	class:CBonus
+GetBrick	src/generatelevel.cpp	/^int CGenerateLevel::GetBrick(int nX, int nY) {$/;"	f	class:CGenerateLevel
+GetBrick	src/generatelevel.h	/^	int GetBrick(int nX, int nY);$/;"	p	class:CGenerateLevel
+GetCount	src/coolstring.cpp	/^int CCoolString::GetCount() {$/;"	f	class:CCoolString
+GetCount	src/coolstring.h	/^    int GetCount();$/;"	p	class:CCoolString
+GetCount	src/exploision.cpp	/^int CExploision::GetCount() {$/;"	f	class:CExploision
+GetCount	src/exploision.h	/^	int GetCount();$/;"	p	class:CExploision
+GetCountInStack	src/bonus.cpp	/^int CBonus::GetCountInStack() {$/;"	f	class:CBonus
+GetCountInStack	src/bonus.h	/^	int GetCountInStack();$/;"	p	class:CBonus
+GetDataAllocMem	src/resource.cpp	/^unsigned char *CResource::GetDataAllocMem(const char *pchName, unsigned int &nDataLen) {$/;"	f	class:CResource
+GetDataAllocMem	src/resource.h	/^	unsigned char *GetDataAllocMem(const char *pchName, unsigned int &nDataLen);$/;"	p	class:CResource
+GetError	src/glSDL.c	/^	GLenum	(APIENTRY *GetError)(void);$/;"	m	file:
+GetFrameWidth	src/mystring.cpp	/^Uint32 CMyString::GetFrameWidth(Uint32 dwIndex) {$/;"	f	class:CMyString
+GetFrameWidth	src/mystring.h	/^	Uint32 GetFrameWidth(Uint32 dwIndex);$/;"	p	class:CMyString
+GetGL	src/glSDL.c	/^static int GetGL(void)$/;"	f	file:
+GetGameData	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::GetGameData(int &nScore, int &nLevel) {$/;"	f	class:CArkanoidSBGame
+GetGameData	src/arkanoidsbgame.h	/^	void GetGameData(int &nScore, int &nLevel);$/;"	p	class:CArkanoidSBGame
+GetIntegerv	src/glSDL.c	/^	void	(APIENTRY *GetIntegerv)(GLenum pname, GLint *params);$/;"	m	file:
+GetKey	src/mainmenu.cpp	/^char CMainMenu::GetKey() {$/;"	f	class:CMainMenu
+GetKey	src/mainmenu.h	/^	char GetKey();$/;"	p	class:CMainMenu
+GetPositionAndDiameter	src/ball.cpp	/^bool CBall::GetPositionAndDiameter(SDL_Rect &rc, int &nPos) {$/;"	f	class:CBall
+GetPositionAndDiameter	src/ball.h	/^	bool GetPositionAndDiameter(SDL_Rect &rc, int &nPos);$/;"	p	class:CBall
+GetPositionAndSize	src/bullet.cpp	/^bool CBullet::GetPositionAndSize(SDL_Rect &rc, int& nPos, bool bFromFirst) {$/;"	f	class:CBullet
+GetPositionAndSize	src/bullet.h	/^	bool GetPositionAndSize(SDL_Rect &rc, int& nPos, bool bFromFirst);$/;"	p	class:CBullet
+GetStringWidth	src/mystring.cpp	/^int CMyString::GetStringWidth(const char *pchString) {$/;"	f	class:CMyString
+GetStringWidth	src/mystring.h	/^	int GetStringWidth(const char *pchString);$/;"	p	class:CMyString
+GetStringWidth2	src/mystring.cpp	/^int CMyString::GetStringWidth2(const char *pchString, int &nSpaces) {$/;"	f	class:CMyString
+GetStringWidth2	src/mystring.h	/^	int GetStringWidth2(const char *pchString, int &nSpaces);$/;"	p	class:CMyString
+GetType	src/ball.cpp	/^int CBall::GetType() {$/;"	f	class:CBall
+GetType	src/ball.h	/^	int GetType();$/;"	p	class:CBall
+GetTypeCount	src/ball.cpp	/^int CBall::GetTypeCount() {$/;"	f	class:CBall
+GetTypeCount	src/ball.h	/^   int GetTypeCount();$/;"	p	class:CBall
+GetTypeInStack	src/bonus.cpp	/^int CBonus::GetTypeInStack(int nPos) {$/;"	f	class:CBonus
+GetTypeInStack	src/bonus.h	/^	int GetTypeInStack(int nPos);$/;"	p	class:CBonus
+GetXpos	src/mystring.cpp	/^int CMyString::GetXpos(int nX, const char *pchString, int nAlign) {$/;"	f	class:CMyString
+GetXpos	src/mystring.h	/^	int GetXpos(int nX, const char *pchString, int nAlign);$/;"	p	class:CMyString
+HAVE_DLFCN_H	debug_linux/config.h	/^#define HAVE_DLFCN_H /;"	d
+HAVE_DLFCN_H	release_linux/config.h	/^#define HAVE_DLFCN_H /;"	d
+HAVE_INTTYPES_H	debug_linux/config.h	/^#define HAVE_INTTYPES_H /;"	d
+HAVE_INTTYPES_H	release_linux/config.h	/^#define HAVE_INTTYPES_H /;"	d
+HAVE_LIBSDL	debug_linux/config.h	/^#define HAVE_LIBSDL /;"	d
+HAVE_LIBSDL	release_linux/config.h	/^#define HAVE_LIBSDL /;"	d
+HAVE_MEMORY_H	debug_linux/config.h	/^#define HAVE_MEMORY_H /;"	d
+HAVE_MEMORY_H	release_linux/config.h	/^#define HAVE_MEMORY_H /;"	d
+HAVE_OPENGL	src/glSDL.h	/^#define HAVE_OPENGL$/;"	d
+HAVE_STDINT_H	debug_linux/config.h	/^#define HAVE_STDINT_H /;"	d
+HAVE_STDINT_H	release_linux/config.h	/^#define HAVE_STDINT_H /;"	d
+HAVE_STDLIB_H	debug_linux/config.h	/^#define HAVE_STDLIB_H /;"	d
+HAVE_STDLIB_H	release_linux/config.h	/^#define HAVE_STDLIB_H /;"	d
+HAVE_STRINGS_H	debug_linux/config.h	/^#define HAVE_STRINGS_H /;"	d
+HAVE_STRINGS_H	release_linux/config.h	/^#define HAVE_STRINGS_H /;"	d
+HAVE_STRING_H	debug_linux/config.h	/^#define HAVE_STRING_H /;"	d
+HAVE_STRING_H	release_linux/config.h	/^#define HAVE_STRING_H /;"	d
+HAVE_SYS_STAT_H	debug_linux/config.h	/^#define HAVE_SYS_STAT_H /;"	d
+HAVE_SYS_STAT_H	release_linux/config.h	/^#define HAVE_SYS_STAT_H /;"	d
+HAVE_SYS_TYPES_H	debug_linux/config.h	/^#define HAVE_SYS_TYPES_H /;"	d
+HAVE_SYS_TYPES_H	release_linux/config.h	/^#define HAVE_SYS_TYPES_H /;"	d
+HAVE_UNISTD_H	debug_linux/config.h	/^#define HAVE_UNISTD_H /;"	d
+HAVE_UNISTD_H	release_linux/config.h	/^#define HAVE_UNISTD_H /;"	d
+IMG_Load	src/glSDL.h	/^#define IMG_Load(/;"	d
+INIT_ANGLE	src/ball.cpp	/^#define	INIT_ANGLE	/;"	d	file:
+INIT_BALL_SPEED	src/ball.cpp	/^#define	INIT_BALL_SPEED	/;"	d	file:
+IS_GLSDL_SURFACE	src/glSDL.h	/^#define	IS_GLSDL_SURFACE(/;"	d
+ImpactWithWallAngle	src/ball.cpp	/^void CBall::ImpactWithWallAngle(int nPos) {$/;"	f	class:CBall
+ImpactWithWallAngle	src/ball.h	/^	void ImpactWithWallAngle(int nPos);$/;"	p	class:CBall
+IncrementBallSpeed	src/ball.cpp	/^void CBall::IncrementBallSpeed(int nPos) {$/;"	f	class:CBall
+IncrementBallSpeed	src/ball.h	/^	void IncrementBallSpeed(int nPos);$/;"	p	class:CBall
+InitLevel	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore) {$/;"	f	class:CArkanoidSBGame
+InitLevel	src/arkanoidsbgame.h	/^	void InitLevel(int nLevel, bool bRestore = false);$/;"	p	class:CArkanoidSBGame
+InitNewGame	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::InitNewGame(bool bIsCustomLevels) {$/;"	f	class:CArkanoidSBGame
+InitNewGame	src/arkanoidsbgame.h	/^	void InitNewGame(bool bIsCustomLevels);$/;"	p	class:CArkanoidSBGame
+InitTexture	src/glSDL.c	/^static int InitTexture(SDL_Surface *datasurf, glSDL_TexInfo *txi, int tex)$/;"	f	file:
+IsAcross	src/bonus.cpp	/^int CBonus::IsAcross(int nX, int nY, int nWidth, int nHeight) {$/;"	f	class:CBonus
+IsAcross	src/bonus.h	/^	int IsAcross(int nX, int nY, int nWidth, int nHeight);$/;"	p	class:CBonus
+IsAcross	src/bullet.cpp	/^bool CBullet::IsAcross(int nX, int nY, int nWidth, int nHeight, bool &bRemoveAll, int &nType) {$/;"	f	class:CBullet
+IsAcross	src/bullet.h	/^	bool IsAcross(int nX, int nY, int nWidth, int nHeight, bool &bRemoveAll, int &nType);$/;"	p	class:CBullet
+IsAcross	src/monster.cpp	/^bool CMonster::IsAcross(int nX, int nY, int nWidth, int nHeight, bool bRemoveMonster) {$/;"	f	class:CMonster
+IsAcross	src/monster.h	/^	bool IsAcross(int nX, int nY, int nWidth, int nHeight, bool bRemoveMonster);$/;"	p	class:CMonster
+IsAcrossBall	src/monster.cpp	/^bool CMonster::IsAcrossBall(SDL_Rect rc, bool bRemoveMonster) {$/;"	f	class:CMonster
+IsAcrossBall	src/monster.h	/^	bool IsAcrossBall(SDL_Rect rc, bool bRemoveMonster);$/;"	p	class:CMonster
+IsAcrossBall2	src/monster.cpp	/^bool CMonster::IsAcrossBall2(SDL_Rect rc) {$/;"	f	class:CMonster
+IsAcrossBall2	src/monster.h	/^	bool IsAcrossBall2(SDL_Rect rc);$/;"	p	class:CMonster
+IsAcrossPaddle	src/monster.cpp	/^bool CMonster::IsAcrossPaddle(int nX, int nY, int nWidth, int nHeight) {$/;"	f	class:CMonster
+IsAcrossPaddle	src/monster.h	/^	bool IsAcrossPaddle(int nX, int nY, int nWidth, int nHeight);$/;"	p	class:CMonster
+IsAcrossPaddle2	src/monster.cpp	/^bool CMonster::IsAcrossPaddle2(int nX, int nY, int nWidth, int nHeight) {$/;"	f	class:CMonster
+IsAcrossPaddle2	src/monster.h	/^	bool IsAcrossPaddle2(int nX, int nY, int nWidth, int nHeight);$/;"	p	class:CMonster
+IsEmptyBrickPos	src/arkanoidsbgame.cpp	/^bool CArkanoidSBGame::IsEmptyBrickPos(const int nSkipPos, const int nX, const int nY) {$/;"	f	class:CArkanoidSBGame
+IsEmptyBrickPos	src/arkanoidsbgame.h	/^	bool IsEmptyBrickPos(const int nSkipPos, const int nX, const int nY);$/;"	p	class:CArkanoidSBGame
+IsKeyPressed	src/arkanoidsb.cpp	/^bool IsKeyPressed(int nKey) {$/;"	f
+IsKeyPressed	src/arkanoidsb.h	/^extern bool IsKeyPressed(int nKey);$/;"	p
+IsKeyStateChanged	src/arkanoidsb.cpp	/^bool IsKeyStateChanged(int nKey) {$/;"	f
+IsKeyStateChanged	src/arkanoidsb.h	/^extern bool IsKeyStateChanged(int nKey);$/;"	p
+IsThisBallOverObject	src/ball.cpp	/^int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight) {$/;"	f	class:CBall
+IsThisBallOverObject	src/ball.h	/^	int IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight);$/;"	p	class:CBall
+KillAllTextures	src/glSDL.c	/^static void KillAllTextures(void)$/;"	f	file:
+LEAK_TRACKING	src/glSDL.c	/^#define LEAK_TRACKING$/;"	d	file:
+LEVELEDITOR_H	src/leveleditor.h	/^#define LEVELEDITOR_H$/;"	d
+Load	src/leveleditor.cpp	/^void CLevelEditor::Load() {$/;"	f	class:CLevelEditor
+Load	src/leveleditor.h	/^    void Load();$/;"	p	class:CLevelEditor
+LoadFont	src/mystring.cpp	/^bool CMyString::LoadFont(const char *pchFontName, const char *pchFontIniName) {$/;"	f	class:CMyString
+LoadFont	src/mystring.cpp	/^bool CMyString::LoadFont(const char *pchFontName, const char *pchFontShadowName, const char *pchFontIniName) {$/;"	f	class:CMyString
+LoadFont	src/mystring.h	/^	bool LoadFont(const char *pchFontName, const char *pchFontIniName);$/;"	p	class:CMyString
+LoadFont	src/mystring.h	/^	bool LoadFont(const char *pchFontName, const char *pchFontShadowName, const char *pchFontIniName);$/;"	p	class:CMyString
+LoadFont2	src/mystring.cpp	/^bool CMyString::LoadFont2(const char *pchFontName, int nSpace, int nKerning, const char *pchCharset) {$/;"	f	class:CMyString
+LoadFont2	src/mystring.h	/^	bool LoadFont2(const char *pchFontName, int nSpace, int nKerning = 0, const char *pchCharset = 0);$/;"	p	class:CMyString
+LoadGL	src/glSDL.c	/^static int LoadGL(void)$/;"	f	file:
+LoadIdentity	src/glSDL.c	/^	void	(APIENTRY *LoadIdentity)(void);$/;"	m	file:
+LoadImage	src/arkanoidsb.cpp	/^SDL_Surface *LoadImage(const char *pchFileName, const Uint32 nColorKey) {$/;"	f
+LoadImage	src/arkanoidsb.h	/^extern SDL_Surface *LoadImage(const char *pchFileName, const Uint32 nColorKey = 0xff000000);$/;"	p
+LoadPatterns	src/generatelevel.cpp	/^void CGenerateLevel::LoadPatterns() {$/;"	f	class:CGenerateLevel
+LoadPatterns	src/generatelevel.h	/^	void LoadPatterns();$/;"	p	class:CGenerateLevel
+LoadProps	src/mystring.cpp	/^bool CMyString::LoadProps(const char *pchName) {$/;"	f	class:CMyString
+LoadProps	src/mystring.h	/^	bool LoadProps(const char *pchName);$/;"	p	class:CMyString
+MANU_ITEM_Y	src/arkanoidsbgame.cpp	/^#define	MANU_ITEM_Y	/;"	d	file:
+MAX_TEXINFOS	src/glSDL.c	/^#define	MAX_TEXINFOS	/;"	d	file:
+MENU_ITEM_X	src/arkanoidsbgame.cpp	/^#define	MENU_ITEM_X	/;"	d	file:
+MENU_ITEM_X	src/mainmenu.h	/^#define	MENU_ITEM_X	/;"	d
+MENU_ITEM_Y	src/mainmenu.h	/^#define	MENU_ITEM_Y	/;"	d
+MONST_BLACKHOLE	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_COPTER	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_END	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_EYE	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_FIGHTER	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_HAND	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_PATROL	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_STONE1	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_STONE2	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_TURBINE	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MONST_UFO	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	e	enum:CMonster::_MONST1
+MT_HIGHSCORE	src/mainmenu.h	/^	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };$/;"	e	enum:CMainMenu::<anonymous>
+MT_MAIN	src/mainmenu.h	/^	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };$/;"	e	enum:CMainMenu::<anonymous>
+MT_OPTIONS	src/mainmenu.h	/^	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };$/;"	e	enum:CMainMenu::<anonymous>
+MT_QUIT	src/mainmenu.h	/^	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };$/;"	e	enum:CMainMenu::<anonymous>
+MT_REG_KEY	src/mainmenu.h	/^	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };$/;"	e	enum:CMainMenu::<anonymous>
+MT_RULES	src/mainmenu.h	/^	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };$/;"	e	enum:CMainMenu::<anonymous>
+MT_STARTGAME	src/mainmenu.h	/^	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };$/;"	e	enum:CMainMenu::<anonymous>
+M_WRECKAGE1	src/monster.h	/^	enum _MONST2 { M_WRECKAGE1, M_WRECKAGE2 };$/;"	e	enum:CMonster::_MONST2
+M_WRECKAGE2	src/monster.h	/^	enum _MONST2 { M_WRECKAGE1, M_WRECKAGE2 };$/;"	e	enum:CMonster::_MONST2
+MakePath	src/arkanoidsb.cpp	/^char *MakePath(const char *pchFileName) {$/;"	f
+MakePath	src/arkanoidsb.h	/^extern char *MakePath(const char *pchFileName);$/;"	p
+MatrixMode	src/glSDL.c	/^	void	(APIENTRY *MatrixMode)(GLenum mode);$/;"	m	file:
+Move	src/ball.cpp	/^int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddleX) {$/;"	f	class:CBall
+Move	src/ball.h	/^	int Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddleX);$/;"	p	class:CBall
+Move	src/bonus.cpp	/^void CBonus::Move(int nRacketType) {$/;"	f	class:CBonus
+Move	src/bonus.h	/^	void Move(int nRacketType);$/;"	p	class:CBonus
+Move	src/bullet.cpp	/^void CBullet::Move() {$/;"	f	class:CBullet
+Move	src/bullet.h	/^	void Move();$/;"	p	class:CBullet
+Move	src/energyhole.cpp	/^void CEnergyHole::Move() {$/;"	f	class:CEnergyHole
+Move	src/energyhole.h	/^	 void Move();$/;"	p	class:CEnergyHole
+Move	src/monster.cpp	/^void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {$/;"	f	class:CMonster
+Move	src/monster.h	/^	void Move(bool bBackWall, int nPaddleY, int nPaddleHeight);$/;"	p	class:CMonster
+MoveBrickBullets	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::MoveBrickBullets() {$/;"	f	class:CArkanoidSBGame
+MoveBrickBullets	src/arkanoidsbgame.h	/^   void MoveBrickBullets();$/;"	p	class:CArkanoidSBGame
+NUM_OF_FRAMES	src/exploision.cpp	/^#define	NUM_OF_FRAMES	/;"	d	file:
+Open	src/resource.cpp	/^bool CResource::Open(const char *pchResource) {$/;"	f	class:CResource
+Open	src/resource.h	/^	bool Open(const char *pchResource);$/;"	p	class:CResource
+Ortho	src/glSDL.c	/^	void	(APIENTRY *Ortho)(GLdouble left, GLdouble right, GLdouble bottom,$/;"	m	file:
+PACKAGE	debug_linux/config.h	/^#define PACKAGE /;"	d
+PACKAGE	release_linux/config.h	/^#define PACKAGE /;"	d
+PACKAGE_BUGREPORT	debug_linux/config.h	/^#define PACKAGE_BUGREPORT /;"	d
+PACKAGE_BUGREPORT	release_linux/config.h	/^#define PACKAGE_BUGREPORT /;"	d
+PACKAGE_NAME	debug_linux/config.h	/^#define PACKAGE_NAME /;"	d
+PACKAGE_NAME	release_linux/config.h	/^#define PACKAGE_NAME /;"	d
+PACKAGE_STRING	debug_linux/config.h	/^#define PACKAGE_STRING /;"	d
+PACKAGE_STRING	release_linux/config.h	/^#define PACKAGE_STRING /;"	d
+PACKAGE_TARNAME	debug_linux/config.h	/^#define PACKAGE_TARNAME /;"	d
+PACKAGE_TARNAME	release_linux/config.h	/^#define PACKAGE_TARNAME /;"	d
+PACKAGE_VERSION	debug_linux/config.h	/^#define PACKAGE_VERSION /;"	d
+PACKAGE_VERSION	release_linux/config.h	/^#define PACKAGE_VERSION /;"	d
+PADDLE_HEIGHT	src/arkanoidsbgame.cpp	/^#define PADDLE_HEIGHT	/;"	d	file:
+PATH_MAX	src/arkanoidsb.h	/^	#define PATH_MAX	/;"	d
+PAUSE_ITEM_X	src/arkanoidsbgame.cpp	/^#define	PAUSE_ITEM_X	/;"	d	file:
+PAUSE_ITEM_Y	src/arkanoidsbgame.cpp	/^#define	PAUSE_ITEM_Y	/;"	d	file:
+PixelStorei	src/glSDL.c	/^	void	(APIENTRY *PixelStorei)(GLenum pname, GLint param);$/;"	m	file:
+PlayMusic	src/arkanoidsb.cpp	/^void PlayMusic(bool bFromFirst) {$/;"	f
+PlayMusic	src/arkanoidsb.h	/^extern void PlayMusic(bool bFromFirst);$/;"	p
+PlayMusic2	src/arkanoidsb.cpp	/^void PlayMusic2() {$/;"	f
+PlayMusic2	src/arkanoidsb.cpp	/^void PlayMusic2();$/;"	p	file:
+PlaySFX	src/mainmenu.cpp	/^void CMainMenu::PlaySFX(int nItem) {$/;"	f	class:CMainMenu
+PlaySFX	src/mainmenu.h	/^	void PlaySFX(int nItem);$/;"	p	class:CMainMenu
+PlaySound	src/arkanoidsb.cpp	/^int PlaySound(int nSndIndex, int nLoopsCount) {$/;"	f
+PlaySound	src/arkanoidsb.h	/^extern int PlaySound(int nSndIndex, int nLoopsCount = 0);$/;"	p
+ProcessBonus	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::ProcessBonus(int nBonusType) {$/;"	f	class:CArkanoidSBGame
+ProcessBonus	src/arkanoidsbgame.h	/^	void ProcessBonus(int nBonusType);$/;"	p	class:CArkanoidSBGame
+RACKET_X	src/arkanoidsb.h	/^#define RACKET_X	/;"	d
+RESOURCE_FILE_CLASS	src/resource.h	/^#define RESOURCE_FILE_CLASS$/;"	d
+RES_FILE_HEADER	src/resource.h	/^	struct RES_FILE_HEADER {$/;"	s	class:CResource
+RES_MAX_NAME	src/resource.h	/^#define RES_MAX_NAME	/;"	d
+RES_SIGNATURE	src/resource.h	/^#define RES_SIGNATURE	/;"	d
+RES_XOR	src/resource.h	/^#define RES_XOR	/;"	d
+RGBAfmt	src/glSDL.c	/^static SDL_PixelFormat RGBfmt, RGBAfmt;$/;"	v	file:
+RGBfmt	src/glSDL.c	/^static SDL_PixelFormat RGBfmt, RGBAfmt;$/;"	v	file:
+RT_ENGINE	src/arkanoidsbgame.h	/^	enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };$/;"	e	enum:CArkanoidSBGame::_RACKET_TYPE
+RT_LASER	src/arkanoidsbgame.h	/^	enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };$/;"	e	enum:CArkanoidSBGame::_RACKET_TYPE
+RT_MAGNET	src/arkanoidsbgame.h	/^	enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };$/;"	e	enum:CArkanoidSBGame::_RACKET_TYPE
+RT_MISSILE	src/arkanoidsbgame.h	/^	enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };$/;"	e	enum:CArkanoidSBGame::_RACKET_TYPE
+RT_NORMAL	src/arkanoidsbgame.h	/^	enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };$/;"	e	enum:CArkanoidSBGame::_RACKET_TYPE
+RT_PLASMA	src/arkanoidsbgame.h	/^	enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };$/;"	e	enum:CArkanoidSBGame::_RACKET_TYPE
+ReadPixels	src/glSDL.c	/^	void	(APIENTRY *ReadPixels)(GLint x, GLint y, GLsizei width, GLsizei height,$/;"	m	file:
+ReadWriteConfig	src/arkanoidsb.cpp	/^void ReadWriteConfig(bool bMode) {$/;"	f
+ReadWriteConfig	src/arkanoidsb.cpp	/^void ReadWriteConfig(bool bMode);$/;"	p	file:
+RegisterFrame	src/mystring.cpp	/^Uint32 CMyString::RegisterFrame(SDL_Rect &rc) {$/;"	f	class:CMyString
+RegisterFrame	src/mystring.h	/^	Uint32 RegisterFrame(SDL_Rect &rc);$/;"	p	class:CMyString
+RemoveAll	src/ball.cpp	/^void CBall::RemoveAll() {$/;"	f	class:CBall
+RemoveAll	src/ball.h	/^	void RemoveAll();$/;"	p	class:CBall
+RemoveAll	src/bonus.cpp	/^void CBonus::RemoveAll(bool bAndStackToo) {$/;"	f	class:CBonus
+RemoveAll	src/bonus.h	/^	void RemoveAll(bool bAndStackToo);$/;"	p	class:CBonus
+RemoveAll	src/bullet.cpp	/^void CBullet::RemoveAll() {$/;"	f	class:CBullet
+RemoveAll	src/bullet.h	/^	void RemoveAll();$/;"	p	class:CBullet
+RemoveAll	src/energyhole.cpp	/^void CEnergyHole::RemoveAll() {$/;"	f	class:CEnergyHole
+RemoveAll	src/energyhole.h	/^	 void RemoveAll();$/;"	p	class:CEnergyHole
+RemoveAll	src/exploision.cpp	/^void CExploision::RemoveAll() {$/;"	f	class:CExploision
+RemoveAll	src/exploision.h	/^	void RemoveAll();$/;"	p	class:CExploision
+RemoveAll	src/monster.cpp	/^void CMonster::RemoveAll() {$/;"	f	class:CMonster
+RemoveAll	src/monster.h	/^	void RemoveAll();$/;"	p	class:CMonster
+RemoveByPos	src/bullet.cpp	/^void CBullet::RemoveByPos(int nPos) {$/;"	f	class:CBullet
+RemoveByPos	src/bullet.h	/^	void RemoveByPos(int nPos);$/;"	p	class:CBullet
+RemoveByPos	src/monster.cpp	/^void CMonster::RemoveByPos(int nPos) {$/;"	f	class:CMonster
+RemoveByPos	src/monster.h	/^   void RemoveByPos(int nPos);$/;"	p	class:CMonster
+RemoveOne	src/ball.cpp	/^bool CBall::RemoveOne(int &nX, int &nY) {$/;"	f	class:CBall
+RemoveOne	src/ball.h	/^	bool RemoveOne(int &nX, int &nY);$/;"	p	class:CBall
+RemoveOneLives	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::RemoveOneLives() {$/;"	f	class:CArkanoidSBGame
+RemoveOneLives	src/arkanoidsbgame.h	/^	void RemoveOneLives();$/;"	p	class:CArkanoidSBGame
+Reset	src/tutorialdlg.cpp	/^void CTutorialDlg::Reset() {$/;"	f	class:CTutorialDlg
+Reset	src/tutorialdlg.h	/^    void Reset();$/;"	p	class:CTutorialDlg
+ResetAll	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::ResetAll() {$/;"	f	class:CArkanoidSBGame
+ResetAll	src/arkanoidsbgame.h	/^   void ResetAll();$/;"	p	class:CArkanoidSBGame
+RestoreGame	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::RestoreGame() {$/;"	f	class:CArkanoidSBGame
+RestoreGame	src/arkanoidsbgame.h	/^	 void RestoreGame();$/;"	p	class:CArkanoidSBGame
+SCORE_TO_ADDITIONAL_BALL	src/arkanoidsbgame.cpp	/^#define SCORE_TO_ADDITIONAL_BALL	/;"	d	file:
+SCREEN_HEIGHT	src/arkanoidsb.h	/^#define SCREEN_HEIGHT	/;"	d
+SCREEN_WIDTH	src/arkanoidsb.h	/^#define SCREEN_WIDTH	/;"	d
+SDL_AllocSurface	src/glSDL.h	/^#define SDL_AllocSurface	/;"	d
+SDL_AllocSurface	src/glSDL.h	/^#undef	SDL_AllocSurface$/;"	d
+SDL_BlitSurface	src/glSDL.h	/^#define	SDL_BlitSurface	/;"	d
+SDL_BlitSurface	src/glSDL.h	/^#undef	SDL_BlitSurface$/;"	d
+SDL_ConvertSurface	src/glSDL.h	/^#define	SDL_ConvertSurface	/;"	d
+SDL_CreateRGBSurface	src/glSDL.h	/^#define	SDL_CreateRGBSurface	/;"	d
+SDL_CreateRGBSurfaceFrom	src/glSDL.h	/^#define	SDL_CreateRGBSurfaceFrom	/;"	d
+SDL_DisplayFormat	src/glSDL.h	/^#define	SDL_DisplayFormat	/;"	d
+SDL_DisplayFormatAlpha	src/glSDL.h	/^#define	SDL_DisplayFormatAlpha	/;"	d
+SDL_FillRect	src/glSDL.h	/^#define	SDL_FillRect	/;"	d
+SDL_Flip	src/glSDL.h	/^#define	SDL_Flip	/;"	d
+SDL_FreeSurface	src/glSDL.h	/^#define	SDL_FreeSurface	/;"	d
+SDL_GLSDL	src/glSDL.h	/^#define SDL_GLSDL	/;"	d
+SDL_GLSDL	src/glSDL.h	/^#undef	SDL_GLSDL	/;"	d
+SDL_GLSDL	src/glSDL.h	/^#undef	SDL_GLSDL$/;"	d
+SDL_GetVideoSurface	src/glSDL.h	/^#define	SDL_GetVideoSurface	/;"	d
+SDL_LoadBMP	src/glSDL.h	/^#define	SDL_LoadBMP	/;"	d
+SDL_LoadBMP	src/glSDL.h	/^#undef	SDL_LoadBMP$/;"	d
+SDL_LockSurface	src/glSDL.h	/^#define	SDL_LockSurface	/;"	d
+SDL_MUSTLOCK	src/glSDL.h	/^#define SDL_MUSTLOCK(/;"	d
+SDL_MUSTLOCK	src/glSDL.h	/^#undef	SDL_MUSTLOCK$/;"	d
+SDL_Quit	src/glSDL.h	/^#define	SDL_Quit	/;"	d
+SDL_QuitSubSystem	src/glSDL.h	/^#define	SDL_QuitSubSystem	/;"	d
+SDL_SaveBMP	src/glSDL.h	/^#define	SDL_SaveBMP	/;"	d
+SDL_SaveBMP	src/glSDL.h	/^#undef	SDL_SaveBMP$/;"	d
+SDL_SetAlpha	src/glSDL.h	/^#define	SDL_SetAlpha	/;"	d
+SDL_SetClipRect	src/glSDL.h	/^#define	SDL_SetClipRect	/;"	d
+SDL_SetColorKey	src/glSDL.h	/^#define	SDL_SetColorKey	/;"	d
+SDL_SetVideoMode	src/glSDL.h	/^#define	SDL_SetVideoMode	/;"	d
+SDL_UnlockSurface	src/glSDL.h	/^#define	SDL_UnlockSurface	/;"	d
+SDL_UpdateRect	src/glSDL.h	/^#define	SDL_UpdateRect	/;"	d
+SDL_UpdateRects	src/glSDL.h	/^#define	SDL_UpdateRects	/;"	d
+SMALL_BONUS_X	src/bonus.cpp	/^#define SMALL_BONUS_X	/;"	d	file:
+STDC_HEADERS	debug_linux/config.h	/^#define STDC_HEADERS /;"	d
+STDC_HEADERS	release_linux/config.h	/^#define STDC_HEADERS /;"	d
+S_BRICK_X	src/leveleditor.cpp	/^#define S_BRICK_X	/;"	d	file:
+S_BRICK_Y	src/leveleditor.cpp	/^#define S_BRICK_Y	/;"	d	file:
+Save	src/leveleditor.cpp	/^void CLevelEditor::Save() {$/;"	f	class:CLevelEditor
+Save	src/leveleditor.h	/^    void Save();$/;"	p	class:CLevelEditor
+SetAllBallsToBlue	src/ball.cpp	/^void CBall::SetAllBallsToBlue() {$/;"	f	class:CBall
+SetAllBallsToBlue	src/ball.h	/^	void SetAllBallsToBlue();$/;"	p	class:CBall
+SetAllBallsToFire	src/ball.cpp	/^void CBall::SetAllBallsToFire() {$/;"	f	class:CBall
+SetAllBallsToFire	src/ball.h	/^	void SetAllBallsToFire();$/;"	p	class:CBall
+SetBrick	src/generatelevel.cpp	/^void CGenerateLevel::SetBrick(int nX, int nY, int nType) {$/;"	f	class:CGenerateLevel
+SetBrick	src/generatelevel.h	/^	void SetBrick(int nX, int nY, int nType);$/;"	p	class:CGenerateLevel
+SetCapturedBallPos	src/ball.cpp	/^void CBall::SetCapturedBallPos(int nIndex, float fX, float fY) {$/;"	f	class:CBall
+SetCapturedBallPos	src/ball.h	/^	void SetCapturedBallPos(int nIndex, float fX, float fY);$/;"	p	class:CBall
+SetEnterNameMode	src/mainmenu.cpp	/^void CMainMenu::SetEnterNameMode() {$/;"	f	class:CMainMenu
+SetEnterNameMode	src/mainmenu.h	/^	void SetEnterNameMode();$/;"	p	class:CMainMenu
+SetMenuType	src/mainmenu.cpp	/^void CMainMenu::SetMenuType(int nType) {$/;"	f	class:CMainMenu
+SetMenuType	src/mainmenu.h	/^	void SetMenuType(int nType);$/;"	p	class:CMainMenu
+SetPause	src/arkanoidsbgame.cpp	/^void CArkanoidSBGame::SetPause() {$/;"	f	class:CArkanoidSBGame
+SetPause	src/arkanoidsbgame.h	/^	void SetPause();$/;"	p	class:CArkanoidSBGame
+SetPixel	src/mainmenu.cpp	/^void SetPixel(int nX, int nY, Uint32 color) {$/;"	f
+SetPosStack	src/bonus.cpp	/^void CBonus::SetPosStack(bool bNext) {$/;"	f	class:CBonus
+SetPosStack	src/bonus.h	/^	void SetPosStack(bool bNext);$/;"	p	class:CBonus
+SetRect	src/arkanoidsb.cpp	/^void SetRect(SDL_Rect *pRc, int nX, int nY, int nW, int nH) {$/;"	f
+SetRect	src/arkanoidsb.h	/^extern void SetRect(SDL_Rect *pRc, int nX, int nY, int nW, int nH);$/;"	p
+SetRect	src/mystring.cpp	/^void CMyString::SetRect(int left, int top, int width, int height) {$/;"	f	class:CMyString
+SetRect	src/mystring.h	/^	void SetRect(int left, int top, int width, int height);$/;"	p	class:CMyString
+SetShadowOffset	src/mystring.cpp	/^void CMyString::SetShadowOffset(int nDx, int nDy) {$/;"	f	class:CMyString
+SetShadowOffset	src/mystring.h	/^	void SetShadowOffset(int nDx = 1, int nDy = 1);$/;"	p	class:CMyString
+SetString	src/sinusstring.cpp	/^void CSinusString::SetString(const char *pchString, int nX, int nY) {$/;"	f	class:CSinusString
+SetString	src/sinusstring.h	/^	void SetString(const char *pchString, int nX, int nY);$/;"	p	class:CSinusString
+SetVideoMode	src/arkanoidsb.cpp	/^void SetVideoMode() {$/;"	f
+SetVideoMode	src/arkanoidsb.cpp	/^void SetVideoMode();$/;"	p	file:
+SetVolumeMusic	src/arkanoidsb.cpp	/^void SetVolumeMusic(int nVolume) {$/;"	f
+SetVolumeMusic	src/arkanoidsb.h	/^extern void SetVolumeMusic(int nVolume);$/;"	p
+SetVolumeSound	src/arkanoidsb.cpp	/^void SetVolumeSound(int nVolume) {$/;"	f
+SetVolumeSound	src/arkanoidsb.h	/^extern void SetVolumeSound(int nVolume);$/;"	p
+ShowDialog	src/tutorialdlg.cpp	/^bool CTutorialDlg::ShowDialog() {$/;"	f	class:CTutorialDlg
+ShowDialog	src/tutorialdlg.h	/^    bool ShowDialog();$/;"	p	class:CTutorialDlg
+SlowDown	src/ball.cpp	/^void CBall::SlowDown() {$/;"	f	class:CBall
+SlowDown	src/ball.h	/^	void SlowDown();$/;"	p	class:CBall
+SplitBalls	src/ball.cpp	/^void CBall::SplitBalls() {$/;"	f	class:CBall
+SplitBalls	src/ball.h	/^	void SplitBalls();$/;"	p	class:CBall
+StartBall	src/ball.cpp	/^bool CBall::StartBall(int nTop, int nBottom) {$/;"	f	class:CBall
+StartBall	src/ball.h	/^	bool StartBall(int nTop, int nBottom);$/;"	p	class:CBall
+StopSound	src/arkanoidsb.cpp	/^void StopSound(int &nChannel) {$/;"	f
+StopSound	src/arkanoidsb.h	/^extern void StopSound(int &nChannel);$/;"	p
+SwitchFullscreen	src/arkanoidsb.cpp	/^void SwitchFullscreen() {$/;"	f
+SwitchFullscreen	src/arkanoidsb.cpp	/^void SwitchFullscreen();$/;"	p	file:
+SwitchFullscreen	src/arkanoidsb.h	/^extern void SwitchFullscreen();$/;"	p
+TUTORIALDLG_H	src/tutorialdlg.h	/^#define TUTORIALDLG_H$/;"	d
+TYPE_BALL_BLUE	src/bonus.h	/^		TYPE_BALL_SPLIT, TYPE_BALL_FIRE, TYPE_BALL_BLUE, TYPE_BALL_EXPAND, TYPE_BALL_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_BALL_EXPAND	src/bonus.h	/^		TYPE_BALL_SPLIT, TYPE_BALL_FIRE, TYPE_BALL_BLUE, TYPE_BALL_EXPAND, TYPE_BALL_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_BALL_FIRE	src/bonus.h	/^		TYPE_BALL_SPLIT, TYPE_BALL_FIRE, TYPE_BALL_BLUE, TYPE_BALL_EXPAND, TYPE_BALL_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_BALL_SHRINK	src/bonus.h	/^		TYPE_BALL_SPLIT, TYPE_BALL_FIRE, TYPE_BALL_BLUE, TYPE_BALL_EXPAND, TYPE_BALL_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_BALL_SPLIT	src/bonus.h	/^		TYPE_BALL_SPLIT, TYPE_BALL_FIRE, TYPE_BALL_BLUE, TYPE_BALL_EXPAND, TYPE_BALL_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_BLUE	src/ball.h	/^	enum _TYPES { TYPE_WHITE, TYPE_RED, TYPE_BLUE };$/;"	e	enum:CBall::_TYPES
+TYPE_DESTROY	src/bonus.h	/^		TYPE_DESTROY,$/;"	e	enum:CBonus::_TYPES
+TYPE_FREEZE	src/bonus.h	/^		TYPE_FREEZE,$/;"	e	enum:CBonus::_TYPES
+TYPE_LASER	src/bullet.h	/^	enum _TYPES { TYPE_LASER, TYPE_MISSILE, TYPE_PLASMA };$/;"	e	enum:CBullet::_TYPES
+TYPE_LAST_BONUS	src/bonus.h	/^		TYPE_LAST_BONUS	\/\/ Only marker!$/;"	e	enum:CBonus::_TYPES
+TYPE_MISSILE	src/bullet.h	/^	enum _TYPES { TYPE_LASER, TYPE_MISSILE, TYPE_PLASMA };$/;"	e	enum:CBullet::_TYPES
+TYPE_PADDLE_ENGINE	src/bonus.h	/^		TYPE_PADDLE_ENGINE, TYPE_PADDLE_EXPAND, TYPE_PADDLE_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_PADDLE_EXPAND	src/bonus.h	/^		TYPE_PADDLE_ENGINE, TYPE_PADDLE_EXPAND, TYPE_PADDLE_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_PADDLE_FIRE	src/bonus.h	/^		TYPE_PADDLE_MAGNET, TYPE_PADDLE_FIRE, TYPE_PADDLE_MISSILE, TYPE_PADDLE_LASER,$/;"	e	enum:CBonus::_TYPES
+TYPE_PADDLE_LASER	src/bonus.h	/^		TYPE_PADDLE_MAGNET, TYPE_PADDLE_FIRE, TYPE_PADDLE_MISSILE, TYPE_PADDLE_LASER,$/;"	e	enum:CBonus::_TYPES
+TYPE_PADDLE_MAGNET	src/bonus.h	/^		TYPE_PADDLE_MAGNET, TYPE_PADDLE_FIRE, TYPE_PADDLE_MISSILE, TYPE_PADDLE_LASER,$/;"	e	enum:CBonus::_TYPES
+TYPE_PADDLE_MISSILE	src/bonus.h	/^		TYPE_PADDLE_MAGNET, TYPE_PADDLE_FIRE, TYPE_PADDLE_MISSILE, TYPE_PADDLE_LASER,$/;"	e	enum:CBonus::_TYPES
+TYPE_PADDLE_SHRINK	src/bonus.h	/^		TYPE_PADDLE_ENGINE, TYPE_PADDLE_EXPAND, TYPE_PADDLE_SHRINK,$/;"	e	enum:CBonus::_TYPES
+TYPE_PLASMA	src/bullet.h	/^	enum _TYPES { TYPE_LASER, TYPE_MISSILE, TYPE_PLASMA };$/;"	e	enum:CBullet::_TYPES
+TYPE_RED	src/ball.h	/^	enum _TYPES { TYPE_WHITE, TYPE_RED, TYPE_BLUE };$/;"	e	enum:CBall::_TYPES
+TYPE_WALL	src/bonus.h	/^		TYPE_WALL,$/;"	e	enum:CBonus::_TYPES
+TYPE_WHITE	src/ball.h	/^	enum _TYPES { TYPE_WHITE, TYPE_RED, TYPE_BLUE };$/;"	e	enum:CBall::_TYPES
+TexCoord2f	src/glSDL.c	/^	void	(APIENTRY *TexCoord2f)(GLfloat s, GLfloat t);$/;"	m	file:
+TexImage2D	src/glSDL.c	/^	void	(APIENTRY *TexImage2D)(GLenum target, GLint level, GLint internalformat,$/;"	m	file:
+TexParameteri	src/glSDL.c	/^	void	(APIENTRY *TexParameteri)(GLenum target, GLenum pname, GLint param);$/;"	m	file:
+TexSubImage2D	src/glSDL.c	/^	void	(APIENTRY *TexSubImage2D)(GLenum target, GLint level,$/;"	m	file:
+Translatef	src/glSDL.c	/^	void	(APIENTRY *Translatef)(GLfloat x, GLfloat y, GLfloat z);$/;"	m	file:
+USING_GLSDL	src/glSDL.c	/^#define	USING_GLSDL	/;"	d	file:
+Unload	src/arkanoidsbgame.h	/^	void Unload();$/;"	p	class:CArkanoidSBGame
+Unload	src/mystring.cpp	/^void CMyString::Unload() {$/;"	f	class:CMyString
+Unload	src/mystring.h	/^	void Unload();$/;"	p	class:CMyString
+UnloadGL	src/glSDL.c	/^static void UnloadGL(void)$/;"	f	file:
+UnloadTexture	src/glSDL.c	/^static void UnloadTexture(glSDL_TexInfo *txi)$/;"	f	file:
+UnloadTexture	src/glSDL.c	/^static void UnloadTexture(glSDL_TexInfo *txi);$/;"	p	file:
+UnsetVideoMode	src/arkanoidsb.cpp	/^void UnsetVideoMode() {$/;"	f
+UnsetVideoMode	src/arkanoidsb.cpp	/^void UnsetVideoMode();$/;"	p	file:
+UpdateKeys	src/arkanoidsb.cpp	/^bool UpdateKeys() {$/;"	f
+UpdateKeys	src/arkanoidsb.cpp	/^bool UpdateKeys();$/;"	p	file:
+UploadHoriz	src/glSDL.c	/^static int UploadHoriz(SDL_Surface *datasurf, glSDL_TexInfo *txi)$/;"	f	file:
+UploadHuge	src/glSDL.c	/^static int UploadHuge(SDL_Surface *datasurf, glSDL_TexInfo *txi)$/;"	f	file:
+UploadTextures	src/glSDL.c	/^static int UploadTextures(SDL_Surface *datasurf, glSDL_TexInfo *txi)$/;"	f	file:
+UploadVert	src/glSDL.c	/^static int UploadVert(SDL_Surface *datasurf, glSDL_TexInfo *txi)$/;"	f	file:
+VERSION	debug_linux/config.h	/^#define VERSION /;"	d
+VERSION	release_linux/config.h	/^#define VERSION /;"	d
+Vertex2i	src/glSDL.c	/^	void	(APIENTRY *Vertex2i)(GLint x, GLint y);$/;"	m	file:
+Viewport	src/glSDL.c	/^	void	(APIENTRY *Viewport)(GLint x, GLint y, GLsizei width, GLsizei height);$/;"	m	file:
+WALL_X1	src/arkanoidsb.h	/^#define WALL_X1	/;"	d
+WALL_X2	src/arkanoidsb.h	/^#define WALL_X2	/;"	d
+WALL_Y1	src/arkanoidsb.h	/^#define WALL_Y1	/;"	d
+WALL_Y2	src/arkanoidsb.h	/^#define WALL_Y2	/;"	d
+_BALL	src/ball.h	/^	struct _BALL {$/;"	s	class:CBall
+_BONUS	src/bonus.h	/^	struct _BONUS {$/;"	s	class:CBonus
+_BRICK	src/arkanoidsb.h	/^struct _BRICK {$/;"	s
+_BRICK_BULLET	src/arkanoidsbgame.h	/^	struct _BRICK_BULLET {$/;"	s	class:CArkanoidSBGame
+_BULLET	src/bullet.h	/^	struct _BULLET {$/;"	s	class:CBullet
+_COOL_STRING	src/coolstring.h	/^	struct _COOL_STRING {$/;"	s	class:CCoolString
+_CalculateBricksCount	src/generatelevel.cpp	/^int CGenerateLevel::_CalculateBricksCount() {$/;"	f	class:CGenerateLevel
+_CalculateBricksCount	src/generatelevel.h	/^	int _CalculateBricksCount();$/;"	p	class:CGenerateLevel
+_Cheater	src/arkanoidsbgame.h	/^	void	_Cheater();$/;"	p	class:CArkanoidSBGame
+_CloneLevelBy	src/generatelevel.cpp	/^void CGenerateLevel::_CloneLevelBy(int nType) {$/;"	f	class:CGenerateLevel
+_CloneLevelBy	src/generatelevel.h	/^	void _CloneLevelBy(int nType);$/;"	p	class:CGenerateLevel
+_DoStartNewChar	src/mystring.cpp	/^bool CMyString::_DoStartNewChar(Sint32 x) {$/;"	f	class:CMyString
+_DoStartNewChar	src/mystring.h	/^	bool _DoStartNewChar(Sint32 x);$/;"	p	class:CMyString
+_ENERGYHOLE	src/energyhole.h	/^	struct _ENERGYHOLE {$/;"	s	class:CEnergyHole
+_EXPLOISION	src/exploision.h	/^	struct _EXPLOISION {$/;"	s	class:CExploision
+_FB	src/ball.h	/^	struct _FB {$/;"	s	class:CBall
+_FillLevel	src/generatelevel.cpp	/^void CGenerateLevel::_FillLevel(int nLevel, int nPos) {$/;"	f	class:CGenerateLevel
+_FillLevel	src/generatelevel.h	/^	void _FillLevel(int nLevel, int nPos);$/;"	p	class:CGenerateLevel
+_GLSDL_H_	src/glSDL.h	/^#define	_GLSDL_H_$/;"	d
+_GLSDL_NO_REDEFINES_	src/glSDL.c	/^#define	_GLSDL_NO_REDEFINES_$/;"	d	file:
+_GetPixel	src/mystring.cpp	/^Uint32 CMyString::_GetPixel(SDL_Surface *pSurface, Sint32 X, Sint32 Y) {$/;"	f	class:CMyString
+_GetPixel	src/mystring.h	/^	Uint32 _GetPixel(SDL_Surface *Surface, Sint32 X, Sint32 Y);$/;"	p	class:CMyString
+_HIGHSCORE	src/arkanoidsb.h	/^struct _HIGHSCORE {$/;"	s
+_IsPatternExist	src/generatelevel.cpp	/^bool CGenerateLevel::_IsPatternExist(int nPattern) {$/;"	f	class:CGenerateLevel
+_IsPatternExist	src/generatelevel.h	/^	bool _IsPatternExist(int nPattern);$/;"	p	class:CGenerateLevel
+_MONST1	src/monster.h	/^	enum _MONST1 { MONST_PATROL, MONST_COPTER, MONST_EYE, MONST_BLACKHOLE, MONST_FIGHTER, MONST_HAND, MONST_TURBINE, MONST_UFO, MONST_STONE1, MONST_STONE2, MONST_END };$/;"	g	class:CMonster
+_MONST2	src/monster.h	/^	enum _MONST2 { M_WRECKAGE1, M_WRECKAGE2 };$/;"	g	class:CMonster
+_MONSTER	src/monster.h	/^	struct _MONSTER {$/;"	s	class:CMonster
+_OPTIONS	src/mainmenu.h	/^	struct _OPTIONS {$/;"	s	class:CMainMenu
+_RACKET_TYPE	src/arkanoidsbgame.h	/^	enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };$/;"	g	class:CArkanoidSBGame
+_RollHorizontal	src/generatelevel.cpp	/^void CGenerateLevel::_RollHorizontal() {$/;"	f	class:CGenerateLevel
+_RollHorizontal	src/generatelevel.h	/^	void _RollHorizontal();$/;"	p	class:CGenerateLevel
+_RollLevel	src/generatelevel.cpp	/^void CGenerateLevel::_RollLevel() {$/;"	f	class:CGenerateLevel
+_RollLevel	src/generatelevel.h	/^	void _RollLevel();$/;"	p	class:CGenerateLevel
+_RollVertical	src/generatelevel.cpp	/^void CGenerateLevel::_RollVertical() {$/;"	f	class:CGenerateLevel
+_RollVertical	src/generatelevel.h	/^	void _RollVertical();$/;"	p	class:CGenerateLevel
+_SAVE	src/arkanoidsbgame.h	/^	struct _SAVE {$/;"	s	class:CArkanoidSBGame
+_STARS	src/arkanoidsbgame.h	/^	struct _STARS {$/;"	s	class:CArkanoidSBGame
+_TUTORIAL	src/tutorialdlg.h	/^	struct _TUTORIAL {$/;"	s	class:CTutorialDlg
+_TYPES	src/ball.h	/^	enum _TYPES { TYPE_WHITE, TYPE_RED, TYPE_BLUE };$/;"	g	class:CBall
+_TYPES	src/bonus.h	/^	enum _TYPES {$/;"	g	class:CBonus
+_TYPES	src/bullet.h	/^	enum _TYPES { TYPE_LASER, TYPE_MISSILE, TYPE_PLASMA };$/;"	g	class:CBullet
+achName	src/arkanoidsb.h	/^	char	achName[100];$/;"	m	struct:_HIGHSCORE
+achName	src/resource.h	/^		char	achName[RES_MAX_NAME + 1];$/;"	m	struct:CResource::RES_FILE_HEADER
+as_func_failure	configure	/^as_func_failure () {$/;"	f
+as_func_ret_failure	configure	/^as_func_ret_failure () {$/;"	f
+as_func_ret_success	configure	/^as_func_ret_success () {$/;"	f
+as_func_success	configure	/^as_func_success () {$/;"	f
+bAlreadyImpact	src/ball.h	/^		bool		bAlreadyImpact;$/;"	m	struct:CBall::_BALL
+bDir	src/arkanoidsb.h	/^	bool	bDir;					\/\/ for movable bricks$/;"	m	struct:_BRICK
+bFullscreen	src/mainmenu.h	/^		bool bFullscreen;$/;"	m	struct:CMainMenu::_OPTIONS
+bIsCaptured	src/ball.h	/^		bool		bIsCaptured;	\/\/ is ball captured by monster HAND?$/;"	m	struct:CBall::_BALL
+bOGL	src/mainmenu.h	/^		bool bOGL;$/;"	m	struct:CMainMenu::_OPTIONS
+blitclip	src/glSDL.c	/^static __inline__ int blitclip(SDL_Rect *rect, int w, int h,$/;"	f	file:
+byType	src/arkanoidsb.h	/^	Uint8	byType;\/\/, byDesiredType;$/;"	m	struct:_BRICK
+clip_rect	src/glSDL.c	/^static inline void clip_rect(SDL_Rect *r, SDL_Rect *to)$/;"	f	file:
+coolfont_raw	src/coolfont.hpp	/^unsigned char coolfont_raw[2432] = {$/;"	v
+coolfont_raw_size	src/coolfont.hpp	/^int coolfont_raw_size = 2432;$/;"	v
+dfactor	src/glSDL.c	/^	GLenum	sfactor, dfactor;$/;"	m	file:
+do_blend	src/glSDL.c	/^	int	do_blend;$/;"	m	file:
+do_texture	src/glSDL.c	/^	int	do_texture;$/;"	m	file:
+dwLaser	src/bullet.h	/^		Uint32	dwLaser;$/;"	m	struct:CBullet::_BULLET
+dwMoveTime	src/energyhole.h	/^		Uint32	dwMoveTime;$/;"	m	struct:CEnergyHole::_ENERGYHOLE
+dwTime	src/energyhole.h	/^		Uint32	dwTime;$/;"	m	struct:CEnergyHole::_ENERGYHOLE
+dwTimeCanAddFb	src/ball.h	/^		Uint32	dwTimeCanAddFb;$/;"	m	struct:CBall::_BALL
+fOldSpeed	src/ball.h	/^		float		fSpeed, fOldSpeed;$/;"	m	struct:CBall::_BALL
+fSpeed	src/arkanoidsbgame.h	/^		float	fX, fY, fSpeed;$/;"	m	struct:CArkanoidSBGame::_STARS
+fSpeed	src/ball.h	/^		float		fSpeed, fOldSpeed;$/;"	m	struct:CBall::_BALL
+fSpeed	src/monster.h	/^		float	fSpeed;	\/\/ wreckage related$/;"	m	struct:CMonster::_MONSTER
+fX	src/arkanoidsb.h	/^	float	fX, fY;				\/\/ brick's position on screen in px$/;"	m	struct:_BRICK
+fX	src/arkanoidsbgame.h	/^		float		fX, fY;$/;"	m	struct:CArkanoidSBGame::_BRICK_BULLET
+fX	src/arkanoidsbgame.h	/^		float	fX, fY, fSpeed;$/;"	m	struct:CArkanoidSBGame::_STARS
+fY	src/arkanoidsb.h	/^	float	fX, fY;				\/\/ brick's position on screen in px$/;"	m	struct:_BRICK
+fY	src/arkanoidsbgame.h	/^		float		fX, fY;$/;"	m	struct:CArkanoidSBGame::_BRICK_BULLET
+fY	src/arkanoidsbgame.h	/^		float	fX, fY, fSpeed;$/;"	m	struct:CArkanoidSBGame::_STARS
+fake_screen	src/glSDL.c	/^static SDL_Surface *fake_screen = NULL;$/;"	v	file:
+func_extract_an_archive	debug_linux/libtool	/^func_extract_an_archive ()$/;"	f
+func_extract_an_archive	ltmain.sh	/^func_extract_an_archive ()$/;"	f
+func_extract_an_archive	release_linux/libtool	/^func_extract_an_archive ()$/;"	f
+func_extract_archives	debug_linux/libtool	/^func_extract_archives ()$/;"	f
+func_extract_archives	ltmain.sh	/^func_extract_archives ()$/;"	f
+func_extract_archives	release_linux/libtool	/^func_extract_archives ()$/;"	f
+func_infer_tag	debug_linux/libtool	/^func_infer_tag ()$/;"	f
+func_infer_tag	ltmain.sh	/^func_infer_tag ()$/;"	f
+func_infer_tag	release_linux/libtool	/^func_infer_tag ()$/;"	f
+func_mktempdir	debug_linux/libtool	/^func_mktempdir ()$/;"	f
+func_mktempdir	ltmain.sh	/^func_mktempdir ()$/;"	f
+func_mktempdir	release_linux/libtool	/^func_mktempdir ()$/;"	f
+func_win32_libid	debug_linux/libtool	/^func_win32_libid ()$/;"	f
+func_win32_libid	ltmain.sh	/^func_win32_libid ()$/;"	f
+func_win32_libid	release_linux/libtool	/^func_win32_libid ()$/;"	f
+g_Arkanoid	src/arkanoidsb.cpp	/^CArkanoidSBGame	g_Arkanoid;$/;"	v
+g_Arkanoid	src/arkanoidsb.h	/^extern CArkanoidSBGame	g_Arkanoid;$/;"	x
+g_Ball	src/arkanoidsb.cpp	/^CBall				g_Ball;$/;"	v
+g_Ball	src/arkanoidsb.h	/^extern CBall				g_Ball;$/;"	x
+g_Bonus	src/arkanoidsb.cpp	/^CBonus			g_Bonus;$/;"	v
+g_Bonus	src/arkanoidsb.h	/^extern CBonus				g_Bonus;$/;"	x
+g_Bullet	src/arkanoidsb.cpp	/^CBullet			g_Bullet;$/;"	v
+g_Bullet	src/arkanoidsb.h	/^extern CBullet				g_Bullet;$/;"	x
+g_CSinusString	src/arkanoidsb.cpp	/^CSinusString	g_CSinusString;$/;"	v
+g_CSinusString	src/arkanoidsb.h	/^extern CSinusString		g_CSinusString;$/;"	x
+g_CoolString	src/arkanoidsb.cpp	/^CCoolString		g_CoolString;$/;"	v
+g_CoolString	src/arkanoidsb.h	/^extern CCoolString		g_CoolString;$/;"	x
+g_EnergyHole	src/arkanoidsb.cpp	/^CEnergyHole		g_EnergyHole;$/;"	v
+g_EnergyHole	src/arkanoidsb.h	/^extern CEnergyHole		g_EnergyHole;$/;"	x
+g_Exploision	src/arkanoidsb.cpp	/^CExploision		g_Exploision;$/;"	v
+g_Exploision	src/arkanoidsb.h	/^extern CExploision		g_Exploision;$/;"	x
+g_Font	src/arkanoidsb.cpp	/^CMyString		g_Font;$/;"	v
+g_Font	src/arkanoidsb.h	/^extern CMyString			g_Font;$/;"	x
+g_Font2	src/arkanoidsb.cpp	/^CMyString		g_Font2;$/;"	v
+g_Font2	src/arkanoidsb.h	/^extern CMyString			g_Font2;$/;"	x
+g_Font3	src/arkanoidsb.cpp	/^CMyString		g_Font3;$/;"	v
+g_Font3	src/arkanoidsb.h	/^extern CMyString			g_Font3;$/;"	x
+g_FontTutorial	src/arkanoidsb.cpp	/^CMyString		g_FontTutorial;$/;"	v
+g_FontTutorial	src/arkanoidsb.h	/^extern CMyString			g_FontTutorial;$/;"	x
+g_MainMenu	src/arkanoidsb.cpp	/^CMainMenu		g_MainMenu;$/;"	v
+g_MainMenu	src/arkanoidsb.h	/^extern CMainMenu			g_MainMenu;$/;"	x
+g_Monster	src/arkanoidsb.cpp	/^CMonster			g_Monster;$/;"	v
+g_Monster	src/arkanoidsb.h	/^extern CMonster			g_Monster;$/;"	x
+g_Resource	src/arkanoidsb.cpp	/^CResource		g_Resource;$/;"	v
+g_Resource	src/arkanoidsb.h	/^extern CResource			g_Resource;$/;"	x
+g_Rnd	src/arkanoidsb.cpp	/^CRandom			g_Rnd;$/;"	v
+g_Rnd	src/arkanoidsb.h	/^extern CRandom				g_Rnd;$/;"	x
+g_TutorialDlg	src/arkanoidsb.cpp	/^CTutorialDlg	g_TutorialDlg;$/;"	v
+g_TutorialDlg	src/arkanoidsb.h	/^extern CTutorialDlg		g_TutorialDlg;$/;"	x
+g_achRegKey	src/arkanoidsb.cpp	/^char g_achRegKey[16 + 3 + 1]	= { 0 };	\/\/ 16 symbols + 3 dashes + 1 null$/;"	v
+g_achRegKey	src/arkanoidsb.h	/^extern char g_achRegKey[16 + 3 + 1];$/;"	x
+g_achRegName	src/arkanoidsb.cpp	/^char g_achRegName[100 + 1]	= { 0 };$/;"	v
+g_achRegName	src/arkanoidsb.h	/^extern char g_achRegName[100 + 1];$/;"	x
+g_achUserProfile	src/arkanoidsb.cpp	/^char	g_achUserProfile[PATH_MAX]	= { 0 };$/;"	v
+g_achUserProfile	src/arkanoidsb.h	/^extern char	g_achUserProfile[PATH_MAX];$/;"	x
+g_anBpx	src/arkanoidsb.cpp	/^int g_anBpx[5]	= { 32, 24, 16, 15, 8 };$/;"	v
+g_anBpx	src/arkanoidsb.h	/^extern int 			g_anBpx[5];$/;"	x
+g_apMod	src/arkanoidsb.cpp	/^Mix_Music	*g_apMod[3];$/;"	v
+g_apMod	src/arkanoidsb.h	/^extern Mix_Music	*g_apMod[];$/;"	x
+g_apSnd	src/arkanoidsb.cpp	/^Mix_Chunk	*g_apSnd[sizeof(g_pachSnd) \/ sizeof(const char*)];$/;"	v
+g_apSnd	src/arkanoidsb.h	/^extern Mix_Chunk	*g_apSnd[];$/;"	x
+g_bActive	src/arkanoidsb.cpp	/^bool g_bActive	= true;$/;"	v
+g_bFullscreen	src/arkanoidsb.cpp	/^bool g_bFullscreen	= true;$/;"	v
+g_bFullscreen	src/arkanoidsb.h	/^extern bool 		g_bFullscreen;$/;"	x
+g_bIsAudioSupported	src/arkanoidsb.cpp	/^bool g_bIsAudioSupported	= true;$/;"	v
+g_bIsCursorVisible	src/arkanoidsb.cpp	/^bool g_bIsCursorVisible	= false;$/;"	v
+g_bIsCursorVisible	src/arkanoidsb.h	/^extern bool			g_bIsCursorVisible;$/;"	x
+g_bIsRegistered	src/arkanoidsb.cpp	/^bool g_bIsRegistered	= false;$/;"	v
+g_bIsRegistered	src/arkanoidsb.h	/^extern bool g_bIsRegistered;$/;"	x
+g_bMouseLB	src/arkanoidsb.cpp	/^bool g_bMouseLB			= false;$/;"	v
+g_bMouseLB	src/arkanoidsb.h	/^extern bool			g_bMouseLB;$/;"	x
+g_bMouseRB	src/arkanoidsb.cpp	/^bool g_bMouseRB			= false;$/;"	v
+g_bMouseRB	src/arkanoidsb.h	/^extern bool			g_bMouseRB;$/;"	x
+g_bOGL	src/arkanoidsb.cpp	/^bool g_bOGL				= false;$/;"	v
+g_bOGL	src/arkanoidsb.h	/^extern bool			g_bOGL;$/;"	x
+g_bShowFps	src/arkanoidsb.cpp	/^bool g_bShowFps	= false;$/;"	v
+g_bTutorialMode	src/arkanoidsb.cpp	/^bool g_bTutorialMode	= true;$/;"	v
+g_bTutorialMode	src/arkanoidsb.h	/^extern bool 		g_bTutorialMode;$/;"	x
+g_dwModState	src/arkanoidsb.cpp	/^Uint32 g_dwModState	= 0;$/;"	v
+g_dwModState	src/arkanoidsb.h	/^extern Uint32		g_dwModState;$/;"	x
+g_fCos	src/arkanoidsb.cpp	/^float	g_fCos[360];$/;"	v
+g_fCos	src/arkanoidsb.h	/^extern float		g_fCos[];$/;"	x
+g_fSin	src/arkanoidsb.cpp	/^float	g_fSin[360];$/;"	v
+g_fSin	src/arkanoidsb.h	/^extern float		g_fSin[];$/;"	x
+g_fSpeedCorrection	src/arkanoidsb.cpp	/^float	g_fSpeedCorrection;$/;"	v
+g_fSpeedCorrection	src/arkanoidsb.h	/^extern float		g_fSpeedCorrection;$/;"	x
+g_nBppIndex	src/arkanoidsb.cpp	/^int g_nBppIndex	= 0;$/;"	v
+g_nBppIndex	src/arkanoidsb.h	/^extern int			g_nBppIndex;$/;"	x
+g_nCursorX	src/arkanoidsb.cpp	/^int g_nCursorX	= SCREEN_WIDTH \/ 2;$/;"	v
+g_nCursorX	src/arkanoidsb.h	/^extern int			g_nCursorX;$/;"	x
+g_nCursorY	src/arkanoidsb.cpp	/^int g_nCursorY	= SCREEN_HEIGHT \/ 2;$/;"	v
+g_nCursorY	src/arkanoidsb.h	/^extern int			g_nCursorY;$/;"	x
+g_nGameMode	src/arkanoidsb.cpp	/^int g_nGameMode	= APPS_INTRO;$/;"	v
+g_nGameMode	src/arkanoidsb.h	/^extern int			g_nGameMode;$/;"	x
+g_nMouseDX	src/arkanoidsb.cpp	/^float g_nMouseDX	= 0;$/;"	v
+g_nMouseDX	src/arkanoidsb.h	/^extern float		g_nMouseDX;$/;"	x
+g_nMouseDY	src/arkanoidsb.cpp	/^float g_nMouseDY	= 0;$/;"	v
+g_nMouseDY	src/arkanoidsb.h	/^extern float		g_nMouseDY;$/;"	x
+g_nNumKeys	src/arkanoidsb.cpp	/^int g_nNumKeys		= 0;$/;"	v
+g_nUnregisterdCount	src/arkanoidsb.cpp	/^int g_nUnregisterdCount	= 30 * 60;$/;"	v
+g_nUnregisterdCount	src/arkanoidsb.h	/^extern int g_nUnregisterdCount;$/;"	x
+g_nVolumeM	src/arkanoidsb.cpp	/^int g_nVolumeM	= 5;$/;"	v
+g_nVolumeM	src/arkanoidsb.h	/^extern int			g_nVolumeM;$/;"	x
+g_nVolumeS	src/arkanoidsb.cpp	/^int g_nVolumeS	= 5;$/;"	v
+g_nVolumeS	src/arkanoidsb.h	/^extern int			g_nVolumeS;$/;"	x
+g_pBonusesAura	src/arkanoidsb.cpp	/^SDL_Surface* g_pBonusesAura;$/;"	v
+g_pBonusesAura	src/arkanoidsb.h	/^extern SDL_Surface* g_pBonusesAura;$/;"	x
+g_pBonusesSmall	src/arkanoidsb.cpp	/^SDL_Surface* g_pBonusesSmall;$/;"	v
+g_pBonusesSmall	src/arkanoidsb.h	/^extern SDL_Surface* g_pBonusesSmall;$/;"	x
+g_pOptions	src/arkanoidsb.cpp	/^SDL_Surface* g_pOptions;$/;"	v
+g_pOptions	src/arkanoidsb.h	/^extern SDL_Surface* g_pOptions;$/;"	x
+g_pSinusString	src/arkanoidsb.cpp	/^SDL_Surface* g_pSinusString;$/;"	v
+g_pSinusString	src/arkanoidsb.h	/^extern SDL_Surface* g_pSinusString;$/;"	x
+g_pTransp	src/arkanoidsb.cpp	/^SDL_Surface* g_pTransp;$/;"	v
+g_pTransp	src/arkanoidsb.h	/^extern SDL_Surface* g_pTransp;$/;"	x
+g_pTutorialDlg	src/arkanoidsb.cpp	/^SDL_Surface* g_pTutorialDlg;$/;"	v
+g_pTutorialDlg	src/arkanoidsb.h	/^extern SDL_Surface* g_pTutorialDlg;$/;"	x
+g_pachSnd	src/arkanoidsb.cpp	/^const char *g_pachSnd[]	= {$/;"	v
+g_pbIsKeyStateChanged	src/arkanoidsb.cpp	/^bool *g_pbIsKeyStateChanged	= 0;$/;"	v
+g_pnKeys	src/arkanoidsb.cpp	/^Uint8	*g_pnKeys	= 0;$/;"	v
+g_pnKeys	src/arkanoidsb.h	/^extern Uint8		*g_pnKeys;$/;"	x
+g_psurfScreen	src/arkanoidsb.cpp	/^SDL_Surface	*g_psurfScreen;$/;"	v
+g_psurfScreen	src/arkanoidsb.h	/^extern SDL_Surface	*g_psurfScreen;$/;"	x
+g_strHighScore	src/arkanoidsb.cpp	/^_HIGHSCORE	g_strHighScore[10];$/;"	v
+g_strHighScore	src/arkanoidsb.h	/^extern _HIGHSCORE	g_strHighScore[];$/;"	x
+gl	src/glSDL.c	/^} gl;$/;"	v	file:
+glSDL_AddTexInfo	src/glSDL.c	/^static int glSDL_AddTexInfo(SDL_Surface *surface)$/;"	f	file:
+glSDL_AllocTexInfo	src/glSDL.c	/^glSDL_TexInfo *glSDL_AllocTexInfo(SDL_Surface *surface)$/;"	f
+glSDL_BlitFromGL	src/glSDL.c	/^static int glSDL_BlitFromGL(SDL_Rect *srcrect,$/;"	f	file:
+glSDL_BlitGL	src/glSDL.c	/^static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,$/;"	f	file:
+glSDL_BlitGL	src/glSDL.c	/^static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,$/;"	p	file:
+glSDL_BlitSurface	src/glSDL.c	/^int glSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,$/;"	f
+glSDL_BlitSurface	src/glSDL.h	/^int glSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,$/;"	p
+glSDL_ConvertSurface	src/glSDL.c	/^SDL_Surface *glSDL_ConvertSurface$/;"	f
+glSDL_ConvertSurface	src/glSDL.h	/^SDL_Surface *glSDL_ConvertSurface$/;"	p
+glSDL_CreateRGBSurface	src/glSDL.c	/^SDL_Surface *glSDL_CreateRGBSurface$/;"	f
+glSDL_CreateRGBSurface	src/glSDL.h	/^SDL_Surface *glSDL_CreateRGBSurface$/;"	p
+glSDL_CreateRGBSurfaceFrom	src/glSDL.c	/^SDL_Surface *glSDL_CreateRGBSurfaceFrom(void *pixels,$/;"	f
+glSDL_CreateRGBSurfaceFrom	src/glSDL.h	/^SDL_Surface *glSDL_CreateRGBSurfaceFrom(void *pixels,$/;"	p
+glSDL_DisplayFormat	src/glSDL.c	/^SDL_Surface *glSDL_DisplayFormat(SDL_Surface *surface)$/;"	f
+glSDL_DisplayFormat	src/glSDL.h	/^SDL_Surface *glSDL_DisplayFormat(SDL_Surface *surface);$/;"	p
+glSDL_DisplayFormatAlpha	src/glSDL.c	/^SDL_Surface *glSDL_DisplayFormatAlpha(SDL_Surface *surface)$/;"	f
+glSDL_DisplayFormatAlpha	src/glSDL.h	/^SDL_Surface *glSDL_DisplayFormatAlpha(SDL_Surface *surface);$/;"	p
+glSDL_FillRect	src/glSDL.c	/^int glSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color)$/;"	f
+glSDL_FillRect	src/glSDL.h	/^int glSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color);$/;"	p
+glSDL_Flip	src/glSDL.c	/^int glSDL_Flip(SDL_Surface *screen)$/;"	f
+glSDL_Flip	src/glSDL.h	/^int glSDL_Flip(SDL_Surface *screen);$/;"	p
+glSDL_FreeSurface	src/glSDL.c	/^void glSDL_FreeSurface(SDL_Surface *surface)$/;"	f
+glSDL_FreeSurface	src/glSDL.h	/^void glSDL_FreeSurface(SDL_Surface *surface);$/;"	p
+glSDL_FreeTexInfo	src/glSDL.c	/^void glSDL_FreeTexInfo(SDL_Surface *surface)$/;"	f
+glSDL_FullQuit	src/glSDL.c	/^void glSDL_FullQuit(void)$/;"	f
+glSDL_FullQuit	src/glSDL.h	/^void glSDL_FullQuit(void);$/;"	p
+glSDL_GetTexInfo	src/glSDL.c	/^static __inline__ glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface)$/;"	f	file:
+glSDL_GetVideoSurface	src/glSDL.c	/^SDL_Surface *glSDL_GetVideoSurface(void)$/;"	f
+glSDL_GetVideoSurface	src/glSDL.h	/^SDL_Surface *glSDL_GetVideoSurface(void);$/;"	p
+glSDL_IMG_Load	src/glSDL.c	/^SDL_Surface *glSDL_IMG_Load(const char *file)$/;"	f
+glSDL_IMG_Load	src/glSDL.h	/^SDL_Surface *glSDL_IMG_Load(const char *file);$/;"	p
+glSDL_Invalidate	src/glSDL.c	/^void glSDL_Invalidate(SDL_Surface *surface, SDL_Rect *area)$/;"	f
+glSDL_Invalidate	src/glSDL.h	/^void glSDL_Invalidate(SDL_Surface *surface, SDL_Rect *area);$/;"	p
+glSDL_LoadBMP	src/glSDL.c	/^SDL_Surface *glSDL_LoadBMP(const char *file)$/;"	f
+glSDL_LoadBMP	src/glSDL.h	/^SDL_Surface *glSDL_LoadBMP(const char *file);$/;"	p
+glSDL_LockSurface	src/glSDL.c	/^int glSDL_LockSurface(SDL_Surface *surface)$/;"	f
+glSDL_LockSurface	src/glSDL.h	/^int glSDL_LockSurface(SDL_Surface *surface);$/;"	p
+glSDL_Quit	src/glSDL.c	/^void glSDL_Quit(void)$/;"	f
+glSDL_Quit	src/glSDL.h	/^void glSDL_Quit(void);$/;"	p
+glSDL_QuitSubSystem	src/glSDL.c	/^void glSDL_QuitSubSystem(Uint32 flags)$/;"	f
+glSDL_QuitSubSystem	src/glSDL.h	/^void glSDL_QuitSubSystem(Uint32 flags);$/;"	p
+glSDL_SaveBMP	src/glSDL.c	/^int glSDL_SaveBMP(SDL_Surface *surface, const char *file)$/;"	f
+glSDL_SaveBMP	src/glSDL.h	/^int glSDL_SaveBMP(SDL_Surface *surface, const char *file);$/;"	p
+glSDL_SetAlpha	src/glSDL.c	/^int glSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha)$/;"	f
+glSDL_SetAlpha	src/glSDL.h	/^int glSDL_SetAlpha(SDL_Surface *surface, Uint32 flag, Uint8 alpha);$/;"	p
+glSDL_SetClipRect	src/glSDL.c	/^SDL_bool glSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect)$/;"	f
+glSDL_SetClipRect	src/glSDL.h	/^SDL_bool glSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect);$/;"	p
+glSDL_SetColorKey	src/glSDL.c	/^int glSDL_SetColorKey(SDL_Surface *surface, Uint32 flag, Uint32 key)$/;"	f
+glSDL_SetColorKey	src/glSDL.h	/^int glSDL_SetColorKey(SDL_Surface *surface, Uint32 flag, Uint32 key);$/;"	p
+glSDL_SetVideoMode	src/glSDL.c	/^SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)$/;"	f
+glSDL_SetVideoMode	src/glSDL.h	/^SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags);$/;"	p
+glSDL_TexInfo	src/glSDL.h	/^typedef struct glSDL_TexInfo$/;"	s
+glSDL_TexInfo	src/glSDL.h	/^} glSDL_TexInfo;$/;"	t
+glSDL_TileModes	src/glSDL.h	/^typedef enum glSDL_TileModes$/;"	g
+glSDL_TileModes	src/glSDL.h	/^} glSDL_TileModes;$/;"	t
+glSDL_UnloadSurface	src/glSDL.c	/^void glSDL_UnloadSurface(SDL_Surface *surface)$/;"	f
+glSDL_UnloadSurface	src/glSDL.h	/^void glSDL_UnloadSurface(SDL_Surface *surface);$/;"	p
+glSDL_UnlockSurface	src/glSDL.c	/^void glSDL_UnlockSurface(SDL_Surface *surface)$/;"	f
+glSDL_UnlockSurface	src/glSDL.h	/^void glSDL_UnlockSurface(SDL_Surface *surface);$/;"	p
+glSDL_UpdateRect	src/glSDL.c	/^void glSDL_UpdateRect(SDL_Surface *screen, Sint32 x, Sint32 y, Uint32 w, Uint32 h)$/;"	f
+glSDL_UpdateRect	src/glSDL.h	/^void glSDL_UpdateRect(SDL_Surface *screen, Sint32 x, Sint32 y, Uint32 w, Uint32 h);$/;"	p
+glSDL_UpdateRects	src/glSDL.c	/^void glSDL_UpdateRects(SDL_Surface *screen, int numrects, SDL_Rect *rects)$/;"	f
+glSDL_UpdateRects	src/glSDL.h	/^void glSDL_UpdateRects(SDL_Surface *screen, int numrects, SDL_Rect *rects);$/;"	p
+glSDL_UploadSurface	src/glSDL.c	/^int glSDL_UploadSurface(SDL_Surface *surface)$/;"	f
+glSDL_UploadSurface	src/glSDL.h	/^int glSDL_UploadSurface(SDL_Surface *surface);$/;"	p
+gl_blendfunc	src/glSDL.c	/^static __inline__ void gl_blendfunc(GLenum sfactor, GLenum dfactor)$/;"	f	file:
+gl_do_blend	src/glSDL.c	/^static __inline__ void gl_do_blend(int on)$/;"	f	file:
+gl_do_texture	src/glSDL.c	/^static __inline__ void gl_do_texture(int on)$/;"	f	file:
+gl_reset	src/glSDL.c	/^static void gl_reset(void)$/;"	f	file:
+gl_texture	src/glSDL.c	/^static __inline__ void gl_texture(GLuint tx)$/;"	f	file:
+glstate	src/glSDL.c	/^} glstate;$/;"	v	file:
+h	src/monster.h	/^		int	w, h, nFrame, nFramesCount, nAngle;$/;"	m	struct:CMonster::_MONSTER
+init_formats	src/glSDL.c	/^static void init_formats(void)$/;"	f	file:
+invalid_area	src/glSDL.h	/^	SDL_Rect	invalid_area;$/;"	m	struct:glSDL_TexInfo
+key2alpha	src/glSDL.c	/^static void key2alpha(SDL_Surface *surface)$/;"	f	file:
+m_GenLev	src/arkanoidsbgame.h	/^	CGenerateLevel m_GenLev;$/;"	m	class:CArkanoidSBGame
+m_WindowRect	src/mystring.h	/^	SDL_Rect m_WindowRect;$/;"	m	class:CMyString
+m_abShownDialogs	src/tutorialdlg.h	/^	bool m_abShownDialogs[3][50];$/;"	m	class:CTutorialDlg
+m_abyLevel	src/generatelevel.h	/^	Uint8 m_abyLevel[BRICKS_WIDTH][BRICKS_HEIGHT];$/;"	m	class:CGenerateLevel
+m_abyLevel	src/leveleditor.h	/^	Uint8 m_abyLevel[BRICKS_WIDTH][BRICKS_HEIGHT];$/;"	m	class:CLevelEditor
+m_achName	src/mainmenu.h	/^	char m_achName[102];$/;"	m	class:CMainMenu
+m_afSin	src/mystring.h	/^	float m_afSin[360];$/;"	m	class:CMyString
+m_anPrevPatterns	src/generatelevel.h	/^	int m_anPrevPatterns[10];$/;"	m	class:CGenerateLevel
+m_anSymbDy	src/mystring.h	/^	int m_anSymbDy[256];$/;"	m	class:CMyString
+m_anSymbIndex	src/mystring.h	/^	int m_anSymbIndex[256];$/;"	m	class:CMyString
+m_bBackWall	src/arkanoidsbgame.h	/^	bool m_bBackWall;$/;"	m	class:CArkanoidSBGame
+m_bBackWall	src/ball.h	/^	bool m_bBackWall;$/;"	m	class:CBall
+m_bBackWall	src/monster.h	/^	bool m_bBackWall;$/;"	m	class:CMonster
+m_bCanMovePaddle	src/arkanoidsbgame.h	/^	bool m_bCanMovePaddle;$/;"	m	class:CArkanoidSBGame
+m_bClonedByHorizontal	src/generatelevel.h	/^	bool m_bClonedByHorizontal;$/;"	m	class:CGenerateLevel
+m_bClonedByVertical	src/generatelevel.h	/^	bool m_bClonedByVertical;$/;"	m	class:CGenerateLevel
+m_bDrawShadow	src/mystring.h	/^	bool m_bDrawShadow;$/;"	m	class:CMyString
+m_bGetNameMode	src/mainmenu.h	/^	bool m_bGetNameMode;$/;"	m	class:CMainMenu
+m_bInitHelp	src/mainmenu.h	/^	bool m_bInitHelp;$/;"	m	class:CMainMenu
+m_bIsCustomLevels	src/arkanoidsbgame.h	/^    bool m_bIsCustomLevels;$/;"	m	class:CArkanoidSBGame
+m_bIsSelectBrickMode	src/leveleditor.h	/^	bool m_bIsSelectBrickMode;$/;"	m	class:CLevelEditor
+m_bIsShadowAvailable	src/mystring.h	/^	bool m_bIsShadowAvailable;$/;"	m	class:CMyString
+m_bPaddleIsInvert	src/arkanoidsbgame.h	/^	bool m_bPaddleIsInvert;$/;"	m	class:CArkanoidSBGame
+m_bSelfDestructStarted	src/arkanoidsbgame.h	/^	bool m_bSelfDestructStarted;$/;"	m	class:CArkanoidSBGame
+m_bSlowDown	src/arkanoidsbgame.h	/^	bool m_bSlowDown;$/;"	m	class:CArkanoidSBGame
+m_bTutorialMode	src/tutorialdlg.h	/^	bool m_bTutorialMode;$/;"	m	class:CTutorialDlg
+m_bTutorialPause	src/arkanoidsbgame.h	/^    bool m_bTutorialPause;$/;"	m	class:CArkanoidSBGame
+m_byChar	src/arkanoidsbgame.h	/^	Uint8 m_byChar;$/;"	m	class:CArkanoidSBGame
+m_dwCombosTime	src/arkanoidsbgame.h	/^	Uint32 m_dwCombosTime;$/;"	m	class:CArkanoidSBGame
+m_dwFrames	src/mystring.h	/^	Uint32 m_dwFrames;$/;"	m	class:CMyString
+m_dwUnregisterdTime	src/arkanoidsbgame.h	/^	Uint32 m_dwUnregisterdTime;$/;"	m	class:CArkanoidSBGame
+m_fJustifyWidth	src/mystring.h	/^	float m_fJustifyWidth;$/;"	m	class:CMyString
+m_listFiles	src/resource.h	/^	std::vector<RES_FILE_HEADER>m_listFiles;$/;"	m	class:CResource
+m_nAddNewMonsterCount	src/arkanoidsbgame.h	/^	int m_nAddNewMonsterCount;$/;"	m	class:CArkanoidSBGame
+m_nAmplifier	src/sinusstring.h	/^	int m_nAmplifier;$/;"	m	class:CSinusString
+m_nBack	src/ball.h	/^	int m_nBack;$/;"	m	class:CBall
+m_nBonusLevelTicks	src/arkanoidsbgame.h	/^	int m_nBonusLevelTicks;$/;"	m	class:CArkanoidSBGame
+m_nBonusLevelType	src/arkanoidsbgame.h	/^	int m_nBonusLevelType;$/;"	m	class:CArkanoidSBGame
+m_nBrickCount	src/arkanoidsbgame.h	/^	int m_nBrickCount;$/;"	m	class:CArkanoidSBGame
+m_nBrickType	src/leveleditor.h	/^    int m_nBrickType;$/;"	m	class:CLevelEditor
+m_nCanMovePaddleCount	src/arkanoidsbgame.h	/^	int m_nCanMovePaddleCount;$/;"	m	class:CArkanoidSBGame
+m_nClockFrame	src/arkanoidsbgame.h	/^	int m_nClockFrame;$/;"	m	class:CArkanoidSBGame
+m_nCombosBricks	src/arkanoidsbgame.h	/^	int m_nCombosBricks;$/;"	m	class:CArkanoidSBGame
+m_nCountBackWall	src/arkanoidsbgame.h	/^	int m_nCountBackWall;$/;"	m	class:CArkanoidSBGame
+m_nCountSelfDestruct	src/arkanoidsbgame.h	/^	int m_nCountSelfDestruct;$/;"	m	class:CArkanoidSBGame
+m_nCurrentLevel	src/arkanoidsbgame.h	/^	int m_nCurrentLevel;$/;"	m	class:CArkanoidSBGame
+m_nCurrentLevel	src/leveleditor.h	/^	int m_nCurrentLevel;$/;"	m	class:CLevelEditor
+m_nGameState	src/arkanoidsbgame.h	/^	int m_nGameState;$/;"	m	class:CArkanoidSBGame
+m_nGetReadyBallsLose	src/arkanoidsbgame.h	/^	int m_nGetReadyBallsLose;$/;"	m	class:CArkanoidSBGame
+m_nGetReadyBonuses	src/arkanoidsbgame.h	/^	int m_nGetReadyBonuses;$/;"	m	class:CArkanoidSBGame
+m_nGetReadyBricks	src/arkanoidsbgame.h	/^	int m_nGetReadyBricks;$/;"	m	class:CArkanoidSBGame
+m_nGetReadyMonsters	src/arkanoidsbgame.h	/^	int m_nGetReadyMonsters;$/;"	m	class:CArkanoidSBGame
+m_nGetReadyScore	src/arkanoidsbgame.h	/^	int m_nGetReadyScore;$/;"	m	class:CArkanoidSBGame
+m_nKerning	src/mystring.h	/^	int m_nKerning;$/;"	m	class:CMyString
+m_nLaserX	src/arkanoidsbgame.h	/^	int m_nLaserX;$/;"	m	class:CArkanoidSBGame
+m_nLastGameLevel	src/arkanoidsb.cpp	/^int m_nLastGameLevel		= 0;$/;"	v
+m_nLastGameLevel	src/arkanoidsb.h	/^extern int m_nLastGameLevel;$/;"	x
+m_nLastGameScore	src/arkanoidsb.cpp	/^int m_nLastGameScore		= 0;$/;"	v
+m_nLastGameScore	src/arkanoidsb.h	/^extern int m_nLastGameScore;$/;"	x
+m_nLastHiScorePos	src/arkanoidsb.cpp	/^int m_nLastHiScorePos	= -1;$/;"	v
+m_nLastHiScorePos	src/arkanoidsb.h	/^extern int m_nLastHiScorePos;$/;"	x
+m_nLevelPrev	src/arkanoidsbgame.h	/^	int m_nLevelPrev;$/;"	m	class:CArkanoidSBGame
+m_nLevelsCount	src/leveleditor.h	/^	int m_nLevelsCount;$/;"	m	class:CLevelEditor
+m_nLineHeight	src/mystring.h	/^	int m_nLineHeight;$/;"	m	class:CMyString
+m_nLives	src/arkanoidsbgame.h	/^	int m_nLives;$/;"	m	class:CArkanoidSBGame
+m_nMenuType	src/mainmenu.h	/^	int m_nMenuType;$/;"	m	class:CMainMenu
+m_nPaddleInvertCount	src/arkanoidsbgame.h	/^	int m_nPaddleInvertCount;$/;"	m	class:CArkanoidSBGame
+m_nPaddleMissileCount	src/arkanoidsbgame.h	/^	int m_nPaddleMissileCount;$/;"	m	class:CArkanoidSBGame
+m_nPatterns	src/generatelevel.h	/^	int m_nPatterns;$/;"	m	class:CGenerateLevel
+m_nPrevTypeCount	src/ball.h	/^	int m_nPrevTypeCount;$/;"	m	class:CBall
+m_nRacketSize	src/arkanoidsbgame.h	/^	int m_nRacketSize;$/;"	m	class:CArkanoidSBGame
+m_nRacketType	src/arkanoidsbgame.h	/^	int m_nRacketType;$/;"	m	class:CArkanoidSBGame
+m_nRacketX	src/arkanoidsbgame.h	/^	float m_nRacketX;$/;"	m	class:CArkanoidSBGame
+m_nRacketY	src/arkanoidsbgame.h	/^	float m_nRacketY;$/;"	m	class:CArkanoidSBGame
+m_nScore	src/arkanoidsbgame.h	/^	int m_nScore;$/;"	m	class:CArkanoidSBGame
+m_nScoreToAdditionalBall	src/arkanoidsbgame.h	/^	int m_nScoreToAdditionalBall;$/;"	m	class:CArkanoidSBGame
+m_nSeed	src/random.h	/^	int	m_nSeed;$/;"	m	class:CRandom
+m_nShadowDx	src/mystring.h	/^	int m_nShadowDx, m_nShadowDy;$/;"	m	class:CMyString
+m_nShadowDy	src/mystring.h	/^	int m_nShadowDx, m_nShadowDy;$/;"	m	class:CMyString
+m_nSinPos	src/sinusstring.h	/^	int m_nSinPos;$/;"	m	class:CSinusString
+m_nSlowDownCount	src/arkanoidsbgame.h	/^	int m_nSlowDownCount;$/;"	m	class:CArkanoidSBGame
+m_nSndPatrol	src/monster.h	/^	int m_nSndPatrol;$/;"	m	class:CMonster
+m_nSndWall	src/arkanoidsbgame.h	/^	int m_nSndWall;	\/\/ store channel number for stop$/;"	m	class:CArkanoidSBGame
+m_nStackPos	src/bonus.h	/^	int m_nStackPos;$/;"	m	class:CBonus
+m_nStartPos	src/sinusstring.h	/^	int m_nStartPos;$/;"	m	class:CSinusString
+m_nStrLen	src/sinusstring.h	/^	int	m_nStrLen;$/;"	m	class:CSinusString
+m_nTotalBonusesInLevel	src/arkanoidsbgame.h	/^	int m_nTotalBonusesInLevel;$/;"	m	class:CArkanoidSBGame
+m_nType	src/ball.h	/^	int m_nType;$/;"	m	class:CBall
+m_nX	src/sinusstring.h	/^	float m_nX;$/;"	m	class:CSinusString
+m_nY	src/sinusstring.h	/^	int m_nY;$/;"	m	class:CSinusString
+m_pBackground	src/arkanoidsb.cpp	/^SDL_Surface* m_pBackground;$/;"	v
+m_pBackground	src/arkanoidsb.h	/^extern SDL_Surface* m_pBackground;$/;"	x
+m_pBackground2	src/arkanoidsb.cpp	/^SDL_Surface* m_pBackground2;$/;"	v
+m_pBackground2	src/arkanoidsb.h	/^extern SDL_Surface* m_pBackground2;$/;"	x
+m_pBall	src/arkanoidsb.cpp	/^SDL_Surface* m_pBall;$/;"	v
+m_pBall	src/arkanoidsb.h	/^extern SDL_Surface* m_pBall;$/;"	x
+m_pBonuses	src/arkanoidsb.cpp	/^SDL_Surface* m_pBonuses;$/;"	v
+m_pBonuses	src/arkanoidsb.h	/^extern SDL_Surface* m_pBonuses;$/;"	x
+m_pBricks	src/arkanoidsb.cpp	/^SDL_Surface* m_pBricks;$/;"	v
+m_pBricks	src/arkanoidsb.h	/^extern SDL_Surface* m_pBricks;$/;"	x
+m_pBricksMov	src/arkanoidsb.h	/^extern SDL_Surface* m_pBricksMov;$/;"	x
+m_pBricksMovBullets	src/arkanoidsb.cpp	/^SDL_Surface* m_pBricksMovBullets;$/;"	v
+m_pBricksMovBullets	src/arkanoidsb.h	/^extern SDL_Surface* m_pBricksMovBullets;$/;"	x
+m_pBullet	src/arkanoidsb.cpp	/^SDL_Surface* m_pBullet;$/;"	v
+m_pBullet	src/arkanoidsb.h	/^extern SDL_Surface* m_pBullet;$/;"	x
+m_pCursor	src/arkanoidsb.cpp	/^SDL_Surface* m_pCursor;$/;"	v
+m_pEnergyHole	src/arkanoidsb.cpp	/^SDL_Surface* m_pEnergyHole;$/;"	v
+m_pEnergyHole	src/arkanoidsb.h	/^extern SDL_Surface* m_pEnergyHole;$/;"	x
+m_pExploision	src/arkanoidsb.cpp	/^SDL_Surface* m_pExploision;$/;"	v
+m_pExploision	src/arkanoidsb.h	/^extern SDL_Surface* m_pExploision;$/;"	x
+m_pFB	src/arkanoidsb.cpp	/^SDL_Surface* m_pFB;$/;"	v
+m_pFB	src/arkanoidsb.h	/^extern SDL_Surface* m_pFB;$/;"	x
+m_pGameBG	src/arkanoidsb.cpp	/^SDL_Surface* m_pGameBG;$/;"	v
+m_pGameBG	src/arkanoidsb.h	/^extern SDL_Surface* m_pGameBG;$/;"	x
+m_pGameBGanims	src/arkanoidsb.cpp	/^SDL_Surface* m_pGameBGanims;$/;"	v
+m_pGameBGanims	src/arkanoidsb.h	/^extern SDL_Surface* m_pGameBGanims;$/;"	x
+m_pGameWall	src/arkanoidsb.cpp	/^SDL_Surface* m_pGameWall;$/;"	v
+m_pGameWall	src/arkanoidsb.h	/^extern SDL_Surface* m_pGameWall;$/;"	x
+m_pMainMenuIcons	src/arkanoidsb.cpp	/^SDL_Surface* m_pMainMenuIcons;$/;"	v
+m_pMainMenuIcons	src/arkanoidsb.h	/^extern SDL_Surface* m_pMainMenuIcons;$/;"	x
+m_pMonstBlackHole	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstBlackHole;$/;"	v
+m_pMonstBlackHole	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstBlackHole;$/;"	x
+m_pMonstCopter	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstCopter;$/;"	v
+m_pMonstCopter	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstCopter;$/;"	x
+m_pMonstEye	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstEye;$/;"	v
+m_pMonstEye	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstEye;$/;"	x
+m_pMonstFighter	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstFighter;$/;"	v
+m_pMonstFighter	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstFighter;$/;"	x
+m_pMonstHand	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstHand;$/;"	v
+m_pMonstHand	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstHand;$/;"	x
+m_pMonstPatrol	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstPatrol;$/;"	v
+m_pMonstPatrol	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstPatrol;$/;"	x
+m_pMonstStone1	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstStone1;$/;"	v
+m_pMonstStone1	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstStone1;$/;"	x
+m_pMonstStone2	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstStone2;$/;"	v
+m_pMonstStone2	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstStone2;$/;"	x
+m_pMonstTurbine	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstTurbine;$/;"	v
+m_pMonstTurbine	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstTurbine;$/;"	x
+m_pMonstUfo	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstUfo;$/;"	v
+m_pMonstUfo	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstUfo;$/;"	x
+m_pMonstWreckage1	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstWreckage1;$/;"	v
+m_pMonstWreckage1	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstWreckage1;$/;"	x
+m_pMonstWreckage2	src/arkanoidsb.cpp	/^SDL_Surface* m_pMonstWreckage2;$/;"	v
+m_pMonstWreckage2	src/arkanoidsb.h	/^extern SDL_Surface* m_pMonstWreckage2;$/;"	x
+m_pRacket	src/arkanoidsb.cpp	/^SDL_Surface* m_pRacket;$/;"	v
+m_pRacket	src/arkanoidsb.h	/^extern SDL_Surface* m_pRacket;$/;"	x
+m_pUnregistered	src/arkanoidsb.cpp	/^SDL_Surface* m_pUnregistered;$/;"	v
+m_pUnregistered	src/arkanoidsb.h	/^extern SDL_Surface* m_pUnregistered;$/;"	x
+m_pVector	src/arkanoidsb.cpp	/^SDL_Surface* m_pVector;$/;"	v
+m_pVector	src/arkanoidsb.h	/^extern SDL_Surface* m_pVector;$/;"	x
+m_pbyLevelPatterns	src/generatelevel.h	/^	Uint8 *m_pbyLevelPatterns;$/;"	m	class:CGenerateLevel
+m_pbyLevels	src/leveleditor.h	/^	Uint8	*m_pbyLevels;$/;"	m	class:CLevelEditor
+m_pbySymbs	src/sinusstring.h	/^	Uint8	*m_pbySymbs;$/;"	m	class:CSinusString
+m_pchGetReeadyInfo	src/arkanoidsbgame.h	/^	char *m_pchGetReeadyInfo;$/;"	m	class:CArkanoidSBGame
+m_pchResource	src/resource.h	/^	char *m_pchResource;$/;"	m	class:CResource
+m_pchString	src/sinusstring.h	/^	char *m_pchString;$/;"	m	class:CSinusString
+m_prcFrames	src/mystring.h	/^	SDL_Rect *m_prcFrames;$/;"	m	class:CMyString
+m_psurFont	src/mystring.h	/^	SDL_Surface *m_psurFont;$/;"	m	class:CMyString
+m_psurFontShadow	src/mystring.h	/^	SDL_Surface *m_psurFontShadow;$/;"	m	class:CMyString
+m_strOpt	src/mainmenu.h	/^	} m_strOpt;$/;"	m	class:CMainMenu
+m_vecBalls	src/ball.h	/^	std::vector<_BALL>m_vecBalls;$/;"	m	class:CBall
+m_vecBonuses	src/bonus.h	/^	std::vector<_BONUS>m_vecBonuses;$/;"	m	class:CBonus
+m_vecBonusesStack	src/bonus.h	/^	std::vector<int>m_vecBonusesStack;$/;"	m	class:CBonus
+m_vecBrickBullets	src/arkanoidsbgame.h	/^	std::vector<_BRICK_BULLET>m_vecBrickBullets;$/;"	m	class:CArkanoidSBGame
+m_vecBrickIndex	src/ball.h	/^	std::vector<int>m_vecBrickIndex;$/;"	m	class:CBall
+m_vecBullets	src/bullet.h	/^	std::vector<_BULLET>m_vecBullets;$/;"	m	class:CBullet
+m_vecCoolString	src/coolstring.h	/^	std::vector<_COOL_STRING>m_vecCoolString;$/;"	m	class:CCoolString
+m_vecEnergyHole	src/energyhole.h	/^	std::vector<_ENERGYHOLE>m_vecEnergyHole;$/;"	m	class:CEnergyHole
+m_vecExploisions	src/exploision.h	/^	std::vector<_EXPLOISION>m_vecExploisions;$/;"	m	class:CExploision
+m_vecFBalls	src/ball.h	/^	std::vector<_FB>m_vecFBalls;$/;"	m	class:CBall
+m_vecLevelBricks	src/arkanoidsbgame.h	/^	std::vector<_BRICK>m_vecLevelBricks;$/;"	m	class:CArkanoidSBGame
+m_vecMonster	src/monster.h	/^	std::vector<_MONSTER>m_vecMonster;$/;"	m	class:CMonster
+m_vecMonster2	src/monster.h	/^	std::vector<_MONSTER>m_vecMonster2;$/;"	m	class:CMonster
+m_vecStars	src/arkanoidsbgame.h	/^	std::vector<_STARS>m_vecStars;$/;"	m	class:CArkanoidSBGame
+m_vecTutorialDlg	src/tutorialdlg.h	/^	std::vector<_TUTORIAL>m_vecTutorialDlg;$/;"	m	class:CTutorialDlg
+main	src/arkanoidsb.cpp	/^int main(int argc, char *argv[]) {$/;"	f
+max	src/arkanoidsb.h	/^#define max(/;"	d
+max	src/arkanoidsb.h	/^#undef max$/;"	d
+maxtexsize	src/glSDL.c	/^static GLint maxtexsize = 256;$/;"	v	file:
+min	src/arkanoidsb.h	/^#define min(/;"	d
+min	src/arkanoidsb.h	/^#undef min$/;"	d
+musicFinished	src/arkanoidsb.cpp	/^void musicFinished() {$/;"	f
+nAngle	src/arkanoidsbgame.h	/^		int		nAngle;$/;"	m	struct:CArkanoidSBGame::_BRICK_BULLET
+nAngle	src/ball.h	/^		float		nAngle;$/;"	m	struct:CBall::_BALL
+nAngle	src/bullet.h	/^		float		nAngle;$/;"	m	struct:CBullet::_BULLET
+nAngle	src/energyhole.h	/^		int		nAngle;$/;"	m	struct:CEnergyHole::_ENERGYHOLE
+nAngle	src/monster.h	/^		int	w, h, nFrame, nFramesCount, nAngle;$/;"	m	struct:CMonster::_MONSTER
+nAnimateType	src/arkanoidsb.h	/^	int	nAnimateType;			\/\/ -1 - don't animate, 0 - forward, 1 - backward$/;"	m	struct:_BRICK
+nBonusLevelTicks	src/arkanoidsbgame.h	/^		int	nBonusLevelTicks;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nBonusLevelType	src/arkanoidsbgame.h	/^		int	nBonusLevelType;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nBonusesCount	src/arkanoidsbgame.h	/^		int	nBonusesCount;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nBppIndex	src/mainmenu.h	/^		int nBppIndex;$/;"	m	struct:CMainMenu::_OPTIONS
+nBricksCount	src/arkanoidsbgame.h	/^		int	nBricksCount;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nCaptureMode	src/monster.h	/^		int	nCaptureMode;			\/\/ MONST_HAND: 0 - none, 1 - ball captured, 2 - ball released$/;"	m	struct:CMonster::_MONSTER
+nCapturedBallIndex	src/monster.h	/^		int	nCapturedBallIndex;	\/\/ MONST_HAND: captured ball index$/;"	m	struct:CMonster::_MONSTER
+nCategory	src/tutorialdlg.h	/^		int	nCategory, nMsgId;$/;"	m	struct:CTutorialDlg::_TUTORIAL
+nCos	src/bonus.h	/^		int	nSin, nCos;$/;"	m	struct:CBonus::_BONUS
+nCountToDie	src/arkanoidsb.h	/^	int	nCountToDie;		\/\/ count to die brick$/;"	m	struct:_BRICK
+nCountToShoot	src/arkanoidsb.h	/^	int	nCountToShoot;		\/\/ for shooting bricks$/;"	m	struct:_BRICK
+nDataLen	src/resource.h	/^		long	nDataLen;	\/\/ length of data$/;"	m	struct:CResource::RES_FILE_HEADER
+nDataPos	src/resource.h	/^		long	nDataPos;	\/\/ position in resource file (seek)$/;"	m	struct:CResource::RES_FILE_HEADER
+nDiameter	src/ball.h	/^		int		nDiameter;$/;"	m	struct:CBall::_BALL
+nDirChangeCount	src/arkanoidsb.h	/^	int	nDirChangeCount;	\/\/$/;"	m	struct:_BRICK
+nFrame	src/arkanoidsb.h	/^	int	nFrame;$/;"	m	struct:_BRICK
+nFrame	src/arkanoidsbgame.h	/^		int		nFrame;$/;"	m	struct:CArkanoidSBGame::_BRICK_BULLET
+nFrame	src/arkanoidsbgame.h	/^		int	nType, nFrame;$/;"	m	struct:CArkanoidSBGame::_STARS
+nFrame	src/ball.h	/^		int	nFrame;$/;"	m	struct:CBall::_FB
+nFrame	src/bonus.h	/^		int	nFrame;$/;"	m	struct:CBonus::_BONUS
+nFrame	src/energyhole.h	/^		int		nFrame;$/;"	m	struct:CEnergyHole::_ENERGYHOLE
+nFrame	src/exploision.h	/^		int		nFrame;$/;"	m	struct:CExploision::_EXPLOISION
+nFrame	src/monster.h	/^		int	w, h, nFrame, nFramesCount, nAngle;$/;"	m	struct:CMonster::_MONSTER
+nFramesCount	src/monster.h	/^		int	w, h, nFrame, nFramesCount, nAngle;$/;"	m	struct:CMonster::_MONSTER
+nGetReadyBallsLose	src/arkanoidsbgame.h	/^		int	nGetReadyBallsLose;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nImpacts	src/ball.h	/^		int		nImpacts;$/;"	m	struct:CBall::_BALL
+nIsOver	src/energyhole.h	/^		bool		nIsOver;$/;"	m	struct:CEnergyHole::_ENERGYHOLE
+nLevel	src/arkanoidsb.h	/^	int	nLevel;$/;"	m	struct:_HIGHSCORE
+nLevel	src/arkanoidsbgame.h	/^		int	nLevel;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nLives	src/arkanoidsbgame.h	/^		int	nLives;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nMsgId	src/tutorialdlg.h	/^		int	nCategory, nMsgId;$/;"	m	struct:CTutorialDlg::_TUTORIAL
+nRadius	src/bonus.h	/^		int	nRadius;$/;"	m	struct:CBonus::_BONUS
+nScore	src/arkanoidsb.h	/^	int	nScore;$/;"	m	struct:_HIGHSCORE
+nScore	src/arkanoidsbgame.h	/^		int	nScore;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nScoreToAdditionalBall	src/arkanoidsbgame.h	/^		int	nScoreToAdditionalBall;$/;"	m	struct:CArkanoidSBGame::_SAVE
+nSeconds	src/coolstring.h	/^		int	nSeconds;$/;"	m	struct:CCoolString::_COOL_STRING
+nSin	src/bonus.h	/^		int	nSin, nCos;$/;"	m	struct:CBonus::_BONUS
+nType	src/arkanoidsbgame.h	/^		int		nType;$/;"	m	struct:CArkanoidSBGame::_BRICK_BULLET
+nType	src/arkanoidsbgame.h	/^		int	nType, nFrame;$/;"	m	struct:CArkanoidSBGame::_STARS
+nType	src/ball.h	/^		int	nType;$/;"	m	struct:CBall::_FB
+nType	src/bonus.h	/^		int	nType;$/;"	m	struct:CBonus::_BONUS
+nType	src/bullet.h	/^		int		nType;$/;"	m	struct:CBullet::_BULLET
+nType	src/exploision.h	/^		int		nType;$/;"	m	struct:CExploision::_EXPLOISION
+nType	src/monster.h	/^		int	nType;$/;"	m	struct:CMonster::_MONSTER
+nX	src/ball.h	/^		int	nX, nY;$/;"	m	struct:CBall::_FB
+nX	src/tutorialdlg.h	/^		int	nX, nY;$/;"	m	struct:CTutorialDlg::_TUTORIAL
+nY	src/ball.h	/^		int	nX, nY;$/;"	m	struct:CBall::_FB
+nY	src/tutorialdlg.h	/^		int	nX, nY;$/;"	m	struct:CTutorialDlg::_TUTORIAL
+nYoffset	src/ball.h	/^		int		nYoffset;$/;"	m	struct:CBall::_BALL
+origx	src/bonus.h	/^		float	origx, origy;$/;"	m	struct:CBonus::_BONUS
+origy	src/bonus.h	/^		float	origx, origy;$/;"	m	struct:CBonus::_BONUS
+pSurface	src/monster.h	/^		SDL_Surface* pSurface;$/;"	m	struct:CMonster::_MONSTER
+pchString	src/coolstring.h	/^		char	*pchString;$/;"	m	struct:CCoolString::_COOL_STRING
+print_glerror	src/glSDL.c	/^static void print_glerror(int point)$/;"	f	file:
+prototypes	configure	/^   function prototypes and stuff, but not '\\xHH' hex character constants.$/;"	f
+scale	src/glSDL.c	/^static int scale = 1;$/;"	v	file:
+sfactor	src/glSDL.c	/^	GLenum	sfactor, dfactor;$/;"	m	file:
+texinfotab	src/glSDL.c	/^static glSDL_TexInfo **texinfotab = NULL;$/;"	v	file:
+texsize	src/glSDL.h	/^	int		texsize;	\/* width\/height of OpenGL texture *\/$/;"	m	struct:glSDL_TexInfo
+texture	src/glSDL.c	/^	GLint	texture;$/;"	m	file:
+texture	src/glSDL.h	/^	int		*texture;$/;"	m	struct:glSDL_TexInfo
+textures	src/glSDL.h	/^	int		textures;$/;"	m	struct:glSDL_TexInfo
+tileh	src/glSDL.h	/^	int		tilew, tileh;	\/* At least one must equal texsize! *\/$/;"	m	struct:glSDL_TexInfo
+tilemode	src/glSDL.h	/^	glSDL_TileModes	tilemode;$/;"	m	struct:glSDL_TexInfo
+tilespertex	src/glSDL.h	/^	int		tilespertex;$/;"	m	struct:glSDL_TexInfo
+tilew	src/glSDL.h	/^	int		tilew, tileh;	\/* At least one must equal texsize! *\/$/;"	m	struct:glSDL_TexInfo
+using_glsdl	src/glSDL.c	/^static int using_glsdl = 0;$/;"	v	file:
+w	src/bullet.h	/^		int		w;	\/\/ laser related$/;"	m	struct:CBullet::_BULLET
+w	src/monster.h	/^		int	w, h, nFrame, nFramesCount, nAngle;$/;"	m	struct:CMonster::_MONSTER
+x	src/ball.h	/^		float		x, y;$/;"	m	struct:CBall::_BALL
+x	src/bonus.h	/^		int	x, y;$/;"	m	struct:CBonus::_BONUS
+x	src/bullet.h	/^		float		x, y;$/;"	m	struct:CBullet::_BULLET
+x	src/energyhole.h	/^		float		x, y;$/;"	m	struct:CEnergyHole::_ENERGYHOLE
+x	src/exploision.h	/^		int		x, y;$/;"	m	struct:CExploision::_EXPLOISION
+x	src/monster.h	/^		float	x, y;$/;"	m	struct:CMonster::_MONSTER
+y	src/ball.h	/^		float		x, y;$/;"	m	struct:CBall::_BALL
+y	src/bonus.h	/^		int	x, y;$/;"	m	struct:CBonus::_BONUS
+y	src/bullet.h	/^		float		x, y;$/;"	m	struct:CBullet::_BULLET
+y	src/energyhole.h	/^		float		x, y;$/;"	m	struct:CEnergyHole::_ENERGYHOLE
+y	src/exploision.h	/^		int		x, y;$/;"	m	struct:CExploision::_EXPLOISION
+y	src/monster.h	/^		float	x, y;$/;"	m	struct:CMonster::_MONSTER
+~CArkanoidSBGame	src/arkanoidsbgame.cpp	/^CArkanoidSBGame::~CArkanoidSBGame() {$/;"	f	class:CArkanoidSBGame
+~CArkanoidSBGame	src/arkanoidsbgame.h	/^	virtual ~CArkanoidSBGame();$/;"	p	class:CArkanoidSBGame
+~CBall	src/ball.cpp	/^CBall::~CBall() {$/;"	f	class:CBall
+~CBall	src/ball.h	/^	virtual ~CBall();$/;"	p	class:CBall
+~CBonus	src/bonus.cpp	/^CBonus::~CBonus() {$/;"	f	class:CBonus
+~CBonus	src/bonus.h	/^	virtual ~CBonus();$/;"	p	class:CBonus
+~CBullet	src/bullet.cpp	/^CBullet::~CBullet() {$/;"	f	class:CBullet
+~CBullet	src/bullet.h	/^	virtual ~CBullet();$/;"	p	class:CBullet
+~CCoolString	src/coolstring.cpp	/^CCoolString::~CCoolString() {$/;"	f	class:CCoolString
+~CCoolString	src/coolstring.h	/^    ~CCoolString();$/;"	p	class:CCoolString
+~CEnergyHole	src/energyhole.cpp	/^CEnergyHole::~CEnergyHole() {$/;"	f	class:CEnergyHole
+~CEnergyHole	src/energyhole.h	/^    ~CEnergyHole();$/;"	p	class:CEnergyHole
+~CExploision	src/exploision.cpp	/^CExploision::~CExploision() {$/;"	f	class:CExploision
+~CExploision	src/exploision.h	/^	virtual ~CExploision();$/;"	p	class:CExploision
+~CGenerateLevel	src/generatelevel.cpp	/^CGenerateLevel::~CGenerateLevel() {$/;"	f	class:CGenerateLevel
+~CGenerateLevel	src/generatelevel.h	/^	virtual ~CGenerateLevel();$/;"	p	class:CGenerateLevel
+~CLevelEditor	src/leveleditor.cpp	/^CLevelEditor::~CLevelEditor() {$/;"	f	class:CLevelEditor
+~CLevelEditor	src/leveleditor.h	/^    ~CLevelEditor();$/;"	p	class:CLevelEditor
+~CMainMenu	src/mainmenu.cpp	/^CMainMenu::~CMainMenu() {$/;"	f	class:CMainMenu
+~CMainMenu	src/mainmenu.h	/^	virtual ~CMainMenu();$/;"	p	class:CMainMenu
+~CMonster	src/monster.cpp	/^CMonster::~CMonster() {$/;"	f	class:CMonster
+~CMonster	src/monster.h	/^	virtual ~CMonster();$/;"	p	class:CMonster
+~CMyString	src/mystring.cpp	/^CMyString::~CMyString()	{$/;"	f	class:CMyString
+~CMyString	src/mystring.h	/^	virtual ~CMyString();$/;"	p	class:CMyString
+~CResource	src/resource.cpp	/^CResource::~CResource() {$/;"	f	class:CResource
+~CResource	src/resource.h	/^	~CResource();$/;"	p	class:CResource
+~CSinusString	src/sinusstring.cpp	/^CSinusString::~CSinusString() {$/;"	f	class:CSinusString
+~CSinusString	src/sinusstring.h	/^	virtual ~CSinusString();$/;"	p	class:CSinusString
+~CTutorialDlg	src/tutorialdlg.cpp	/^CTutorialDlg::~CTutorialDlg() {$/;"	f	class:CTutorialDlg
+~CTutorialDlg	src/tutorialdlg.h	/^    ~CTutorialDlg();$/;"	p	class:CTutorialDlg

@@ -1,0 +1,2 @@
+ - Mac OS X: need to include SDL frameworks in to distributive.
+ - Mac OS X: on PowerPC resource.pak can't be loaded, because big-endian and little-endian (intel) incopatible.
