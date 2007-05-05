@@ -3,7 +3,7 @@
 <KDevPrjSession>
  <DocsAndViews NumberOfDocuments="9" >
   <Doc0 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp" >
-   <View0 Encoding="" Type="Source" />
+   <View0 Encoding="" line="194" Type="Source" />
   </Doc0>
   <Doc1 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsb.h" >
    <View0 Encoding="" Type="Source" />
@@ -21,10 +21,10 @@
    <View0 Encoding="" Type="Source" />
   </Doc5>
   <Doc6 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/energyhole.cpp" >
-   <View0 Encoding="" line="29" Type="Source" />
+   <View0 Encoding="" Type="Source" />
   </Doc6>
   <Doc7 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/resource.cpp" >
-   <View0 Encoding="" line="68" Type="Source" />
+   <View0 Encoding="" Type="Source" />
   </Doc7>
   <Doc8 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/resource.h" >
    <View0 Encoding="" line="29" Type="Source" />
