@@ -142,12 +142,11 @@ CReminderDlg	g_ReminderDlg;
 
 int main(int argc, char *argv[]) {
 	int	i;
-	char	achBuf[30];
+	char	achTemp[PATH_MAX];
 
 #ifdef __linux__
 	sprintf(g_achUserProfile, "%s/.arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
 #elif _WIN32
-	char	achTemp[PATH_MAX];
 	int		nLen	= sizeof(achTemp);
 	//GetUserProfileDirectory(0, achTemp, nLen);
 	ExpandEnvironmentStrings("%USERPROFILE%", achTemp, nLen);
@@ -187,12 +186,20 @@ int main(int argc, char *argv[]) {
 
 	char	achPath[PATH_MAX], *pchEnd;
 	strcpy(achPath, argv[0]);
+#ifdef __MACOSX__
+	if(false == g_Resource.Open("arkanoidsb.app/Contents/Resources/arkanoidsb.pak")) {
+#else
 	if(false == g_Resource.Open("res/arkanoidsb.pak")) {
+#endif
 		if((pchEnd = strrchr(achPath, '\\')) == 0 && (pchEnd = strrchr(achPath, '/')) == 0) {
 			exit(-1);
 		}
 		*(pchEnd + 1)	= 0;
+#ifdef __MACOSX__
+		strcat(achPath, "../Resources/arkanoidsb.pak");
+#else
 		strcat(achPath, "res/arkanoidsb.pak");
+#endif
 		if(false == g_Resource.Open(achPath)) {
 			exit(-1);
 		}
@@ -277,18 +284,28 @@ int main(int argc, char *argv[]) {
 		}
 		//loading modules
 		for(i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
- 			if(i != 2)	sprintf(achBuf, "res/module%.2d.ogg", i + 1);
- 			else		sprintf(achBuf, "res/module03.s3m");
-			printf("Loading module %s", achBuf);
-			g_apMod[i]	= Mix_LoadMUS(achBuf);
+#ifdef __MACOSX__
+ 			if(i != 2)	sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module%.2d.ogg", i + 1);
+ 			else		sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module03.s3m");
+#else
+ 			if(i != 2)	sprintf(achTemp, "res/module%.2d.ogg", i + 1);
+ 			else		sprintf(achTemp, "res/module03.s3m");
+#endif
+			printf("Loading module %s", achTemp);
+			g_apMod[i]	= Mix_LoadMUS(achTemp);
 			if(0 != g_apMod[i])	printf(" done.\n");
 			else {
 				if((pchEnd = strrchr(achPath, '\\')) == 0 && (pchEnd = strrchr(achPath, '/')) == 0) {
 					achPath[0]	= 0;
 				}
 				*(pchEnd + 1)	= 0;
-				if(i != 2) { sprintf(achBuf, "res/module%.2d.ogg", i + 1); strcat(achPath, achBuf); }
+#ifdef __MACOSX__
+				if(i != 2) { sprintf(achTemp, "../Resources/module%.2d.ogg", i + 1); strcat(achPath, achTemp); }
+				else		strcat(achPath, "../Resources/module03.s3m");
+#else
+				if(i != 2) { sprintf(achTemp, "res/module%.2d.ogg", i + 1); strcat(achPath, achTemp); }
 				else		strcat(achPath, "res/module03.s3m");
+#endif
 				g_apMod[i]	= Mix_LoadMUS(achPath);
 				if(0 != g_apMod[i])	printf(" done.\n");
 				else	printf("  %s\n", SDL_GetError());
