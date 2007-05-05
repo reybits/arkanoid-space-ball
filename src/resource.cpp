@@ -21,7 +21,7 @@ bool CResource::Open(const char *pchResource) {
 		unsigned int	dwCount;
 		// read signature
 		fread(&dwCount, 1, sizeof(dwCount), pFile);
-		if(dwCount == RES_SIGNATURE) {
+		if(_GetUInt((unsigned char*)&dwCount) == RES_SIGNATURE) {
 			// read files count
 			fread(&dwCount, 1, sizeof(dwCount), pFile);
 			EncodeData(&dwCount, sizeof(dwCount));
@@ -53,16 +53,20 @@ bool CResource::Open(const char *pchResource) {
 	return false;
 }
 
+unsigned int CResource::_GetUInt(unsigned char *pbyData) {
+        return (unsigned int)(pbyData[0] | (pbyData[1] << 8) | (pbyData[2] << 16) | (pbyData[3] << 24));
+}
+
 unsigned char *CResource::GetDataAllocMem(const char *pchName, unsigned int &nDataLen) {
 	if(m_pchResource != 0) {
 		printf("Opening '%s' resource...", pchName);
 		for(int i = 0; i < m_listFiles.size(); i++) {
 			if(strcmp(m_listFiles[i].achName, pchName) == 0) {
-				nDataLen	= m_listFiles[i].nDataLen;
+				nDataLen	= _GetUInt((unsigned char*)m_listFiles[i].nDataLen);
 				unsigned char	*pbyData	= new unsigned char[nDataLen];
 				FILE *pResFile	= fopen(m_pchResource, "rb");
 				if(pResFile) {
-					fseek(pResFile, m_listFiles[i].nDataPos, SEEK_SET);
+					fseek(pResFile, _GetUInt((unsigned char*)m_listFiles[i].nDataPos), SEEK_SET);
 					fread(pbyData, 1, nDataLen, pResFile);
 					fclose(pResFile);
 					EncodeData(pbyData, nDataLen);

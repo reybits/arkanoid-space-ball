@@ -21,12 +21,13 @@ protected:
 #define RES_XOR			((unsigned char)0x0aa)
 	struct RES_FILE_HEADER {
 		char	achName[RES_MAX_NAME + 1];
-		long	nDataPos;	// position in resource file (seek)
-		long	nDataLen;	// length of data
+		unsigned char	nDataPos[4];	// position in resource file (seek)
+		unsigned char	nDataLen[4];	// length of data
 	};
 	std::vector<RES_FILE_HEADER>m_listFiles;
 	char *m_pchResource;
 	void EncodeData(const void *pbyData, int nLen);
+	unsigned int _GetUInt(unsigned char *pbyData);
 // 	struct RES_DATA {
 // 		FILE	*pFile;
 // 		long	nPos;

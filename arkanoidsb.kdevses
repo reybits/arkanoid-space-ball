@@ -1,7 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="7" >
+ <DocsAndViews NumberOfDocuments="9" >
   <Doc0 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp" >
    <View0 Encoding="" Type="Source" />
   </Doc0>
@@ -23,6 +23,12 @@
   <Doc6 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/energyhole.cpp" >
    <View0 Encoding="" line="29" Type="Source" />
   </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/resource.cpp" >
+   <View0 Encoding="" line="68" Type="Source" />
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/resource.h" >
+   <View0 Encoding="" line="29" Type="Source" />
+  </Doc8>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
