@@ -25,6 +25,7 @@ bool CResource::Open(const char *pchResource) {
 			// read files count
 			fread(&dwCount, 1, sizeof(dwCount), pFile);
 			EncodeData(&dwCount, sizeof(dwCount));
+			dwCount	= _GetUInt((unsigned char*)&dwCount);
 			m_listFiles.reserve(dwCount);
 			RES_FILE_HEADER	file;
 			for(int i = 0; i < dwCount; i++) {
