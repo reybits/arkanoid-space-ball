@@ -250,7 +250,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	unsigned int	nDataLen;
-	unsigned char	*pbyData	= g_Resource.GetDataAllocMem("icon.bmp", nDataLen);
+	unsigned char	*pbyData;
+#ifndef __MACOSX__
+	pbyData	= g_Resource.GetDataAllocMem("icon.bmp", nDataLen);
 	SDL_Surface	*pIcon	= SDL_LoadBMP_RW(SDL_RWFromMem(pbyData, nDataLen), 0);
 	g_Resource.FreeMem(pbyData);
 	if(0 != pIcon) {
@@ -262,6 +264,7 @@ int main(int argc, char *argv[]) {
 
 	SDL_SetColorKey(pIcon, SDL_SRCCOLORKEY, SDL_MapRGB(pIcon->format, 0, 0, 0));
 	SDL_WM_SetIcon(pIcon, NULL);
+#endif
 
 	SetVideoMode();
 	SDL_WarpMouse(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
