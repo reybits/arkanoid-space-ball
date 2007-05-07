@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
 #else
 	sprintf(g_achUserProfile, "%s/Library/Application Support/arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
 #endif
-	printf("Arkanoid: Space Ball by 'WE' Group. Copyright (c) 2006.\n");
+	printf("Arkanoid: Space Ball by 'WE' Group. Copyright (c) 2006-2007.\n");
 	printf("version %s.\n", GAME_VERSION);
 	printf("Users config dir: %s\n", g_achUserProfile);
 	ReadWriteConfig(true);
