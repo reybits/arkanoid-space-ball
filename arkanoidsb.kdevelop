@@ -3,7 +3,7 @@
   <general>
     <author>Andrey A. Ugolnik</author>
     <email>andrey@wegroup.org</email>
-    <version>0.6</version>
+    <version>1.1.5</version>
     <projectmanagement>KDevAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -22,10 +22,10 @@
     </ignoreparts>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description/>
+    <description></description>
     <versioncontrol>kdevsubversion</versioncontrol>
     <projectname>arkanoidsb</projectname>
-    <defaultencoding/>
+    <defaultencoding></defaultencoding>
   </general>
   <kdevautoproject>
     <general>
@@ -34,17 +34,17 @@
       <useactivetarget>true</useactivetarget>
     </general>
     <run>
-      <mainprogram>src/arkanoidsb</mainprogram>
+      <mainprogram>/home/andrey/projects/arkanoidsb/debug_linux/src/arkanoidsb</mainprogram>
       <terminal>false</terminal>
       <directoryradio>custom</directoryradio>
       <customdirectory>/home/andrey/projects/arkanoidsb/</customdirectory>
-      <programargs/>
+      <programargs></programargs>
       <autocompile>true</autocompile>
       <envvars/>
       <runarguments>
         <arkanoidsb/>
       </runarguments>
-      <globaldebugarguments/>
+      <globaldebugarguments></globaldebugarguments>
       <globalcwd>/home/andrey/projects/arkanoidsb/</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <autoinstall>false</autoinstall>
@@ -99,7 +99,7 @@
       <abortonerror>true</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin/>
+      <makebin></makebin>
       <prio>0</prio>
       <runmultiplejobs>false</runmultiplejobs>
     </make>
@@ -159,7 +159,7 @@
     <projectdoc>
       <docsystem>Doxygen Documentation Collection</docsystem>
       <docurl>arkanoidsb.tag</docurl>
-      <usermanualurl/>
+      <usermanualurl></usermanualurl>
     </projectdoc>
   </kdevdocumentation>
   <substmap>
@@ -205,7 +205,7 @@
       <includePaths>.;</includePaths>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
@@ -248,11 +248,11 @@
   <kdevdebugger>
     <general>
       <programargs/>
-      <gdbpath/>
+      <gdbpath></gdbpath>
       <dbgshell>libtool</dbgshell>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -264,8 +264,9 @@
     </display>
   </kdevdebugger>
   <ctagspart>
-    <customArguments/>
-    <customTagfilePath/>
+    <customArguments></customArguments>
+    <customTagfilePath>/home/andrey/projects/arkanoidsb/tags</customTagfilePath>
+    <activeTagsFiles/>
   </ctagspart>
   <dist>
     <custom>false</custom>
