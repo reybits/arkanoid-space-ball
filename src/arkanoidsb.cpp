@@ -616,16 +616,13 @@ bool UpdateKeys() {
 			break;
 
 		case SDL_KEYDOWN:
-			if(g_dwModState & SDLK_LALT) {
-				if(evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4) {	// if ALT + X pressed quit game
-					if(g_nGameMode != APPS_INTRO)	return true;
-				}
-				//if(evt.key.keysym.sym == SDLK_TAB) {
-				//}
-				else if(evt.key.keysym.sym == SDLK_RETURN) {
-					g_bFullscreen	= !g_bFullscreen;
-					SwitchFullscreen();
-				}
+			if((g_dwModState & SDLK_LCTRL && evt.key.keysym.sym == SDLK_q) ||
+				(g_dwModState & SDLK_LALT && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4))) {	// if ALT + X pressed quit game
+				if(g_nGameMode != APPS_INTRO)	return true;
+			}
+			else if(g_dwModState & SDLK_LALT && evt.key.keysym.sym == SDLK_RETURN) {
+				g_bFullscreen	= !g_bFullscreen;
+				SwitchFullscreen();
 			}
 			break;
 
