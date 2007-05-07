@@ -253,7 +253,7 @@ int main(int argc, char *argv[]) {
 	unsigned char	*pbyData;
 #ifndef __MACOSX__
 	pbyData	= g_Resource.GetDataAllocMem("icon.bmp", nDataLen);
-	SDL_Surface	*pIcon	= SDL_LoadBMP_RW(SDL_RWFromMem(pbyData, nDataLen), 0);
+	SDL_Surface	*pIcon	= SDL_LoadBMP_RW(SDL_RWFromMem(pbyData, nDataLen), 1);
 	g_Resource.FreeMem(pbyData);
 	if(0 != pIcon) {
 		printf(" done.\n");
@@ -275,7 +275,7 @@ int main(int argc, char *argv[]) {
 			// try to load image from resource from
 			pbyData	= g_Resource.GetDataAllocMem(g_pachSnd[i], nDataLen);
 			if(pbyData) {
-				g_apSnd[i]	= Mix_LoadWAV_RW(SDL_RWFromMem(pbyData, nDataLen), 0);
+				g_apSnd[i]	= Mix_LoadWAV_RW(SDL_RWFromMem(pbyData, nDataLen), 1);
 				g_Resource.FreeMem(pbyData);
 				if(0 != g_apSnd[i]) {
 					printf(" done.\n");
@@ -428,7 +428,7 @@ int main(int argc, char *argv[]) {
 			}
 
 			// save screenshot to profile dir
-			if(g_dwModState & KMOD_CTRL && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
+			if((g_dwModState & KMOD_CTRL) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
 /*				char    achPath[PATH_MAX];
 				time_t  osTime	= time(0);
 				struct tm	local	= *localtime(&osTime);
@@ -620,7 +620,7 @@ bool UpdateKeys() {
 				(g_dwModState & SDLK_LALT && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4))) {	// if ALT + X pressed quit game
 				if(g_nGameMode != APPS_INTRO)	return true;
 			}
-			else if(g_dwModState & SDLK_LALT && evt.key.keysym.sym == SDLK_RETURN) {
+			else if((g_dwModState & SDLK_LALT) && evt.key.keysym.sym == SDLK_RETURN) {
 				g_bFullscreen	= !g_bFullscreen;
 				SwitchFullscreen();
 			}
