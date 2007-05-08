@@ -1,14 +1,30 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="1" >
+ <DocsAndViews NumberOfDocuments="3" >
   <Doc0 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp" >
-   <View0 Encoding="" line="156" Type="Source" />
+   <View0 Encoding="" line="420" Type="Source" />
   </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/glSDL.c" >
+   <View0 Encoding="" line="756" Type="Source" />
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsbgame.cpp" >
+   <View0 Encoding="" line="1088" Type="Source" />
+  </Doc2>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
-   <breakpointList/>
+   <breakpointList>
+    <breakpoint0 location="/home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp:208" type="1" tracingFormatString="" traceFormatStringEnabled="0" condition="" tracingEnabled="0" enabled="1" >
+     <tracedExpressions/>
+    </breakpoint0>
+    <breakpoint1 location="/home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp:269" type="1" tracingFormatString="" traceFormatStringEnabled="0" condition="" tracingEnabled="0" enabled="1" >
+     <tracedExpressions/>
+    </breakpoint1>
+    <breakpoint2 location="/home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp:1026" type="1" tracingFormatString="" traceFormatStringEnabled="0" condition="" tracingEnabled="0" enabled="1" >
+     <tracedExpressions/>
+    </breakpoint2>
+   </breakpointList>
    <showInternalCommands value="0" />
   </kdevdebugger>
   <kdevastyle>
@@ -16,7 +32,17 @@
    <AStyle IndentPreprocessors="1" FillCount="4" PadParenthesesOut="0" IndentNamespaces="1" IndentLabels="0" Fill="Tabs" MaxStatement="40" Brackets="Attach" MinConditional="-1" IndentBrackets="0" PadParenthesesUn="1" BlockBreak="0" KeepStatements="1" KeepBlocks="1" BlockIfElse="0" IndentSwitches="0" PadOperators="1" FStyle="UserDefined" IndentCases="0" FillEmptyLines="0" BracketsCloseHeaders="1" BlockBreakAll="0" PadParenthesesIn="0" IndentClasses="0" IndentBlocks="0" FillForce="0" />
   </kdevastyle>
   <kdevbookmarks>
-   <bookmarks/>
+   <bookmarks>
+    <bookmark url="/home/andrey/projects/arkanoidsb/src/glSDL.c" >
+     <mark line="792" />
+    </bookmark>
+    <bookmark url="/home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp" >
+     <mark line="887" />
+     <mark line="207" />
+     <mark line="620" />
+     <mark line="983" />
+    </bookmark>
+   </bookmarks>
   </kdevbookmarks>
   <kdevsubversion>
    <subversion base="" />

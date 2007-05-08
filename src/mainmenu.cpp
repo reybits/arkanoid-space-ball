@@ -211,8 +211,8 @@ void CMainMenu::DrawMenuRules() {
 	else if(nPage == 1) {
 		g_Font2.DrawString(0, 20, "RULES OF PLAY", CMyString::FONT_ALIGN_CENTER);
 		g_Font.SetRect(100, 0, SCREEN_WIDTH - 200, SCREEN_HEIGHT);
-		g_Font.DrawString2(0,  50, "To start, you are given three lives. The number of reserve lives is displayed on the scoreboard on the top of the screen. The game is over if you have no reserve spheres. Every 5000 points will get you a reserve life. Each level in \"Arkanoid: Space Ball\" is comprised of a varying number of bricks. Most of these bricks are destructible by bouncing your ball off of them (or shooting them) between one and four times. When all such one-to-four-hit bricks have been cleared, you will have successfully completed the level and will automatically advance to the next rlevel. Note that many levels contain 15-time-hit bricks that do not need to be cleared. All levels of the game are grouped into sets of 5. When you will complete a given set of 5 levels you reach a Bonus level. You have to reach as many scores as you can by shaking down enemy gunnery or debris flying on you at a Bonus level. If you have a Bonus level with gunnery you have to pass 5 balls. In case of debris  you have to pass 3 pushing off debris with paddle.\nThere are two modes of the game: the first one is usual when bonuses activate by taking them at once. The second mode is an accumulation of bonuses when you may chose any balls for using.");
-		//g_Font.DrawString(0, 350, "вы не должны допустить 3 столкновений обломков с ракеткой.");
+		g_Font.DrawString2(0,  50, "To start, you are given three lives. The number of reserve lives is displayed on the scoreboard on the top of the screen. The game is over if you have no reserve spheres. Every 5000 points will get you a reserve life. Each level in \"Arkanoid: Space Ball\" is comprised of a varying number of bricks. Most of these bricks are destructible by bouncing your ball off of them (or shooting them) between one and four times. When all such one-to-four-hit bricks have been cleared, you will have successfully completed the level and will automatically advance to the next rlevel. Note that many levels contain 15-time-hit bricks that do not need to be cleared. All levels of the game are grouped into sets of 5. When you will complete a given set of 5 levels you reach a Bonus level. You have to reach as many scores as you can by shaking down enemy gunnery or debris flying on you at a Bonus level. If you have a Bonus level with gunnery you have to pass 5 balls. In case of debris пїЅyou have to pass 3 pushing off debris with paddle.\nThere are two modes of the game: the first one is usual when bonuses activate by taking them at once. The second mode is an accumulation of bonuses when you may chose any balls for using.");
+		//g_Font.DrawString(0, 350, "пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
 		g_Font.SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 	else if(nPage == 2) {
@@ -311,7 +311,7 @@ void CMainMenu::DrawMenuRules() {
 		g_Font2.DrawString(0, 100, "CREDITS", CMyString::FONT_ALIGN_CENTER);
 		g_Font3.DrawString(0, 130, "'WE' Group", 2);
 		g_Font.DrawString(0,  150, "http://www.wegroup.org", 2);
-		g_Font.DrawString(0,  170, "Copyright (c) 2006. All Rights Reserved.", 2);
+		g_Font.DrawString(0,  170, "Copyright (c) 2006-2007. All Rights Reserved.", 2);
 		g_Font2.DrawString(0, 220, "THANKS TO", CMyString::FONT_ALIGN_CENTER);
 		g_Font3.DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", 2);
 		g_Font.DrawString(0,  270, "http://www.libsdl.org", 2);

@@ -1086,7 +1086,7 @@ void CArkanoidSBGame::ProcessBonus(int nBonusType) {
 	case CBonus::TYPE_WALL:
 		m_bBackWall			= true;
 		m_nCountBackWall	+= 30;
-		g_CoolString.Add("energy field");
+		g_CoolString.Add("force field");
 		if(m_nSndWall == -1)	m_nSndWall	= PlaySound(0, -1);
 		break;
 	case CBonus::TYPE_DESTROY:

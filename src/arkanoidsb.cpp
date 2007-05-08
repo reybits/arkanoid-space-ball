@@ -492,7 +492,7 @@ SDL_Surface *LoadImage(const char *pchFileName, const Uint32 nColorKey) {
 		//SDL_Surface	*pTmp	= IMG_Load(pchFileName);
 		if(pTmp != 0) {
 			if(nColorKey != 0xff000000) {
-				SDL_SetColorKey(pTmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(g_psurfScreen->format, (nColorKey>>16)&0xff, (nColorKey>>8)&0xff, nColorKey&0xff) | SDL_ALPHA_TRANSPARENT);
+				SDL_SetColorKey(pTmp, SDL_SRCCOLORKEY | (g_bOGL == true ? 0 : SDL_RLEACCEL), SDL_MapRGB(g_psurfScreen->format, (nColorKey>>16)&0xff, (nColorKey>>8)&0xff, nColorKey&0xff) | SDL_ALPHA_TRANSPARENT);
 				pOptimizedImage	= SDL_DisplayFormat(pTmp);	//Create an optimized image
 			}
 			else {
@@ -616,11 +616,11 @@ bool UpdateKeys() {
 			break;
 
 		case SDL_KEYDOWN:
-			if((g_dwModState & SDLK_LCTRL && evt.key.keysym.sym == SDLK_q) ||
-				(g_dwModState & SDLK_LALT && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4))) {	// if ALT + X pressed quit game
+			if(((g_dwModState & (SDLK_LCTRL | SDLK_RCTRL)) && evt.key.keysym.sym == SDLK_q) ||
+				((g_dwModState & (SDLK_LALT | SDLK_RALT)) && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4))) {	// if ALT + X pressed quit game
 				if(g_nGameMode != APPS_INTRO)	return true;
 			}
-			else if((g_dwModState & SDLK_LALT) && evt.key.keysym.sym == SDLK_RETURN) {
+			else if((g_dwModState & (SDLK_LALT | SDLK_RALT)) && evt.key.keysym.sym == SDLK_RETURN) {
 				g_bFullscreen	= !g_bFullscreen;
 				SwitchFullscreen();
 			}
