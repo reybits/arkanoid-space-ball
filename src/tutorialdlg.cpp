@@ -62,7 +62,7 @@ bool CTutorialDlg::ShowDialog() {
 		"STRONG BRICKS\n\n15 - hit-bricks. These bricks not need to be cleared.",
 	};
 	const char	*pachMonsters[]	= {
-		"KAMIKAZE\n\nDANGER! It’s a kamikaze - this monster blows up the paddle.",
+		"KAMIKAZE\n\nDANGER! Itï¿½s a kamikaze - this monster blows up the paddle.",
 		"HELICOPTER\n\nFollows the nearest ball.",
 		"ROBOTIC EYE\n\nATTENTION! Robotic eye follows your paddle.",
 		"SUPERNOVA\n\nThis monster disturb to ball moving.",
@@ -80,7 +80,7 @@ bool CTutorialDlg::ShowDialog() {
 		"EXPAND BALL\n\nThis bonus increases your ball size.",
 		"SHRINK BALL\n\nATTENTION! This bonus decreases your ball size. (Bad bonus!)",
 		"MAGNET\n\nThis bonus make magnetic paddle.\nUseful for more accuracy aiming.",
-		"PLASMA CANNON\n\nOne–shot plasma cannon. A disposable shot of this cannon burns through all bricks.",
+		"PLASMA CANNON\n\nOneï¿½shot plasma cannon. A disposable shot of this cannon burns through all bricks.",
 		"ROCKET LAUNCHER\n\nRocket launcher with 8 rockets. Every rocket blows up some bricks around.",
 		"LASER\n\nLaser gun for 40 shots. The one shot destroys the one 1-hit brick.",
 		"ENGINE\n\nAllow padlle to fly. Be careful, Kamikaze and Fiery meteorite within!",
@@ -140,6 +140,7 @@ bool CTutorialDlg::ShowDialog() {
 		//g_FontTutorial.SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		if(nButton == 0 && g_bMouseLB == true) {
+			printf("WE ARE HERE\n");
 			g_bMouseLB	= false;
 			m_bTutorialMode	= !m_bTutorialMode;
 		}

@@ -3,7 +3,7 @@
   <general>
     <author>Andrey A. Ugolnik</author>
     <email>andrey@wegroup.org</email>
-    <version>1.1.5</version>
+    <version>1.1.8</version>
     <projectmanagement>KDevAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -34,20 +34,20 @@
       <useactivetarget>true</useactivetarget>
     </general>
     <run>
-      <mainprogram>/home/andrey/projects/arkanoidsb/arkanoidsb</mainprogram>
+      <mainprogram>/home/andrey/projects/arkanoidsb/release_linux/src/arkanoidsb</mainprogram>
       <terminal>false</terminal>
       <directoryradio>custom</directoryradio>
       <customdirectory>/home/andrey/projects/arkanoidsb/</customdirectory>
-      <programargs></programargs>
+      <programargs/>
       <autocompile>true</autocompile>
       <envvars/>
       <runarguments>
         <arkanoidsb/>
       </runarguments>
-      <globaldebugarguments></globaldebugarguments>
+      <globaldebugarguments/>
       <globalcwd>/home/andrey/projects/arkanoidsb/</globalcwd>
       <useglobalprogram>true</useglobalprogram>
-      <autoinstall>true</autoinstall>
+      <autoinstall>false</autoinstall>
       <autokdesu>false</autokdesu>
     </run>
     <configurations>
@@ -203,6 +203,8 @@
       <usePermanentCaching>true</usePermanentCaching>
       <alwaysIncludeNamespaces>false</alwaysIncludeNamespaces>
       <includePaths>.;</includePaths>
+      <parseMissingHeadersExperimental>false</parseMissingHeadersExperimental>
+      <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
       <prefixGet></prefixGet>
@@ -223,7 +225,7 @@
       <designerpluginpaths/>
     </qt>
     <splitheadersource>
-      <enabled>true</enabled>
+      <enabled>false</enabled>
       <synchronize>true</synchronize>
       <orientation>Horizontal</orientation>
     </splitheadersource>

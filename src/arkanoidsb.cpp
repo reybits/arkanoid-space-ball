@@ -13,12 +13,7 @@ void ReadWriteConfig(bool bMode);
 void PlayMusic2();
 void SwitchFullscreen();
 bool DrawIntro();
-bool CheckForBlackList(const char *pchKey);
-bool CheckRegistration();
-bool g_bIsRegistered	= false;
-char g_achRegName[100 + 1]	= { 0 };
-char g_achRegKey[16 + 3 + 1]	= { 0 };	// 16 symbols + 3 dashes + 1 null
-int g_nUnregisterdCount	= 30 * 60;
+
 char	g_achUserProfile[PATH_MAX]	= { 0 };
 
 SDL_Surface	*g_psurfScreen;
@@ -138,7 +133,19 @@ CCoolString		g_CoolString;
 CSinusString	g_CSinusString;
 CTutorialDlg	g_TutorialDlg;
 CMyString		g_FontTutorial;
+
+
+#ifndef __linux__
+bool CheckForBlackList(const char *pchKey);
+bool CheckRegistration();
+bool g_bIsRegistered	= false;
+char g_achRegName[100 + 1]	= { 0 };
+char g_achRegKey[16 + 3 + 1]	= { 0 };	// 16 symbols + 3 dashes + 1 null
+int g_nUnregisterdCount	= 30 * 60;
+
 CReminderDlg	g_ReminderDlg;
+#endif
+
 
 int main(int argc, char *argv[]) {
 	int	i;
@@ -437,7 +444,7 @@ int main(int argc, char *argv[]) {
 */			}
 			if(IsKeyPressed(SDLK_f) && IsKeyStateChanged(SDLK_f)) {
 				g_bShowFps	= !g_bShowFps;
-				printf("show fps %s\n", g_bShowFps == true ? "on" : "off");
+				//printf("show fps %s\n", g_bShowFps == true ? "on" : "off");
 			}
 
 			if(g_bIsCursorVisible == true) {
@@ -452,7 +459,7 @@ int main(int argc, char *argv[]) {
 		}
 		else {
 			SDL_FillRect(g_psurfScreen, 0, 0);
-			g_Font2.DrawString(0, SCREEN_HEIGHT / 2, "GAME INACTIVE", 2);
+			g_Font2.DrawString(0, SCREEN_HEIGHT / 2, "FOCUS LOST - GAME INACTIVE", 2);
 			SDL_Flip(g_psurfScreen);
 			SDL_Delay(200);
 		}
@@ -579,14 +586,14 @@ bool UpdateKeys() {
 						g_Arkanoid.SetPause();
 					}
 					Mix_PauseMusic();
-					printf("Arkanoid: Space Ball inactive\n");
+					//printf("Arkanoid: Space Ball inactive\n");
 					g_bActive	= false;
 				}
 			}
 			else {
 				if(evt.active.gain) {
 					Mix_ResumeMusic();
-					printf("Arkanoid: Space Ball active\n");
+					//printf("Arkanoid: Space Ball active\n");
 					g_bActive	= true;
 				}
 			}
@@ -810,11 +817,16 @@ void ReadWriteConfig(bool bMode) {
 			fread(&g_bOGL, sizeof(g_bOGL), 1, pFile);
 			fread(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
 			fread(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
+#ifndef __linux__
 			fread(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount), 1, pFile);
 			EncodeDecode(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount));
+#endif
 			fread(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, pFile);
 			fread(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, pFile);
 			fclose(pFile);
+			// correct variables on linux, where arkanoidsb 1.1.6 wil be installed before
+			if(g_bTutorialMode < 0 || g_bTutorialMode > 1)	g_bTutorialMode	= 1;
+			if(g_bAutoBonusMode < 0 || g_bAutoBonusMode > 1)	g_bAutoBonusMode	= 0;
 		}
 		else {
 			printf("error (%d) - %s\n", errno, strerror(errno));
@@ -828,6 +840,7 @@ void ReadWriteConfig(bool bMode) {
 		else {
 			printf("error (%d) - %s\n", errno, strerror(errno));
 		}
+#ifndef __linux__
 		sprintf(achBuf, "%skey", g_achUserProfile);
 		if((pFile = fopen(achBuf, "rb"))) {
 			fread(&g_achRegName, sizeof(g_achRegName), 1, pFile);
@@ -841,6 +854,7 @@ void ReadWriteConfig(bool bMode) {
 			g_achRegKey[0]		= 0;
 		}
 		CheckRegistration();
+#endif
 	}
 	else {
 		if((pFile = fopen(achBuf, "wb"))) {
@@ -850,8 +864,10 @@ void ReadWriteConfig(bool bMode) {
 			fwrite(&g_bOGL, sizeof(g_bOGL), 1, pFile);
 			fwrite(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
 			fwrite(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
+#ifndef __linux__
 			EncodeDecode(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount));
 			fwrite(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount), 1, pFile);
+#endif
 			fwrite(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, pFile);
 			fwrite(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, pFile);
 			fclose(pFile);
@@ -868,6 +884,7 @@ void ReadWriteConfig(bool bMode) {
 		else {
 			printf("error (%d) - %s\n", errno, strerror(errno));
 		}
+#ifndef __linux__
 		sprintf(achBuf, "%skey", g_achUserProfile);
 		if((pFile = fopen(achBuf, "wb"))) {
 			if(g_bIsRegistered == false) {
@@ -880,6 +897,7 @@ void ReadWriteConfig(bool bMode) {
 			fwrite(&g_achRegKey, sizeof(g_achRegKey), 1, pFile);
 			fclose(pFile);
 		}
+#endif
 	}
 }
 
@@ -1025,6 +1043,7 @@ void UnsetVideoMode() {
 	g_Font.Unload();
 }
 
+#ifndef __linux__
 bool CheckRegistration() {
 	const char	achKeyWord[16]     = "oPZmAtk73v4eNjE";
 	char    		achTmp[10];
@@ -1082,6 +1101,7 @@ bool CheckForBlackList(const char *pchKey) {
 	}
 	return false;
 }
+#endif
 
 void SwitchFullscreen() {
 //#ifdef __linux__

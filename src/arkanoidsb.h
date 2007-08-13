@@ -19,7 +19,7 @@ using namespace std;
 	#define PATH_MAX	256
 #endif
 
-#define GAME_VERSION		"1.1.5"
+#define GAME_VERSION		"1.1.8"
 
 #define SCREEN_WIDTH		640
 #define SCREEN_HEIGHT	480
@@ -73,10 +73,26 @@ struct _HIGHSCORE {
 	int	nScore;
 };
 
+struct _SAVE {
+	char achMagic[6];
+	int	nLevel;
+	int	nScore;
+	int	nLives;
+	int	nScoreToAdditionalBall;
+	int	nBonusLevelType;
+	int	nBonusLevelTicks;
+	int	nGetReadyBallsLose;
+	int	nBricksCount;
+	int	nBonusesCount;
+	int m_nBonusLevelType;
+};
+
 #undef min
 #define min(a,b)		(((a) < (b)) ? (a) : (b))
 #undef max
 #define max(a,b)		(((a) > (b)) ? (a) : (b))
+
+extern char	g_achUserProfile[PATH_MAX];
 
 extern SDL_Surface	*g_psurfScreen;
 extern bool 		g_bFullscreen;
@@ -164,12 +180,6 @@ extern int PlaySound(int nSndIndex, int nLoopsCount = 0);
 extern void StopSound(int &nChannel);
 extern void SetVolumeMusic(int nVolume);
 extern void SetVolumeSound(int nVolume);
-extern bool CheckRegistration();
-extern bool g_bIsRegistered;
-extern char g_achRegName[100 + 1];
-extern char g_achRegKey[16 + 3 + 1];
-extern int g_nUnregisterdCount;
-extern char	g_achUserProfile[PATH_MAX];
 
 #include "mystring.h"
 #include "bullet.h"
@@ -187,7 +197,6 @@ extern char	g_achUserProfile[PATH_MAX];
 #include "resource.h"
 #include "tutorialdlg.h"
 #include "leveleditor.h"
-#include "reminderdlg.h"
 
 extern CResource		g_Resource;
 extern CMyString		g_Font;
@@ -206,4 +215,15 @@ extern CCoolString		g_CoolString;
 extern CSinusString		g_CSinusString;
 extern CTutorialDlg		g_TutorialDlg;
 extern CMyString		g_FontTutorial;
+
+#ifndef __linux__
+#include "reminderdlg.h"
+
+extern bool CheckRegistration();
+extern bool g_bIsRegistered;
+extern char g_achRegName[100 + 1];
+extern char g_achRegKey[16 + 3 + 1];
+extern int g_nUnregisterdCount;
+
 extern CReminderDlg		g_ReminderDlg;
+#endif

@@ -12,7 +12,9 @@
 CMainMenu::CMainMenu() {
 	m_bGetNameMode	= false;
 	m_bInitHelp		= true;
+#ifndef __linux__
 	m_bShowReminder	= false;
+#endif
 	m_bReturnToGame	= false;
 	m_achStoredLevelInfo[0]	= 0;
 }
@@ -37,9 +39,11 @@ int CMainMenu::DrawMenu() {
 	case MT_HIGHSCORE:
 		DrawMenuHighScore();
 		break;
-	case MT_REG_KEY:
+#ifndef __linux__
+		case MT_REG_KEY:
 		DrawEnterReg();
 		break;
+#endif
 	case MT_OPTIONS:
 		DrawMenuOptions();
 		break;
@@ -64,6 +68,7 @@ int CMainMenu::DrawMenu() {
 
 	if(m_nMenuType == MT_MAIN) {
 		g_Font.DrawString(5, SCREEN_HEIGHT - 5 - 14, GAME_VERSION);
+#ifndef __linux__
 		if(g_bIsRegistered == false) {
 			g_Font.DrawString(5, 5, "Unregistered version");
 		}
@@ -72,8 +77,15 @@ int CMainMenu::DrawMenu() {
 			sprintf(achBuf, "Registered to: %s", g_achRegName);
 			g_Font.DrawString(5, 5, achBuf);
 		}
+#else
+		g_Font.DrawString(5, 5, "Registered to all Linux users");
+#endif		
 	}
-	else if(m_bShowReminder == false && ((IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) || g_bMouseRB == true)) {
+	else if(
+#ifndef __linux__
+			m_bShowReminder == false &&
+#endif
+			((IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) || g_bMouseRB == true)) {
 		SendEsc();
 	}
 
@@ -82,6 +94,7 @@ int CMainMenu::DrawMenu() {
 
 void CMainMenu::DrawBackground() {
 	if(m_nMenuType == MT_MAIN) {
+
 		Blit(0, 0, m_pBackground, 0);
 	}
 	else {
@@ -94,7 +107,12 @@ int CMainMenu::DrawMenuMain() {
 	SetRect(&rc, 0, 0, 248, 29);
 
 	int nItem	= -1;
-	for(int i = 0; i < (g_bIsRegistered == true ? 5 : 6); i++) {
+#ifndef __linux__
+	int	nCount	= (g_bIsRegistered == true ? 5 : 6);
+#else
+	int	nCount	= 5;
+#endif
+	for(int i = 0; i < nCount; i++) {
 		if(true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y + i * 29, i)) {
 			nItem	= i;
 		}
@@ -104,7 +122,9 @@ int CMainMenu::DrawMenuMain() {
 		g_bMouseLB	= false;
 		switch(nItem + 1) {
 		case MT_QUIT:	return 0;		// exit
+#ifndef __linux__
 		case MT_REG_KEY:	if(g_bIsRegistered == false)	SetMenuType(nItem + 1);	break;
+#endif
 		default:	SetMenuType(nItem + 1);	break;
 		}
 	}
@@ -148,6 +168,7 @@ int CMainMenu::DrawStartGame() {
 		nItem	= 5;
 	}
 
+#ifndef __linux__
 	if(m_bShowReminder == true) {
 		switch(g_ReminderDlg.Draw(2)) {
 		case 1:
@@ -160,15 +181,21 @@ int CMainMenu::DrawStartGame() {
 			break;
 		}
 	}
-	else if(g_bMouseLB == true) {
+	else
+#endif
+		if(g_bMouseLB == true) {
 		g_bMouseLB	= false;
 		switch(nItem) {
 		case 0:	return 1;	// start new game
 		case 1:
+#ifndef __linux__
 			if(g_bIsRegistered == true)
+#endif
 				return 2;	// restore game
+#ifndef __linux__
 			else
 				m_bShowReminder	= true;
+#endif
 			break;
 		case 2:
 		case 3:	g_bTutorialMode	= !g_bTutorialMode;	break;
@@ -547,7 +574,9 @@ void CMainMenu::DrawMenuOptions() {
 void CMainMenu::SetMenuType(int nType, bool bReturnToGame) {
 	EnableCursor(true);
 	m_nMenuType				= nType;
+#ifndef __linux__
 	m_bShowReminder			= false;
+#endif
 	m_bInitHelp				= true;
 	m_strOpt.nBppIndex		= g_nBppIndex;
 	m_strOpt.bFullscreen	= g_bFullscreen;
@@ -557,17 +586,21 @@ void CMainMenu::SetMenuType(int nType, bool bReturnToGame) {
 	if(nType == MT_STARTGAME) {
 		char	achBuf[PATH_MAX];
 		FILE	*pFile;
-		int		anBuf[3];
+		_SAVE	str;
 		sprintf(achBuf, "%ssave", g_achUserProfile);
-		if((pFile = fopen(achBuf, "rb")) && sizeof(int) == fread(&anBuf, 3, sizeof(int), pFile)) {
-			EncodeDecode(&anBuf, sizeof(int) * 3);
-			sprintf(m_achStoredLevelInfo, "LEVEL: %d, SCORE: %d, LIVES: %d", anBuf[0] + 1, anBuf[1], anBuf[2]);
+		m_bIsSaveAvailable	= false;
+		if(pFile = fopen(achBuf, "rb")) {
+			if(sizeof(_SAVE) == fread(&str, 1, sizeof(_SAVE), pFile)) {
+				EncodeDecode(&str, sizeof(_SAVE));
+				if(strncmp(str.achMagic, "WEGR", 4) == 0) {
+					m_bIsSaveAvailable	= true;
+					sprintf(m_achStoredLevelInfo, "LEVEL: %d, SCORE: %d, LIVES: %d", str.nLevel + 1, str.nScore, str.nLives);
+				}
+			}
 			fclose(pFile);
-			m_bIsSaveAvailable	= true;
 		}
-		else {
+		if(m_bIsSaveAvailable == false) {
 			strcpy(m_achStoredLevelInfo, "NO PREVIOUSLY STORED GAME AVAILABLE");
-			m_bIsSaveAvailable	= false;
 		}
 	}
 }
@@ -635,6 +668,7 @@ void CMainMenu::SetEnterNameMode() {
 void SetPixel(int nX, int nY, Uint32 color) {
 }
 
+#ifndef __linux__
 /*!
     \fn CMainMenu::DrawEnterReg()
  */
@@ -760,7 +794,7 @@ void CMainMenu::DrawHighlight(int nPos) {
 
 	Blit(80 - 4, 180 - 4 + nPos * 30, g_pOptions, 0);
 }
-
+#endif
 
 /*!
     \fn CMainMenu::DrawMenuButton(int nX, int nY, int nButtonId)

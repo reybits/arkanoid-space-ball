@@ -41,10 +41,12 @@ protected:
 	int DrawStartGame();
 	int m_nMenuType;
 	void DrawBackground();
+#ifndef __linux__
 	void DrawEnterReg();
-	bool m_bInitHelp;
-    void DrawHighlight(int nPos);
+	void DrawHighlight(int nPos);
 	bool m_bShowReminder;
+#endif
+	bool m_bInitHelp;
 	bool m_bReturnToGame;
 	char m_achStoredLevelInfo[100];
 	bool m_bIsSaveAvailable;

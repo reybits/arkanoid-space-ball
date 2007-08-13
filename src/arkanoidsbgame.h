@@ -43,19 +43,8 @@ private:
 	std::vector<_BRICK>m_vecLevelBricks;
 
 protected:
-	struct _SAVE {
-		int	nLevel;
-		int	nScore;
-		int	nLives;
-		int	nScoreToAdditionalBall;
-		int	nBonusLevelType;
-		int	nBonusLevelTicks;
-		int	nGetReadyBallsLose;
-		int	nBricksCount;
-		int	nBonusesCount;
-	};
 	void DrawPause();
-	int m_nLevelPrev;
+	int m_nLevelPrev;	// store previous level number: -1 - usualy, -2 - inform, that we restore game
 	struct _STARS {
 		float	fX, fY, fSpeed;
 		int	nType, nFrame;

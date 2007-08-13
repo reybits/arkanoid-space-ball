@@ -2,7 +2,7 @@
 ------------------------------------------------------------
 	glSDL 0.8 - SDL 2D API on top of OpenGL
 ------------------------------------------------------------
- * Copyright (C) 2001-2004, 2006 David Olofson
+ * Copyright (C) 2001-2004, 2006-2007, David Olofson
  * This code is released under the terms of the GNU LGPL.
  */
 
@@ -92,7 +92,6 @@ static struct
 	void	(APIENTRY *BindTexture)(GLenum, GLuint);
 	void	(APIENTRY *BlendFunc)(GLenum, GLenum);
 	void	(APIENTRY *Color4ub)(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
-	void	(APIENTRY *Color3ub)(GLubyte red, GLubyte green, GLubyte blue);
 	void	(APIENTRY *DeleteTextures)(GLsizei n, const GLuint *textures);
 	void	(APIENTRY *Disable)(GLenum cap);
 	void	(APIENTRY *Enable)(GLenum cap);
@@ -119,6 +118,10 @@ static struct
 	void	(APIENTRY *Translatef)(GLfloat x, GLfloat y, GLfloat z);
 	void	(APIENTRY *Vertex2i)(GLint x, GLint y);
 	void	(APIENTRY *Viewport)(GLint x, GLint y, GLsizei width, GLsizei height);
+	void	(APIENTRY *Rotated)(GLdouble, GLdouble, GLdouble, GLdouble);
+	void	(APIENTRY *Scalef)(GLfloat, GLfloat, GLfloat);
+	void	(APIENTRY *PushMatrix)(void);
+	void	(APIENTRY *PopMatrix)(void);
 } gl;
 
 
@@ -130,31 +133,34 @@ static int GetGL(void)
 		const char	*name;
 		void		**fn;
 	} glfuncs[] = {
-		{"glBegin", (void *)&gl.Begin },
-		{"glBindTexture", (void *)&gl.BindTexture },
-		{"glBlendFunc", (void *)&gl.BlendFunc },
-		{"glColor4ub", (void *)&gl.Color4ub },
-		{"glColor3ub", (void *)&gl.Color3ub },
-		{"glDeleteTextures", (void *)&gl.DeleteTextures },
-		{"glDisable", (void *)&gl.Disable },
-		{"glEnable", (void *)&gl.Enable },
-		{"glEnd", (void *)&gl.End },
-		{"glFlush", (void *)&gl.Flush },
-		{"glGenTextures", (void *)&gl.GenTextures },
-		{"glGetError", (void *)&gl.GetError },
-		{"glGetIntegerv", (void *)&gl.GetIntegerv },
-		{"glLoadIdentity", (void *)&gl.LoadIdentity },
-		{"glMatrixMode", (void *)&gl.MatrixMode },
-		{"glOrtho", (void *)&gl.Ortho },
-		{"glPixelStorei", (void *)&gl.PixelStorei },
-		{"glReadPixels", (void *)&gl.ReadPixels },
-		{"glTexCoord2f", (void *)&gl.TexCoord2f },
-		{"glTexImage2D", (void *)&gl.TexImage2D },
-		{"glTexParameteri", (void *)&gl.TexParameteri },
-		{"glTexSubImage2D", (void *)&gl.TexSubImage2D },
-		{"glTranslatef", (void *)&gl.Translatef },
-		{"glVertex2i", (void *)&gl.Vertex2i },
-		{"glViewport", (void *)&gl.Viewport },
+		{"glBegin", (void **)&gl.Begin },
+		{"glBindTexture", (void **)&gl.BindTexture },
+		{"glBlendFunc", (void **)&gl.BlendFunc },
+		{"glColor4ub", (void **)&gl.Color4ub },
+		{"glDeleteTextures", (void **)&gl.DeleteTextures },
+		{"glDisable", (void **)&gl.Disable },
+		{"glEnable", (void **)&gl.Enable },
+		{"glEnd", (void **)&gl.End },
+		{"glFlush", (void **)&gl.Flush },
+		{"glGenTextures", (void **)&gl.GenTextures },
+		{"glGetError", (void **)&gl.GetError },
+		{"glGetIntegerv", (void **)&gl.GetIntegerv },
+		{"glLoadIdentity", (void **)&gl.LoadIdentity },
+		{"glMatrixMode", (void **)&gl.MatrixMode },
+		{"glOrtho", (void **)&gl.Ortho },
+		{"glPixelStorei", (void **)&gl.PixelStorei },
+		{"glReadPixels", (void **)&gl.ReadPixels },
+		{"glTexCoord2f", (void **)&gl.TexCoord2f },
+		{"glTexImage2D", (void **)&gl.TexImage2D },
+		{"glTexParameteri", (void **)&gl.TexParameteri },
+		{"glTexSubImage2D", (void **)&gl.TexSubImage2D },
+		{"glTranslatef", (void **)&gl.Translatef },
+		{"glVertex2i", (void **)&gl.Vertex2i },
+		{"glViewport", (void **)&gl.Viewport },
+		{"glRotated", (void **)&gl.Rotated },
+		{"glScalef", (void **)&gl.Scalef },
+		{"glPushMatrix", (void **)&gl.PushMatrix },
+		{"glPopMatrix", (void **)&gl.PopMatrix },
 		{NULL, NULL }
 	};
 	for(i = 0; glfuncs[i].name; ++i)
@@ -229,6 +235,10 @@ static void print_glerror(int point)
 }
 
 
+/*----------------------------------------------------------
+	OpenGL state wrapper
+----------------------------------------------------------*/
+
 static struct
 {
 	int	do_blend;
@@ -283,7 +293,7 @@ static __inline__ void gl_blendfunc(GLenum sfactor, GLenum dfactor)
 
 static __inline__ void gl_texture(GLuint tx)
 {
-	if(tx == glstate.texture)
+	if(tx == (unsigned)glstate.texture)
 		return;
 
 	gl.BindTexture(GL_TEXTURE_2D, tx);
@@ -294,6 +304,8 @@ static __inline__ void gl_texture(GLuint tx)
 /*----------------------------------------------------------
 	Global stuff
 ----------------------------------------------------------*/
+
+static int initialized = 0;
 
 static int using_glsdl = 0;
 #define	USING_GLSDL	(0 != using_glsdl)
@@ -314,6 +326,68 @@ static SDL_Surface *fake_screen = NULL;
 static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 			 SDL_Surface *dst, SDL_Rect *dstrect);
 
+
+/*----------------------------------------------------------
+	glSDL Global State
+----------------------------------------------------------*/
+
+static struct
+{
+	Uint8	alpha;		/* Alpha */
+	Uint8	r, g, b;	/* Color modulation */
+	float	cx, cy;		/* Transform center offset */
+	float	sx, sy;		/* Scale */
+	float	rot;		/* Rotation */
+} state;
+
+
+void glSDL_SetBlendAlpha(Uint8 alpha)
+{
+	state.alpha = alpha;
+}
+
+
+void glSDL_SetBlendColor(Uint8 r, Uint8 g, Uint8 b)
+{
+	state.r = r;
+	state.g = g;
+	state.b = b;
+}
+
+
+void glSDL_SetCenter(float x, float y)
+{
+	state.cx = x;
+	state.cy = y;
+}
+
+
+void glSDL_SetRotation(float angle)
+{
+	state.rot = angle;
+}
+
+
+void glSDL_SetScale(float x, float y)
+{
+	state.sx = x;
+	state.sy = y;
+}
+
+
+void glSDL_ResetState(void)
+{
+	glSDL_SetBlendAlpha(255);
+	glSDL_SetBlendColor(255, 255, 255);
+	glSDL_SetCenter(0.0f, 0.0f);
+	glSDL_SetRotation(0.0f);
+	glSDL_SetScale(1.0f, 1.0f);
+}
+
+
+/*----------------------------------------------------------
+	Code
+----------------------------------------------------------*/
 
 /* Get texinfo for a surface. */
 static __inline__ glSDL_TexInfo *glSDL_GetTexInfo(SDL_Surface *surface)
@@ -353,7 +427,7 @@ glSDL_TexInfo *glSDL_AllocTexInfo(SDL_Surface *surface)
 	}
 
 	/* ...and hook a new texinfo struct up to it. */
-	texinfotab[handle] = calloc(1, sizeof(glSDL_TexInfo));
+	texinfotab[handle] = (glSDL_TexInfo*)calloc(1, sizeof(glSDL_TexInfo));
 	if(!texinfotab[handle])
 		return NULL;
 
@@ -447,7 +521,7 @@ static int CalcChop(SDL_Surface *s, glSDL_TexInfo *txi)
 		/* Calculate number of textures needed */
 		txi->textures = (vw + texsize - 1) / texsize;
 		txi->textures *= (vh + texsize - 1) / texsize;
-		txi->texture = malloc(txi->textures * sizeof(int));
+		txi->texture = (int*)malloc(txi->textures * sizeof(int));
 		memset(txi->texture, -1, txi->textures * sizeof(int));
 		DBG5(fprintf(stderr, "two-way tiling; textures=%d\n", txi->textures));
 		if(!txi->texture)
@@ -502,7 +576,7 @@ static int CalcChop(SDL_Surface *s, glSDL_TexInfo *txi)
 
 	/* Calculate number of textures needed */
 	txi->textures = (rows + txi->tilespertex-1) / txi->tilespertex;
-	txi->texture = malloc(txi->textures * sizeof(int));
+	txi->texture = (int*)malloc(txi->textures * sizeof(int));
 	memset(txi->texture, -1, txi->textures * sizeof(int));
 	DBG3(fprintf(stderr, "textures=%d, ", txi->textures));
 	if(!txi->texture)
@@ -755,16 +829,15 @@ void glSDL_Quit(void)
 {
 	if(SDL_WasInit(SDL_INIT_VIDEO))
 	{
-		SDL_Surface *screen = SDL_GetVideoSurface();
-		glSDL_FreeTexInfo(screen);
-		UnloadGL();
-		SDL_QuitSubSystem(SDL_INIT_VIDEO);
+		glSDL_FreeTexInfo(SDL_GetVideoSurface());
 		if(fake_screen)
 		{
 			glSDL_FreeTexInfo(fake_screen);
 			SDL_FreeSurface(fake_screen);
 			fake_screen = NULL;
 		}
+		UnloadGL();
+		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	}
 #ifndef LEAK_TRACKING
 	KillAllTextures();
@@ -795,16 +868,22 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	SDL_Surface *screen;
 	GLint gl_doublebuf;
 
+	if(!initialized)
+	{
+		glSDL_ResetState();
+		initialized = 1;
+	}
+
 	if(USING_GLSDL)
 	{
 		glSDL_FreeTexInfo(SDL_GetVideoSurface());
-		UnloadGL();
 		if(fake_screen)
 		{
 			glSDL_FreeTexInfo(fake_screen);
 			SDL_FreeSurface(fake_screen);
 			fake_screen = NULL;
 		}
+		UnloadGL();
 		using_glsdl = 0;
 	}
 
@@ -836,7 +915,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
  */
 	KillAllTextures();
 
-	texinfotab = calloc(MAX_TEXINFOS + 1, sizeof(glSDL_TexInfo *));
+	texinfotab = (glSDL_TexInfo**)calloc(MAX_TEXINFOS + 1, sizeof(glSDL_TexInfo *));
 	if(!texinfotab)
 		return NULL;
 
@@ -864,6 +943,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	}
 	gl_doublebuf = flags & SDL_DOUBLEBUF;
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, gl_doublebuf);
+	SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, gl_doublebuf ? 1: 0);
 
 	scale = 1;
 
@@ -1168,7 +1248,7 @@ static __inline__ void BlitGL_single(glSDL_TexInfo *txi,
 	sy1 *= texscale;
 
 	gl.Begin(GL_QUADS);
-	gl.Color4ub(255, 255, 255, alpha);
+	gl.Color4ub(state.r, state.g, state.b, alpha);
 	gl.TexCoord2f(sx1, sy1);
 	gl.Vertex2i(dst->x, dst->y);
 	gl.TexCoord2f(sx2, sy1);
@@ -1213,12 +1293,12 @@ static void BlitGL_htile(glSDL_TexInfo *txi,
 		/* Clip to current tile */
 		if(tsx1 < 0.0)
 		{
-			tdx1 -= tsx1 * txi->texsize;
+			tdx1 -= (int)(tsx1 * txi->texsize);
 			tsx1 = 0.0;
 		}
 		if(tsx2 > 1.0)
 		{
-			tdx2 -= (tsx2 - 1.0) * txi->texsize;
+			tdx2 -= (int)((tsx2 - 1.0) * txi->texsize);
 			tsx2 = 1.0;
 		}
 
@@ -1236,7 +1316,7 @@ static void BlitGL_htile(glSDL_TexInfo *txi,
 			gl.Begin(GL_QUADS);
 		}
 
-		gl.Color4ub(255, 255, 255, alpha);
+		gl.Color4ub(state.r, state.g, state.b, alpha);
 		gl.TexCoord2f(tsx1, yo + sy1);
 		gl.Vertex2i(tdx1, dst->y);
 		gl.TexCoord2f(tsx2, yo + sy1);
@@ -1285,12 +1365,12 @@ static void BlitGL_vtile(glSDL_TexInfo *txi,
 		/* Clip to current tile */
 		if(tsy1 < 0.0)
 		{
-			tdy1 -= tsy1 * txi->texsize;
+			tdy1 -= (int)(tsy1 * txi->texsize);
 			tsy1 = 0.0;
 		}
 		if(tsy2 > 1.0)
 		{
-			tdy2 -= (tsy2 - 1.0) * txi->texsize;
+			tdy2 -= (int)((tsy2 - 1.0) * txi->texsize);
 			tsy2 = 1.0;
 		}
 
@@ -1308,7 +1388,7 @@ static void BlitGL_vtile(glSDL_TexInfo *txi,
 			gl.Begin(GL_QUADS);
 		}
 
-		gl.Color4ub(255, 255, 255, alpha);
+		gl.Color4ub(state.r, state.g, state.b, alpha);
 		gl.TexCoord2f(xo + sx1, tsy1);
 		gl.Vertex2i(dst->x, tdy1);
 		gl.TexCoord2f(xo + sx2, tsy1);
@@ -1337,7 +1417,7 @@ static void BlitGL_hvtile(SDL_Surface *src, glSDL_TexInfo *txi,
 	sx1 *= texscale;
 	sy1 *= texscale;
 
-	last_tex = tex = floor(sy1) * tilesperrow + floor(sx1);
+	last_tex = tex = (int)(floor(sy1) * tilesperrow + floor(sx1));
 	if(tex >= txi->textures)
 		return;
 	if(-1 == txi->texture[tex])
@@ -1345,7 +1425,7 @@ static void BlitGL_hvtile(SDL_Surface *src, glSDL_TexInfo *txi,
 	gl_texture(txi->texture[tex]);
 
 	gl.Begin(GL_QUADS);
-	for(y = floor(sy1); y < sy2; ++y)
+	for(y = (int)floor(sy1); y < sy2; ++y)
 	{
 		int tdy1 = dst->y;
 		int tdy2 = dst->y + dst->h;
@@ -1355,15 +1435,15 @@ static void BlitGL_hvtile(SDL_Surface *src, glSDL_TexInfo *txi,
 		/* Clip to current tile */
 		if(tsy1 < 0.0)
 		{
-			tdy1 -= tsy1 * txi->texsize;
+			tdy1 -= (int)(tsy1 * txi->texsize);
 			tsy1 = 0.0;
 		}
 		if(tsy2 > 1.0)
 		{
-			tdy2 -= (tsy2 - 1.0) * txi->texsize;
+			tdy2 -= (int)((tsy2 - 1.0) * txi->texsize);
 			tsy2 = 1.0;
 		}
-		for(x = floor(sx1); x < sx2; ++x)
+		for(x = (int)floor(sx1); x < sx2; ++x)
 		{
 			int tdx1 = dst->x;
 			int tdx2 = dst->x + dst->w;
@@ -1373,12 +1453,12 @@ static void BlitGL_hvtile(SDL_Surface *src, glSDL_TexInfo *txi,
 			/* Clip to current tile */
 			if(tsx1 < 0.0)
 			{
-				tdx1 -= tsx1 * txi->texsize;
+				tdx1 -= (int)(tsx1 * txi->texsize);
 				tsx1 = 0.0;
 			}
 			if(tsx2 > 1.0)
 			{
-				tdx2 -= (tsx2 - 1.0) * txi->texsize;
+				tdx2 -= (int)((tsx2 - 1.0) * txi->texsize);
 				tsx2 = 1.0;
 			}
 
@@ -1396,7 +1476,7 @@ static void BlitGL_hvtile(SDL_Surface *src, glSDL_TexInfo *txi,
 				gl.Begin(GL_QUADS);
 			}
 
-			gl.Color4ub(255, 255, 255, alpha);
+			gl.Color4ub(state.r, state.g, state.b, alpha);
 			gl.TexCoord2f(tsx1, tsy1);
 			gl.Vertex2i(tdx1, tdy1);
 			gl.TexCoord2f(tsx2, tsy1);
@@ -1464,21 +1544,24 @@ static __inline__ int blitclip(SDL_Rect *rect, int w, int h,
 	dx2 = dx1 + (sx2 - sx1);
 	dy2 = dy1 + (sy2 - sy1);
 
-	/* Clip to destination cliprect */
-	if(dx1 < clip->x)
+	if(clip)
 	{
-		sx1 += clip->x - dx1;
-		dx1 = clip->x;
+		/* Clip to destination cliprect */
+		if(dx1 < clip->x)
+		{
+			sx1 += clip->x - dx1;
+			dx1 = clip->x;
+		}
+		if(dy1 < clip->y)
+		{
+			sy1 += clip->y - dy1;
+			dy1 = clip->y;
+		}
+		if(dx2 > clip->x + clip->w)
+			dx2 = clip->x + clip->w;
+		if(dy2 > clip->y + clip->h)
+			dy2 = clip->y + clip->h;
 	}
-	if(dy1 < clip->y)
-	{
-		sy1 += clip->y - dy1;
-		dy1 = clip->y;
-	}
-	if(dx2 > clip->x + clip->w)
-		dx2 = clip->x + clip->w;
-	if(dy2 > clip->y + clip->h)
-		dy2 = clip->y + clip->h;
 
 	/* Cull nop/off-screen blits */
 	if(dx1 >= dx2 || dy1 >= dy2)
@@ -1501,6 +1584,9 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 	SDL_Rect r;
 	int x, y;
 	unsigned char alpha;
+	int plain = (state.rot == 0.0f) &&
+			(state.sx == 1.0f) &&
+			(state.sy == 1.0f);
 	if(!src || !dst)
 		return -1;
 
@@ -1522,7 +1608,8 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 		x = y = 0;
 
 	/* Clip! */
-	if(!blitclip(&r, src->w, src->h, &x, &y, &dst->clip_rect))
+	if(!blitclip(&r, src->w, src->h, &x, &y,
+			plain ? &dst->clip_rect : NULL))
 	{
 		if(dstrect)
 			dstrect->w = dstrect->h = 0;
@@ -1540,7 +1627,8 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 		return -1;
 
 	/* Set up blending */
-	if(src->flags & (SDL_SRCALPHA | SDL_SRCCOLORKEY))
+	if(src->flags & (SDL_SRCALPHA | SDL_SRCCOLORKEY) ||
+			(state.alpha != 255))
 	{
 		gl_blendfunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		gl_do_blend(1);
@@ -1561,7 +1649,23 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 	else
 		alpha = 255;
 
+	/* ...however, the GL only global state alpha is always applied! */
+	alpha = (Uint32)alpha * state.alpha * 258 >> 16;
+
 	/* Render! */
+	if(!plain)
+	{
+		int rcx = (r.w >> 1) + state.cx;
+		int rcy = (r.h >> 1) + state.cy;
+		gl.PushMatrix();
+		gl.Translatef(r.x + rcx, r.y + rcy, 0.0f);
+		if(state.rot)
+			gl.Rotated(state.rot, 0.0f, 0.0f, 1.0f);
+		if(state.sx || state.sy)
+			gl.Scalef(state.sx, state.sy, 1.0f);
+		r.x = -rcx;
+		r.y = -rcy;
+	}
 	switch(txi->tilemode)
 	{
 	  case GLSDL_TM_SINGLE:
@@ -1577,6 +1681,8 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 		BlitGL_hvtile(src, txi, x, y, &r, alpha);
 		break;
 	}
+	if(!plain)
+		gl.PopMatrix();
 	return 0;
 }
 
@@ -1686,11 +1792,21 @@ int glSDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, Uint32 color)
 	b = b >> pf->Bshift;
 	b = b << pf->Bloss;
 
+	r = r * state.r * 258 >> 16;
+	g = g * state.g * 258 >> 16;
+	b = b * state.b * 258 >> 16;
+
 	gl_do_texture(0);
-	gl_do_blend(0);
+	if(state.alpha != 255)
+	{
+		gl_blendfunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		gl_do_blend(1);
+	}
+	else
+		gl_do_blend(0);
 
 	gl.Begin(GL_QUADS);
-	gl.Color3ub(r, g, b);
+	gl.Color4ub(r, g, b, state.alpha);
 	gl.Vertex2i(dx1, dy1);
 	gl.Vertex2i(dx2, dy1);
 	gl.Vertex2i(dx2, dy2);
@@ -1810,10 +1926,10 @@ SDL_Surface *glSDL_ConvertSurface
 
 
 SDL_Surface *glSDL_CreateRGBSurface
-			(Uint32 flags, int width, int height, int depth,
+			(Uint32 flags, int width, int height, int depth, 
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
 {
-	SDL_Surface *s = SDL_CreateRGBSurface(flags, width, height, depth,
+	SDL_Surface *s = SDL_CreateRGBSurface(flags, width, height, depth, 
 			Rmask, Gmask, Bmask, Amask);
 	if(s)
 		GLSDL_FIX_SURFACE(s);
@@ -1863,37 +1979,13 @@ int glSDL_SaveBMP(SDL_Surface *surface, const char *file)
 	r.h = fake_screen->h;
 	if(glSDL_BlitFromGL(&r, buf, &r) < 0)
 		return -1;
-
+	
 	return SDL_SaveBMP(buf, file);
 
 	glSDL_FreeSurface(buf);
 }
 
 
-
-
-/*----------------------------------------------------------
-	glSDL specific API extensions
-----------------------------------------------------------*/
-
-void glSDL_Invalidate(SDL_Surface *surface, SDL_Rect *area)
-{
-	glSDL_TexInfo *txi;
-	if(!surface)
-		return;
-	txi = glSDL_GetTexInfo(surface);
-	if(!txi)
-		return;
-	if(!area)
-	{
-		txi->invalid_area.x = 0;
-		txi->invalid_area.y = 0;
-		txi->invalid_area.w = surface->w;
-		txi->invalid_area.h = surface->h;
-		return;
-	}
-	txi->invalid_area = *area;
-}
 
 
 static int InitTexture(SDL_Surface *datasurf, glSDL_TexInfo *txi, int tex)
@@ -2009,8 +2101,6 @@ static int UploadHuge(SDL_Surface *datasurf, glSDL_TexInfo *txi)
 			res = InitTexture(datasurf, txi, tex++);
 			if(res < 0)
 				return res;
-//			DBG5(printf("glTexSubImage(x = %d, y = %d, w = %d, h = %d)\n",
-//					x, y, thistw, thisth);)
 			gl.TexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
 					thistw, thisth,
 					datasurf->format->Amask ? GL_RGBA : GL_RGB,
@@ -2047,12 +2137,46 @@ static int UploadTextures(SDL_Surface *datasurf, glSDL_TexInfo *txi)
 }
 
 
+SDL_Surface *glSDL_IMG_Load(const char *file)
+{
+	SDL_Surface *s;
+	s = IMG_Load(file);
+	if(s)
+		GLSDL_FIX_SURFACE(s);
+	return s;
+}
+
+
+/*----------------------------------------------------------
+	glSDL specific API extensions
+----------------------------------------------------------*/
+
+void glSDL_Invalidate(SDL_Surface *surface, SDL_Rect *area)
+{
+	glSDL_TexInfo *txi;
+	if(!surface)
+		return;
+	txi = glSDL_GetTexInfo(surface);
+	if(!txi)
+		return;
+	if(!area)
+	{
+		txi->invalid_area.x = 0;
+		txi->invalid_area.y = 0;
+		txi->invalid_area.w = surface->w;
+		txi->invalid_area.h = surface->h;
+		return;
+	}
+	txi->invalid_area = *area;
+}
+
+
 int glSDL_UploadSurface(SDL_Surface *surface)
 {
 	SDL_Surface *datasurf = surface;
 	glSDL_TexInfo *txi;
 	int i;
-	/*
+	/* 
 	 * For now, we just assume that *every* texture needs
 	 * conversion before uploading.
 	 */
@@ -2126,8 +2250,9 @@ int glSDL_UploadSurface(SDL_Surface *surface)
 static void UnloadTexture(glSDL_TexInfo *txi)
 {
 	int i;
-	for(i = 0; i < txi->textures; ++i)
-		gl.DeleteTextures(1, (unsigned int *)&txi->texture[i]);
+	if(SDL_WasInit(SDL_INIT_VIDEO))
+		for(i = 0; i < txi->textures; ++i)
+			gl.DeleteTextures(1, (unsigned int *)&txi->texture[i]);
 	memset(&txi->invalid_area, 0, sizeof(txi->invalid_area));
 }
 
@@ -2143,14 +2268,5 @@ void glSDL_UnloadSurface(SDL_Surface *surface)
 		UnloadTexture(txi);
 }
 
-
-SDL_Surface *glSDL_IMG_Load(const char *file)
-{
-	SDL_Surface *s;
-	s = IMG_Load(file);
-	if(s)
-		GLSDL_FIX_SURFACE(s);
-	return s;
-}
 
 #endif /* HAVE_OPENGL */

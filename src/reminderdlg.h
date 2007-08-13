@@ -17,6 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef __linux__
+
 #ifndef REMINDERDLG_H
 #define REMINDERDLG_H
 
@@ -31,5 +33,7 @@ public:
     int Draw(int nType);
 
 };
+
+#endif
 
 #endif

@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////
 
 CArkanoidSBGame::CArkanoidSBGame() {
-	m_nCurrentLevel	= 0;
+	m_nCurrentLevel		= 0;
 	m_nLevelImage		= -1;
 	m_nBonusLevelType	= -1;
 	m_nSndWall			= -1;
@@ -129,13 +129,6 @@ void CArkanoidSBGame::DoGameActive() {
 // 				//InitLevel(++m_nCurrentLevel);
 // 			}
  		}
-		// max number of bricks before self destruction
-		if(m_nBrickCount <= 5 && m_bSelfDestructStarted == false && m_nCountSelfDestruct != -1) {
-			g_CoolString.Add("timer activated");
-			g_TutorialDlg.AddDialog(WALL_X2, WALL_Y1, 0, 1);
-			m_bSelfDestructStarted	= true;
-			m_nCountSelfDestruct		= 20;
-		}
 		if(m_nBrickCount == 0) {
 			g_CoolString.Add("you have destroyed all bricks!");
 			g_TutorialDlg.AddDialog(WALL_X2, WALL_Y1, 0, 4);
@@ -143,6 +136,13 @@ void CArkanoidSBGame::DoGameActive() {
 				AddGetReeadyInfo("You have destroyed all bricks!");
 				InitLevel(++m_nCurrentLevel);
 			}
+		}
+		// max number of bricks before self destruction
+		else if(m_nBrickCount <= 5 && m_bSelfDestructStarted == false && m_nCountSelfDestruct != -1) {
+			g_CoolString.Add("timer activated");
+			g_TutorialDlg.AddDialog(WALL_X2, WALL_Y1, 0, 1);
+			m_bSelfDestructStarted	= true;
+			m_nCountSelfDestruct	= 20;
 		}
 		if(g_Ball.GetBallsCount() == 0) {
 			AddGetReeadyInfo("You lost balls");
@@ -352,6 +352,7 @@ bool CArkanoidSBGame::DrawScreen() {
 
 	case GS_GAME_ACTIVE:
 		//if(IsKeyPressed(SDLK_g) && IsKeyStateChanged(SDLK_g))	m_GenLev.Generate(++m_nCurrentLevel, false);
+#ifndef __linux__
 		// unregistered version
 		if(g_bIsRegistered == false) {
 			if(m_dwUnregisterdTime < SDL_GetTicks()) {
@@ -368,6 +369,7 @@ bool CArkanoidSBGame::DrawScreen() {
 				m_nGameState			= GS_GAME_REMINDER2;
 			}
 		}
+#endif
 		if(IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) {
 			SendEsc();
 		}
@@ -415,7 +417,8 @@ bool CArkanoidSBGame::DrawScreen() {
 		bIsExit	= DoGameOver();
 		break;
 
-	case GS_GAME_REMINDER1:
+#ifndef __linux__
+		case GS_GAME_REMINDER1:
 		switch(g_ReminderDlg.Draw(0)) {
 		case 1:
 			g_MainMenu.SetMenuType(CMainMenu::MT_REG_KEY);
@@ -438,13 +441,16 @@ bool CArkanoidSBGame::DrawScreen() {
 			break;
 		}
 		break;
+#endif
 	}
 
+#ifndef __linux__
 	if(g_bIsRegistered == false && m_bTutorialPause == false &&
 		(m_nGameState != GS_GAME_REMINDER1 && m_nGameState != GS_GAME_REMINDER2)) {
 		g_Font.DrawString(0, WALL_Y1 + 30, "Unregistered version", CMyString::FONT_ALIGN_CENTER);
 	}
-
+#endif
+	
 	return	bIsExit;
 }
 
@@ -602,7 +608,7 @@ void CArkanoidSBGame::DrawBricks() {
 			// set it to bomb
 			if(m_bSelfDestructStarted == true && m_nCountSelfDestruct == 0) {
 				g_CoolString.Add("bricks armed");
-				m_vecLevelBricks[i].byType			= BOX_BOMB_0 + g_Rnd.Get(BOX_END - BOX_BOMB_0);
+				m_vecLevelBricks[i].byType		= BOX_BOMB_0 + g_Rnd.Get(BOX_END - BOX_BOMB_0);
 				m_vecLevelBricks[i].nCountToDie	= 5;
 			}
 			if(m_nGameState == GS_GAME_ACTIVE) {
@@ -629,7 +635,7 @@ void CArkanoidSBGame::DrawBricks() {
 	}
 	// disable self destruct while we already turn all bricks to bombs
 	if(m_bSelfDestructStarted == true && m_nCountSelfDestruct == 0) {
-		m_nCountSelfDestruct		= -1;
+		m_nCountSelfDestruct	= -1;
 		m_bSelfDestructStarted	= false;
 	}
 /*	static int	nBr	= -1;
@@ -724,48 +730,58 @@ void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore) {
 		bInit	= false;
 		m_GenLev.LoadPatterns();
 	}
+#ifndef __linux__
 	if(g_nUnregisterdCount > 30 * 60)	g_nUnregisterdCount	= 30 * 60;
 	if(g_nUnregisterdCount == 0)		g_nUnregisterdCount	= 3;
-
+#endif
+	
 	if(bRestore == true) {
+		bool	bLoaded	= false;
 		_SAVE	str;
-		if((pFile = fopen(achBuf, "rb")) && sizeof(_SAVE) == fread(&str, 1, sizeof(_SAVE), pFile)) {
-			EncodeDecode(&str, sizeof(_SAVE));
-			m_nCurrentLevel				= str.nLevel;
-			m_nScore					= str.nScore;
-			m_nLives					= str.nLives;
-			m_nScoreToAdditionalBall	= str.nScoreToAdditionalBall;
-			_BRICK	brick;
-			m_vecLevelBricks.clear();
-			for(i = 0; i < str.nBricksCount; i++) {
-				fread(&brick, sizeof(_BRICK), 1, pFile);
-				EncodeDecode(&brick, sizeof(_BRICK));
-				m_vecLevelBricks.push_back(brick);
-			}
-			if(g_bAutoBonusMode == false) {
-				int	nBonusType;
-				for(i = 0; i < str.nBonusesCount; i++) {
-					fread(&nBonusType, sizeof(int), 1, pFile);
-					EncodeDecode(&nBonusType, sizeof(int));
-					g_Bonus.AddToStack(nBonusType);
+		if(pFile = fopen(achBuf, "rb")) {
+			if(sizeof(_SAVE) == fread(&str, 1, sizeof(_SAVE), pFile)) {
+				EncodeDecode(&str, sizeof(_SAVE));
+				if(strncmp(str.achMagic, "WEGR", 4) == 0) {
+					bLoaded	= true;
+					m_nCurrentLevel				= str.nLevel;
+					m_nScore					= str.nScore;
+					m_nLives					= str.nLives;
+					m_nScoreToAdditionalBall	= str.nScoreToAdditionalBall;
+					m_nBonusLevelType			= str.nBonusLevelType;
+					_BRICK	brick;
+					for(i = 0; i < str.nBricksCount; i++) {
+						fread(&brick, sizeof(_BRICK), 1, pFile);
+						EncodeDecode(&brick, sizeof(_BRICK));
+						m_vecLevelBricks.push_back(brick);
+					}
+					if(g_bAutoBonusMode == false) {
+						int	nBonusType;
+						for(i = 0; i < str.nBonusesCount; i++) {
+							fread(&nBonusType, sizeof(int), 1, pFile);
+							EncodeDecode(&nBonusType, sizeof(int));
+							g_Bonus.AddToStack(nBonusType);
+						}
+					}
 				}
 			}
 			fclose(pFile);
 		}
-		else {
+		if(bLoaded == false) {
 			InitNewGame(m_bIsCustomLevels);
 			return;
 		}
 
-		m_nLevelPrev		= -1;
+		m_nLevelPrev		= -2;	// inform, that we restore game
 		m_bTutorialPause	= false;
 	}
-
-	// set bonus level each 5 level
-	if(m_bIsCustomLevels == false && m_nCurrentLevel % 5 == 4)
-		m_nBonusLevelType	= g_Rnd.Get(2);	// at this moment only 2 types available
-	else
-		m_nBonusLevelType	= -1;			// disable bonus level
+	else {
+		// set bonus level each 5 level
+		if(m_bIsCustomLevels == false && m_nCurrentLevel % 5 == 4)
+			m_nBonusLevelType	= g_Rnd.Get(2);	// at this moment only 2 types available
+		else
+			m_nBonusLevelType	= -1;			// disable bonus level
+	}
+	
 	if(m_nCurrentLevel > 0)	PlaySound(1);
 	ResetAll();
 
@@ -786,30 +802,33 @@ void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore) {
 			break;
 		}
 	}
+	else if(m_nBonusLevelType == 0) {
+		// TODO: place bricks without intersect one by other and symmetrically
+		_BRICK	brick;
+		m_vecLevelBricks.clear();
+		for(i = 0; i < 5; i++) {
+			brick.fX				= BRICK_X + g_Rnd.Get(BRICKS_WIDTH / 4) * BRICK_W * 4;
+			brick.fY				= BRICK_Y + g_Rnd.Get(BRICKS_HEIGHT / 4) * BRICK_H * 4;
+			brick.byType			= BOX_SHOOT_0 + g_Rnd.Get(2);
+			brick.nCountToDie		= 10;
+			brick.nFrame			= 0;
+			brick.nAnimateType		= -1;
+			brick.nCountToShoot		= 2 + i;
+			m_vecLevelBricks.push_back(brick);
+		}
+		m_nGetReadyBallsLose	= 0;	// used for counting lost balls
+	}
+	else if(m_nBonusLevelType == 1) {
+		m_vecLevelBricks.clear();
+		m_nBonusLevelTicks	= 3 * 60;	// 3 minutes
+		// TODO: add paddle power
+	}
+	
+	// store current game state for later restoring
 	if(bRestore == false) {
-		if(m_nBonusLevelType == 0) {
-			// TODO: place bricks without intersect one by other and symmetrically
-			_BRICK	brick;
-			for(i = 0; i < 5; i++) {
-				brick.fX						= BRICK_X + g_Rnd.Get(BRICKS_WIDTH / 4) * BRICK_W * 4;
-				brick.fY						= BRICK_Y + g_Rnd.Get(BRICKS_HEIGHT / 4) * BRICK_H * 4;
-				brick.byType				= BOX_SHOOT_0 + g_Rnd.Get(2);
-				brick.nCountToDie			= 10;
-				brick.nFrame				= 0;
-				brick.nAnimateType		= -1;
-				brick.nCountToShoot		= 2 + i;
-				m_vecLevelBricks.push_back(brick);
-			}
-			m_nGetReadyBallsLose	= 0;	// used for counting lost balls
-		}
-		else if(m_nBonusLevelType == 1) {
-			m_vecLevelBricks.clear();
-			m_nBonusLevelTicks	= 3 * 60;	// 3 minutes
-			// TODO: add paddle power
-		}
-		// store current game state for later restoring
 		if(m_nCurrentLevel > 0 && (pFile = fopen(achBuf, "wb"))) {
 			_SAVE	str;
+			memcpy(str.achMagic, "WEGR", 4);
 			str.nLevel					= m_nCurrentLevel;
 			str.nScore					= m_nScore;
 			str.nLives					= m_nLives;
@@ -819,6 +838,7 @@ void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore) {
 			str.nGetReadyBallsLose		= m_nGetReadyBallsLose;
 			str.nBricksCount			= m_vecLevelBricks.size();
 			str.nBonusesCount			= g_Bonus.GetCountInStack();
+			str.nBonusLevelType			= m_nBonusLevelType;
 			EncodeDecode(&str, sizeof(_SAVE));
 			fwrite(&str, sizeof(_SAVE), 1, pFile);
 			_BRICK	brick;
@@ -1184,11 +1204,13 @@ void CArkanoidSBGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveA
 					g_TutorialDlg.AddDialog(nX + BRICK_W / 2, nY + BRICK_H / 2, 0, 7);
 				dwTime	= SDL_GetTicks();
 				int	nType	= g_Rnd.Get(CBonus::TYPE_LAST_BONUS);
+#ifndef __linux__
 				if(g_bIsRegistered == false) {
 					while(nType == CBonus::TYPE_BALL_FIRE || nType == CBonus::TYPE_PADDLE_MISSILE || nType == CBonus::TYPE_PADDLE_ENGINE) {
 						nType++;	nType	%= CBonus::TYPE_LAST_BONUS;
 					}
 				}
+#endif
 				g_Bonus.AddBonus(nX, nY, nType);
 				PlaySound(10);
 			}
@@ -1338,35 +1360,38 @@ bool CArkanoidSBGame::DrawGetReady() {
 
 	if(m_nBonusLevelType == -1) {
 		sprintf(achBuf, "LEVEL %d\nGET READY!", m_nCurrentLevel + 1);
-		if(m_pchGetReeadyInfo != 0) {
+		if(m_pchGetReeadyInfo != 0 && m_nLevelPrev != -2) {
 			g_Font3.DrawString(0, 218, m_pchGetReeadyInfo, 2);
 		}
 	}
 	else if(m_nBonusLevelType == 0) {
-		sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", m_nCurrentLevel / 5);
+		sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
 		g_Font3.DrawString(0, 218, "You should destroy all cannons, don't lost more than 5 balls!", 2);
 	}
 	else if(m_nBonusLevelType == 1) {
-		sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", m_nCurrentLevel / 5);
+		sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
 		g_Font3.DrawString(0, 218, "You should destroy all wreckage!", 2);
 	}
 	g_Font2.DrawString(0, 170, achBuf, CMyString::FONT_ALIGN_CENTER);
 
-	g_Font.DrawString(200, 240+2, "Bricks destroyed");
-	g_Font2.DrawNumber(m_nGetReadyBricks, 200, 240, CMyString::FONT_ALIGN_RIGHT);
-
-	g_Font.DrawString(200, 260+2, "Monsters destroyed");
-	g_Font2.DrawNumber(m_nGetReadyMonsters, 200, 260, CMyString::FONT_ALIGN_RIGHT);
-
-	g_Font.DrawString(200, 280+2, "Gained score");
-	g_Font2.DrawNumber(m_nGetReadyScore, 200, 280, CMyString::FONT_ALIGN_RIGHT);
-
-	g_Font.DrawString(200, 300+2, "Bonuses collected");
-	g_Font2.DrawNumber(m_nGetReadyBonuses, 200, 300, CMyString::FONT_ALIGN_RIGHT);
-
-	g_Font.DrawString(200, 320+2, "Balls lost");
-	g_Font2.DrawNumber(m_nGetReadyBallsLose, 200, 320, CMyString::FONT_ALIGN_RIGHT);
-
+	// do not show that info while we restore game
+	if(m_nLevelPrev != -2) {
+		g_Font.DrawString(200, 240+2, "Bricks destroyed");
+		g_Font2.DrawNumber(m_nGetReadyBricks, 200, 240, CMyString::FONT_ALIGN_RIGHT);
+	
+		g_Font.DrawString(200, 260+2, "Monsters destroyed");
+		g_Font2.DrawNumber(m_nGetReadyMonsters, 200, 260, CMyString::FONT_ALIGN_RIGHT);
+	
+		g_Font.DrawString(200, 280+2, "Gained score");
+		g_Font2.DrawNumber(m_nGetReadyScore, 200, 280, CMyString::FONT_ALIGN_RIGHT);
+	
+		g_Font.DrawString(200, 300+2, "Bonuses collected");
+		g_Font2.DrawNumber(m_nGetReadyBonuses, 200, 300, CMyString::FONT_ALIGN_RIGHT);
+	
+		g_Font.DrawString(200, 320+2, "Balls lost");
+		g_Font2.DrawNumber(m_nGetReadyBallsLose, 200, 320, CMyString::FONT_ALIGN_RIGHT);
+	}
+	
 	bool	bIsOver	= g_MainMenu.DrawMenuButton((SCREEN_WIDTH - 124) / 2, 350, CMainMenu::B_OK);
 	if(g_bMouseLB == true && true == bIsOver) {
 		g_bMouseLB	= false;
