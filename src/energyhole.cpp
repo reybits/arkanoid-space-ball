@@ -60,8 +60,8 @@ void CEnergyHole::Draw() {
  */
 void CEnergyHole::AddEnergyHole() {
 	_ENERGYHOLE	hole;
-	hole.x				= WALL_X1 + (float)g_Rnd.Get(WALL_X2 - WALL_X1 - 100);
-	hole.y				= WALL_Y1 + (float)g_Rnd.Get(WALL_Y2 - WALL_Y1 - 100);
+	hole.x				= WALL_X1 + (double)g_Rnd.Get(WALL_X2 - WALL_X1 - 100);
+	hole.y				= WALL_Y1 + (double)g_Rnd.Get(WALL_Y2 - WALL_Y1 - 100);
 	hole.nFrame			= 0;
 	hole.dwTime			= 0;
 	hole.dwMoveTime	= 0;
@@ -76,7 +76,7 @@ void CEnergyHole::Move() {
 	Uint32	dwTime	= SDL_GetTicks();
 
 	for(int i = 0; i < m_vecEnergyHole.size(); i++) {
-		float	fSpeed	= g_fSpeedCorrection * 0.2f;
+		double	fSpeed	= g_fSpeedCorrection * 0.2;
 
 		if(m_vecEnergyHole[i].dwMoveTime + 5000 < dwTime) {	// change angle
 			m_vecEnergyHole[i].dwMoveTime	= dwTime;
@@ -98,11 +98,11 @@ void CEnergyHole::Move() {
 		while(g_Ball.GetPositionAndDiameter(rc, nIndex) == true) {
 			int	nCatet1	= int((m_vecEnergyHole[i].x + 80/2) - (rc.x + rc.w / 2));
 			int	nCatet2	= int((m_vecEnergyHole[i].y + 80/2) - (rc.y + rc.w / 2));
-			float	fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
+			double	fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
 			if(fDist < 80/2) {
 				g_TutorialDlg.AddDialog(rc.x + rc.w / 2, rc.y + rc.w / 2, 0, 5);
 				m_vecEnergyHole[i].nIsOver	= true;
-				int	nAngle	= (int)(57.3f * asin(nCatet2 / fDist));
+				int	nAngle	= (int)(57.3 * asin(nCatet2 / fDist));
 				if(nCatet1 > 0)	nAngle	= g_Ball.GetAngle(nIndex - 1) - (90 + nAngle) % 360;
 				else			nAngle	= g_Ball.GetAngle(nIndex - 1) - (270 - nAngle) % 360;
 				if(abs(nAngle) < 180)	g_Ball.ChangeAngle(nIndex - 1, nAngle < 0 ? true : false);
@@ -115,7 +115,7 @@ void CEnergyHole::Move() {
 			int	nYm		= rc.y + rc.h / 2;
 			int	nCatet1	= int(m_vecEnergyHole[i].x + 80/2) - (rc.x + rc.w / 2);
 			int	nCatet2	= int(m_vecEnergyHole[i].y + 80/2) - nYm;
-			float	fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
+			double	fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
 			if(fDist < 80/2) {
 				g_TutorialDlg.AddDialog(rc.x + rc.w / 2, rc.y + rc.h / 2, 0, 6);
 				m_vecEnergyHole[i].nIsOver	= true;

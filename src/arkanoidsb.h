@@ -19,9 +19,9 @@ using namespace std;
 	#define PATH_MAX	256
 #endif
 
-#define GAME_VERSION		"1.1.8"
+#define GAME_VERSION		"1.1.9"
 
-#define SCREEN_WIDTH		640
+#define SCREEN_WIDTH	640
 #define SCREEN_HEIGHT	480
 
 #define WALL_X1	40
@@ -57,7 +57,7 @@ enum { BOX_NONE,
 };
 
 struct _BRICK {
-	float	fX, fY;				// brick's position on screen in px
+	double	fX, fY;				// brick's position on screen in px
 	Uint8	byType;//, byDesiredType;
 	int		nCountToDie;		// count to die brick
 	int		nFrame;
@@ -101,16 +101,16 @@ extern int 			g_anBpx[5];
 extern int			g_nBppIndex;
 extern bool 		g_bTutorialMode;
 extern bool			g_bAutoBonusMode;
-extern float		g_fSpeedCorrection;
-extern float		g_fCos[];
-extern float		g_fSin[];
+extern double		g_fSpeedCorrection;
+extern double		g_fCos[];
+extern double		g_fSin[];
 extern int			g_nGameMode;
 extern Uint8		*g_pnKeys;
 extern Uint32		g_dwModState;
 extern bool			g_bMouseRB;
 extern bool			g_bMouseLB;
-extern float		g_nMouseDX;
-extern float		g_nMouseDY;
+extern double		g_nMouseDX;
+extern double		g_nMouseDY;
 extern int			g_nCursorX;
 extern int			g_nCursorY;
 extern bool			g_bIsCursorVisible;
@@ -168,7 +168,7 @@ extern void EncodeDecode(void *pData, int nLen);
 extern void EnableCursor(bool bEnable);
 extern SDL_Surface *LoadImage(const char *pchFileName, const Uint32 nColorKey = 0xff000000);
 extern void Blit(const int nX, const int nY, SDL_Surface *pImg, SDL_Rect *pSrc);
-extern void BlitStretch(int nX, int nY, SDL_Surface *pImg, SDL_Rect *pSrc, float fScale);
+extern void BlitStretch(int nX, int nY, SDL_Surface *pImg, SDL_Rect *pSrc, double fScale);
 extern void SetRect(SDL_Rect *pRc, int nX, int nY, int nW, int nH);
 extern char *MakePath(const char *pchFileName);
 extern bool IsKeyPressed(int nKey);

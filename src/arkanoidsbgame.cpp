@@ -100,7 +100,7 @@ void CArkanoidSBGame::DoGameActive() {
 	}
 
 	if(m_bCanMovePaddle == true) {
-		const float	fMultipler	= 1.1f;// * g_fSpeedCorrection;
+		const double	fMultipler	= 1.1;// * g_fSpeedCorrection;
 		if(m_bPaddleIsInvert == false) {
 			m_nRacketY	+= g_nMouseDY * fMultipler;
 			if(m_nRacketType == RT_ENGINE)	m_nRacketX	+= g_nMouseDX * fMultipler;
@@ -159,7 +159,7 @@ void CArkanoidSBGame::DoGameActive() {
 		}
 		// correct it after paddle, because it should move as before
 		if(m_bSlowDown == true) {
-			g_fSpeedCorrection	*= .4f;
+			g_fSpeedCorrection	*= .4;
 		}
 
 		rc.x	= (int)m_nRacketX;
@@ -524,7 +524,7 @@ void CArkanoidSBGame::DrawBricks() {
 
 		// movable bricks
 		if(m_vecLevelBricks[i].byType >= BOX_MOV_0 && m_vecLevelBricks[i].byType < BOX_SHOOT_0) {
-			float	fSpeed	= g_fSpeedCorrection * .5;
+			double	fSpeed	= g_fSpeedCorrection * .5;
 			do {
 				int	nY	= int(m_vecLevelBricks[i].fY);
 				if(m_vecLevelBricks[i].bDir == true) {

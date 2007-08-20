@@ -137,7 +137,7 @@ bool CBullet::GetPositionAndSize(SDL_Rect &rc, int& nPos, bool bFromFirst) {
 	while(nPos < m_vecBullets.size()) {
 		rc.x	= (int)m_vecBullets[nPos].x;
 		rc.y	= (int)m_vecBullets[nPos].y;
-		// Тут я возвращаю ширину и высоту
+		// пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		switch(m_vecBullets[nPos].nType) {
 		case TYPE_MISSILE:	rc.w	= 46;		rc.h	= 20;	break;
 		case TYPE_PLASMA:		rc.w	= 30;		rc.h	= 20;	break;
@@ -160,7 +160,7 @@ void CBullet::RemoveByPos(int nPos) {
     \fn CBullet::ChangeAngle(int nPos, bool bInc)
  */
 void CBullet::ChangeAngle(int nPos, bool bRotate) {
-		float	fAngle	= 0.5f * g_fSpeedCorrection;
+	double	fAngle	= 0.5 * g_fSpeedCorrection;
 	if(bRotate == false) {
 		m_vecBullets[nPos].nAngle	+= (360 - fAngle);
 	}

@@ -46,7 +46,7 @@ protected:
 	void DrawPause();
 	int m_nLevelPrev;	// store previous level number: -1 - usualy, -2 - inform, that we restore game
 	struct _STARS {
-		float	fX, fY, fSpeed;
+		double	fX, fY, fSpeed;
 		int	nType, nFrame;
 	};
 	std::vector<_STARS>m_vecStars;
@@ -62,7 +62,7 @@ protected:
 		int		nType;
 		int		nAngle;
 		int		nFrame;
-		float		fX, fY;
+		double	fX, fY;
 	};
 	std::vector<_BRICK_BULLET>m_vecBrickBullets;
 	int m_nTotalBonusesInLevel;
@@ -85,8 +85,8 @@ protected:
 	bool DoGameOver();
 	void DoGameActive();
 	int m_nGameState;
-	float m_nRacketX;
-	float m_nRacketY;
+	double m_nRacketX;
+	double m_nRacketY;
 	int m_nRacketSize;
 	int m_nRacketType;
 	int m_nPaddleMissileCount;

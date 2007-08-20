@@ -26,6 +26,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {
 	g_Arkanoid.m_vecLevelBricks.clear();
 	memset(m_abyLevel, 0, sizeof(m_abyLevel));
 
+	int	nCustomLevelsCount	= 0;
 	if(bUseCustom == true) {
 		printf("Use custom levels mode.\n");
 		char	achBuf[PATH_MAX];
@@ -33,9 +34,8 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {
 		sprintf(achBuf, "%scustomlevels", g_achUserProfile);
 		if((pFile = fopen(achBuf, "rb"))) {
 			fseek(pFile, 0, SEEK_END);
-			int	nLevelsCount	= ftell(pFile) / (BRICKS_WIDTH * BRICKS_HEIGHT);
-			nLevel	%= nLevelsCount;
-			fseek(pFile, nLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), SEEK_SET);
+			nCustomLevelsCount	= ftell(pFile) / (BRICKS_WIDTH * BRICKS_HEIGHT);
+			fseek(pFile, (nLevel % nCustomLevelsCount) * (BRICKS_WIDTH * BRICKS_HEIGHT), SEEK_SET);
 			fread(m_abyLevel, (BRICKS_WIDTH * BRICKS_HEIGHT), 1, pFile);
 			fclose(pFile);
 		}
@@ -106,12 +106,14 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {
 	//printf("(II) Generated level data below:\n");
 	_BRICK	brick;
 	int	nCountToShoot	= 0;
+	int	nBricksCount	= 0;
 	for(int y = 0; y < BRICKS_HEIGHT; y++) {
 		for(int x = 0; x < BRICKS_WIDTH; x++) {
 			Uint8	byType	= GetBrick(x, y);
 			//printf("%s", !byType ? " " : "O");
 			//printf("%2d", byType);
-			if(BOX_NONE != byType) {
+			if(byType > BOX_NONE && byType < BOX_END) {
+				nBricksCount++;
 				brick.fX				= BRICK_X + x * BRICK_W;
 				brick.fY				= BRICK_Y + y * BRICK_H;
 				brick.byType			= byType;
@@ -128,6 +130,18 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {
 		//printf("\n");
 	}
 
+	// if ustom level empty, we use internal levels
+	if(bUseCustom == true && nBricksCount == 0) {
+		if(nCustomLevelsCount < nLevel) {
+			printf("Custom level empty, switch to internal levels\n", nLevel++);
+			return Generate(nLevel, false);
+		}
+		else {
+			printf("Now bricks on custom level %d, skip to next\n", nLevel++);
+			return Generate(nLevel, true);
+		}
+	}
+		
 	printf("Total bricks on level %d\n", g_Arkanoid.m_vecLevelBricks.size());
 }
 

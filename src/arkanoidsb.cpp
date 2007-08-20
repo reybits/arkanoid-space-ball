@@ -25,9 +25,9 @@ bool g_bShowFps	= false;
 bool g_bTutorialMode	= true;
 bool g_bAutoBonusMode	= true;
 
-float	g_fSpeedCorrection;
-float	g_fCos[360];
-float	g_fSin[360];
+double	g_fSpeedCorrection;
+double	g_fCos[360];
+double	g_fSin[360];
 
 SDL_Joystick	*g_pJoystick;
 bool g_bIsJoystickSupported	= false;
@@ -42,8 +42,8 @@ Uint32 g_dwModState	= 0;
 bool g_bMouseRB			= false;
 bool g_bMouseLB			= false;
 bool g_bIsCursorVisible	= false;
-float g_nMouseDX	= 0;
-float g_nMouseDY	= 0;
+double g_nMouseDX	= 0;
+double g_nMouseDY	= 0;
 int g_nCursorX	= SCREEN_WIDTH / 2;
 int g_nCursorY	= SCREEN_HEIGHT / 2;
 
@@ -325,10 +325,10 @@ int main(int argc, char *argv[]) {
 		PlayMusic2();
 	}
 
-	const float	pi	= 3.1415926535f;
+	const double	pi	= 3.1415926535;
 	for(i = 0; i < 360; i++) {
-		g_fCos[i]	= (float)cos((pi / 180.0f) * i);
-		g_fSin[i]	= (float)sin((pi / 180.0f) * i);
+		g_fCos[i]	= (double)cos((pi / 180) * i);
+		g_fSin[i]	= (double)sin((pi / 180) * i);
 	}
 
 	g_pnKeys						= SDL_GetKeyState(&g_nNumKeys);
@@ -338,26 +338,27 @@ int main(int argc, char *argv[]) {
 	memset(g_pbIsKeyStateChanged, 0, g_nNumKeys * sizeof(bool));
 
 	int		nFrame		= 0;
-	Uint32	nFPStime		= 0;
-	float		fFPS			= 0;
+	Uint32	nFPStime	= 0;
+	double	fFPS		= 0;
 	Uint32	nPrevTime	= 0;
-	g_fSpeedCorrection	= 1.0f;
-
+	g_fSpeedCorrection	= 1.0;
+	const double    fPerFrameMs     = 1000.0 / DESIRED_FPS;
+	
 	CLevelEditor	m_LevelEditor;
 	//g_nGameMode	= APPS_EDITOR;
 
 	while(UpdateKeys() == false && g_nGameMode != APPS_EXIT) {
+		Uint32	nTimeCurrent	= SDL_GetTicks();
 		if(g_bActive == true) {
 			nFrame++;
-			Uint32	nTimeCurrent	= SDL_GetTicks();
 			Uint32	nFPSelapsed		= nTimeCurrent - nFPStime;
 			if(nFPSelapsed >= 1000) {
-				fFPS		= (nFrame * 1000.0f) / nFPSelapsed;
+				fFPS		= (nFrame * 1000.0) / nFPSelapsed;
 				nFrame		= 0;
 				nFPStime	= nTimeCurrent;
 			}
 
-			g_fSpeedCorrection	= float(nTimeCurrent - nPrevTime) / (DESIRED_FPS / 10.0f);
+			g_fSpeedCorrection	= double(nTimeCurrent - nPrevTime) / (DESIRED_FPS / 10.0);
 			nPrevTime				= nTimeCurrent;
 
 			// volume manager
@@ -395,6 +396,8 @@ int main(int argc, char *argv[]) {
 					PlayMusic(true);
 					break;
 				case 3:
+					// TODO check for valid custom levels
+					
 					g_TutorialDlg.Reset();
 					g_Arkanoid.InitNewGame(true);
 					g_nGameMode	= APPS_GAME;
@@ -455,7 +458,10 @@ int main(int argc, char *argv[]) {
 			}
 
 			SDL_Flip(g_psurfScreen);
-			SDL_Delay(0);
+			
+			Sint32  nDelay  = (Sint32)(fPerFrameMs - (SDL_GetTicks() - nTimeCurrent));
+			if(nDelay > 0)  SDL_Delay(nDelay);
+			else    SDL_Delay(0);
 		}
 		else {
 			SDL_FillRect(g_psurfScreen, 0, 0);
@@ -523,7 +529,7 @@ void Blit(const int nX, const int nY, SDL_Surface *pImg, SDL_Rect *pSrc) {
 	SDL_BlitSurface(pImg, pSrc, g_psurfScreen, &dst);
 }
 
-// void BlitStretch(int nX, int nY, SDL_Surface *pImg, SDL_Rect *pSrc, float fScale) {
+// void BlitStretch(int nX, int nY, SDL_Surface *pImg, SDL_Rect *pSrc, double fScale) {
 // 	SDL_Rect	pdst;
 // 	int	w	= (int)(fScale * pSrc->w);
 // 	int	h	= (int)(fScale * pSrc->h);
@@ -661,7 +667,7 @@ bool UpdateKeys() {
 			break;
 /*		case SDL_JOYAXISMOTION:	// Handle Joystick Motion
 			if((evt.jaxis.value < -3200) || (evt.jaxis.value > 3200)) {
-				int	nDelta	= int(evt.jaxis.value / 32768.0f * g_fSpeedCorrection * 10);
+				int	nDelta	= int(evt.jaxis.value / 32768.0 * g_fSpeedCorrection * 10);
 				if(evt.jaxis.axis == 0) {
 					g_nCursorX	+= nDelta;
 					g_nMouseDX	+= nDelta;
@@ -704,13 +710,13 @@ bool UpdateKeys() {
 		}*/
 		int	nDelta	= SDL_JoystickGetAxis(g_pJoystick, 0);
 		if((nDelta < -3200) || (nDelta > 3200)) {
-			nDelta	= int(nDelta / 32768.0f * g_fSpeedCorrection * 4);
+			nDelta	= int(nDelta / 32768.0 * g_fSpeedCorrection * 4);
 			g_nCursorX	+= nDelta;
 			g_nMouseDX	+= nDelta;
 		}
 		nDelta	= SDL_JoystickGetAxis(g_pJoystick, 1);
 		if((nDelta < -3200) || (nDelta > 3200)) {
-			nDelta	= int(nDelta / 32768.0f * g_fSpeedCorrection * 4);
+			nDelta	= int(nDelta / 32768.0 * g_fSpeedCorrection * 4);
 			g_nCursorY	+= nDelta;
 			g_nMouseDY	+= nDelta;
 		}
@@ -770,7 +776,7 @@ void SetVolumeMusic(int nVolume) {
 	g_nVolumeM	= nVolume;
 	if(g_nVolumeM < 0)	g_nVolumeM	= 0;
 	if(g_nVolumeM > 10)	g_nVolumeM	= 10;
-	const float	fVolumeCorrection	= MIX_MAX_VOLUME / 10.0f;
+	const double	fVolumeCorrection	= MIX_MAX_VOLUME / 10.0;
 	Mix_VolumeMusic(int(g_nVolumeM * fVolumeCorrection));
 	printf("Music volume %d\n", g_nVolumeM);
 }
@@ -780,7 +786,7 @@ void SetVolumeSound(int nVolume) {
 	g_nVolumeS	= nVolume;
 	if(g_nVolumeS < 0)	g_nVolumeS	= 0;
 	if(g_nVolumeS > 10)	g_nVolumeS	= 10;
-	const float	fVolumeCorrection	= MIX_MAX_VOLUME / 10.0f;
+	const double	fVolumeCorrection	= MIX_MAX_VOLUME / 10.0;
 	Mix_Volume(-1, int(g_nVolumeS * fVolumeCorrection));
 	printf("Sound volume %d\n", g_nVolumeS);
 }

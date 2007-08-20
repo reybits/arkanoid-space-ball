@@ -36,7 +36,7 @@ public:
 	int GetType();
    int GetTypeCount();
 	void BallCaptured(int nIndex, bool bIsCaptured);
-	void SetCapturedBallPos(int nIndex, float fX, float fY);
+	void SetCapturedBallPos(int nIndex, double fX, double fY);
 
 protected:
 	void AddFBs(int nPos);
@@ -44,12 +44,12 @@ protected:
 	int m_nType;
 	int m_nPrevTypeCount;
 	struct _BALL {
-		float	x, y;
+		double	x, y;
 		int		nYoffset;
 		int		nDiameter;
 		int		nImpacts;
-		float	nAngle;
-		float	fSpeed, fOldSpeed;
+		double	nAngle;
+		double	fSpeed, fOldSpeed;
 		bool	bAlreadyImpact;
 		Uint32	dwTimeCanAddFb;
 		bool	bIsCaptured;	// is ball captured by monster HAND?

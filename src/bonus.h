@@ -40,7 +40,7 @@ protected:
 		int	nFrame;
 		int	nRadius;
 		int	nSin, nCos;
-		float	origx, origy;
+		double	origx, origy;
 		int	x, y;
 	};
 	std::vector<_BONUS>m_vecBonuses;

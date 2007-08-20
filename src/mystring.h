@@ -30,7 +30,7 @@ public:
 
 protected:
 	int GetWordWidth(const char *pchString, int &nCharsCount);
-	float m_fJustifyWidth;
+	double m_fJustifyWidth;
 	int m_nKerning;
 	Uint32 _GetPixel(SDL_Surface *Surface, Sint32 X, Sint32 Y);
 	bool _DoStartNewChar(Sint32 x);
@@ -43,7 +43,7 @@ protected:
 	bool LoadProps(const char *pchName);
 	SDL_Surface *m_psurFont;
 	SDL_Surface *m_psurFontShadow;
-	float m_afSin[360];
+	double m_afSin[360];
 	int m_nLineHeight;
 	SDL_Rect *m_prcFrames;
 	SDL_Rect m_WindowRect;

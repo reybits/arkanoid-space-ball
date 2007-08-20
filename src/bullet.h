@@ -27,8 +27,8 @@ protected:
 	void RemoveByPos(int nPos);
 	struct _BULLET {
 		int		nType;
-		float		x, y;
-		float		nAngle;
+		double		x, y;
+		double		nAngle;
 		int		w;	// laser related
 		Uint32	dwLaser;
 	};

@@ -33,9 +33,9 @@ protected:
 	bool m_bBackWall;
 	struct _MONSTER {
 		int	nType;
-		float	x, y;
+		double	x, y;
 		int	w, h, nFrame, nFramesCount, nAngle;
-		float	fSpeed;	// wreckage related
+		double	fSpeed;	// wreckage related
 		SDL_Surface* pSurface;
 		int	nCaptureMode;			// MONST_HAND: 0 - none, 1 - ball captured, 2 - ball released
 		int	nCapturedBallIndex;	// MONST_HAND: captured ball index

@@ -50,11 +50,11 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddle
 
 		if(m_vecBalls[nPos].fSpeed != 0) {
 			if(bAddFB == true)	AddFBs(nPos);
-			float	fSpeed		= m_vecBalls[nPos].fSpeed * g_fSpeedCorrection;
+			double	fSpeed		= m_vecBalls[nPos].fSpeed * g_fSpeedCorrection;
 			m_vecBalls[nPos].x	+= fSpeed * g_fSin[GetAngle(nPos)];
 			m_vecBalls[nPos].y	-= fSpeed * g_fCos[GetAngle(nPos)];
 			//if(GetAngle(nPos) > 0 && GetAngle(nPos) < 180) {
-				// Это проверка на столкновение с первой ракеткой
+				// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				if(IsThisBallOverObject(nPos, rcRacket.x, rcRacket.y, 16, rcRacket.h) > 0) {
 					nPaddleX	+= 5;
 					PlaySound(11);
@@ -63,7 +63,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddle
 						m_vecBalls[nPos].fSpeed		= 0;
 						m_vecBalls[nPos].nYoffset	= int(m_vecBalls[nPos].y - rcRacket.y);
 					}
-					m_vecBalls[nPos].nAngle	= (210 + (120.0f / rcRacket.h) * ((rcRacket.y + rcRacket.h) - (m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2)));
+					m_vecBalls[nPos].nAngle	= (210 + (120.0 / rcRacket.h) * ((rcRacket.y + rcRacket.h) - (m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2)));
 					if(m_vecBalls[nPos].nAngle < 210)
 						m_vecBalls[nPos].nAngle	= 210;
 					else if(m_vecBalls[nPos].nAngle > 329)
@@ -174,8 +174,8 @@ void CBall::Draw(int nPaddleType) {
 			if(bFirst == true  && m_vecBalls[nPos].fSpeed == 0)	bFirst	= false;
 			rc.y	= 0;	rc.w	= 4;	rc.h	= 4;
 			int	nFrame2		= 0;
-			float	x	= m_vecBalls[nPos].x + (CalcDiameter(m_vecBalls[nPos].nDiameter) - 4) / 2;
-			float	y	= m_vecBalls[nPos].y + (CalcDiameter(m_vecBalls[nPos].nDiameter) - 4) / 2;
+			double	x	= m_vecBalls[nPos].x + (CalcDiameter(m_vecBalls[nPos].nDiameter) - 4) / 2;
+			double	y	= m_vecBalls[nPos].y + (CalcDiameter(m_vecBalls[nPos].nDiameter) - 4) / 2;
 /*			x	+= g_fSin[GetAngle(nPos)] * nStep;
 			y	-= g_fCos[GetAngle(nPos)] * nStep;
 			nStep++;
@@ -230,8 +230,8 @@ void CBall::RemoveAll() {
 
 void CBall::AddBall(int x, int y) {
 	_BALL	ball;
-	ball.x				= (float)x;
-	ball.y				= (float)y;
+	ball.x				= (double)x;
+	ball.y				= (double)y;
 	ball.nYoffset		= y - (int)g_Arkanoid.m_nRacketY;
 	ball.nDiameter		= 1;
 	ball.fSpeed			= 0;
@@ -246,8 +246,8 @@ void CBall::AddBall(int x, int y) {
 
 void CBall::AddBall(int x, int y, int nAngle) {
 	_BALL	ball;
-	ball.x				= (float)x;
-	ball.y				= (float)y;
+	ball.x				= (double)x;
+	ball.y				= (double)y;
 	ball.nYoffset		= 0;
 	ball.nDiameter		= 1;
 	ball.fSpeed			= INIT_BALL_SPEED;
@@ -262,7 +262,7 @@ void CBall::AddBall(int x, int y, int nAngle) {
 
 int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight) {
 	// calculate first angle
-	int	nObjAngle	= int(57.3f * atan((float)nWidth / (float)nHeight));
+	int	nObjAngle	= int(57.3 * atan((double)nWidth / (double)nHeight));
 	int	nObjXc	= nX + nWidth / 2;	// center of object
 	int	nObjYc	= nY + nHeight / 2;
 	int	nBallR	= CalcDiameter(m_vecBalls[nPos].nDiameter) / 2;	// ball radius
@@ -271,14 +271,14 @@ int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeigh
 	int	nCatet1	= nObjXc - nBallXc;
 	int	nCatet2	= nObjYc - nBallYc;
 
-	float	fDist1		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
-	int		nAngle	= int(57.3f * asin(nCatet2 / fDist1));
+	double	fDist1		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
+	int		nAngle	= int(57.3 * asin(nCatet2 / fDist1));
 	if(nCatet1 > 0)	nAngle	= 90 + nAngle;
 	else			nAngle	= 270 - nAngle;
 	nAngle	= ((360 + nAngle) % 360);
 
 	int	nIsOver;
-	float	fDist2;
+	double	fDist2;
 	if(nAngle < nObjAngle) {
 		fDist2	= (nHeight / 2) / g_fCos[nAngle];
 		nIsOver	= 1;
@@ -334,7 +334,7 @@ bool CBall::StartBall(int nTop, int nBottom) {
 }
 
 void CBall::ImpactWithWallAngle(int nPos) {
-	// проверяем столкновение мяча со стенкой и AddExploision
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ AddExploision
 	if(m_vecBalls[nPos].x <= WALL_X1) {
 		if(m_nType == TYPE_RED)
 			g_Exploision.AddExploision(WALL_X1 - 16, (int)m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, 0);
@@ -511,8 +511,8 @@ void CBall::AddFBs(int nPos) {
     \fn CBall::ChangeAngle(int nPos)
  */
 void CBall::ChangeAngle(int nPos, bool bIncrease) {
-	if(m_vecBalls[nPos].fSpeed != 0.0f) {
-		float	fAngle	= 0.5f * g_fSpeedCorrection;
+	if(m_vecBalls[nPos].fSpeed != 0.0) {
+		double	fAngle	= 0.5 * g_fSpeedCorrection;
 		if(bIncrease == true) {
 			m_vecBalls[nPos].nAngle	+= fAngle;
 		}
@@ -589,9 +589,9 @@ void CBall::BallCaptured(int nIndex, bool bIsCaptured) {
 
 
 /*!
-    \fn CBall::SetBallPos(int nIndex, float fX, float fY)
+    \fn CBall::SetBallPos(int nIndex, double fX, double fY)
  */
-void CBall::SetCapturedBallPos(int nIndex, float fX, float fY) {
+void CBall::SetCapturedBallPos(int nIndex, double fX, double fY) {
 	if(nIndex >= 0 && nIndex < m_vecBalls.size() && m_vecBalls[nIndex].bIsCaptured == true) {
 		int	nRadius	= CalcDiameter(m_vecBalls[nIndex].nDiameter) / 2;
 		m_vecBalls[nIndex].x	= fX + 26 - nRadius;

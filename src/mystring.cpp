@@ -23,9 +23,9 @@ CMyString::CMyString() {
 	m_WindowRect.y			= 0;
 	m_WindowRect.w			= SCREEN_WIDTH;
 	m_WindowRect.h			= SCREEN_HEIGHT;
-	const float	pi	= 3.1415926535f;
+	const double	pi	= 3.1415926535;
 	for(int i = 0; i < 360; i++) {
-		m_afSin[i]	= (float)sin((pi / 180.0f) * i);
+		m_afSin[i]	= (double)sin((pi / 180) * i);
 	}
 }
 
@@ -77,7 +77,7 @@ void CMyString::DrawString(int nX, int nY, const char *pchString, int nAlign) {
 		return;
 
 	int	nYPos	= m_WindowRect.y + nY;
-	float	nXPos	= GetXpos(nX, pchString, nAlign);
+	double	nXPos	= GetXpos(nX, pchString, nAlign);
 
 	Uint32	dwFrame		= 0;
 	int		nFrameWidth	= 0;
@@ -117,7 +117,7 @@ int CMyString::GetXpos(int nX, const char *pchString, int nAlign) {
 	else {
 		int	nSpaces;
 		int	nWidth	= GetStringWidth2(pchString, nSpaces);
-		m_fJustifyWidth	= (m_WindowRect.w - nWidth) / (float)nSpaces;
+		m_fJustifyWidth	= (m_WindowRect.w - nWidth) / (double)nSpaces;
 		return m_WindowRect.x + nX;
 	}
 }
@@ -157,8 +157,8 @@ void CMyString::DrawString2(int nX, int nY, const char *pchString) {
 			}
 			else break;
 		}
-		m_fJustifyWidth	= (m_WindowRect.w - nWidthLine) / (float)nSpaces;
-		float	nXPos	= m_WindowRect.x + nX;
+		m_fJustifyWidth	= (m_WindowRect.w - nWidthLine) / (double)nSpaces;
+		double	nXPos	= m_WindowRect.x + nX;
 		while(nCharsLine) {
 			Uint8	bySymb	= *pchString++;
 			if(bySymb == ' ') {

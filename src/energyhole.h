@@ -35,7 +35,7 @@ public:
 
 protected:
 	struct _ENERGYHOLE {
-		float		x, y;
+		double		x, y;
 		Uint32	dwTime;
 		int		nFrame;
 		Uint32	dwMoveTime;
