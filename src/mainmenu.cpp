@@ -775,8 +775,10 @@ void CMainMenu::DrawEnterReg() {
 		//m_nMenuType	= MT_MAIN;
 #ifdef _WIN32
 		ShellExecute(NULL, "open", "arkanoidsbreg.url", NULL, NULL, SW_SHOWNORMAL);
-#elif __linux__
-		system("konqueror http://www.regnow.com/softsell/nph-softsell.cgi?item=2735-17&vreferrer=game");
+//#elif __linux__
+		system("konqueror http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
+#elif __MACOSX__
+		system("open http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
 #endif
 	}
 }
