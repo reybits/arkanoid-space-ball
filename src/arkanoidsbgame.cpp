@@ -546,7 +546,7 @@ void CArkanoidSBGame::DrawBricks() {
 					}
 				}
 				fSpeed	-= 1;
-			} while(fSpeed > 0.0f);
+			} while(fSpeed > 0.0);
 
 			// only 0-type brick can reverse
 			if(m_vecLevelBricks[i].byType == BOX_MOV_0 && bChangeDir == true && m_vecLevelBricks[i].nDirChangeCount > 0) {
@@ -1326,7 +1326,7 @@ int CArkanoidSBGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY) {
 	int		nCatet1	= nX - ((int)m_vecLevelBricks[nIndex].fX + BRICK_W / 2);
 	int		nCatet2	= nY - ((int)m_vecLevelBricks[nIndex].fY + BRICK_H / 2);
 	double	fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
-	nAngle				= (int)(57.3f * asin(nCatet2 / fDist));
+	nAngle				= (int)(57.3 * asin(nCatet2 / fDist));
 	if(nCatet1 > 0)	nAngle	= 90 + nAngle;
 	else					nAngle	= 270 - nAngle;
 	return	((360 + nAngle) % 360);

@@ -5,8 +5,8 @@
 #include "arkanoidsb.h"
 #include "ball.h"
 
-#define	INIT_ANGLE			250
-#define	INIT_BALL_SPEED	1.5f
+const int		INIT_ANGLE		= 250;
+const double	INIT_BALL_SPEED	= 1.5;
 
 
 //////////////////////////////////////////////////////////////////////
@@ -338,7 +338,7 @@ void CBall::ImpactWithWallAngle(int nPos) {
 	if(m_vecBalls[nPos].x <= WALL_X1) {
 		if(m_nType == TYPE_RED)
 			g_Exploision.AddExploision(WALL_X1 - 16, (int)m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, 0);
-			//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0f / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+			//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
 
 		if((GetAngle(nPos) >= 180 && GetAngle(nPos) < 270) || (GetAngle(nPos) >= 270 && GetAngle(nPos) < 360)) {
 			m_vecBalls[nPos].nAngle	= 360 - GetAngle(nPos);
@@ -348,7 +348,7 @@ void CBall::ImpactWithWallAngle(int nPos) {
 	else if(m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter) >= WALL_X2 && m_bBackWall == true) {
 		if(m_nType == TYPE_RED)
 			g_Exploision.AddExploision(WALL_X2 - 16, (int)m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, 0);
-		//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0f / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+		//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
 
 		if((GetAngle(nPos) >= 0 && GetAngle(nPos) < 90) || (GetAngle(nPos) >= 90 && GetAngle(nPos) < 180)) {
 			m_vecBalls[nPos].nAngle	= 360 - GetAngle(nPos);
@@ -358,7 +358,7 @@ void CBall::ImpactWithWallAngle(int nPos) {
 	else if(m_vecBalls[nPos].y <= WALL_Y1) {
 		if(m_nType == TYPE_RED)
 			g_Exploision.AddExploision((int)m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, WALL_Y1 - 16, 0);
-		//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0f / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+		//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
 
 		if(GetAngle(nPos) >= 0 && GetAngle(nPos) < 90) {
 			m_vecBalls[nPos].nAngle	= 180 - GetAngle(nPos);
@@ -371,7 +371,7 @@ void CBall::ImpactWithWallAngle(int nPos) {
 	else if(m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) >= WALL_Y2) {
 		if(m_nType == TYPE_RED)
 			g_Exploision.AddExploision((int)m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, WALL_Y2 - 16, 0);
-		//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0f / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+		//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
 
 		if(GetAngle(nPos) >= 90 && GetAngle(nPos) < 180) {
 			m_vecBalls[nPos].nAngle	= 180 - GetAngle(nPos);
@@ -440,7 +440,7 @@ void CBall::SplitBalls() {
 }
 
 void CBall::ChangeBallAngle(int nPos, bool bRotate) {
-	if(m_vecBalls[nPos].fSpeed == 0.0f)
+	if(m_vecBalls[nPos].fSpeed == 0.0)
 		return;
 	if(bRotate == false)
 		m_vecBalls[nPos].nAngle	+= 360 - 90 + g_Rnd.Get(90);
@@ -454,12 +454,12 @@ void CBall::ChangeAllBallsSpeed(bool bIncrease) {
 	for(int i = 0; i < m_vecBalls.size(); i++) {
 		if(m_vecBalls[i].fSpeed != 0) {
 			if(bIncrease == true) {
-				if(m_vecBalls[i].fSpeed < INIT_BALL_SPEED + 5.0f)
-					m_vecBalls[i].fSpeed	+= .5f;
+				if(m_vecBalls[i].fSpeed < INIT_BALL_SPEED + 5.0)
+					m_vecBalls[i].fSpeed	+= .5;
 			}
 			else {
 				if(m_vecBalls[i].fSpeed > INIT_BALL_SPEED)
-					m_vecBalls[i].fSpeed	-= .5f;
+					m_vecBalls[i].fSpeed	-= .5;
 			}
 		}
 	}
@@ -482,8 +482,8 @@ void CBall::IncrementBallSpeed(int nPos) {
 	m_vecBalls[nPos].nImpacts++;
 	if(m_vecBalls[nPos].nImpacts > 20) {
 		m_vecBalls[nPos].nImpacts	= 0;
-		if(m_vecBalls[nPos].fSpeed < INIT_BALL_SPEED + 5.0f)
-			m_vecBalls[nPos].fSpeed	+= .1f;
+		if(m_vecBalls[nPos].fSpeed < INIT_BALL_SPEED + 5.0)
+			m_vecBalls[nPos].fSpeed	+= .1;
 	}
 	m_vecBalls[nPos].nAngle	+= 360;
 }
@@ -537,7 +537,7 @@ int CBall::GetAngle(int nPos) {
  */
 void CBall::SlowDown() {
 	for(int i = 0; i < m_vecBalls.size(); i++) {
-		if(m_vecBalls[i].fSpeed != 0.0f)	m_vecBalls[i].fSpeed	= INIT_BALL_SPEED;
+		if(m_vecBalls[i].fSpeed != 0.0)	m_vecBalls[i].fSpeed	= INIT_BALL_SPEED;
 	}
 }
 
@@ -580,7 +580,7 @@ int CBall::GetTypeCount() {
 void CBall::BallCaptured(int nIndex, bool bIsCaptured) {
 	if(nIndex >= 0 && nIndex < m_vecBalls.size()) {
 		if(bIsCaptured == false && m_vecBalls[nIndex].bIsCaptured == true) {
-			m_vecBalls[nIndex].fSpeed	+= 0.5f;
+			m_vecBalls[nIndex].fSpeed	+= 0.5;
 			m_vecBalls[nIndex].nAngle	= 30 + g_Rnd.Get(120);
 		}
 		m_vecBalls[nIndex].bIsCaptured	= bIsCaptured;

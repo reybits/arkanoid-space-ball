@@ -165,7 +165,7 @@ void CMonster::AddMonster2() {
 		monster.h				= 48;
 		break;
 	}
-	monster.fSpeed	= 0.5f + g_Rnd.Get(10) / 5.0f;
+	monster.fSpeed	= 0.5 + g_Rnd.Get(10) / 5.0;
 	monster.x		= -monster.w;
 	monster.y		= WALL_Y1 + g_Rnd.Get(WALL_Y2 - WALL_Y1);
 	monster.nFrame	= g_Rnd.Get(monster.nFramesCount);
@@ -198,7 +198,7 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 				if(fDist < fMinDist && rc.h != CBall::TYPE_BLUE) {
 					bFindBall	= true;
 					fMinDist	= fDist;
-					nAngle	= (int)(57.3f * asin(nCatet2 / fDist));
+					nAngle	= (int)(57.3 * asin(nCatet2 / fDist));
 					if(nCatet1 > 0)	nAngle	= (90 + nAngle) % 360;
 					else					nAngle	= (270 - nAngle) % 360;
 				}
@@ -241,7 +241,7 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 					else if(fDist < fMinDist) {
 						bFindBall	= true;
 						fMinDist	= fDist;
-						nAngle	= (int)(57.3f * asin(nCatet2 / fDist));
+						nAngle	= (int)(57.3 * asin(nCatet2 / fDist));
 						if(nCatet1 > 0)	nAngle	= (90 + nAngle) % 360;
 						else					nAngle	= (270 - nAngle) % 360;
 					}
@@ -260,7 +260,7 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 						m_vecMonster[i].nAngle	%= 360;
 						if(nAngle == m_vecMonster[i].nAngle)	break;
 					}
-					double	fSpeed	= g_fSpeedCorrection * 2.5f;
+					double	fSpeed	= g_fSpeedCorrection * 2.5;
 					m_vecMonster[i].x	+= (fSpeed * g_fSin[m_vecMonster[i].nAngle]);
 					m_vecMonster[i].y	-= (fSpeed * g_fCos[m_vecMonster[i].nAngle]);
 				}

@@ -27,7 +27,7 @@ void CBonus::Move(int nRacketType) {
 	}
 
 	for(int i = 0; i < m_vecBonuses.size(); i++) {
-		m_vecBonuses[i].origx	+= (g_fSpeedCorrection * 0.4f);
+		m_vecBonuses[i].origx	+= (g_fSpeedCorrection * 0.4);
 		m_vecBonuses[i].x	= (int)m_vecBonuses[i].origx;
 		//m_vecBonuses[i].x	= int(m_vecBonuses[i].origx + g_fSin[m_vecBonuses[i].nSin] * m_vecBonuses[i].nRadius / 2);
 		m_vecBonuses[i].y	= int(m_vecBonuses[i].origy + g_fCos[m_vecBonuses[i].nCos] * m_vecBonuses[i].nRadius);
@@ -42,7 +42,7 @@ void CBonus::Move(int nRacketType) {
 		}
 
 		if(m_vecBonuses[i].x > SCREEN_WIDTH) {
-			//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBonusDown, 100, (int)(-100 + ((200.0f / SCREEN_WIDTH) * m_vecBonuses[i].x)));
+			//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBonusDown, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBonuses[i].x)));
 			swap(m_vecBonuses[i], m_vecBonuses.back());
 			m_vecBonuses.resize(m_vecBonuses.size() - 1);
 		}
