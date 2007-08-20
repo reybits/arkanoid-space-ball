@@ -776,7 +776,7 @@ void CMainMenu::DrawEnterReg() {
 #ifdef _WIN32
 		ShellExecute(NULL, "open", "arkanoidsbreg.url", NULL, NULL, SW_SHOWNORMAL);
 //#elif __linux__
-		system("konqueror http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
+//		system("konqueror http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
 #elif __MACOSX__
 		system("open http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
 #endif
