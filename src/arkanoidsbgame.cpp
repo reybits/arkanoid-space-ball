@@ -352,7 +352,7 @@ bool CArkanoidSBGame::DrawScreen() {
 
 	case GS_GAME_ACTIVE:
 		//if(IsKeyPressed(SDLK_g) && IsKeyStateChanged(SDLK_g))	m_GenLev.Generate(++m_nCurrentLevel, false);
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 		// unregistered version
 		if(g_bIsRegistered == false) {
 			if(m_dwUnregisterdTime < SDL_GetTicks()) {
@@ -417,8 +417,8 @@ bool CArkanoidSBGame::DrawScreen() {
 		bIsExit	= DoGameOver();
 		break;
 
-#ifndef __linux__
-		case GS_GAME_REMINDER1:
+#if !defined(__linux__) && !defined(FULL_VERSION)
+	case GS_GAME_REMINDER1:
 		switch(g_ReminderDlg.Draw(0)) {
 		case 1:
 			g_MainMenu.SetMenuType(CMainMenu::MT_REG_KEY);
@@ -444,7 +444,7 @@ bool CArkanoidSBGame::DrawScreen() {
 #endif
 	}
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 	if(g_bIsRegistered == false && m_bTutorialPause == false &&
 		(m_nGameState != GS_GAME_REMINDER1 && m_nGameState != GS_GAME_REMINDER2)) {
 		g_Font.DrawString(0, WALL_Y1 + 30, "Unregistered version", CMyString::FONT_ALIGN_CENTER);
@@ -730,7 +730,7 @@ void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore) {
 		bInit	= false;
 		m_GenLev.LoadPatterns();
 	}
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 	if(g_nUnregisterdCount > 30 * 60)	g_nUnregisterdCount	= 30 * 60;
 	if(g_nUnregisterdCount == 0)		g_nUnregisterdCount	= 3;
 #endif
@@ -1204,7 +1204,7 @@ void CArkanoidSBGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveA
 					g_TutorialDlg.AddDialog(nX + BRICK_W / 2, nY + BRICK_H / 2, 0, 7);
 				dwTime	= SDL_GetTicks();
 				int	nType	= g_Rnd.Get(CBonus::TYPE_LAST_BONUS);
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 				if(g_bIsRegistered == false) {
 					while(nType == CBonus::TYPE_BALL_FIRE || nType == CBonus::TYPE_PADDLE_MISSILE || nType == CBonus::TYPE_PADDLE_ENGINE) {
 						nType++;	nType	%= CBonus::TYPE_LAST_BONUS;

@@ -41,7 +41,7 @@ protected:
 	int DrawStartGame();
 	int m_nMenuType;
 	void DrawBackground();
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 	void DrawEnterReg();
 	void DrawHighlight(int nPos);
 	bool m_bShowReminder;

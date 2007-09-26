@@ -216,7 +216,7 @@ extern CSinusString		g_CSinusString;
 extern CTutorialDlg		g_TutorialDlg;
 extern CMyString		g_FontTutorial;
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 #include "reminderdlg.h"
 
 extern bool CheckRegistration();

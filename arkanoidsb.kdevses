@@ -1,25 +1,34 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="6" >
+ <DocsAndViews NumberOfDocuments="9" >
   <Doc0 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp" >
-   <View0 Encoding="" line="195" Type="Source" />
+   <View0 Encoding="" line="1052" Type="Source" />
   </Doc0>
   <Doc1 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsbgame.cpp" >
-   <View0 Encoding="" Type="Source" />
+   <View0 Encoding="" line="354" Type="Source" />
   </Doc1>
   <Doc2 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsb.h" >
-   <View0 Encoding="" Type="Source" />
+   <View0 Encoding="" line="218" Type="Source" />
   </Doc2>
   <Doc3 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/arkanoidsbgame.h" >
-   <View0 Encoding="" line="0" Type="Source" />
+   <View0 Encoding="" Type="Source" />
   </Doc3>
   <Doc4 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/random.h" >
-   <View0 Encoding="" line="12" Type="Source" />
+   <View0 Encoding="" Type="Source" />
   </Doc4>
   <Doc5 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/mainmenu.cpp" >
-   <View0 Encoding="" line="779" Type="Source" />
+   <View0 Encoding="" line="14" Type="Source" />
   </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/mainmenu.h" >
+   <View0 Encoding="" line="43" Type="Source" />
+  </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/reminderdlg.cpp" >
+   <View0 Encoding="" line="20" Type="Source" />
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/andrey/projects/arkanoidsb/src/reminderdlg.h" >
+   <View0 Encoding="" line="19" Type="Source" />
+  </Doc8>
  </DocsAndViews>
  <pluginList>
   <kdevdebugger>
@@ -40,8 +49,9 @@
      <mark line="792" />
     </bookmark>
     <bookmark url="/home/andrey/projects/arkanoidsb/src/arkanoidsb.cpp" >
-     <mark line="633" />
      <mark line="1007" />
+     <mark line="633" />
+     <mark line="1059" />
      <mark line="911" />
     </bookmark>
    </bookmarks>

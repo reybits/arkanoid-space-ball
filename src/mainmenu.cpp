@@ -12,7 +12,7 @@
 CMainMenu::CMainMenu() {
 	m_bGetNameMode	= false;
 	m_bInitHelp		= true;
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 	m_bShowReminder	= false;
 #endif
 	m_bReturnToGame	= false;
@@ -39,8 +39,8 @@ int CMainMenu::DrawMenu() {
 	case MT_HIGHSCORE:
 		DrawMenuHighScore();
 		break;
-#ifndef __linux__
-		case MT_REG_KEY:
+#if !defined(__linux__) && !defined(FULL_VERSION)
+	case MT_REG_KEY:
 		DrawEnterReg();
 		break;
 #endif
@@ -68,7 +68,7 @@ int CMainMenu::DrawMenu() {
 
 	if(m_nMenuType == MT_MAIN) {
 		g_Font.DrawString(5, SCREEN_HEIGHT - 5 - 14, GAME_VERSION);
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 		if(g_bIsRegistered == false) {
 			g_Font.DrawString(5, 5, "Unregistered version");
 		}
@@ -82,7 +82,7 @@ int CMainMenu::DrawMenu() {
 #endif		
 	}
 	else if(
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 			m_bShowReminder == false &&
 #endif
 			((IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) || g_bMouseRB == true)) {
@@ -107,7 +107,7 @@ int CMainMenu::DrawMenuMain() {
 	SetRect(&rc, 0, 0, 248, 29);
 
 	int nItem	= -1;
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 	int	nCount	= (g_bIsRegistered == true ? 5 : 6);
 #else
 	int	nCount	= 5;
@@ -122,7 +122,7 @@ int CMainMenu::DrawMenuMain() {
 		g_bMouseLB	= false;
 		switch(nItem + 1) {
 		case MT_QUIT:	return 0;		// exit
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 		case MT_REG_KEY:	if(g_bIsRegistered == false)	SetMenuType(nItem + 1);	break;
 #endif
 		default:	SetMenuType(nItem + 1);	break;
@@ -168,7 +168,7 @@ int CMainMenu::DrawStartGame() {
 		nItem	= 5;
 	}
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 	if(m_bShowReminder == true) {
 		switch(g_ReminderDlg.Draw(2)) {
 		case 1:
@@ -188,11 +188,11 @@ int CMainMenu::DrawStartGame() {
 		switch(nItem) {
 		case 0:	return 1;	// start new game
 		case 1:
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 			if(g_bIsRegistered == true)
 #endif
 				return 2;	// restore game
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 			else
 				m_bShowReminder	= true;
 #endif
@@ -574,7 +574,7 @@ void CMainMenu::DrawMenuOptions() {
 void CMainMenu::SetMenuType(int nType, bool bReturnToGame) {
 	EnableCursor(true);
 	m_nMenuType				= nType;
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 	m_bShowReminder			= false;
 #endif
 	m_bInitHelp				= true;
@@ -668,7 +668,7 @@ void CMainMenu::SetEnterNameMode() {
 void SetPixel(int nX, int nY, Uint32 color) {
 }
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 /*!
     \fn CMainMenu::DrawEnterReg()
  */

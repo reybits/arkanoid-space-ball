@@ -135,7 +135,7 @@ CTutorialDlg	g_TutorialDlg;
 CMyString		g_FontTutorial;
 
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 bool CheckForBlackList(const char *pchKey);
 bool CheckRegistration();
 bool g_bIsRegistered	= false;
@@ -823,7 +823,7 @@ void ReadWriteConfig(bool bMode) {
 			fread(&g_bOGL, sizeof(g_bOGL), 1, pFile);
 			fread(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
 			fread(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 			fread(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount), 1, pFile);
 			EncodeDecode(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount));
 #endif
@@ -846,7 +846,7 @@ void ReadWriteConfig(bool bMode) {
 		else {
 			printf("error (%d) - %s\n", errno, strerror(errno));
 		}
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 		sprintf(achBuf, "%skey", g_achUserProfile);
 		if((pFile = fopen(achBuf, "rb"))) {
 			fread(&g_achRegName, sizeof(g_achRegName), 1, pFile);
@@ -870,7 +870,7 @@ void ReadWriteConfig(bool bMode) {
 			fwrite(&g_bOGL, sizeof(g_bOGL), 1, pFile);
 			fwrite(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
 			fwrite(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 			EncodeDecode(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount));
 			fwrite(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount), 1, pFile);
 #endif
@@ -890,7 +890,7 @@ void ReadWriteConfig(bool bMode) {
 		else {
 			printf("error (%d) - %s\n", errno, strerror(errno));
 		}
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 		sprintf(achBuf, "%skey", g_achUserProfile);
 		if((pFile = fopen(achBuf, "wb"))) {
 			if(g_bIsRegistered == false) {
@@ -1049,7 +1049,7 @@ void UnsetVideoMode() {
 	g_Font.Unload();
 }
 
-#ifndef __linux__
+#if !defined(__linux__) && !defined(FULL_VERSION)
 bool CheckRegistration() {
 	const char	achKeyWord[16]     = "oPZmAtk73v4eNjE";
 	char    		achTmp[10];
