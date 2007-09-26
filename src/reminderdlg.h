@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef (__linux__ && FULL_VERSION)
+#if !defined(__linux__) && !defined(FULL_VERSION)
 
 #ifndef REMINDERDLG_H
 #define REMINDERDLG_H

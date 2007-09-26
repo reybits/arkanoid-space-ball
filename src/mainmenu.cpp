@@ -78,7 +78,9 @@ int CMainMenu::DrawMenu() {
 			g_Font.DrawString(5, 5, achBuf);
 		}
 #else
+#	if defined(__linux__)
 		g_Font.DrawString(5, 5, "Registered to all Linux users");
+#	endif
 #endif		
 	}
 	else if(
