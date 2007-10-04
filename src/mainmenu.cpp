@@ -785,9 +785,9 @@ void CMainMenu::DrawEnterReg() {
 		//m_nMenuType	= MT_MAIN;
 #if defined(SOFTONIC)
 #	ifdef _WIN32
-		ShellExecute(NULL, "open", "https://comercio.softonic.com/pv/4859", NULL, NULL, SW_SHOWNORMAL);
+		ShellExecute(NULL, "open", "https://comercio.softonic.com/pv/4865/0/1", NULL, NULL, SW_SHOWNORMAL);
 #	elif __MACOSX__
-		system("open https://comercio.softonic.com/pv/4859");
+		system("open https://comercio.softonic.com/pv/4865/0/1");
 #	endif
 #else
 #	ifdef _WIN32
