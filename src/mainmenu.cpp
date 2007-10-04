@@ -783,12 +783,20 @@ void CMainMenu::DrawEnterReg() {
 		g_bMouseLB	= false;
 		bShow		= false;
 		//m_nMenuType	= MT_MAIN;
-#ifdef _WIN32
+#if defined(SOFTONIC)
+#	ifdef _WIN32
+		ShellExecute(NULL, "open", "https://comercio.softonic.com/pv/4859", NULL, NULL, SW_SHOWNORMAL);
+#	elif __MACOSX__
+		system("open https://comercio.softonic.com/pv/4859");
+#	endif
+#else
+#	ifdef _WIN32
 		ShellExecute(NULL, "open", "arkanoidsbreg.url", NULL, NULL, SW_SHOWNORMAL);
-//#elif __linux__
+//#	elif __linux__
 //		system("konqueror http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
-#elif __MACOSX__
+#	elif __MACOSX__
 		system("open http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
+#	endif
 #endif
 	}
 }
