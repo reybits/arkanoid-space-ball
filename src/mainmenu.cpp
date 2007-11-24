@@ -81,7 +81,7 @@ int CMainMenu::DrawMenu() {
 #	if defined(__linux__)
 		g_Font.DrawString(5, 5, "Registered to all Linux users");
 #	endif
-#endif		
+#endif
 	}
 	else if(
 #if !defined(__linux__) && !defined(FULL_VERSION)
@@ -785,7 +785,7 @@ void CMainMenu::DrawEnterReg() {
 		//m_nMenuType	= MT_MAIN;
 #if defined(SOFTONIC)
 #	ifdef _WIN32
-		ShellExecute(NULL, "open", "https://comercio.softonic.com/pv/4865/0/1", NULL, NULL, SW_SHOWNORMAL);
+		ShellExecute(NULL, "open", "https://comercio.softonic.com/pv/5000", NULL, NULL, SW_SHOWNORMAL);
 #	elif __MACOSX__
 		system("open https://comercio.softonic.com/pv/4865/0/1");
 #	endif
