@@ -34,7 +34,7 @@
       <useactivetarget>true</useactivetarget>
     </general>
     <run>
-      <mainprogram>/home/andrey/projects/arkanoidsb/release_linux/src/arkanoidsb</mainprogram>
+      <mainprogram/>
       <terminal>false</terminal>
       <directoryradio>custom</directoryradio>
       <customdirectory>/home/andrey/projects/arkanoidsb/</customdirectory>
@@ -176,7 +176,10 @@
     <dest>/home/andrey/projects/arkanoid space ball</dest>
   </substmap>
   <kdevcppsupport>
-    <references/>
+    <references>
+      <pcs>OpenGL</pcs>
+      <pcs>SDL_all</pcs>
+    </references>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
       <includeTypes>true</includeTypes>
@@ -258,6 +261,7 @@
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
+      <raiseGDBOnStart>false</raiseGDBOnStart>
     </general>
     <display>
       <staticmembers>true</staticmembers>
