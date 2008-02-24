@@ -72,6 +72,33 @@
 					<Add library="SDL_image" />
 				</Linker>
 			</Target>
+			<Target title="MacOSX_Debug">
+				<Option platforms="Mac;" />
+				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
+				<Option object_output="debug_macosx/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-framework SDL -framework Cocoa -framework SDL_image -framework SDL_mixer -framework OpenGL" />
+				</Linker>
+			</Target>
+			<Target title="MacOSX_Release">
+				<Option platforms="Mac;" />
+				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="release_macosx/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-framework SDL -framework Cocoa -framework SDL_image -framework SDL_mixer -framework OpenGL" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -84,6 +111,16 @@
 			<Add directory="$(#sdl_image.lib)" />
 			<Add directory="$(#sdl_mixer.lib)" />
 		</Linker>
+		<Unit filename="src/SDLMain.h">
+			<Option target="MacOSX_Debug" />
+			<Option target="MacOSX_Release" />
+		</Unit>
+		<Unit filename="src/SDLMain.m">
+			<Option compile="1" />
+			<Option link="1" />
+			<Option target="MacOSX_Debug" />
+			<Option target="MacOSX_Release" />
+		</Unit>
 		<Unit filename="src/arkanoidsb.cpp" />
 		<Unit filename="src/arkanoidsb.h" />
 		<Unit filename="src/arkanoidsbgame.cpp" />
