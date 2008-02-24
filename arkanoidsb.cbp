@@ -88,7 +88,6 @@
 			<Target title="MacOSX_Release">
 				<Option platforms="Mac;" />
 				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
 				<Option object_output="release_macosx/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
