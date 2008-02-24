@@ -6,38 +6,70 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="win.Debug">
+			<Target title="windows_Debug">
+				<Option platforms="Windows;" />
 				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
-				<Option object_output="debug_win32\" />
+				<Option object_output="debug_win32/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
-			</Target>
-			<Target title="win.Release">
-				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
-				<Option object_output="release_win32\" />
-				<Option type="0" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-O2" />
-				</Compiler>
 				<Linker>
-					<Add option="-s" />
+					<Add library="mingw32" />
+					<Add library="SDLmain" />
+					<Add library="SDL.dll" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_image" />
 				</Linker>
 			</Target>
-			<Target title="win.Release-Softonic">
+			<Target title="windows_Release">
+				<Option platforms="Windows;" />
 				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
-				<Option object_output="release_win32\" />
+				<Option object_output="release_win32/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="-DSOFTONIC" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="mingw32" />
+					<Add library="SDLmain" />
+					<Add library="SDL.dll" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_image" />
+				</Linker>
+			</Target>
+			<Target title="linux_Debug">
+				<Option platforms="Unix;" />
+				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
+				<Option object_output="debug_linux/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="SDL" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_image" />
+				</Linker>
+			</Target>
+			<Target title="linux_Release">
+				<Option platforms="Unix;" />
+				<Option output="arkanoidsb" prefix_auto="1" extension_auto="1" />
+				<Option object_output="release_linux/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="SDL" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_image" />
 				</Linker>
 			</Target>
 		</Build>
@@ -48,55 +80,50 @@
 			<Add directory="$(#sdl_mixer.include)" />
 		</Compiler>
 		<Linker>
-			<Add library="mingw32" />
-			<Add library="SDLmain" />
-			<Add library="SDL.dll" />
-			<Add library="SDL_mixer" />
-			<Add library="SDL_image" />
 			<Add directory="$(#sdl.lib)" />
 			<Add directory="$(#sdl_image.lib)" />
 			<Add directory="$(#sdl_mixer.lib)" />
 		</Linker>
-		<Unit filename="src\arkanoidsb.cpp" />
-		<Unit filename="src\arkanoidsb.h" />
-		<Unit filename="src\arkanoidsbgame.cpp" />
-		<Unit filename="src\arkanoidsbgame.h" />
-		<Unit filename="src\ball.cpp" />
-		<Unit filename="src\ball.h" />
-		<Unit filename="src\bonus.cpp" />
-		<Unit filename="src\bonus.h" />
-		<Unit filename="src\bullet.cpp" />
-		<Unit filename="src\bullet.h" />
-		<Unit filename="src\coolfont.hpp" />
-		<Unit filename="src\coolstring.cpp" />
-		<Unit filename="src\coolstring.h" />
-		<Unit filename="src\energyhole.cpp" />
-		<Unit filename="src\energyhole.h" />
-		<Unit filename="src\exploision.cpp" />
-		<Unit filename="src\exploision.h" />
-		<Unit filename="src\generatelevel.cpp" />
-		<Unit filename="src\generatelevel.h" />
-		<Unit filename="src\glSDL.c">
+		<Unit filename="src/arkanoidsb.cpp" />
+		<Unit filename="src/arkanoidsb.h" />
+		<Unit filename="src/arkanoidsbgame.cpp" />
+		<Unit filename="src/arkanoidsbgame.h" />
+		<Unit filename="src/ball.cpp" />
+		<Unit filename="src/ball.h" />
+		<Unit filename="src/bonus.cpp" />
+		<Unit filename="src/bonus.h" />
+		<Unit filename="src/bullet.cpp" />
+		<Unit filename="src/bullet.h" />
+		<Unit filename="src/coolfont.hpp" />
+		<Unit filename="src/coolstring.cpp" />
+		<Unit filename="src/coolstring.h" />
+		<Unit filename="src/energyhole.cpp" />
+		<Unit filename="src/energyhole.h" />
+		<Unit filename="src/exploision.cpp" />
+		<Unit filename="src/exploision.h" />
+		<Unit filename="src/generatelevel.cpp" />
+		<Unit filename="src/generatelevel.h" />
+		<Unit filename="src/glSDL.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src\glSDL.h" />
-		<Unit filename="src\leveleditor.cpp" />
-		<Unit filename="src\leveleditor.h" />
-		<Unit filename="src\mainmenu.cpp" />
-		<Unit filename="src\mainmenu.h" />
-		<Unit filename="src\monster.cpp" />
-		<Unit filename="src\monster.h" />
-		<Unit filename="src\mystring.cpp" />
-		<Unit filename="src\mystring.h" />
-		<Unit filename="src\random.h" />
-		<Unit filename="src\reminderdlg.cpp" />
-		<Unit filename="src\reminderdlg.h" />
-		<Unit filename="src\resource.cpp" />
-		<Unit filename="src\resource.h" />
-		<Unit filename="src\sinusstring.cpp" />
-		<Unit filename="src\sinusstring.h" />
-		<Unit filename="src\tutorialdlg.cpp" />
-		<Unit filename="src\tutorialdlg.h" />
+		<Unit filename="src/glSDL.h" />
+		<Unit filename="src/leveleditor.cpp" />
+		<Unit filename="src/leveleditor.h" />
+		<Unit filename="src/mainmenu.cpp" />
+		<Unit filename="src/mainmenu.h" />
+		<Unit filename="src/monster.cpp" />
+		<Unit filename="src/monster.h" />
+		<Unit filename="src/mystring.cpp" />
+		<Unit filename="src/mystring.h" />
+		<Unit filename="src/random.h" />
+		<Unit filename="src/reminderdlg.cpp" />
+		<Unit filename="src/reminderdlg.h" />
+		<Unit filename="src/resource.cpp" />
+		<Unit filename="src/resource.h" />
+		<Unit filename="src/sinusstring.cpp" />
+		<Unit filename="src/sinusstring.h" />
+		<Unit filename="src/tutorialdlg.cpp" />
+		<Unit filename="src/tutorialdlg.h" />
 		<Extensions>
 			<code_completion />
 			<wxsmith version="1">
