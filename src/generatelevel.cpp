@@ -133,7 +133,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {
 	// if ustom level empty, we use internal levels
 	if(bUseCustom == true && nBricksCount == 0) {
 		if(nCustomLevelsCount < nLevel) {
-			printf("Custom level empty, switch to internal levels\n", nLevel++);
+			printf("Custom level empty, switch to internal levels\n");
 			return Generate(nLevel, false);
 		}
 		else {
@@ -141,7 +141,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {
 			return Generate(nLevel, true);
 		}
 	}
-		
+
 	printf("Total bricks on level %d\n", g_Arkanoid.m_vecLevelBricks.size());
 }
 

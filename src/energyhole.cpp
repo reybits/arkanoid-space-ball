@@ -43,7 +43,7 @@ void CEnergyHole::Draw() {
 	SDL_Rect	rc;
 	rc.x	= 0;
 	rc.w	=	rc.h	= 80;
-	for(int i = 0; i < m_vecEnergyHole.size(); i++) {
+	for(size_t i = 0; i < m_vecEnergyHole.size(); i++) {
 		if(m_vecEnergyHole[i].nIsOver == false) {
 			rc.y	= 0;
 			Blit((Uint32)m_vecEnergyHole[i].x, (Uint32)m_vecEnergyHole[i].y, m_pEnergyHole, &rc);
@@ -75,7 +75,7 @@ void CEnergyHole::AddEnergyHole() {
 void CEnergyHole::Move() {
 	Uint32	dwTime	= SDL_GetTicks();
 
-	for(int i = 0; i < m_vecEnergyHole.size(); i++) {
+	for(size_t i = 0; i < m_vecEnergyHole.size(); i++) {
 		double	fSpeed	= g_fSpeedCorrection * 0.2;
 
 		if(m_vecEnergyHole[i].dwMoveTime + 5000 < dwTime) {	// change angle

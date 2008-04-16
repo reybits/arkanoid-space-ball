@@ -29,7 +29,7 @@ void CExploision::Draw(bool bBricks) {
 	}
 	SDL_Rect	rc;
 	rc.w	= 45;	rc.h	= 41;
-	for(int i = 0; i < m_vecExploisions.size(); i++) {
+	for(size_t i = 0; i < m_vecExploisions.size(); i++) {
 		if((bBricks == true && m_vecExploisions[i].nType == 3) || (bBricks == false && m_vecExploisions[i].nType != 3)) {
 			rc.x	= 40 + m_vecExploisions[i].nType * 45;
 			rc.y	= m_vecExploisions[i].nFrame * 41;

@@ -599,7 +599,7 @@ void CMainMenu::SetMenuType(int nType, bool bReturnToGame) {
 		_SAVE	str;
 		sprintf(achBuf, "%ssave", g_achUserProfile);
 		m_bIsSaveAvailable	= false;
-		if(pFile = fopen(achBuf, "rb")) {
+		if((pFile = fopen(achBuf, "rb"))) {
 			if(sizeof(_SAVE) == fread(&str, 1, sizeof(_SAVE), pFile)) {
 				EncodeDecode(&str, sizeof(_SAVE));
 				if(strncmp(str.achMagic, "WEGR", 4) == 0) {
@@ -639,7 +639,7 @@ char CMainMenu::GetKey() {
 		'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', ' ', '~',
 	};
 
-	for(int i = 0; i < sizeof(abyScans); i++) {
+	for(size_t i = 0; i < sizeof(abyScans); i++) {
 		if(IsKeyPressed(abyScans[i]) && IsKeyStateChanged(abyScans[i])) {
 			if(g_dwModState & KMOD_SHIFT)
 				return abyKeysUpper[i];

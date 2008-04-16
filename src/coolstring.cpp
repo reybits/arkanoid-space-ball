@@ -82,7 +82,7 @@ void CCoolString::Draw() {
     \fn CCoolString::Clear()
  */
 void CCoolString::Clear() {
-	for(int i = 0; i < m_vecCoolString.size(); i++) {
+	for(size_t i = 0; i < m_vecCoolString.size(); i++) {
 		delete[]	m_vecCoolString[i].pchString;
 	}
 	m_vecCoolString.clear();

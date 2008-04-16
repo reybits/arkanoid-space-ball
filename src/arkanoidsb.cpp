@@ -278,7 +278,7 @@ int main(int argc, char *argv[]) {
 
 	if(g_bIsAudioSupported == true) {
 		// loading sound effects
-		for(i = 0; i < sizeof(g_pachSnd) / sizeof(const char*); i++) {
+		for(size_t i = 0; i < sizeof(g_pachSnd) / sizeof(const char*); i++) {
 			// try to load image from resource from
 			pbyData	= g_Resource.GetDataAllocMem(g_pachSnd[i], nDataLen);
 			if(pbyData) {
@@ -293,7 +293,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		//loading modules
-		for(i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
+		for(size_t i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
 #ifdef __MACOSX__
  			if(i != 2)	sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module%.2d.ogg", i + 1);
  			else		sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module03.s3m");
@@ -343,7 +343,7 @@ int main(int argc, char *argv[]) {
 	Uint32	nPrevTime	= 0;
 	g_fSpeedCorrection	= 1.0;
 	const double    fPerFrameMs     = 1000.0 / DESIRED_FPS;
-	
+
 	CLevelEditor	m_LevelEditor;
 	//g_nGameMode	= APPS_EDITOR;
 
@@ -397,7 +397,7 @@ int main(int argc, char *argv[]) {
 					break;
 				case 3:
 					// TODO check for valid custom levels
-					
+
 					g_TutorialDlg.Reset();
 					g_Arkanoid.InitNewGame(true);
 					g_nGameMode	= APPS_GAME;
@@ -458,7 +458,7 @@ int main(int argc, char *argv[]) {
 			}
 
 			SDL_Flip(g_psurfScreen);
-			
+
 			Sint32  nDelay  = (Sint32)(fPerFrameMs - (SDL_GetTicks() - nTimeCurrent));
 			if(nDelay > 0)  SDL_Delay(nDelay);
 			else    SDL_Delay(0);
@@ -474,11 +474,11 @@ int main(int argc, char *argv[]) {
 	delete[]	g_pnKeys;
 	delete[]	g_pbIsKeyStateChanged;
 
-	for(i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
+	for(size_t i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
 		if(g_apMod[i])	Mix_FreeMusic(g_apMod[i]);
 	}
 
-	for(i = 0; i < sizeof(g_apSnd) / sizeof(Mix_Chunk*); i++) {
+	for(size_t i = 0; i < sizeof(g_apSnd) / sizeof(Mix_Chunk*); i++) {
 		if(g_apSnd[i])	Mix_FreeChunk(g_apSnd[i]);
 	}
 
@@ -1099,6 +1099,7 @@ bool CheckRegistration() {
 bool CheckForBlackList(const char *pchKey) {
 	const char *pchBlacklistedKeys[]	= {
 		"EKW3-4X54-Z72W-N7H5",
+		"26ZE-95X9-WNFZ-7NY4"
 	};
 	for(int i = 0; i < sizeof(pchBlacklistedKeys) / sizeof(const char**); i++) {
 		//printf("blacklisted %s\n", pchBlacklistedKeys[i]);

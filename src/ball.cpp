@@ -44,7 +44,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddle
 
 
 	// move balls
-	for(int nPos = 0; nPos < m_vecBalls.size(); nPos++) {
+	for(size_t nPos = 0; nPos < m_vecBalls.size(); nPos++) {
 		m_vecBalls[nPos].bAlreadyImpact	= false;
 		if(m_vecBalls[nPos].bIsCaptured == true)	continue;
 
@@ -77,7 +77,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddle
 				memset(&rc, 0, sizeof(SDL_Rect));
 				m_vecBrickIndex.clear();
 				if(m_nType != TYPE_BLUE) {
-					for(int nBrick = 0; nBrick < g_Arkanoid.m_vecLevelBricks.size(); nBrick++) {
+					for(size_t nBrick = 0; nBrick < g_Arkanoid.m_vecLevelBricks.size(); nBrick++) {
 						int	nX	= int(g_Arkanoid.m_vecLevelBricks[nBrick].fX);
 						int	nY	= int(g_Arkanoid.m_vecLevelBricks[nBrick].fY);
 						if(IsThisBallOverObject(nPos, nX, nY, BRICK_W, BRICK_H) > 0) {
@@ -118,7 +118,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddle
 						m_vecBalls[nPos].y	= int(m_vecBalls[nPos].y);
 						//printf("ball pos corrected (%.2d x %.2d)\n", (int)m_vecBalls[i].x, (int)m_vecBalls[i].y);
 
-						for(int nBrickIndex = 0; nBrickIndex < m_vecBrickIndex.size(); nBrickIndex++) {
+						for(size_t nBrickIndex = 0; nBrickIndex < m_vecBrickIndex.size(); nBrickIndex++) {
 							g_Arkanoid.DoImpact(m_vecBrickIndex[nBrickIndex], false);
 						}
 					}
@@ -166,7 +166,7 @@ void CBall::Draw(int nPaddleType) {
 
 	bool	bFirst	= true;
 //	static int	nStep	= 0;
-	for(int nPos = 0; nPos < m_vecBalls.size(); nPos++) {
+	for(size_t nPos = 0; nPos < m_vecBalls.size(); nPos++) {
 // 		if(bAddFB == true)	AddFBs(nPos);
 
 		// show vector
@@ -209,7 +209,7 @@ void CBall::Draw(int nPaddleType) {
 		bFBupdate	= true;
 	}
 	rc.w	= 12;	rc.h	= 12;
-	for(int i = 0; i < m_vecFBalls.size(); i++) {
+	for(size_t i = 0; i < m_vecFBalls.size(); i++) {
 		rc.x	= 12 * m_nType;
 		rc.y	= 12 * m_vecFBalls[i].nFrame;
 		Blit(m_vecFBalls[i].nX, m_vecFBalls[i].nY, m_pFB, &rc);
@@ -318,7 +318,7 @@ int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeigh
 }
 
 bool CBall::StartBall(int nTop, int nBottom) {
-	for(int i = 0; i < m_vecBalls.size(); i++) {
+	for(size_t i = 0; i < m_vecBalls.size(); i++) {
 		if(m_vecBalls[i].fSpeed == 0) {
 			if(m_vecBalls[i].fOldSpeed != -1) {
 				m_vecBalls[i].fSpeed	= m_vecBalls[i].fOldSpeed;
@@ -393,7 +393,7 @@ int CBall::GetBallsCount() {
 }
 
 void CBall::ChangeBallSize(int nDelta) {
-	for(int i = 0; i < m_vecBalls.size(); i++) {
+	for(size_t i = 0; i < m_vecBalls.size(); i++) {
 		m_vecBalls[i].nDiameter	+= nDelta;
 		m_vecBalls[i].nDiameter	= min(m_vecBalls[i].nDiameter, 4);
 		m_vecBalls[i].nDiameter	= max(m_vecBalls[i].nDiameter, 0);
@@ -426,13 +426,12 @@ void CBall::SetAllBallsToFire() {
 }
 
 void CBall::SplitBalls() {
-	int	i;
 	std::vector<_BALL>tmp;
 	tmp.reserve(m_vecBalls.size());
-	for(i = 0; i < m_vecBalls.size(); i++) {
+	for(size_t i = 0; i < m_vecBalls.size(); i++) {
 		tmp.push_back(m_vecBalls[i]);
 	}
-	for(i = 0; i < tmp.size(); i++) {
+	for(size_t i = 0; i < tmp.size(); i++) {
 		tmp[i].nAngle		= ((int)tmp[i].nAngle + 45) % 360;
 		tmp[i].bIsCaptured	= false;
 		m_vecBalls.push_back(tmp[i]);
@@ -451,7 +450,7 @@ void CBall::ChangeBallAngle(int nPos, bool bRotate) {
 }
 
 void CBall::ChangeAllBallsSpeed(bool bIncrease) {
-	for(int i = 0; i < m_vecBalls.size(); i++) {
+	for(size_t i = 0; i < m_vecBalls.size(); i++) {
 		if(m_vecBalls[i].fSpeed != 0) {
 			if(bIncrease == true) {
 				if(m_vecBalls[i].fSpeed < INIT_BALL_SPEED + 5.0)

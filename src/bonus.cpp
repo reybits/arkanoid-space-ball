@@ -26,7 +26,7 @@ void CBonus::Move(int nRacketType) {
 		bNewPos	= true;
 	}
 
-	for(int i = 0; i < m_vecBonuses.size(); i++) {
+	for(size_t i = 0; i < m_vecBonuses.size(); i++) {
 		m_vecBonuses[i].origx	+= (g_fSpeedCorrection * 0.4);
 		m_vecBonuses[i].x	= (int)m_vecBonuses[i].origx;
 		//m_vecBonuses[i].x	= int(m_vecBonuses[i].origx + g_fSin[m_vecBonuses[i].nSin] * m_vecBonuses[i].nRadius / 2);
@@ -51,7 +51,6 @@ void CBonus::Move(int nRacketType) {
 
 void CBonus::Draw() {
 	SDL_Rect	rc;
-	int	i;
 	bool	bNewFrame	= false;
 	static int		nFrameStack	= 0;
 	static Uint32	dwFrameTime	= 0;
@@ -61,7 +60,7 @@ void CBonus::Draw() {
 		bNewFrame	= true;
 	}
 
-	for(i = 0; i < m_vecBonuses.size(); i++) {
+	for(size_t i = 0; i < m_vecBonuses.size(); i++) {
 		int	nType	= m_vecBonuses[i].nType;
 		if(bNewFrame == true) {
 			m_vecBonuses[i].nFrame++;
@@ -141,7 +140,7 @@ void CBonus::AddBonus(int x, int y, int nType) {
 }
 
 int CBonus::IsAcross(int nX, int nY, int nWidth, int nHeight) {
-	for(int i = 0; i < m_vecBonuses.size(); i++) {
+	for(size_t i = 0; i < m_vecBonuses.size(); i++) {
 		if(m_vecBonuses[i].x + 36 >= nX && m_vecBonuses[i].x <= nX + nWidth && m_vecBonuses[i].y + 36 >= nY && m_vecBonuses[i].y <= nY + nHeight) {
 			int	nType	= m_vecBonuses[i].nType;
 			swap(m_vecBonuses[i], m_vecBonuses.back());

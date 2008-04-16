@@ -19,7 +19,7 @@ using namespace std;
 	#define PATH_MAX	256
 #endif
 
-#define GAME_VERSION		"1.2"
+#define GAME_VERSION		"1.2.1"
 
 #define SCREEN_WIDTH	640
 #define SCREEN_HEIGHT	480

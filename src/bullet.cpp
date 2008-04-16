@@ -17,7 +17,7 @@ CBullet::~CBullet() {
 }
 
 void CBullet::Move() {
-	for(int i = 0; i < m_vecBullets.size(); i++) {
+	for(size_t i = 0; i < m_vecBullets.size(); i++) {
 		if(m_vecBullets[i].nType != TYPE_LASER) {
 			int	nAngle	= GetAngle(i);
 			m_vecBullets[i].x	+= g_fSin[nAngle] * 2 * g_fSpeedCorrection;
@@ -50,7 +50,7 @@ void CBullet::Draw() {
 	}
 
 	SDL_Rect	rc;
-	for(int i = 0; i < m_vecBullets.size(); i++) {
+	for(size_t i = 0; i < m_vecBullets.size(); i++) {
 		switch(m_vecBullets[i].nType) {
 		case TYPE_LASER:
 			rc.x	= 0;
@@ -91,7 +91,7 @@ void CBullet::AddBullets(int y, int nType) {
 }
 
 bool CBullet::IsAcross(int nX, int nY, int nWidth, int nHeight, bool &bRemoveAll, int &nType) {
-	for(int i = 0; i < m_vecBullets.size(); i++) {
+	for(size_t i = 0; i < m_vecBullets.size(); i++) {
 		if(m_vecBullets[i].nType == TYPE_LASER) {
 			if(m_vecBullets[i].x + m_vecBullets[i].w >= nX && m_vecBullets[i].x <= nX + nWidth &&
 						m_vecBullets[i].y + (20 - 2) / 2 + 2 >= nY && m_vecBullets[i].y + (20 - 2) / 2 <= nY + nHeight) {
