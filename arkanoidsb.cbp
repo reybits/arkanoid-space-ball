@@ -156,10 +156,15 @@
 		<Unit filename="src/reminderdlg.h" />
 		<Unit filename="src/resource.cpp" />
 		<Unit filename="src/resource.h" />
+		<Unit filename="src/resource.rc">
+			<Option target="windows_Debug" />
+			<Option target="windows_Release" />
+		</Unit>
 		<Unit filename="src/sinusstring.cpp" />
 		<Unit filename="src/sinusstring.h" />
 		<Unit filename="src/tutorialdlg.cpp" />
 		<Unit filename="src/tutorialdlg.h" />
+		<Unit filename="src/version.h" />
 		<Extensions>
 			<code_completion />
 			<wxsmith version="1">
@@ -167,6 +172,11 @@
 			</wxsmith>
 			<envvars />
 			<debugger />
+			<AutoVersioning>
+				<Scheme minor_max="10" build_max="0" rev_max="0" rev_rand_max="10" build_times_to_increment_minor="100" />
+				<Settings autoincrement="1" date_declarations="1" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="" header_path="src/version.h" />
+				<Changes_Log show_changes_editor="0" app_title="released version %M.%m.%b of %p" changeslog_path="ChangesLog.txt" />
+			</AutoVersioning>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

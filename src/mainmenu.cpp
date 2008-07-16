@@ -4,6 +4,7 @@
 
 #include "arkanoidsb.h"
 #include "mainmenu.h"
+#include "version.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -67,7 +68,7 @@ int CMainMenu::DrawMenu() {
 	if(m_nMenuType == MT_MAIN)	g_CSinusString.Draw();
 
 	if(m_nMenuType == MT_MAIN) {
-		g_Font.DrawString(5, SCREEN_HEIGHT - 5 - 14, GAME_VERSION);
+		g_Font.DrawString(5, SCREEN_HEIGHT - 5 - 14, AutoVersion::FULLVERSION_STRING);
 #if !defined(__linux__) && !defined(FULL_VERSION)
 		if(g_bIsRegistered == false) {
 			g_Font.DrawString(5, 5, "Unregistered version");
