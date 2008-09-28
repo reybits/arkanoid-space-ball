@@ -401,7 +401,7 @@ void CBall::ChangeBallSize(int nDelta) {
 }
 
 bool CBall::GetPositionAndDiameter(SDL_Rect &rc, int &nPos) {
-	for(; nPos < m_vecBalls.size(); nPos++) {
+	for(; (size_t)nPos < m_vecBalls.size(); nPos++) {
 		if(m_vecBalls[nPos].bIsCaptured == false) {
 			rc.x	= (int)m_vecBalls[nPos].x;
 			rc.y	= (int)m_vecBalls[nPos].y;
@@ -535,7 +535,7 @@ int CBall::GetAngle(int nPos) {
     \fn CBall::SlowDown()
  */
 void CBall::SlowDown() {
-	for(int i = 0; i < m_vecBalls.size(); i++) {
+	for(size_t i = 0; i < m_vecBalls.size(); i++) {
 		if(m_vecBalls[i].fSpeed != 0.0)	m_vecBalls[i].fSpeed	= INIT_BALL_SPEED;
 	}
 }
@@ -577,7 +577,7 @@ int CBall::GetTypeCount() {
 	false	- monster release ball - start it some direction
  */
 void CBall::BallCaptured(int nIndex, bool bIsCaptured) {
-	if(nIndex >= 0 && nIndex < m_vecBalls.size()) {
+	if(nIndex >= 0 && nIndex < (int)m_vecBalls.size()) {
 		if(bIsCaptured == false && m_vecBalls[nIndex].bIsCaptured == true) {
 			m_vecBalls[nIndex].fSpeed	+= 0.5;
 			m_vecBalls[nIndex].nAngle	= 30 + g_Rnd.Get(120);
@@ -591,7 +591,7 @@ void CBall::BallCaptured(int nIndex, bool bIsCaptured) {
     \fn CBall::SetBallPos(int nIndex, double fX, double fY)
  */
 void CBall::SetCapturedBallPos(int nIndex, double fX, double fY) {
-	if(nIndex >= 0 && nIndex < m_vecBalls.size() && m_vecBalls[nIndex].bIsCaptured == true) {
+	if(nIndex >= 0 && nIndex < (int)m_vecBalls.size() && m_vecBalls[nIndex].bIsCaptured == true) {
 		int	nRadius	= CalcDiameter(m_vecBalls[nIndex].nDiameter) / 2;
 		m_vecBalls[nIndex].x	= fX + 26 - nRadius;
 		m_vecBalls[nIndex].y	= fY + 33 - nRadius;

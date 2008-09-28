@@ -134,7 +134,7 @@ bool CBullet::GetPositionAndSize(SDL_Rect &rc, int& nPos, bool bFromFirst) {
 		return	true;
 	}
 
-	while(nPos < m_vecBullets.size()) {
+	while(nPos < (int)m_vecBullets.size()) {
 		rc.x	= (int)m_vecBullets[nPos].x;
 		rc.y	= (int)m_vecBullets[nPos].y;
 		// ��� � ��������� ������ � ������

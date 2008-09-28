@@ -153,7 +153,12 @@ int main(int argc, char *argv[]) {
 	char	achTemp[PATH_MAX];
 
 #ifdef __linux__
-	sprintf(g_achUserProfile, "%s/.arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
+	if(getenv("XDG_CONFIG_HOME")) {
+		sprintf(g_achUserProfile, "%s/arkanoidsb/", getenv("XDG_CONFIG_HOME"));
+	}
+	else {
+		sprintf(g_achUserProfile, "%s/.config/arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
+	}
 #elif _WIN32
 	int		nLen	= sizeof(achTemp);
 	//GetUserProfileDirectory(0, achTemp, nLen);
@@ -162,7 +167,7 @@ int main(int argc, char *argv[]) {
 #else
 	sprintf(g_achUserProfile, "%s/Library/Application Support/arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
 #endif
-	printf("Arkanoid: Space Ball by 'WE' Group. Copyright (c) 2006-2007.\n");
+	printf("Arkanoid: Space Ball by 'WE' Group. Copyright (c) 2006-2008.\n");
 	printf("version %s.\n", AutoVersion::FULLVERSION_STRING);
 	printf("Users config dir: %s\n", g_achUserProfile);
 	ReadWriteConfig(true);
@@ -759,7 +764,7 @@ void PlayMusic2() {
 
 int PlaySound(int nSndIndex, int nLoopsCount) {
 	if(g_bIsAudioSupported == false)	return -1;
-	if(nSndIndex > sizeof(g_pachSnd) / sizeof(const char*))
+	if(nSndIndex > (int)(sizeof(g_pachSnd) / sizeof(const char*)))
 		return	-1;
 	return	Mix_PlayChannel(-1, g_apSnd[nSndIndex], nLoopsCount);
 }

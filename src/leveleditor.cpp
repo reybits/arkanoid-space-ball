@@ -114,13 +114,13 @@ void CLevelEditor::Draw() {
 		if(IsKeyPressed(SDLK_DELETE) && IsKeyStateChanged(SDLK_DELETE)) {
 			memset(m_abyLevel, 0, sizeof(m_abyLevel));
 		}
-		if(((true == g_MainMenu.DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 30, WALL_Y2 - 30, CMainMenu::B_PREV) && g_bMouseLB == true) || IsKeyPressed(SDLK_PAGEUP) && IsKeyStateChanged(SDLK_PAGEUP)) && m_nCurrentLevel > 0) {
+		if(((true == g_MainMenu.DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 30, WALL_Y2 - 30, CMainMenu::B_PREV) && g_bMouseLB == true) || (IsKeyPressed(SDLK_PAGEUP) && IsKeyStateChanged(SDLK_PAGEUP))) && m_nCurrentLevel > 0) {
 			g_bMouseLB	= false;
 			memcpy(m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_abyLevel, sizeof(m_abyLevel));
 			m_nCurrentLevel--;
 			memcpy(m_abyLevel, m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_abyLevel));
 		}
-		if((true == g_MainMenu.DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 100, WALL_Y2 - 30, CMainMenu::B_NEXT) && g_bMouseLB == true) || IsKeyPressed(SDLK_PAGEDOWN) && IsKeyStateChanged(SDLK_PAGEDOWN)) {
+		if((true == g_MainMenu.DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 100, WALL_Y2 - 30, CMainMenu::B_NEXT) && g_bMouseLB == true) || (IsKeyPressed(SDLK_PAGEDOWN) && IsKeyStateChanged(SDLK_PAGEDOWN))) {
 			g_bMouseLB	= false;
 			memcpy(m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_abyLevel, sizeof(m_abyLevel));
 			if(m_nCurrentLevel == m_nLevelsCount - 1) {

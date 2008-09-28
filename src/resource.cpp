@@ -28,7 +28,7 @@ bool CResource::Open(const char *pchResource) {
 			dwCount	= _GetUInt((unsigned char*)&dwCount);
 			m_listFiles.reserve(dwCount);
 			RES_FILE_HEADER	file;
-			for(int i = 0; i < dwCount; i++) {
+			for(size_t i = 0; i < dwCount; i++) {
 				// read and store files list
 				if(sizeof(file) == fread(&file, 1, sizeof(file), pFile)) {
 					EncodeData(&file, sizeof(file));
@@ -61,7 +61,7 @@ unsigned int CResource::_GetUInt(unsigned char *pbyData) {
 unsigned char *CResource::GetDataAllocMem(const char *pchName, unsigned int &nDataLen) {
 	if(m_pchResource != 0) {
 		printf("Opening '%s' resource...", pchName);
-		for(int i = 0; i < m_listFiles.size(); i++) {
+		for(size_t i = 0; i < m_listFiles.size(); i++) {
 			if(strcmp(m_listFiles[i].achName, pchName) == 0) {
 				nDataLen	= _GetUInt((unsigned char*)m_listFiles[i].nDataLen);
 				unsigned char	*pbyData	= new unsigned char[nDataLen];

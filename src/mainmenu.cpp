@@ -550,7 +550,7 @@ void CMainMenu::DrawMenuOptions() {
 				if(nButton == 0)	m_strOpt.nBppIndex++;
 				else					m_strOpt.nBppIndex--;
 				if(m_strOpt.nBppIndex < 0)	m_strOpt.nBppIndex	= sizeof(g_anBpx) / sizeof(int) - 1;
-				if(m_strOpt.nBppIndex >= sizeof(g_anBpx) / sizeof(int))	m_strOpt.nBppIndex	= 0;
+				if(m_strOpt.nBppIndex >= (int)(sizeof(g_anBpx) / sizeof(int)))	m_strOpt.nBppIndex	= 0;
 			}
 			break;
 		case 4:

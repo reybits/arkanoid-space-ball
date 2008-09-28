@@ -1336,7 +1336,7 @@ int CArkanoidSBGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY) {
  */
 bool CArkanoidSBGame::IsEmptyBrickPos(const int nSkipPos, const int nX, const int nY) {
 	for(size_t i = 0; i < m_vecLevelBricks.size(); i++) {
-		if(i == nSkipPos)	continue;	// skip checking itself
+		if((int)i == nSkipPos)	continue;	// skip checking itself
 		int	nBx	= int(m_vecLevelBricks[i].fX);
 		int	nBy	= int(m_vecLevelBricks[i].fY);
 		if(abs(nX - nBx) == 0 && abs(nY - nBy) == 0) {
