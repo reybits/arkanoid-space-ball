@@ -127,7 +127,7 @@ int CMyString::GetWordWidth(const char *pchString, int &nCharsCount) {
 	nCharsCount		= 0;
 	while(*pchString && *pchString != ' ' &&  *pchString != '\n') {
 		nCharsCount++;
-		nStrWidth	+= GetFrameWidth(m_anSymbIndex[*pchString++]);
+		nStrWidth	+= GetFrameWidth(m_anSymbIndex[(int)*pchString++]);
 	}
 
 	return	nStrWidth + m_nKerning * nCharsCount;
@@ -137,11 +137,11 @@ void CMyString::DrawString2(int nX, int nY, const char *pchString) {
 	if(pchString == NULL)
 		return;
 
-	int		nYPos	= m_WindowRect.y + nY;
+	int nYPos	= m_WindowRect.y + nY;
 
-	Uint32	dwFrame		= 0;
-	int		nFrameWidth	= 0;
-	int		nSpaceWidth	= GetFrameWidth(m_anSymbIndex[' ']);
+	Uint32	dwFrame	= 0;
+	int nFrameWidth	= 0;
+	int nSpaceWidth	= GetFrameWidth(m_anSymbIndex[(int)' ']);
 
 	while(*pchString) {
 		char	*pchTmp	= (char*)pchString;
