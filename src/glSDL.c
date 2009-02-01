@@ -1655,8 +1655,8 @@ static int glSDL_BlitGL(SDL_Surface *src, SDL_Rect *srcrect,
 	/* Render! */
 	if(!plain)
 	{
-		int rcx = (r.w >> 1) + state.cx;
-		int rcy = (r.h >> 1) + state.cy;
+		int rcx = (int)((r.w >> 1) + state.cx);
+		int rcy = (int)((r.h >> 1) + state.cy);
 		gl.PushMatrix();
 		gl.Translatef(r.x + rcx, r.y + rcy, 0.0f);
 		if(state.rot)
