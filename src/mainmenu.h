@@ -11,16 +11,18 @@
 
 class CMainMenu {
 public:
-	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };
-	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE, B_BUYGAME, B_LEVELEDITOR, B_CUSTOMLEVELS };
-	void SetMenuType(int nType, bool bReturnToGame = false);
-	int DrawMenu();
 	CMainMenu();
 	virtual ~CMainMenu();
+
+	void SetMenuType(int nType, bool bReturnToGame = false);
+	int DrawMenu();
 	void SetEnterNameMode();
 	bool DrawMenuButton(int nX, int nY, int nButtonId);
 	void DrawBrick(int nX, int nY, int nType);
 	void SendEsc();
+
+	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };
+	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE, B_BUYGAME, B_LEVELEDITOR, B_CUSTOMLEVELS };
 
 protected:
 #define	MENU_ITEM_Y	235
@@ -29,7 +31,8 @@ protected:
 		int nBppIndex;
 		bool bFullscreen;
 		bool bOGL;
-	} m_strOpt;
+	};
+	struct _OPTIONS m_strOpt;
 	char m_achName[102];
 	bool m_bGetNameMode;
 	char GetKey();

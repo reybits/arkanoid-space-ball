@@ -443,15 +443,15 @@ int main(int argc, char *argv[]) {
 				}
 			}
 
-			// save screenshot to profile dir
+/*			// save screenshot to profile dir
 			if((g_dwModState & KMOD_CTRL) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
-/*				char    achPath[PATH_MAX];
+				char    achPath[PATH_MAX];
 				time_t  osTime	= time(0);
 				struct tm	local	= *localtime(&osTime);
 				sprintf(achPath, "%sarkanoidsb-%4d%2d%2d-%2d%2d.bmp", g_achUserProfile, local.tm_year + 1900, local.tm_mon + 1, local.tm_mday, local.tm_hour, local.tm_min);
 				SDL_SaveBMP(g_psurfScreen, achPath);
-*/			}
-			if(IsKeyPressed(SDLK_f) && IsKeyStateChanged(SDLK_f)) {
+			}
+*/			if(IsKeyPressed(SDLK_f) && IsKeyStateChanged(SDLK_f)) {
 				g_bShowFps	= !g_bShowFps;
 				//printf("show fps %s\n", g_bShowFps == true ? "on" : "off");
 			}
@@ -466,8 +466,12 @@ int main(int argc, char *argv[]) {
 			SDL_Flip(g_psurfScreen);
 
 			Sint32  nDelay  = (Sint32)(fPerFrameMs - (SDL_GetTicks() - nTimeCurrent));
-			if(nDelay > 0)  SDL_Delay(nDelay);
-			else    SDL_Delay(0);
+			if(nDelay > 0) {
+				SDL_Delay(nDelay);
+			}
+			else {
+				SDL_Delay(0);
+			}
 		}
 		else {
 			SDL_FillRect(g_psurfScreen, 0, 0);
