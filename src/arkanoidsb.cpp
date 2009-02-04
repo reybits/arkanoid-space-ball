@@ -2,6 +2,7 @@
 //
 
 #include "arkanoidsb.h"
+#include <SDL_syswm.h>
 #include <sys/stat.h>
 #include "version.h"
 
@@ -918,6 +919,8 @@ void ReadWriteConfig(bool bMode) {
 }
 
 void SetVideoMode() {
+	SDL_WM_SetCaption("Arkanoid: Space Ball", 0);
+
 	char	achBuf[50];
 	Uint32	dwFlags	= (g_bOGL == true ? SDL_GLSDL : 0) | SDL_HWSURFACE | SDL_DOUBLEBUF | (g_bFullscreen == true ? SDL_FULLSCREEN : 0);
 	printf("Requested video flags:\n");
@@ -967,8 +970,33 @@ void SetVideoMode() {
 	printf("  color fills accelerated: %s\n",  !vi->blit_fill ? "no" : "yes");
 	printf("  total video memory: %d Kb\n", vi->video_mem);
 
-	SDL_WM_SetCaption("Arkanoid: Space Ball", 0);
 	SDL_ShowCursor(SDL_DISABLE);
+
+	// center window
+	SDL_SysWMinfo info;
+	SDL_VERSION(&info.version);
+	if(SDL_GetWMInfo(&info) > 0 ) {
+#if defined(__linux__)
+		if(info.subsystem == SDL_SYSWM_X11) {
+			info.info.x11.lock_func();
+			int w	= DisplayWidth(info.info.x11.display, DefaultScreen(info.info.x11.display));
+			int h	= DisplayHeight(info.info.x11.display, DefaultScreen(info.info.x11.display));
+			int x	= (w - SCREEN_WIDTH)/2;
+			int y	= (h - SCREEN_HEIGHT)/2;
+			XMoveWindow(info.info.x11.display, info.info.x11.wmwindow, x, y);
+			info.info.x11.unlock_func();
+		}
+#elif defined(WIN32)            
+		RECT rc;
+		HWND hwnd	= info.window;
+		int w	= GetSystemMetrics(SM_CXSCREEN);
+		int h	= GetSystemMetrics(SM_CYSCREEN);
+		GetWindowRect(hwnd, &rc);
+		int x	= (w - (rc.right-rc.left))/2;
+		int y	= (h - (rc.bottom-rc.top))/2;
+		SetWindowPos(hwnd, NULL, x, y, 0, 0, SWP_NOSIZE|SWP_NOZORDER);
+#endif
+	}
 
 	g_Font.LoadFont2("font_small.png", 5, -1, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
 	g_Font2.LoadFont2("font_big.png", 16, 0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?-%,._:");
