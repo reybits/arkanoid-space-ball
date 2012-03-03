@@ -962,14 +962,23 @@ void CArkanoidSBGame::DrawStatistic() {
 		g_Font.DrawNumber(m_nPaddleMissileCount, nX, 31);
 		nX	-= 36;
 	}
-	int	nType	= g_Ball.GetType();
-	if(nType != CBall::TYPE_WHITE) {
-		if(nType == CBall::TYPE_RED)	rc.y	= 1 * 36;
-		else									rc.y	= 2 * 36;
+    
+	int	nType = g_Ball.GetType();
+	if(nType != CBall::TYPE_WHITE)
+    {
+		if(nType == CBall::TYPE_RED)
+        {
+            rc.y = 1 * 36;
+        }
+		else
+        {
+            rc.y = 2 * 36;
+        }
 		Blit(nX, 10, m_pBonuses, &rc);
 		g_Font.DrawNumber(g_Ball.GetTypeCount(), nX, 31);
-		nX	-= 36;
+		//nX	-= 36;
 	}
+    
 	if(m_nBonusLevelType == 0) {
 		nX	= SCREEN_WIDTH - 5 - 24;
 		for(int i = 0; i < 5; i++) {

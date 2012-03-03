@@ -2,57 +2,62 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_MAINMENU_H__F6055D1D_17C9_4442_A253_222767E6A181__INCLUDED_)
-#define AFX_MAINMENU_H__F6055D1D_17C9_4442_A253_222767E6A181__INCLUDED_
+#ifndef MAINMENU_H_3C101185416525
+#define MAINMENU_H_3C101185416525
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#define MENU_ITEM_Y 235
+#define MENU_ITEM_X ((SCREEN_WIDTH - 248) / 2)
 
-class CMainMenu {
+class CMainMenu
+{
 public:
-	CMainMenu();
-	virtual ~CMainMenu();
+    CMainMenu();
+    virtual ~CMainMenu();
 
-	void SetMenuType(int nType, bool bReturnToGame = false);
-	int DrawMenu();
-	void SetEnterNameMode();
-	bool DrawMenuButton(int nX, int nY, int nButtonId);
-	void DrawBrick(int nX, int nY, int nType);
-	void SendEsc();
+    void SetMenuType(int nType, bool bReturnToGame = false);
+    int DrawMenu();
+    void SetEnterNameMode();
+    bool DrawMenuButton(int nX, int nY, int nButtonId);
+    void DrawBrick(int nX, int nY, int nType);
+    void SendEsc();
 
-	enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };
-	enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE, B_BUYGAME, B_LEVELEDITOR, B_CUSTOMLEVELS };
+    enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };
+    enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE, B_BUYGAME, B_LEVELEDITOR, B_CUSTOMLEVELS };
 
 protected:
-#define	MENU_ITEM_Y	235
-#define	MENU_ITEM_X	((SCREEN_WIDTH - 248) / 2)
-	struct _OPTIONS {
-		int nBppIndex;
-		bool bFullscreen;
-		bool bOGL;
-	};
-	struct _OPTIONS m_strOpt;
-	char m_achName[102];
-	bool m_bGetNameMode;
-	char GetKey();
-	void DrawMenuOptions();
-	void DrawMenuHighScore();
-	void DrawMenuRules();
-	void PlaySFX(int nItem);
-	int DrawMenuMain();
-	int DrawStartGame();
-	int m_nMenuType;
-	void DrawBackground();
+    bool m_bGetNameMode;
+    int m_nMenuType;
+    bool m_bInitHelp;
+    bool m_bReturnToGame;
+    bool m_bIsSaveAvailable;
 #if !defined(__linux__) && !defined(FULL_VERSION)
-	void DrawEnterReg();
-	void DrawHighlight(int nPos);
-	bool m_bShowReminder;
+    bool m_bShowReminder;
 #endif
-	bool m_bInitHelp;
-	bool m_bReturnToGame;
-	char m_achStoredLevelInfo[100];
-	bool m_bIsSaveAvailable;
+    char m_achStoredLevelInfo[100];
+    char m_achName[102];
+    struct _OPTIONS
+    {
+        int nBppIndex;
+        bool bFullscreen;
+        bool bOGL;
+    };
+    struct _OPTIONS m_strOpt;
+
+private:
+    char GetKey();
+    void DrawMenuOptions();
+    void DrawMenuHighScore();
+    void DrawMenuRules();
+    void PlaySFX(int nItem);
+    int DrawMenuMain();
+    int DrawStartGame();
+    void DrawBackground();
+
+#if !defined(__linux__) && !defined(FULL_VERSION)
+    void DrawEnterReg();
+    void DrawHighlight(int nPos);
+#endif
 };
 
-#endif // !defined(AFX_MAINMENU_H__F6055D1D_17C9_4442_A253_222767E6A181__INCLUDED_)
+#endif /* end of include guard: MAINMENU_H_3C101185416525 */
+

@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
 		//loading modules
 		for(size_t i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
 #ifdef __MACOSX__
- 			if(i != 2)	sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module%.2d.ogg", i + 1);
+ 			if(i != 2)	sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module%.2lu.ogg", i + 1);
  			else		sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module03.s3m");
 #else
  			if(i != 2)	sprintf(achTemp, "res/module%.2d.ogg", i + 1);
@@ -317,7 +317,7 @@ int main(int argc, char *argv[]) {
 				}
 				*(pchEnd + 1)	= 0;
 #ifdef __MACOSX__
-				if(i != 2) { sprintf(achTemp, "../Resources/module%.2d.ogg", i + 1); strcat(achPath, achTemp); }
+				if(i != 2) { sprintf(achTemp, "../Resources/module%.2lu.ogg", i + 1); strcat(achPath, achTemp); }
 				else		strcat(achPath, "../Resources/module03.s3m");
 #else
 				if(i != 2) { sprintf(achTemp, "res/module%.2d.ogg", i + 1); strcat(achPath, achTemp); }

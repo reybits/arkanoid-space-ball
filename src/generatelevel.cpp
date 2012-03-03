@@ -142,7 +142,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom) {
 		}
 	}
 
-	printf("Total bricks on level %d\n", g_Arkanoid.m_vecLevelBricks.size());
+	printf("Total bricks on level %lu\n", g_Arkanoid.m_vecLevelBricks.size());
 }
 
 void CGenerateLevel::_FillLevel(int nLevel, int nPos) {

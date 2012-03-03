@@ -863,10 +863,10 @@ void glSDL_QuitSubSystem(Uint32 flags)
 }
 
 
-SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
+SDL_Surface* glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 {
-	SDL_Surface *screen;
-	GLint gl_doublebuf;
+	SDL_Surface* screen = 0;
+	GLint gl_doublebuf = 0;
 
 	if(!initialized)
 	{
@@ -891,17 +891,21 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	{
 		screen = SDL_SetVideoMode(width, height, bpp, flags);
 		if(screen)
+        {
 			GLSDL_FIX_SURFACE(screen);
-		return screen;
+		}
+        return screen;
 	}
 
 	if((SDL_Linked_Version()->major <= 1) &&
 			(SDL_Linked_Version()->minor <= 2) &&
 			(SDL_Linked_Version()->patch < 5))
+    {
 		fprintf(stderr, "glSDL/wrapper WARNING: Using SDL version"
 				" 1.2.5 or later is strongly"
 				" recommended!\n");
-
+    }
+    
 	if(LoadGL() < 0)
 	{
 		fprintf(stderr, "glSDL/wrapper ERROR: Could not load OpenGL library!\n");
@@ -917,8 +921,10 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 
 	texinfotab = (glSDL_TexInfo**)calloc(MAX_TEXINFOS + 1, sizeof(glSDL_TexInfo *));
 	if(!texinfotab)
+    {
 		return NULL;
-
+    }
+    
 	/* Remove flag to avoid confusion inside SDL - just in case! */
 	flags &= ~SDL_GLSDL;
 
@@ -947,7 +953,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 
 	scale = 1;
 
-	screen = SDL_SetVideoMode(width*scale, height*scale, bpp, flags);
+	screen = SDL_SetVideoMode(width * scale, height * scale, bpp, flags);
 	if(!screen)
 	{
 		KillAllTextures();
@@ -956,7 +962,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 
 	GLSDL_FIX_SURFACE(screen);
 
-#ifdef	FAKE_MAXTEXSIZE
+#ifdef FAKE_MAXTEXSIZE
 	maxtexsize = FAKE_MAXTEXSIZE;
 #else
 	gl.GetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
@@ -982,8 +988,7 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	 */
 	gl.MatrixMode(GL_PROJECTION);
 	gl.LoadIdentity();
-	gl.Ortho(0, scale * (float)screen->w, scale * (float)screen->h, 0,
-			-1.0, 1.0);
+	gl.Ortho(0, scale * (float)screen->w, scale * (float)screen->h, 0, -1.0, 1.0);
 
 	gl.MatrixMode(GL_MODELVIEW);
 	gl.LoadIdentity();
@@ -998,14 +1003,13 @@ SDL_Surface *glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 	 * direct software rendering. (Dog slow crap. It's only
 	 * legitimate use is probably screen shots.)
 	 */
-	fake_screen = CreateRGBSurface(screen->w / scale,
-			screen->h / scale);
+	fake_screen = CreateRGBSurface(screen->w / scale, screen->h / scale);
 	using_glsdl = 1;
 	return fake_screen;
 }
 
 
-SDL_Surface *glSDL_GetVideoSurface(void)
+SDL_Surface* glSDL_GetVideoSurface(void)
 {
 	if(fake_screen)
 		return fake_screen;
@@ -1173,8 +1177,7 @@ SDL_bool glSDL_SetClipRect(SDL_Surface *surface, SDL_Rect *rect)
 }
 
 
-static int glSDL_BlitFromGL(SDL_Rect *srcrect,
-		SDL_Surface *dst, SDL_Rect *dstrect)
+static int glSDL_BlitFromGL(SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect)
 {
 	int i, sy0, dy0;
 	SDL_Rect sr, dr;
@@ -1186,8 +1189,7 @@ static int glSDL_BlitFromGL(SDL_Rect *srcrect,
 	glSDL_Invalidate(dst, dstrect);
 
 	/* Abuse the fake screen buffer a little. */
-	gl.PixelStorei(GL_UNPACK_ROW_LENGTH, fake_screen->pitch /
-			fake_screen->format->BytesPerPixel);
+	gl.PixelStorei(GL_UNPACK_ROW_LENGTH, fake_screen->pitch / fake_screen->format->BytesPerPixel);
 	if(srcrect)
 	{
 		sr = *srcrect;
@@ -1195,16 +1197,15 @@ static int glSDL_BlitFromGL(SDL_Rect *srcrect,
 		dr.w = fake_screen->w;
 		dr.h = fake_screen->h;
 		clip_rect(&sr, &dr);
-		gl.ReadPixels(sr.x, sr.y, sr.w, sr.h, GL_RGB, GL_UNSIGNED_BYTE,
-				fake_screen->pixels);
+		gl.ReadPixels(sr.x, sr.y, sr.w, sr.h, GL_RGB, GL_UNSIGNED_BYTE, fake_screen->pixels);
 	}
 	else
 	{
 		sr.x = sr.y = 0;
 		sr.w = dst->w;
+        sr.h = dst->h;
 		srcrect = &sr;
-		gl.ReadPixels(0, 0, fake_screen->w, fake_screen->h,
-				GL_RGB, GL_UNSIGNED_BYTE, fake_screen->pixels);
+		gl.ReadPixels(0, 0, fake_screen->w, fake_screen->h, GL_RGB, GL_UNSIGNED_BYTE, fake_screen->pixels);
 	}
 
 	/* Blit to the actual target! (Vert. flip... Uuurgh!) */
@@ -2226,15 +2227,20 @@ int glSDL_UploadSurface(SDL_Surface *surface)
 	 *	preferably one that makes DMA w/o conversion possible.
 	 */
 	if(FormatIsOk(surface))
+    {
 		datasurf = surface;
-	else
+	}
+    else
 	{
 		DBG(fprintf(stderr, "glSDL/wrapper: WARNING: On-the-fly conversion performed!\n"));
-		if(surface->format->Amask)
-			datasurf = glSDL_DisplayFormatAlpha(surface);
-		else
-			datasurf = glSDL_DisplayFormat(surface);
-		if(!datasurf)
+		if(surface)
+        {
+            if(surface->format->Amask)
+                datasurf = glSDL_DisplayFormatAlpha(surface);
+            else
+                datasurf = glSDL_DisplayFormat(surface);
+		}
+        if(!datasurf)
 			return -2;
 	}
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5590F20515022F1700E37CB8 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F20415022F1700E37CB8 /* SDL_image.framework */; };
 		55CC7A060E2E9E7500B6C3A6 /* SDLMain.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55CC7A030E2E9E7500B6C3A6 /* SDLMain.h */; };
 		55CC7A070E2E9E7500B6C3A6 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CC7A040E2E9E7500B6C3A6 /* SDLMain.m */; };
 		55CC7A080E2E9E7500B6C3A6 /* version.h in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55CC7A050E2E9E7500B6C3A6 /* version.h */; };
@@ -15,11 +16,9 @@
 		55E6E75E0BEC8081006CE6DC /* module01.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E75A0BEC8081006CE6DC /* module01.ogg */; };
 		55E6E7600BEC8081006CE6DC /* module02.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E75C0BEC8081006CE6DC /* module02.ogg */; };
 		55E6E7610BEC8081006CE6DC /* module03.s3m in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E75D0BEC8081006CE6DC /* module03.s3m */; };
-		55E6E7B20BEC8191006CE6DC /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E6E7A80BEC8191006CE6DC /* SDL_image.framework */; };
 		55E6E7B30BEC8191006CE6DC /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */; };
 		55E6E7DF0BEC81C8006CE6DC /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E6E7B40BEC81C8006CE6DC /* SDL.framework */; };
 		55E6E7E00BEC81D3006CE6DC /* SDL.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55E6E7B40BEC81C8006CE6DC /* SDL.framework */; };
-		55E6E7E10BEC81D3006CE6DC /* SDL_image.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55E6E7A80BEC8191006CE6DC /* SDL_image.framework */; };
 		55E6E7E20BEC81D3006CE6DC /* SDL_mixer.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */; };
 		55E6E7E60BEC825D006CE6DC /* arkanoidsb.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E7E50BEC825C006CE6DC /* arkanoidsb.icns */; };
 		55E77DDA0BEB91C200E2BBAB /* arkanoidsbgame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DB50BEB91C200E2BBAB /* arkanoidsbgame.cpp */; };
@@ -51,7 +50,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				55E6E7E00BEC81D3006CE6DC /* SDL.framework in Copy Frameworks into .app bundle */,
-				55E6E7E10BEC81D3006CE6DC /* SDL_image.framework in Copy Frameworks into .app bundle */,
 				55E6E7E20BEC81D3006CE6DC /* SDL_mixer.framework in Copy Frameworks into .app bundle */,
 				55CC7A060E2E9E7500B6C3A6 /* SDLMain.h in Copy Frameworks into .app bundle */,
 				55CC7A080E2E9E7500B6C3A6 /* version.h in Copy Frameworks into .app bundle */,
@@ -66,6 +64,7 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		5590F20415022F1700E37CB8 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = Library/Frameworks/SDL_image.framework; sourceTree = SDKROOT; };
 		55CC7A030E2E9E7500B6C3A6 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLMain.h; path = src/SDLMain.h; sourceTree = "<group>"; };
 		55CC7A040E2E9E7500B6C3A6 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = src/SDLMain.m; sourceTree = "<group>"; };
 		55CC7A050E2E9E7500B6C3A6 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = src/version.h; sourceTree = "<group>"; };
@@ -74,7 +73,6 @@
 		55E6E75A0BEC8081006CE6DC /* module01.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module01.ogg; path = res/module01.ogg; sourceTree = "<group>"; };
 		55E6E75C0BEC8081006CE6DC /* module02.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module02.ogg; path = res/module02.ogg; sourceTree = "<group>"; };
 		55E6E75D0BEC8081006CE6DC /* module03.s3m */ = {isa = PBXFileReference; lastKnownFileType = file; name = module03.s3m; path = res/module03.s3m; sourceTree = "<group>"; };
-		55E6E7A80BEC8191006CE6DC /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
 		55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
 		55E6E7B40BEC81C8006CE6DC /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
 		55E6E7E50BEC825C006CE6DC /* arkanoidsb.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = arkanoidsb.icns; path = res/arkanoidsb.icns; sourceTree = "<group>"; };
@@ -124,8 +122,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5590F20515022F1700E37CB8 /* SDL_image.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				55E6E7B20BEC8191006CE6DC /* SDL_image.framework in Frameworks */,
 				55E6E7B30BEC8191006CE6DC /* SDL_mixer.framework in Frameworks */,
 				55E6E7DF0BEC81C8006CE6DC /* SDL.framework in Frameworks */,
 			);
@@ -185,8 +183,8 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5590F20415022F1700E37CB8 /* SDL_image.framework */,
 				55E6E7B40BEC81C8006CE6DC /* SDL.framework */,
-				55E6E7A80BEC8191006CE6DC /* SDL_image.framework */,
 				55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
@@ -214,19 +212,11 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = arkanoidsb;
-			sourceTree = "<group>";
-		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Other Sources";
 			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
@@ -280,9 +270,15 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "arkanoidsb" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* arkanoidsb */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* arkanoidsb */,
 			);
@@ -349,18 +345,12 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = arkanoidsb;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -369,15 +359,9 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = arkanoidsb;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -385,52 +369,48 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(HOME)/Library/Frameworks",
 					/Library/Frameworks,
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(HOME)/Library/Frameworks/SDL.framework/Headers",
 					/Library/Frameworks/SDL.framework/Headers,
 					/Library/Frameworks/SDL_image.framework/Headers,
 					/Library/Frameworks/SDL_mixer.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
 				);
+				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH_ACTUAL)";
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				PRODUCT_NAME = arkanoidsb;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(HOME)/Library/Frameworks",
 					/Library/Frameworks,
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(HOME)/Library/Frameworks/SDL.framework/Headers",
 					/Library/Frameworks/SDL.framework/Headers,
 					/Library/Frameworks/SDL_image.framework/Headers,
 					/Library/Frameworks/SDL_mixer.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
 				);
+				INSTALL_PATH = "$(HOME)/Applications";
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				PRODUCT_NAME = arkanoidsb;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
