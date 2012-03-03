@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		552D835215024821007FD039 /* arkanoidsb.icns in Resources */ = {isa = PBXBuildFile; fileRef = 552D835115024821007FD039 /* arkanoidsb.icns */; };
 		5590F20515022F1700E37CB8 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F20415022F1700E37CB8 /* SDL_image.framework */; };
 		55E6E7B30BEC8191006CE6DC /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */; };
 		55E6E7DF0BEC81C8006CE6DC /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E6E7B40BEC81C8006CE6DC /* SDL.framework */; };
 		55E6E7E00BEC81D3006CE6DC /* SDL.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55E6E7B40BEC81C8006CE6DC /* SDL.framework */; };
 		55E6E7E20BEC81D3006CE6DC /* SDL_mixer.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */; };
 		55F568061502430C003037B7 /* SDL_image.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 5590F20415022F1700E37CB8 /* SDL_image.framework */; };
-		55F5681115024468003037B7 /* arkanoidsb.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680C15024468003037B7 /* arkanoidsb.icns */; };
 		55F5681215024468003037B7 /* arkanoidsb.pak in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680D15024468003037B7 /* arkanoidsb.pak */; };
 		55F5681315024468003037B7 /* module01.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680E15024468003037B7 /* module01.ogg */; };
 		55F5681415024468003037B7 /* module02.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680F15024468003037B7 /* module02.ogg */; };
@@ -62,10 +62,10 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		552D835115024821007FD039 /* arkanoidsb.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = arkanoidsb.icns; sourceTree = "<group>"; };
 		5590F20415022F1700E37CB8 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = Library/Frameworks/SDL_image.framework; sourceTree = SDKROOT; };
 		55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
 		55E6E7B40BEC81C8006CE6DC /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
-		55F5680C15024468003037B7 /* arkanoidsb.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = arkanoidsb.icns; path = ../../res/arkanoidsb.icns; sourceTree = "<group>"; };
 		55F5680D15024468003037B7 /* arkanoidsb.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = arkanoidsb.pak; path = ../../res/arkanoidsb.pak; sourceTree = "<group>"; };
 		55F5680E15024468003037B7 /* module01.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module01.ogg; path = ../../res/module01.ogg; sourceTree = "<group>"; };
 		55F5680F15024468003037B7 /* module02.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module02.ogg; path = ../../res/module02.ogg; sourceTree = "<group>"; };
@@ -172,7 +172,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				55F5680C15024468003037B7 /* arkanoidsb.icns */,
+				552D835115024821007FD039 /* arkanoidsb.icns */,
 				55F5680D15024468003037B7 /* arkanoidsb.pak */,
 				55F5680E15024468003037B7 /* module01.ogg */,
 				55F5680F15024468003037B7 /* module02.ogg */,
@@ -290,11 +290,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				55F5681115024468003037B7 /* arkanoidsb.icns in Resources */,
 				55F5681215024468003037B7 /* arkanoidsb.pak in Resources */,
 				55F5681315024468003037B7 /* module01.ogg in Resources */,
 				55F5681415024468003037B7 /* module02.ogg in Resources */,
 				55F5681515024468003037B7 /* module03.s3m in Resources */,
+				552D835215024821007FD039 /* arkanoidsb.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
