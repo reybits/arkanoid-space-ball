@@ -8,35 +8,35 @@
 
 /* Begin PBXBuildFile section */
 		5590F20515022F1700E37CB8 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F20415022F1700E37CB8 /* SDL_image.framework */; };
-		55CC7A070E2E9E7500B6C3A6 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CC7A040E2E9E7500B6C3A6 /* SDLMain.m */; };
-		55E6E70E0BEC7816006CE6DC /* arkanoidsb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E6E70D0BEC7816006CE6DC /* arkanoidsb.cpp */; };
-		55E6E7590BEC8049006CE6DC /* arkanoidsb.pak in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E7580BEC8048006CE6DC /* arkanoidsb.pak */; };
-		55E6E75E0BEC8081006CE6DC /* module01.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E75A0BEC8081006CE6DC /* module01.ogg */; };
-		55E6E7600BEC8081006CE6DC /* module02.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E75C0BEC8081006CE6DC /* module02.ogg */; };
-		55E6E7610BEC8081006CE6DC /* module03.s3m in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E75D0BEC8081006CE6DC /* module03.s3m */; };
 		55E6E7B30BEC8191006CE6DC /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */; };
 		55E6E7DF0BEC81C8006CE6DC /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E6E7B40BEC81C8006CE6DC /* SDL.framework */; };
 		55E6E7E00BEC81D3006CE6DC /* SDL.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55E6E7B40BEC81C8006CE6DC /* SDL.framework */; };
 		55E6E7E20BEC81D3006CE6DC /* SDL_mixer.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */; };
-		55E6E7E60BEC825D006CE6DC /* arkanoidsb.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55E6E7E50BEC825C006CE6DC /* arkanoidsb.icns */; };
-		55E77DDA0BEB91C200E2BBAB /* arkanoidsbgame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DB50BEB91C200E2BBAB /* arkanoidsbgame.cpp */; };
-		55E77DDC0BEB91C200E2BBAB /* ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DB70BEB91C200E2BBAB /* ball.cpp */; };
-		55E77DDE0BEB91C200E2BBAB /* bonus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DB90BEB91C200E2BBAB /* bonus.cpp */; };
-		55E77DE00BEB91C200E2BBAB /* bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DBB0BEB91C200E2BBAB /* bullet.cpp */; };
-		55E77DE20BEB91C200E2BBAB /* coolstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DBD0BEB91C200E2BBAB /* coolstring.cpp */; };
-		55E77DE40BEB91C200E2BBAB /* energyhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DBF0BEB91C200E2BBAB /* energyhole.cpp */; };
-		55E77DE60BEB91C200E2BBAB /* exploision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DC10BEB91C200E2BBAB /* exploision.cpp */; };
-		55E77DE80BEB91C200E2BBAB /* generatelevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DC30BEB91C200E2BBAB /* generatelevel.cpp */; };
-		55E77DEA0BEB91C200E2BBAB /* glSDL.c in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DC50BEB91C200E2BBAB /* glSDL.c */; };
-		55E77DEC0BEB91C200E2BBAB /* leveleditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DC70BEB91C200E2BBAB /* leveleditor.cpp */; };
-		55E77DEE0BEB91C200E2BBAB /* mainmenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DC90BEB91C200E2BBAB /* mainmenu.cpp */; };
-		55E77DF00BEB91C200E2BBAB /* monster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DCB0BEB91C200E2BBAB /* monster.cpp */; };
-		55E77DF20BEB91C200E2BBAB /* mystring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DCD0BEB91C200E2BBAB /* mystring.cpp */; };
-		55E77DF50BEB91C200E2BBAB /* reminderdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DD00BEB91C200E2BBAB /* reminderdlg.cpp */; };
-		55E77DF70BEB91C200E2BBAB /* resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DD20BEB91C200E2BBAB /* resource.cpp */; };
-		55E77DF90BEB91C200E2BBAB /* sinusstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DD40BEB91C200E2BBAB /* sinusstring.cpp */; };
-		55E77DFB0BEB91C200E2BBAB /* tutorialdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55E77DD60BEB91C200E2BBAB /* tutorialdlg.cpp */; };
 		55F568061502430C003037B7 /* SDL_image.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 5590F20415022F1700E37CB8 /* SDL_image.framework */; };
+		55F5681115024468003037B7 /* arkanoidsb.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680C15024468003037B7 /* arkanoidsb.icns */; };
+		55F5681215024468003037B7 /* arkanoidsb.pak in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680D15024468003037B7 /* arkanoidsb.pak */; };
+		55F5681315024468003037B7 /* module01.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680E15024468003037B7 /* module01.ogg */; };
+		55F5681415024468003037B7 /* module02.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 55F5680F15024468003037B7 /* module02.ogg */; };
+		55F5681515024468003037B7 /* module03.s3m in Resources */ = {isa = PBXBuildFile; fileRef = 55F5681015024468003037B7 /* module03.s3m */; };
+		55F5684115024485003037B7 /* arkanoidsb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5681715024485003037B7 /* arkanoidsb.cpp */; };
+		55F5684215024485003037B7 /* arkanoidsbgame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5681915024485003037B7 /* arkanoidsbgame.cpp */; };
+		55F5684315024485003037B7 /* ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5681B15024485003037B7 /* ball.cpp */; };
+		55F5684415024485003037B7 /* bonus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5681D15024485003037B7 /* bonus.cpp */; };
+		55F5684515024485003037B7 /* bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5681F15024485003037B7 /* bullet.cpp */; };
+		55F5684615024485003037B7 /* coolstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5682215024485003037B7 /* coolstring.cpp */; };
+		55F5684715024485003037B7 /* energyhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5682415024485003037B7 /* energyhole.cpp */; };
+		55F5684815024485003037B7 /* exploision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5682615024485003037B7 /* exploision.cpp */; };
+		55F5684915024485003037B7 /* generatelevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5682815024485003037B7 /* generatelevel.cpp */; };
+		55F5684A15024485003037B7 /* glSDL.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F5682A15024485003037B7 /* glSDL.c */; };
+		55F5684B15024485003037B7 /* leveleditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5682C15024485003037B7 /* leveleditor.cpp */; };
+		55F5684C15024485003037B7 /* mainmenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5682E15024485003037B7 /* mainmenu.cpp */; };
+		55F5684D15024485003037B7 /* monster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5683015024485003037B7 /* monster.cpp */; };
+		55F5684E15024485003037B7 /* mystring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5683215024485003037B7 /* mystring.cpp */; };
+		55F5684F15024485003037B7 /* reminderdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5683515024485003037B7 /* reminderdlg.cpp */; };
+		55F5685015024485003037B7 /* resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5683715024485003037B7 /* resource.cpp */; };
+		55F5685215024485003037B7 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F5683B15024485003037B7 /* SDLMain.m */; };
+		55F5685315024485003037B7 /* sinusstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5683C15024485003037B7 /* sinusstring.cpp */; };
+		55F5685415024485003037B7 /* tutorialdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F5683E15024485003037B7 /* tutorialdlg.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -63,54 +63,54 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		5590F20415022F1700E37CB8 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = Library/Frameworks/SDL_image.framework; sourceTree = SDKROOT; };
-		55CC7A030E2E9E7500B6C3A6 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDLMain.h; path = src/SDLMain.h; sourceTree = "<group>"; };
-		55CC7A040E2E9E7500B6C3A6 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = src/SDLMain.m; sourceTree = "<group>"; };
-		55CC7A050E2E9E7500B6C3A6 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = src/version.h; sourceTree = "<group>"; };
-		55E6E70D0BEC7816006CE6DC /* arkanoidsb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = arkanoidsb.cpp; path = src/arkanoidsb.cpp; sourceTree = "<group>"; };
-		55E6E7580BEC8048006CE6DC /* arkanoidsb.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = arkanoidsb.pak; path = res/arkanoidsb.pak; sourceTree = "<group>"; };
-		55E6E75A0BEC8081006CE6DC /* module01.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module01.ogg; path = res/module01.ogg; sourceTree = "<group>"; };
-		55E6E75C0BEC8081006CE6DC /* module02.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module02.ogg; path = res/module02.ogg; sourceTree = "<group>"; };
-		55E6E75D0BEC8081006CE6DC /* module03.s3m */ = {isa = PBXFileReference; lastKnownFileType = file; name = module03.s3m; path = res/module03.s3m; sourceTree = "<group>"; };
 		55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
 		55E6E7B40BEC81C8006CE6DC /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
-		55E6E7E50BEC825C006CE6DC /* arkanoidsb.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = arkanoidsb.icns; path = res/arkanoidsb.icns; sourceTree = "<group>"; };
-		55E77DB40BEB91C200E2BBAB /* arkanoidsb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arkanoidsb.h; path = src/arkanoidsb.h; sourceTree = "<group>"; };
-		55E77DB50BEB91C200E2BBAB /* arkanoidsbgame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = arkanoidsbgame.cpp; path = src/arkanoidsbgame.cpp; sourceTree = "<group>"; };
-		55E77DB60BEB91C200E2BBAB /* arkanoidsbgame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arkanoidsbgame.h; path = src/arkanoidsbgame.h; sourceTree = "<group>"; };
-		55E77DB70BEB91C200E2BBAB /* ball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ball.cpp; path = src/ball.cpp; sourceTree = "<group>"; };
-		55E77DB80BEB91C200E2BBAB /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ball.h; path = src/ball.h; sourceTree = "<group>"; };
-		55E77DB90BEB91C200E2BBAB /* bonus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bonus.cpp; path = src/bonus.cpp; sourceTree = "<group>"; };
-		55E77DBA0BEB91C200E2BBAB /* bonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bonus.h; path = src/bonus.h; sourceTree = "<group>"; };
-		55E77DBB0BEB91C200E2BBAB /* bullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bullet.cpp; path = src/bullet.cpp; sourceTree = "<group>"; };
-		55E77DBC0BEB91C200E2BBAB /* bullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bullet.h; path = src/bullet.h; sourceTree = "<group>"; };
-		55E77DBD0BEB91C200E2BBAB /* coolstring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = coolstring.cpp; path = src/coolstring.cpp; sourceTree = "<group>"; };
-		55E77DBE0BEB91C200E2BBAB /* coolstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coolstring.h; path = src/coolstring.h; sourceTree = "<group>"; };
-		55E77DBF0BEB91C200E2BBAB /* energyhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = energyhole.cpp; path = src/energyhole.cpp; sourceTree = "<group>"; };
-		55E77DC00BEB91C200E2BBAB /* energyhole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = energyhole.h; path = src/energyhole.h; sourceTree = "<group>"; };
-		55E77DC10BEB91C200E2BBAB /* exploision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = exploision.cpp; path = src/exploision.cpp; sourceTree = "<group>"; };
-		55E77DC20BEB91C200E2BBAB /* exploision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = exploision.h; path = src/exploision.h; sourceTree = "<group>"; };
-		55E77DC30BEB91C200E2BBAB /* generatelevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = generatelevel.cpp; path = src/generatelevel.cpp; sourceTree = "<group>"; };
-		55E77DC40BEB91C200E2BBAB /* generatelevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = generatelevel.h; path = src/generatelevel.h; sourceTree = "<group>"; };
-		55E77DC50BEB91C200E2BBAB /* glSDL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = glSDL.c; path = src/glSDL.c; sourceTree = "<group>"; };
-		55E77DC60BEB91C200E2BBAB /* glSDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glSDL.h; path = src/glSDL.h; sourceTree = "<group>"; };
-		55E77DC70BEB91C200E2BBAB /* leveleditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = leveleditor.cpp; path = src/leveleditor.cpp; sourceTree = "<group>"; };
-		55E77DC80BEB91C200E2BBAB /* leveleditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = leveleditor.h; path = src/leveleditor.h; sourceTree = "<group>"; };
-		55E77DC90BEB91C200E2BBAB /* mainmenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mainmenu.cpp; path = src/mainmenu.cpp; sourceTree = "<group>"; };
-		55E77DCA0BEB91C200E2BBAB /* mainmenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mainmenu.h; path = src/mainmenu.h; sourceTree = "<group>"; };
-		55E77DCB0BEB91C200E2BBAB /* monster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = monster.cpp; path = src/monster.cpp; sourceTree = "<group>"; };
-		55E77DCC0BEB91C200E2BBAB /* monster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = monster.h; path = src/monster.h; sourceTree = "<group>"; };
-		55E77DCD0BEB91C200E2BBAB /* mystring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mystring.cpp; path = src/mystring.cpp; sourceTree = "<group>"; };
-		55E77DCE0BEB91C200E2BBAB /* mystring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mystring.h; path = src/mystring.h; sourceTree = "<group>"; };
-		55E77DCF0BEB91C200E2BBAB /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = random.h; path = src/random.h; sourceTree = "<group>"; };
-		55E77DD00BEB91C200E2BBAB /* reminderdlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = reminderdlg.cpp; path = src/reminderdlg.cpp; sourceTree = "<group>"; };
-		55E77DD10BEB91C200E2BBAB /* reminderdlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reminderdlg.h; path = src/reminderdlg.h; sourceTree = "<group>"; };
-		55E77DD20BEB91C200E2BBAB /* resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = resource.cpp; path = src/resource.cpp; sourceTree = "<group>"; };
-		55E77DD30BEB91C200E2BBAB /* resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = resource.h; path = src/resource.h; sourceTree = "<group>"; };
-		55E77DD40BEB91C200E2BBAB /* sinusstring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sinusstring.cpp; path = src/sinusstring.cpp; sourceTree = "<group>"; };
-		55E77DD50BEB91C200E2BBAB /* sinusstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sinusstring.h; path = src/sinusstring.h; sourceTree = "<group>"; };
-		55E77DD60BEB91C200E2BBAB /* tutorialdlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tutorialdlg.cpp; path = src/tutorialdlg.cpp; sourceTree = "<group>"; };
-		55E77DD70BEB91C200E2BBAB /* tutorialdlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tutorialdlg.h; path = src/tutorialdlg.h; sourceTree = "<group>"; };
-		55E77E420BEB92C800E2BBAB /* coolfont.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = coolfont.hpp; path = src/coolfont.hpp; sourceTree = "<group>"; };
+		55F5680C15024468003037B7 /* arkanoidsb.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = arkanoidsb.icns; path = ../../res/arkanoidsb.icns; sourceTree = "<group>"; };
+		55F5680D15024468003037B7 /* arkanoidsb.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = arkanoidsb.pak; path = ../../res/arkanoidsb.pak; sourceTree = "<group>"; };
+		55F5680E15024468003037B7 /* module01.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module01.ogg; path = ../../res/module01.ogg; sourceTree = "<group>"; };
+		55F5680F15024468003037B7 /* module02.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = module02.ogg; path = ../../res/module02.ogg; sourceTree = "<group>"; };
+		55F5681015024468003037B7 /* module03.s3m */ = {isa = PBXFileReference; lastKnownFileType = file; name = module03.s3m; path = ../../res/module03.s3m; sourceTree = "<group>"; };
+		55F5681715024485003037B7 /* arkanoidsb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arkanoidsb.cpp; sourceTree = "<group>"; };
+		55F5681815024485003037B7 /* arkanoidsb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arkanoidsb.h; sourceTree = "<group>"; };
+		55F5681915024485003037B7 /* arkanoidsbgame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arkanoidsbgame.cpp; sourceTree = "<group>"; };
+		55F5681A15024485003037B7 /* arkanoidsbgame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arkanoidsbgame.h; sourceTree = "<group>"; };
+		55F5681B15024485003037B7 /* ball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ball.cpp; sourceTree = "<group>"; };
+		55F5681C15024485003037B7 /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ball.h; sourceTree = "<group>"; };
+		55F5681D15024485003037B7 /* bonus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bonus.cpp; sourceTree = "<group>"; };
+		55F5681E15024485003037B7 /* bonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bonus.h; sourceTree = "<group>"; };
+		55F5681F15024485003037B7 /* bullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bullet.cpp; sourceTree = "<group>"; };
+		55F5682015024485003037B7 /* bullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bullet.h; sourceTree = "<group>"; };
+		55F5682115024485003037B7 /* coolfont.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = coolfont.hpp; sourceTree = "<group>"; };
+		55F5682215024485003037B7 /* coolstring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = coolstring.cpp; sourceTree = "<group>"; };
+		55F5682315024485003037B7 /* coolstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coolstring.h; sourceTree = "<group>"; };
+		55F5682415024485003037B7 /* energyhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = energyhole.cpp; sourceTree = "<group>"; };
+		55F5682515024485003037B7 /* energyhole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = energyhole.h; sourceTree = "<group>"; };
+		55F5682615024485003037B7 /* exploision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = exploision.cpp; sourceTree = "<group>"; };
+		55F5682715024485003037B7 /* exploision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exploision.h; sourceTree = "<group>"; };
+		55F5682815024485003037B7 /* generatelevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generatelevel.cpp; sourceTree = "<group>"; };
+		55F5682915024485003037B7 /* generatelevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generatelevel.h; sourceTree = "<group>"; };
+		55F5682A15024485003037B7 /* glSDL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glSDL.c; sourceTree = "<group>"; };
+		55F5682B15024485003037B7 /* glSDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glSDL.h; sourceTree = "<group>"; };
+		55F5682C15024485003037B7 /* leveleditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = leveleditor.cpp; sourceTree = "<group>"; };
+		55F5682D15024485003037B7 /* leveleditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = leveleditor.h; sourceTree = "<group>"; };
+		55F5682E15024485003037B7 /* mainmenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mainmenu.cpp; sourceTree = "<group>"; };
+		55F5682F15024485003037B7 /* mainmenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mainmenu.h; sourceTree = "<group>"; };
+		55F5683015024485003037B7 /* monster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = monster.cpp; sourceTree = "<group>"; };
+		55F5683115024485003037B7 /* monster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = monster.h; sourceTree = "<group>"; };
+		55F5683215024485003037B7 /* mystring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mystring.cpp; sourceTree = "<group>"; };
+		55F5683315024485003037B7 /* mystring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mystring.h; sourceTree = "<group>"; };
+		55F5683415024485003037B7 /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = random.h; sourceTree = "<group>"; };
+		55F5683515024485003037B7 /* reminderdlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = reminderdlg.cpp; sourceTree = "<group>"; };
+		55F5683615024485003037B7 /* reminderdlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reminderdlg.h; sourceTree = "<group>"; };
+		55F5683715024485003037B7 /* resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = resource.cpp; sourceTree = "<group>"; };
+		55F5683815024485003037B7 /* resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resource.h; sourceTree = "<group>"; };
+		55F5683A15024485003037B7 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
+		55F5683B15024485003037B7 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
+		55F5683C15024485003037B7 /* sinusstring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sinusstring.cpp; sourceTree = "<group>"; };
+		55F5683D15024485003037B7 /* sinusstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sinusstring.h; sourceTree = "<group>"; };
+		55F5683E15024485003037B7 /* tutorialdlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tutorialdlg.cpp; sourceTree = "<group>"; };
+		55F5683F15024485003037B7 /* tutorialdlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tutorialdlg.h; sourceTree = "<group>"; };
+		55F5684015024485003037B7 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* arkanoidsb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = arkanoidsb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -130,54 +130,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				55CC7A030E2E9E7500B6C3A6 /* SDLMain.h */,
-				55CC7A040E2E9E7500B6C3A6 /* SDLMain.m */,
-				55CC7A050E2E9E7500B6C3A6 /* version.h */,
-				55E77DD40BEB91C200E2BBAB /* sinusstring.cpp */,
-				55E77DD50BEB91C200E2BBAB /* sinusstring.h */,
-				55E77DD60BEB91C200E2BBAB /* tutorialdlg.cpp */,
-				55E77DD70BEB91C200E2BBAB /* tutorialdlg.h */,
-				55E77DC70BEB91C200E2BBAB /* leveleditor.cpp */,
-				55E77DC80BEB91C200E2BBAB /* leveleditor.h */,
-				55E77DC90BEB91C200E2BBAB /* mainmenu.cpp */,
-				55E77DCA0BEB91C200E2BBAB /* mainmenu.h */,
-				55E77DCB0BEB91C200E2BBAB /* monster.cpp */,
-				55E77DCC0BEB91C200E2BBAB /* monster.h */,
-				55E77DCD0BEB91C200E2BBAB /* mystring.cpp */,
-				55E77DCE0BEB91C200E2BBAB /* mystring.h */,
-				55E77DCF0BEB91C200E2BBAB /* random.h */,
-				55E77DD00BEB91C200E2BBAB /* reminderdlg.cpp */,
-				55E77DD10BEB91C200E2BBAB /* reminderdlg.h */,
-				55E77DD20BEB91C200E2BBAB /* resource.cpp */,
-				55E77DD30BEB91C200E2BBAB /* resource.h */,
-				55E77DC30BEB91C200E2BBAB /* generatelevel.cpp */,
-				55E77DC40BEB91C200E2BBAB /* generatelevel.h */,
-				55E77DC50BEB91C200E2BBAB /* glSDL.c */,
-				55E77DC60BEB91C200E2BBAB /* glSDL.h */,
-				55E77E420BEB92C800E2BBAB /* coolfont.hpp */,
-				55E77DBD0BEB91C200E2BBAB /* coolstring.cpp */,
-				55E77DBE0BEB91C200E2BBAB /* coolstring.h */,
-				55E77DBF0BEB91C200E2BBAB /* energyhole.cpp */,
-				55E77DC00BEB91C200E2BBAB /* energyhole.h */,
-				55E77DC10BEB91C200E2BBAB /* exploision.cpp */,
-				55E77DC20BEB91C200E2BBAB /* exploision.h */,
-				55E77DB50BEB91C200E2BBAB /* arkanoidsbgame.cpp */,
-				55E77DB60BEB91C200E2BBAB /* arkanoidsbgame.h */,
-				55E77DB70BEB91C200E2BBAB /* ball.cpp */,
-				55E77DB80BEB91C200E2BBAB /* ball.h */,
-				55E77DB90BEB91C200E2BBAB /* bonus.cpp */,
-				55E77DBA0BEB91C200E2BBAB /* bonus.h */,
-				55E77DBB0BEB91C200E2BBAB /* bullet.cpp */,
-				55E77DBC0BEB91C200E2BBAB /* bullet.h */,
-				55E6E70D0BEC7816006CE6DC /* arkanoidsb.cpp */,
-				55E77DB40BEB91C200E2BBAB /* arkanoidsb.h */,
-			);
-			name = Classes;
-			sourceTree = "<group>";
-		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,7 +161,7 @@
 		29B97314FDCFA39411CA2CEA /* arkanoidsb */ = {
 			isa = PBXGroup;
 			children = (
-				080E96DDFE201D6D7F000001 /* Classes */,
+				55F5681615024485003037B7 /* src */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -220,11 +172,11 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				55E6E7E50BEC825C006CE6DC /* arkanoidsb.icns */,
-				55E6E75A0BEC8081006CE6DC /* module01.ogg */,
-				55E6E75C0BEC8081006CE6DC /* module02.ogg */,
-				55E6E75D0BEC8081006CE6DC /* module03.s3m */,
-				55E6E7580BEC8048006CE6DC /* arkanoidsb.pak */,
+				55F5680C15024468003037B7 /* arkanoidsb.icns */,
+				55F5680D15024468003037B7 /* arkanoidsb.pak */,
+				55F5680E15024468003037B7 /* module01.ogg */,
+				55F5680F15024468003037B7 /* module02.ogg */,
+				55F5681015024468003037B7 /* module03.s3m */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -238,6 +190,55 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		55F5681615024485003037B7 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				55F5681715024485003037B7 /* arkanoidsb.cpp */,
+				55F5681815024485003037B7 /* arkanoidsb.h */,
+				55F5681915024485003037B7 /* arkanoidsbgame.cpp */,
+				55F5681A15024485003037B7 /* arkanoidsbgame.h */,
+				55F5681B15024485003037B7 /* ball.cpp */,
+				55F5681C15024485003037B7 /* ball.h */,
+				55F5681D15024485003037B7 /* bonus.cpp */,
+				55F5681E15024485003037B7 /* bonus.h */,
+				55F5681F15024485003037B7 /* bullet.cpp */,
+				55F5682015024485003037B7 /* bullet.h */,
+				55F5682115024485003037B7 /* coolfont.hpp */,
+				55F5682215024485003037B7 /* coolstring.cpp */,
+				55F5682315024485003037B7 /* coolstring.h */,
+				55F5682415024485003037B7 /* energyhole.cpp */,
+				55F5682515024485003037B7 /* energyhole.h */,
+				55F5682615024485003037B7 /* exploision.cpp */,
+				55F5682715024485003037B7 /* exploision.h */,
+				55F5682815024485003037B7 /* generatelevel.cpp */,
+				55F5682915024485003037B7 /* generatelevel.h */,
+				55F5682A15024485003037B7 /* glSDL.c */,
+				55F5682B15024485003037B7 /* glSDL.h */,
+				55F5682C15024485003037B7 /* leveleditor.cpp */,
+				55F5682D15024485003037B7 /* leveleditor.h */,
+				55F5682E15024485003037B7 /* mainmenu.cpp */,
+				55F5682F15024485003037B7 /* mainmenu.h */,
+				55F5683015024485003037B7 /* monster.cpp */,
+				55F5683115024485003037B7 /* monster.h */,
+				55F5683215024485003037B7 /* mystring.cpp */,
+				55F5683315024485003037B7 /* mystring.h */,
+				55F5683415024485003037B7 /* random.h */,
+				55F5683515024485003037B7 /* reminderdlg.cpp */,
+				55F5683615024485003037B7 /* reminderdlg.h */,
+				55F5683715024485003037B7 /* resource.cpp */,
+				55F5683815024485003037B7 /* resource.h */,
+				55F5683A15024485003037B7 /* SDLMain.h */,
+				55F5683B15024485003037B7 /* SDLMain.m */,
+				55F5683C15024485003037B7 /* sinusstring.cpp */,
+				55F5683D15024485003037B7 /* sinusstring.h */,
+				55F5683E15024485003037B7 /* tutorialdlg.cpp */,
+				55F5683F15024485003037B7 /* tutorialdlg.h */,
+				55F5684015024485003037B7 /* version.h */,
+			);
+			name = src;
+			path = ../../src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,11 +290,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				55E6E7590BEC8049006CE6DC /* arkanoidsb.pak in Resources */,
-				55E6E75E0BEC8081006CE6DC /* module01.ogg in Resources */,
-				55E6E7600BEC8081006CE6DC /* module02.ogg in Resources */,
-				55E6E7610BEC8081006CE6DC /* module03.s3m in Resources */,
-				55E6E7E60BEC825D006CE6DC /* arkanoidsb.icns in Resources */,
+				55F5681115024468003037B7 /* arkanoidsb.icns in Resources */,
+				55F5681215024468003037B7 /* arkanoidsb.pak in Resources */,
+				55F5681315024468003037B7 /* module01.ogg in Resources */,
+				55F5681415024468003037B7 /* module02.ogg in Resources */,
+				55F5681515024468003037B7 /* module03.s3m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,25 +305,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55E77DDA0BEB91C200E2BBAB /* arkanoidsbgame.cpp in Sources */,
-				55E77DDC0BEB91C200E2BBAB /* ball.cpp in Sources */,
-				55E77DDE0BEB91C200E2BBAB /* bonus.cpp in Sources */,
-				55E77DE00BEB91C200E2BBAB /* bullet.cpp in Sources */,
-				55E77DE20BEB91C200E2BBAB /* coolstring.cpp in Sources */,
-				55E77DE40BEB91C200E2BBAB /* energyhole.cpp in Sources */,
-				55E77DE60BEB91C200E2BBAB /* exploision.cpp in Sources */,
-				55E77DE80BEB91C200E2BBAB /* generatelevel.cpp in Sources */,
-				55E77DEA0BEB91C200E2BBAB /* glSDL.c in Sources */,
-				55E77DEC0BEB91C200E2BBAB /* leveleditor.cpp in Sources */,
-				55E77DEE0BEB91C200E2BBAB /* mainmenu.cpp in Sources */,
-				55E77DF00BEB91C200E2BBAB /* monster.cpp in Sources */,
-				55E77DF20BEB91C200E2BBAB /* mystring.cpp in Sources */,
-				55E77DF50BEB91C200E2BBAB /* reminderdlg.cpp in Sources */,
-				55E77DF70BEB91C200E2BBAB /* resource.cpp in Sources */,
-				55E77DF90BEB91C200E2BBAB /* sinusstring.cpp in Sources */,
-				55E77DFB0BEB91C200E2BBAB /* tutorialdlg.cpp in Sources */,
-				55E6E70E0BEC7816006CE6DC /* arkanoidsb.cpp in Sources */,
-				55CC7A070E2E9E7500B6C3A6 /* SDLMain.m in Sources */,
+				55F5684115024485003037B7 /* arkanoidsb.cpp in Sources */,
+				55F5684215024485003037B7 /* arkanoidsbgame.cpp in Sources */,
+				55F5684315024485003037B7 /* ball.cpp in Sources */,
+				55F5684415024485003037B7 /* bonus.cpp in Sources */,
+				55F5684515024485003037B7 /* bullet.cpp in Sources */,
+				55F5684615024485003037B7 /* coolstring.cpp in Sources */,
+				55F5684715024485003037B7 /* energyhole.cpp in Sources */,
+				55F5684815024485003037B7 /* exploision.cpp in Sources */,
+				55F5684915024485003037B7 /* generatelevel.cpp in Sources */,
+				55F5684A15024485003037B7 /* glSDL.c in Sources */,
+				55F5684B15024485003037B7 /* leveleditor.cpp in Sources */,
+				55F5684C15024485003037B7 /* mainmenu.cpp in Sources */,
+				55F5684D15024485003037B7 /* monster.cpp in Sources */,
+				55F5684E15024485003037B7 /* mystring.cpp in Sources */,
+				55F5684F15024485003037B7 /* reminderdlg.cpp in Sources */,
+				55F5685015024485003037B7 /* resource.cpp in Sources */,
+				55F5685215024485003037B7 /* SDLMain.m in Sources */,
+				55F5685315024485003037B7 /* sinusstring.cpp in Sources */,
+				55F5685415024485003037B7 /* tutorialdlg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
