@@ -871,7 +871,6 @@ bool CMainMenu::DrawMenuButton(int nX, int nY, int nButtonId)
         { 0, 348, 248 },					// custom levels
     };
     const int w = buttons[nButtonId].w;
-    printf("width: %d\n", w);
     bool bIsOver = false;
     if(g_nCursorX > nX
        && g_nCursorX < (nX + w)
