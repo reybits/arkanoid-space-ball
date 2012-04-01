@@ -27,9 +27,9 @@ bool g_bShowFps	= false;
 bool g_bTutorialMode	= true;
 bool g_bAutoBonusMode	= true;
 
-double	g_fSpeedCorrection;
-double	g_fCos[360];
-double	g_fSin[360];
+double g_fSpeedCorrection;
+double g_fCos[360];
+double g_fSin[360];
 
 SDL_Joystick	*g_pJoystick;
 bool g_bIsJoystickSupported	= false;
@@ -44,8 +44,8 @@ Uint32 g_dwModState	= 0;
 bool g_bMouseRB			= false;
 bool g_bMouseLB			= false;
 bool g_bIsCursorVisible	= false;
-double g_nMouseDX	= 0;
-double g_nMouseDY	= 0;
+double g_nMouseDX = 0;
+double g_nMouseDY = 0;
 int g_nCursorX	= SCREEN_WIDTH / 2;
 int g_nCursorY	= SCREEN_HEIGHT / 2;
 
@@ -354,9 +354,11 @@ int main(int argc, char *argv[]) {
 	CLevelEditor	m_LevelEditor;
 	//g_nGameMode	= APPS_EDITOR;
 
-	while(UpdateKeys() == false && g_nGameMode != APPS_EXIT) {
-		Uint32	nTimeCurrent	= SDL_GetTicks();
-		if(g_bActive == true) {
+	while(UpdateKeys() == false && g_nGameMode != APPS_EXIT)
+	{
+		Uint32 nTimeCurrent = SDL_GetTicks();
+		if(g_bActive == true)
+		{
 			nFrame++;
 			Uint32	nFPSelapsed		= nTimeCurrent - nFPStime;
 			if(nFPSelapsed >= 1000) {
@@ -570,175 +572,210 @@ bool IsKeyPressed(int nKey) {
 	return false;
 }
 
-bool IsKeyStateChanged(int nKey) {
-	return g_pbIsKeyStateChanged[nKey];
+bool IsKeyStateChanged(int nKey)
+{
+    return g_pbIsKeyStateChanged[nKey];
 }
 
-void FadeScreen() {
-	for(int x = 0; x < 4; x++) {
-		for(int y = 0; y < 4; y++) {
-			Blit(x * 160, y * 120, g_pTransp, 0);
-		}
-	}
+void FadeScreen()
+{
+    for(int x = 0; x < 4; x++)
+    {
+        for(int y = 0; y < 4; y++)
+        {
+            Blit(x * 160, y * 120, g_pTransp, 0);
+        }
+    }
 }
 
-bool UpdateKeys() {
-	SDL_Event	evt;
-	Uint8		*pnKeys;
+bool UpdateKeys()
+{
+    SDL_Event evt;
+    Uint8* pnKeys = 0;
 
-	g_dwModState	= SDL_GetModState();
-	pnKeys	= SDL_GetKeyState(NULL);
-	for(int i = 0; i < g_nNumKeys; i++) {
-		g_pnKeys[i] != pnKeys[i] ? g_pbIsKeyStateChanged[i] = true : g_pbIsKeyStateChanged[i] = false;
-	}
-	memcpy(g_pnKeys, pnKeys, g_nNumKeys * sizeof(Uint8));
+    g_dwModState = SDL_GetModState();
+    pnKeys = SDL_GetKeyState(NULL);
+    for(int i = 0; i < g_nNumKeys; i++)
+    {
+        //g_pnKeys[i] != pnKeys[i] ? g_pbIsKeyStateChanged[i] = true : g_pbIsKeyStateChanged[i] = false;
+        g_pbIsKeyStateChanged[i] = (g_pnKeys[i] != pnKeys[i]);
+    }
+    memcpy(g_pnKeys, pnKeys, g_nNumKeys * sizeof(Uint8));
 
-	g_nMouseDX	= g_nMouseDY	= 0;
-	while(SDL_PollEvent(&evt)) {
-		switch(evt.type) {
-		case SDL_ACTIVEEVENT:
-			if(evt.active.state == SDL_APPINPUTFOCUS || evt.active.state == SDL_APPACTIVE) {
-				if(evt.active.gain == 0) {
-					if(g_nGameMode == APPS_GAME) {
-						g_Arkanoid.SetPause();
-					}
-					Mix_PauseMusic();
-					//printf("Arkanoid: Space Ball inactive\n");
-					g_bActive	= false;
-				}
-			}
-			else {
-				if(evt.active.gain) {
-					Mix_ResumeMusic();
-					//printf("Arkanoid: Space Ball active\n");
-					g_bActive	= true;
-				}
-			}
-			break;
+    g_nMouseDX = 0;
+    g_nMouseDY = 0;
+    while(SDL_PollEvent(&evt))
+    {
+        switch(evt.type)
+        {
+        case SDL_ACTIVEEVENT:
+            if(evt.active.state == SDL_APPINPUTFOCUS || evt.active.state == SDL_APPACTIVE)
+            {
+                if(evt.active.gain == 0)
+                {
+                    if(g_nGameMode == APPS_GAME)
+                    {
+                        g_Arkanoid.SetPause();
+                    }
+                    Mix_PauseMusic();
+                    //printf("Arkanoid: Space Ball inactive\n");
+                    g_bActive = false;
+                }
+            }
+            else
+            {
+                if(evt.active.gain)
+                {
+                    Mix_ResumeMusic();
+                    //printf("Arkanoid: Space Ball active\n");
+                    g_bActive = true;
+                }
+            }
+            break;
 
-		case SDL_MOUSEBUTTONDOWN:
-			switch(evt.button.button) {
-			case 1:	g_bMouseLB	= true;	break;
-			case 3:	g_bMouseRB	= true;	break;
-			}
-			break;
+        case SDL_MOUSEBUTTONDOWN:
+            switch(evt.button.button)
+            {
+            case 1:
+                g_bMouseLB = true;
+                break;
+            case 3:
+                g_bMouseRB = true;
+                break;
+            }
+            break;
 
-		case SDL_MOUSEBUTTONUP:
-			switch(evt.button.button) {
-			case 1:	g_bMouseLB	= false;	break;
-			case 3:	g_bMouseRB	= false;	break;
-			case 4:	if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(false);	break;
-			case 5:	if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(true);	break;
-			}
-			break;
+        case SDL_MOUSEBUTTONUP:
+            switch(evt.button.button)
+            {
+            case 1:
+                g_bMouseLB = false;
+                break;
+            case 3:
+                g_bMouseRB = false;
+                break;
+            case 4:
+                if(g_nGameMode == APPS_GAME)
+                    g_Bonus.SetPosStack(false);
+                break;
+            case 5:
+                if(g_nGameMode == APPS_GAME)
+                    g_Bonus.SetPosStack(true);
+                break;
+            }
+            break;
 
-		case SDL_MOUSEMOTION:
-			g_nMouseDX	+= evt.motion.xrel;
-			g_nMouseDY	+= evt.motion.yrel;
-			g_nCursorX	= evt.motion.x;
-			g_nCursorY	= evt.motion.y;
-			break;
+        case SDL_MOUSEMOTION:
+            g_nMouseDX += evt.motion.xrel;
+            g_nMouseDY += evt.motion.yrel;
+            g_nCursorX = evt.motion.x;
+            g_nCursorY = evt.motion.y;
+            break;
 
-		case SDL_KEYDOWN:
-			if(((g_dwModState & (SDLK_LCTRL | SDLK_RCTRL)) && evt.key.keysym.sym == SDLK_q) ||
-				((g_dwModState & (SDLK_LALT | SDLK_RALT)) && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4))) {	// if ALT + X pressed quit game
-				if(g_nGameMode != APPS_INTRO)	return true;
-			}
-			else if((g_dwModState & (SDLK_LALT | SDLK_RALT)) && evt.key.keysym.sym == SDLK_RETURN) {
-				g_bFullscreen	= !g_bFullscreen;
-				SwitchFullscreen();
-			}
-			break;
+        case SDL_KEYDOWN:
+            if(((g_dwModState & (SDLK_LCTRL | SDLK_RCTRL)) && evt.key.keysym.sym == SDLK_q) ||
+                    ((g_dwModState & (SDLK_LALT | SDLK_RALT)) && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4)))
+            { // if ALT + X pressed quit game
+                if(g_nGameMode != APPS_INTRO)
+                    return true;
+            }
+            else if((g_dwModState & (SDLK_LALT | SDLK_RALT)) && evt.key.keysym.sym == SDLK_RETURN)
+            {
+                g_bFullscreen = !g_bFullscreen;
+                SwitchFullscreen();
+            }
+            break;
 
-		case SDL_JOYBUTTONDOWN:	// Handle Joystick Button Presses
-			if(evt.jbutton.button == 0) {
-				g_bMouseLB	= true;
-			}
-			if(evt.jbutton.button == 1) {
-				g_bMouseRB	= true;
-			}
-			if(evt.jbutton.button == 2) {
-				if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(false);
-			}
-			else if(evt.jbutton.button == 3) {
-				if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(true);
-			}
-			if(evt.jbutton.button == 4) {
-				if(g_nGameMode == APPS_GAME) g_Arkanoid.SendEsc();
-				if(g_nGameMode == APPS_MAINMENU) g_MainMenu.SendEsc();
-			}
-			break;
-		case SDL_JOYBUTTONUP:
-			if(evt.jbutton.button == 0) {
-				g_bMouseLB	= false;
-			}
-			if(evt.jbutton.button == 1) {
-				g_bMouseRB	= false;
-			}
-			break;
-/*		case SDL_JOYAXISMOTION:	// Handle Joystick Motion
-			if((evt.jaxis.value < -3200) || (evt.jaxis.value > 3200)) {
-				int	nDelta	= int(evt.jaxis.value / 32768.0 * g_fSpeedCorrection * 10);
-				if(evt.jaxis.axis == 0) {
-					g_nCursorX	+= nDelta;
-					g_nMouseDX	+= nDelta;
-				}
-				if(evt.jaxis.axis == 1) {
-					g_nCursorY	+= nDelta;
-					g_nMouseDY	+= nDelta;
-				}
-			}
-			break;*/
+        case SDL_JOYBUTTONDOWN: // Handle Joystick Button Presses
+            if(evt.jbutton.button == 0) {
+                g_bMouseLB = true;
+            }
+            if(evt.jbutton.button == 1) {
+                g_bMouseRB = true;
+            }
+            if(evt.jbutton.button == 2) {
+                if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(false);
+            }
+            else if(evt.jbutton.button == 3) {
+                if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(true);
+            }
+            if(evt.jbutton.button == 4) {
+                if(g_nGameMode == APPS_GAME) g_Arkanoid.SendEsc();
+                if(g_nGameMode == APPS_MAINMENU) g_MainMenu.SendEsc();
+            }
+            break;
+        case SDL_JOYBUTTONUP:
+            if(evt.jbutton.button == 0) {
+                g_bMouseLB = false;
+            }
+            if(evt.jbutton.button == 1) {
+                g_bMouseRB = false;
+            }
+            break;
+        //case SDL_JOYAXISMOTION: // Handle Joystick Motion
+            //if((evt.jaxis.value < -3200) || (evt.jaxis.value > 3200)) {
+                //int nDelta = int(evt.jaxis.value / 32768.0 * g_fSpeedCorrection * 10);
+                //if(evt.jaxis.axis == 0) {
+                    //g_nCursorX += nDelta;
+                    //g_nMouseDX += nDelta;
+                //}
+                //if(evt.jaxis.axis == 1) {
+                    //g_nCursorY += nDelta;
+                    //g_nMouseDY += nDelta;
+                //}
+            //}
+            //break;
 
-		case SDL_QUIT:
-			return true;
-			break;
-		}
-	}
+        case SDL_QUIT:
+            return true;
+            break;
+        }
+    }
 
-	if(g_bIsJoystickSupported == true) {
-		SDL_JoystickUpdate();
-		/*if(SDL_JoystickGetButton(g_pJoystick, 0)) {
-			g_bMouseLB	= true;
-		}
-		else {
-			g_bMouseLB	= false;
-		}
-		if(SDL_JoystickGetButton(g_pJoystick, 1)) {
-			g_bMouseRB	= true;
-		}
-		else {
-			g_bMouseRB	= false;
-		}
-		if(SDL_JoystickGetButton(g_pJoystick, 2)) {
-			if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(false);
-		}
-		else if(SDL_JoystickGetButton(g_pJoystick, 3)) {
-			if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(true);
-		}
-		if(SDL_JoystickGetButton(g_pJoystick, 4)) {
-			g_Arkanoid.SendEsc();
-		}*/
-		int	nDelta	= SDL_JoystickGetAxis(g_pJoystick, 0);
-		if((nDelta < -3200) || (nDelta > 3200)) {
-			nDelta	= int(nDelta / 32768.0 * g_fSpeedCorrection * 4);
-			g_nCursorX	+= nDelta;
-			g_nMouseDX	+= nDelta;
-		}
-		nDelta	= SDL_JoystickGetAxis(g_pJoystick, 1);
-		if((nDelta < -3200) || (nDelta > 3200)) {
-			nDelta	= int(nDelta / 32768.0 * g_fSpeedCorrection * 4);
-			g_nCursorY	+= nDelta;
-			g_nMouseDY	+= nDelta;
-		}
-	}
+    if(g_bIsJoystickSupported == true)
+    {
+        SDL_JoystickUpdate();
+        //if(SDL_JoystickGetButton(g_pJoystick, 0)) {
+            //g_bMouseLB	= true;
+        //}
+        //else {
+            //g_bMouseLB	= false;
+        //}
+        //if(SDL_JoystickGetButton(g_pJoystick, 1)) {
+            //g_bMouseRB	= true;
+        //}
+        //else {
+            //g_bMouseRB	= false;
+        //}
+        //if(SDL_JoystickGetButton(g_pJoystick, 2)) {
+            //if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(false);
+        //}
+        //else if(SDL_JoystickGetButton(g_pJoystick, 3)) {
+            //if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(true);
+        //}
+        //if(SDL_JoystickGetButton(g_pJoystick, 4)) {
+            //g_Arkanoid.SendEsc();
+        //}
+        int nDelta = SDL_JoystickGetAxis(g_pJoystick, 0);
+        if((nDelta < -3200) || (nDelta > 3200)) {
+            nDelta = int(nDelta / 32768.0 * g_fSpeedCorrection * 4);
+            g_nCursorX += nDelta;
+            g_nMouseDX += nDelta;
+        }
+        nDelta = SDL_JoystickGetAxis(g_pJoystick, 1);
+        if((nDelta < -3200) || (nDelta > 3200)) {
+            nDelta = int(nDelta / 32768.0 * g_fSpeedCorrection * 4);
+            g_nCursorY += nDelta;
+            g_nMouseDY += nDelta;
+        }
+    }
 
-	g_nCursorX	= max(g_nCursorX, 0);
-	g_nCursorX	= min(g_nCursorX, SCREEN_WIDTH);
-	g_nCursorY	= max(g_nCursorY, 0);
-	g_nCursorY	= min(g_nCursorY, SCREEN_HEIGHT);
+    g_nCursorX = max(g_nCursorX, 0);
+    g_nCursorX = min(g_nCursorX, SCREEN_WIDTH);
+    g_nCursorY = max(g_nCursorY, 0);
+    g_nCursorY = min(g_nCursorY, SCREEN_HEIGHT);
 
-	return	false;
+    return false;
 }
 
 void musicFinished() {
@@ -986,7 +1023,7 @@ void SetVideoMode() {
 			XMoveWindow(info.info.x11.display, info.info.x11.wmwindow, x, y);
 			info.info.x11.unlock_func();
 		}
-#elif defined(WIN32)            
+#elif defined(WIN32)
 		RECT rc;
 		HWND hwnd	= info.window;
 		int w	= GetSystemMetrics(SM_CXSCREEN);
