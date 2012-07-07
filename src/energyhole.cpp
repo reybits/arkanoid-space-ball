@@ -121,8 +121,8 @@ void CEnergyHole::Move()
         g_Bullet.GetPositionAndSize(rc, idx, true);
         while(g_Bullet.GetPositionAndSize(rc, idx, false))
         {
-            int c1 = int(m_vecEnergyHole[i].x + 80/2) - (rc.x + rc.w / 2);
-            int c2 = int(m_vecEnergyHole[i].y + 80/2) - (rc.y + rc.h / 2);
+            int c1 = (m_vecEnergyHole[i].x + 80/2) - (rc.x + rc.w / 2);
+            int c2 = (m_vecEnergyHole[i].y + 80/2) - (rc.y + rc.h / 2);
             float distance = sqrtf(c1 * c1 + c2 * c2);
             if(distance < 80/2) {
                 g_TutorialDlg.AddDialog(rc.x + rc.w / 2, rc.y + rc.h / 2, 0, 6);
