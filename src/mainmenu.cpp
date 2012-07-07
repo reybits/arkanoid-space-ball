@@ -370,7 +370,7 @@ void CMainMenu::DrawMenuRules() {
         g_Font3.DrawString(0, 130, "'WE' Group", 2);
 #if !defined(REMOVE_URLS)
         g_Font.DrawString(0,  150, "http://www.wegroup.org", 2);
-        g_Font.DrawString(0,  170, "Copyright (c) 2006-2007. All Rights Reserved.", 2);
+        g_Font.DrawString(0,  170, "Copyright (c) 2006-2012. All Rights Reserved.", 2);
         g_Font2.DrawString(0, 220, "THANKS TO", CMyString::FONT_ALIGN_CENTER);
         g_Font3.DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", 2);
         g_Font.DrawString(0,  270, "http://www.libsdl.org", 2);

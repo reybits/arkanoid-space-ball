@@ -62,6 +62,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		552D835115024821007FD039 /* arkanoidsb.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = arkanoidsb.icns; sourceTree = "<group>"; };
 		554D68CE15A814FD00964B6D /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = ../../../../../../Library/Frameworks/SDL_image.framework; sourceTree = "<group>"; };
+		554D68D515A8257900964B6D /* arkanoidsb.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = arkanoidsb.entitlements; sourceTree = "<group>"; };
 		55E6E7A90BEC8191006CE6DC /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
 		55E6E7B40BEC81C8006CE6DC /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
 		55F5680D15024468003037B7 /* arkanoidsb.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = arkanoidsb.pak; path = ../../res/arkanoidsb.pak; sourceTree = "<group>"; };
@@ -158,6 +159,7 @@
 		29B97314FDCFA39411CA2CEA /* arkanoidsb */ = {
 			isa = PBXGroup;
 			children = (
+				554D68D515A8257900964B6D /* arkanoidsb.entitlements */,
 				554D68CE15A814FD00964B6D /* SDL_image.framework */,
 				55F5681615024485003037B7 /* src */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
