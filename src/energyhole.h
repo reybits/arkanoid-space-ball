@@ -17,32 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef ENERGYHOLE_H
 #define ENERGYHOLE_H
 
-/**
-	@author Andrey A. Ugolnik <andrey@wegroup.org>
-*/
-class CEnergyHole{
+class CEnergyHole
+{
 public:
     CEnergyHole();
 
     ~CEnergyHole();
-	 void AddEnergyHole();
-	 void RemoveAll();
+    void AddEnergyHole();
+    void RemoveAll();
     void Draw();
-	 void Move();
+    void Move();
 
 protected:
-	struct _ENERGYHOLE {
-		double		x, y;
-		Uint32	dwTime;
-		int		nFrame;
-		Uint32	dwMoveTime;
-		int		nAngle;
-		bool		nIsOver;
-	};
-	std::vector<_ENERGYHOLE>m_vecEnergyHole;
+    struct sEnergyHole
+    {
+        float x;
+        float y;
+        Uint32 time;
+        int frame;
+        Uint32 move_time;
+        int angle;
+        bool is_over;
+    };
+    std::vector<sEnergyHole> m_vecEnergyHole;
 };
 
 #endif
+

@@ -149,7 +149,8 @@ CReminderDlg	g_ReminderDlg;
 #endif
 
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 	int	i;
 	char	achTemp[PATH_MAX];
 
@@ -168,7 +169,7 @@ int main(int argc, char *argv[]) {
 #else
 	sprintf(g_achUserProfile, "%s/Library/Application Support/arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
 #endif
-	printf("Arkanoid: Space Ball by 'WE' Group. Copyright (c) 2006-2008.\n");
+	printf("Arkanoid: Space Ball by 'WE' Group. Copyright (c) 2006-2012.\n");
 	printf("version %s.\n", AutoVersion::FULLVERSION_STRING);
 	printf("Users config dir: %s\n", g_achUserProfile);
 	ReadWriteConfig(true);
@@ -673,13 +674,17 @@ bool UpdateKeys()
             break;
 
         case SDL_KEYDOWN:
-            if(((g_dwModState & (SDLK_LCTRL | SDLK_RCTRL)) && evt.key.keysym.sym == SDLK_q) ||
-                    ((g_dwModState & (SDLK_LALT | SDLK_RALT)) && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4)))
-            { // if ALT + X pressed quit game
+            if(
+               ((evt.key.keysym.mod & (KMOD_RMETA | KMOD_LMETA)) && evt.key.keysym.sym == SDLK_q)
+               || ((evt.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4))
+               )
+            { // Alt+X or Command+Q pressed - quit game
                 if(g_nGameMode != APPS_INTRO)
+                {
                     return true;
+                }
             }
-            else if((g_dwModState & (SDLK_LALT | SDLK_RALT)) && evt.key.keysym.sym == SDLK_RETURN)
+            else if((evt.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) && evt.key.keysym.sym == SDLK_RETURN)
             {
                 g_bFullscreen = !g_bFullscreen;
                 SwitchFullscreen();
