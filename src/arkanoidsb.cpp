@@ -16,38 +16,38 @@ void PlayMusic2();
 void SwitchFullscreen();
 bool DrawIntro();
 
-char	g_achUserProfile[PATH_MAX]	= { 0 };
+char g_achUserProfile[PATH_MAX] = { 0 };
 
-SDL_Surface	*g_psurfScreen;
-bool g_bFullscreen	= true;
-bool g_bOGL				= false;
-int g_anBpx[5]	= { 32, 24, 16, 15, 8 };
-int g_nBppIndex	= 0;
-bool g_bShowFps	= false;
-bool g_bTutorialMode	= true;
-bool g_bAutoBonusMode	= true;
+SDL_Surface* g_psurfScreen = 0;
+bool g_bFullscreen = true;
+bool g_bOGL = true;
+int g_anBpx[5] = { 32, 24, 16, 15, 8 };
+int g_nBppIndex = 0;
+bool g_bShowFps = false;
+bool g_bTutorialMode = true;
+bool g_bAutoBonusMode = true;
 
 float g_fSpeedCorrection;
 float g_fCos[360];
 float g_fSin[360];
 
-SDL_Joystick	*g_pJoystick;
+SDL_Joystick* g_pJoystick = 0;
 bool g_bIsJoystickSupported	= false;
 
-bool g_bActive	= true;
+bool g_bActive = true;
 
 int g_keysStateCount = 0;
 Uint8* g_keysState = 0;
 Uint8* g_keysStateLast = 0;
 Uint32 g_modState = 0;
 
-bool g_bMouseRB			= false;
-bool g_bMouseLB			= false;
-bool g_bIsCursorVisible	= false;
+bool g_bMouseRB = false;
+bool g_bMouseLB = false;
+bool g_bIsCursorVisible = false;
 float g_nMouseDX = 0;
 float g_nMouseDY = 0;
-int g_nCursorX	= SCREEN_WIDTH / 2;
-int g_nCursorY	= SCREEN_HEIGHT / 2;
+int g_nCursorX = SCREEN_WIDTH / 2;
+int g_nCursorY = SCREEN_HEIGHT / 2;
 
 int g_nGameMode	= APPS_INTRO;
 int m_nLastHiScorePos	= -1;
@@ -78,7 +78,7 @@ SDL_Surface* m_pBricksMovBullets;
 SDL_Surface* m_pBonuses;
 SDL_Surface* g_pBonusesSmall;
 SDL_Surface* g_pBonusesAura;
-SDL_Surface* g_pGameBG	= 0;
+SDL_Surface* g_pGameBG = 0;
 SDL_Surface* m_pGameBGanims;
 SDL_Surface* m_pGameWall;
 SDL_Surface* m_pRacket;
@@ -92,29 +92,30 @@ SDL_Surface* g_pSinusString;
 SDL_Surface* g_pOptions;
 //SDL_Surface* g_pBGStars;
 
-const char *g_pachSnd[]	= {
-	"snd_electric.wav",	//  0
-	"snd_applause.wav",	//  1
-	"snd_patrol.wav",	//  2
-	"snd_turbine.wav",	//  3
-	"snd_click.wav",		//  4
-	"snd_over.wav",		//  5
-	"snd_impact1.wav",	//  6
-	"snd_impact2.wav",	//  7
-	"snd_laser.wav",		//  8
-	"snd_bonusup.wav",	//  9
-	"snd_bonusnew.wav",	// 10
-	"snd_paddle.wav",		// 11
-	"snd_missile.wav",	// 12
-	"snd_plasma.wav",		// 13
-	"snd_lostball.wav",	// 14
-	"snd_explode.wav",	// 15
+const char* g_pachSnd[] =
+{
+    "snd_electric.wav",	//  0
+    "snd_applause.wav",	//  1
+    "snd_patrol.wav",	//  2
+    "snd_turbine.wav",	//  3
+    "snd_click.wav",		//  4
+    "snd_over.wav",		//  5
+    "snd_impact1.wav",	//  6
+    "snd_impact2.wav",	//  7
+    "snd_laser.wav",		//  8
+    "snd_bonusup.wav",	//  9
+    "snd_bonusnew.wav",	// 10
+    "snd_paddle.wav",		// 11
+    "snd_missile.wav",	// 12
+    "snd_plasma.wav",		// 13
+    "snd_lostball.wav",	// 14
+    "snd_explode.wav",	// 15
 };
-Mix_Chunk	*g_apSnd[sizeof(g_pachSnd) / sizeof(const char*)];
-Mix_Music	*g_apMod[3];
-bool g_bIsAudioSupported	= true;
-int g_nVolumeM	= 3;
-int g_nVolumeS	= 4;
+Mix_Chunk* g_apSnd[sizeof(g_pachSnd) / sizeof(const char*)];
+Mix_Music* g_apMod[3];
+bool g_bIsAudioSupported = true;
+int g_nVolumeM = 3;
+int g_nVolumeS = 4;
 
 CResource		g_Resource;
 
