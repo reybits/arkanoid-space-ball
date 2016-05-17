@@ -49,7 +49,7 @@ void CSinusString::Draw() {
 			int	nOffset	= 8 * m_pchString[s];
 			int	nSinPos	= m_nSinPos;
 			for(int y = 0; y < 8; y++) {
-				//int	nDy	= (int)(((double)m_nAmplifier / y) * g_pMainFrame->m_afSin[nSinPos]);
+				//int	nDy	= (int)(((float)m_nAmplifier / y) * g_pMainFrame->m_afSin[nSinPos]);
 				Uint8	byBits	= m_pbySymbs[nOffset + y];
 				for(int x = 0; x < 8; x++) {
 					int	nDy	= (int)(m_nAmplifier * g_fSin[nSinPos]);
@@ -101,7 +101,7 @@ void CSinusString::SetString(const char *pchString, int nX, int nY) {
 	delete[]	m_pchString;
 	m_pchString	= new char[m_nStrLen + 1];
 	strcpy(m_pchString, pchString);
-	m_nX			= (double)nX;
+	m_nX			= (float)nX;
 	m_nY			= nY;
 	m_nStartPos		= 0;
 	m_nAmplifier	= 6;

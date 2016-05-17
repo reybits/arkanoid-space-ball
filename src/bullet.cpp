@@ -160,7 +160,7 @@ void CBullet::RemoveByPos(int nPos) {
     \fn CBullet::ChangeAngle(int nPos, bool bInc)
  */
 void CBullet::ChangeAngle(int nPos, bool bRotate) {
-	double	fAngle	= 0.5 * g_fSpeedCorrection;
+	float	fAngle	= 0.5 * g_fSpeedCorrection;
 	if(bRotate == false) {
 		m_vecBullets[nPos].nAngle	+= (360 - fAngle);
 	}

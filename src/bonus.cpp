@@ -131,8 +131,8 @@ void CBonus::AddBonus(int x, int y, int nType) {
 	bonus.nRadius		= 0;
 	bonus.nSin			= 0;
 	bonus.nCos			= 0;
-	bonus.origx			= (double)x;
-	bonus.origy			= (double)y;
+	bonus.origx			= (float)x;
+	bonus.origy			= (float)y;
 	bonus.x				= x;
 	bonus.y				= y;
 	m_vecBonuses.push_back(bonus);

@@ -74,8 +74,8 @@ void CMonster::AddMonster(int x, int y, int nType) {
 	if(nType >= 0 && nType < MONST_END) {
 		_MONSTER	monster;
 		monster.nType			= nType;
-		monster.x				= (double)x;
-		monster.y				= (double)y;
+		monster.x				= (float)x;
+		monster.y				= (float)y;
 		monster.nFrame			= 0;
 		monster.nCaptureMode	= 0;
 		//monster.nCapturedBallIndex	= -1;
@@ -178,7 +178,7 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 	int	i;
 	SDL_Rect	rc;
 	m_bBackWall	= bBackWall;
-	double	fSpeed	= g_fSpeedCorrection * 0.7;
+	float	fSpeed	= g_fSpeedCorrection * 0.7;
 
 	for(i = 0; i < (int)m_vecMonster.size(); i++) {
 		if(m_vecMonster[i].nType == MONST_PATROL) {
@@ -189,12 +189,12 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 		}
 		else if(m_vecMonster[i].nType == MONST_COPTER) {
 			int	nAngle = 0, nPos = 0;
-			double	fMinDist	= SCREEN_WIDTH;
+			float	fMinDist	= SCREEN_WIDTH;
 			bool	bFindBall	= false;
 			while(g_Ball.GetPositionAndDiameter(rc, nPos) == true) {
 				int	nCatet1	= (rc.x + rc.w / 2) - ((int)m_vecMonster[i].x + 32);
 				int	nCatet2	= (rc.y + rc.w / 2) - ((int)m_vecMonster[i].y + 24);
-				double fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
+				float fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
 				if(fDist < fMinDist && rc.h != CBall::TYPE_BLUE) {
 					bFindBall	= true;
 					fMinDist	= fDist;
@@ -225,12 +225,12 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 		else if(m_vecMonster[i].nType == MONST_HAND) {
 			if(m_vecMonster[i].nCaptureMode == 0) {
 				int	nAngle = 0, nPos = 0;
-				double	fMinDist	= SCREEN_WIDTH;
+				float	fMinDist	= SCREEN_WIDTH;
 				bool	bFindBall	= false;
 				while(g_Ball.GetPositionAndDiameter(rc, nPos) == true) {
 					int	nCatet1	= (rc.x + rc.w / 2) - ((int)m_vecMonster[i].x + 32);
 					int	nCatet2	= (rc.y + rc.w / 2) - ((int)m_vecMonster[i].y + 24);
-					double fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
+					float fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
 					if(fDist < 3) {
 						m_vecMonster[i].nCaptureMode			= 1;
 						m_vecMonster[i].nCapturedBallIndex	= nPos - 1;
@@ -260,7 +260,7 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 						m_vecMonster[i].nAngle	%= 360;
 						if(nAngle == m_vecMonster[i].nAngle)	break;
 					}
-					double	fSpeed	= g_fSpeedCorrection * 2.5;
+					float	fSpeed	= g_fSpeedCorrection * 2.5;
 					m_vecMonster[i].x	+= (fSpeed * g_fSin[m_vecMonster[i].nAngle]);
 					m_vecMonster[i].y	-= (fSpeed * g_fCos[m_vecMonster[i].nAngle]);
 				}
@@ -424,10 +424,10 @@ void CMonster::ChangeMonsterAngle(int nPos) {
 			m_vecMonster[nPos].nAngle	= 360 - (m_vecMonster[nPos].nAngle - 180);
 	}
 
-	m_vecMonster[nPos].x	= max(m_vecMonster[nPos].x, WALL_X1);
-	m_vecMonster[nPos].x	= min(m_vecMonster[nPos].x, WALL_X2 - m_vecMonster[nPos].w);
-	m_vecMonster[nPos].y	= max(m_vecMonster[nPos].y, WALL_Y1);
-	m_vecMonster[nPos].y	= min(m_vecMonster[nPos].y, WALL_Y2 - m_vecMonster[nPos].h);
+	m_vecMonster[nPos].x	= std::max<int>(m_vecMonster[nPos].x, WALL_X1);
+	m_vecMonster[nPos].x	= std::min<int>(m_vecMonster[nPos].x, WALL_X2 - m_vecMonster[nPos].w);
+	m_vecMonster[nPos].y	= std::max<int>(m_vecMonster[nPos].y, WALL_Y1);
+	m_vecMonster[nPos].y	= std::min<int>(m_vecMonster[nPos].y, WALL_Y2 - m_vecMonster[nPos].h);
 }
 
 

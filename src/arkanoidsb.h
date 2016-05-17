@@ -3,8 +3,6 @@
 #include <Winbase.h>
 #endif
 #include <stdlib.h>
-//#include <SDL.h>
-//#include <GL/gl.h>
 #include "glSDL.h"
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -13,7 +11,6 @@
 #include <stdarg.h>
 #include <errno.h>
 #include <vector>
-using namespace std;
 
 #ifndef PATH_MAX
 	#define PATH_MAX	256
@@ -55,7 +52,7 @@ enum { BOX_NONE,
 };
 
 struct _BRICK {
-	double	fX, fY;				// brick's position on screen in px
+	float	fX, fY;				// brick's position on screen in px
 	Uint8	byType;//, byDesiredType;
 	int		nCountToDie;		// count to die brick
 	int		nFrame;
@@ -85,11 +82,6 @@ struct _SAVE {
 	int m_nBonusLevelType;
 };
 
-#undef min
-#define min(a,b)		(((a) < (b)) ? (a) : (b))
-#undef max
-#define max(a,b)		(((a) > (b)) ? (a) : (b))
-
 extern char	g_achUserProfile[PATH_MAX];
 
 extern SDL_Surface	*g_psurfScreen;
@@ -99,16 +91,15 @@ extern int 			g_anBpx[5];
 extern int			g_nBppIndex;
 extern bool 		g_bTutorialMode;
 extern bool			g_bAutoBonusMode;
-extern double		g_fSpeedCorrection;
-extern double		g_fCos[];
-extern double		g_fSin[];
+extern float		g_fSpeedCorrection;
+extern float		g_fCos[];
+extern float		g_fSin[];
 extern int			g_nGameMode;
-extern Uint8		*g_pnKeys;
-extern Uint32		g_dwModState;
+extern Uint32		g_modState;
 extern bool			g_bMouseRB;
 extern bool			g_bMouseLB;
-extern double		g_nMouseDX;
-extern double		g_nMouseDY;
+extern float		g_nMouseDX;
+extern float		g_nMouseDY;
 extern int			g_nCursorX;
 extern int			g_nCursorY;
 extern bool			g_bIsCursorVisible;
@@ -147,7 +138,6 @@ extern SDL_Surface* m_pGameBGanims;
 extern SDL_Surface* m_pRacket;
 extern SDL_Surface* m_pGameWall;
 extern SDL_Surface* m_pRacket;
-extern SDL_Surface* m_pUnregistered;
 extern SDL_Surface* m_pBackground;
 extern SDL_Surface* m_pBackground2;
 extern SDL_Surface* m_pMainMenuIcons;
@@ -166,7 +156,7 @@ extern void EncodeDecode(void *pData, int nLen);
 extern void EnableCursor(bool bEnable);
 extern SDL_Surface *LoadImage(const char *pchFileName, const Uint32 nColorKey = 0xff000000);
 extern void Blit(const int nX, const int nY, SDL_Surface *pImg, SDL_Rect *pSrc);
-extern void BlitStretch(int nX, int nY, SDL_Surface *pImg, SDL_Rect *pSrc, double fScale);
+extern void BlitStretch(int nX, int nY, SDL_Surface *pImg, SDL_Rect *pSrc, float fScale);
 extern void SetRect(SDL_Rect *pRc, int nX, int nY, int nW, int nH);
 extern char *MakePath(const char *pchFileName);
 extern bool IsKeyPressed(int nKey);
@@ -214,14 +204,3 @@ extern CSinusString		g_CSinusString;
 extern CTutorialDlg		g_TutorialDlg;
 extern CMyString		g_FontTutorial;
 
-#if !defined(__linux__) && !defined(FULL_VERSION)
-#include "reminderdlg.h"
-
-extern bool CheckRegistration();
-extern bool g_bIsRegistered;
-extern char g_achRegName[100 + 1];
-extern char g_achRegKey[16 + 3 + 1];
-extern int g_nUnregisterdCount;
-
-extern CReminderDlg		g_ReminderDlg;
-#endif

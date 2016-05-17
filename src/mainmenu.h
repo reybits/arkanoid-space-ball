@@ -21,7 +21,7 @@ public:
     void DrawBrick(int nX, int nY, int nType);
     void SendEsc();
 
-    enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT, MT_REG_KEY };
+    enum { MT_MAIN, MT_STARTGAME, MT_HIGHSCORE, MT_OPTIONS, MT_RULES, MT_QUIT };
     enum { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT, B_REGISTER, B_OK, B_CANCEL, B_PREV, B_NEXT, B_NEWGAME, B_RESTORE, B_BUYGAME, B_LEVELEDITOR, B_CUSTOMLEVELS };
 
 protected:
@@ -30,9 +30,6 @@ protected:
     bool m_bInitHelp;
     bool m_bReturnToGame;
     bool m_bIsSaveAvailable;
-#if !defined(__linux__) && !defined(FULL_VERSION)
-    bool m_bShowReminder;
-#endif
     char m_achStoredLevelInfo[100];
     char m_achName[102];
     struct _OPTIONS

@@ -78,10 +78,10 @@ void CEnergyHole::Move()
         m_vecEnergyHole[i].x += (speed * g_fSin[m_vecEnergyHole[i].angle]);
         m_vecEnergyHole[i].y -= (speed * g_fCos[m_vecEnergyHole[i].angle]);
 
-        m_vecEnergyHole[i].x = min(RACKET_X - 80 - 60, m_vecEnergyHole[i].x);
-        m_vecEnergyHole[i].x = max(WALL_X1, m_vecEnergyHole[i].x);
-        m_vecEnergyHole[i].y = min(WALL_Y2 - 80, m_vecEnergyHole[i].y);
-        m_vecEnergyHole[i].y = max(WALL_Y1, m_vecEnergyHole[i].y);
+        m_vecEnergyHole[i].x = std::min<int>(RACKET_X - 80 - 60, m_vecEnergyHole[i].x);
+        m_vecEnergyHole[i].x = std::max<int>(WALL_X1, m_vecEnergyHole[i].x);
+        m_vecEnergyHole[i].y = std::min<int>(WALL_Y2 - 80, m_vecEnergyHole[i].y);
+        m_vecEnergyHole[i].y = std::max<int>(WALL_Y1, m_vecEnergyHole[i].y);
         m_vecEnergyHole[i].is_over = false;
 
         SDL_Rect rc;

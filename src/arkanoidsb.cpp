@@ -27,25 +27,25 @@ bool g_bShowFps	= false;
 bool g_bTutorialMode	= true;
 bool g_bAutoBonusMode	= true;
 
-double g_fSpeedCorrection;
-double g_fCos[360];
-double g_fSin[360];
+float g_fSpeedCorrection;
+float g_fCos[360];
+float g_fSin[360];
 
 SDL_Joystick	*g_pJoystick;
 bool g_bIsJoystickSupported	= false;
 
 bool g_bActive	= true;
 
-int g_nNumKeys		= 0;
-Uint8	*g_pnKeys	= 0;
-bool *g_pbIsKeyStateChanged	= 0;
-Uint32 g_dwModState	= 0;
+int g_keysStateCount = 0;
+Uint8* g_keysState = 0;
+Uint8* g_keysStateLast = 0;
+Uint32 g_modState = 0;
 
 bool g_bMouseRB			= false;
 bool g_bMouseLB			= false;
 bool g_bIsCursorVisible	= false;
-double g_nMouseDX = 0;
-double g_nMouseDY = 0;
+float g_nMouseDX = 0;
+float g_nMouseDY = 0;
 int g_nCursorX	= SCREEN_WIDTH / 2;
 int g_nCursorY	= SCREEN_HEIGHT / 2;
 
@@ -82,7 +82,6 @@ SDL_Surface* g_pGameBG	= 0;
 SDL_Surface* m_pGameBGanims;
 SDL_Surface* m_pGameWall;
 SDL_Surface* m_pRacket;
-SDL_Surface* m_pUnregistered;
 SDL_Surface* m_pBackground;
 SDL_Surface* m_pBackground2;
 SDL_Surface* m_pMainMenuIcons;
@@ -135,18 +134,6 @@ CCoolString		g_CoolString;
 CSinusString	g_CSinusString;
 CTutorialDlg	g_TutorialDlg;
 CMyString		g_FontTutorial;
-
-
-#if !defined(__linux__) && !defined(FULL_VERSION)
-bool CheckForBlackList(const char *pchKey);
-bool CheckRegistration();
-bool g_bIsRegistered	= false;
-char g_achRegName[100 + 1]	= { 0 };
-char g_achRegKey[16 + 3 + 1]	= { 0 };	// 16 symbols + 3 dashes + 1 null
-int g_nUnregisterdCount	= 30 * 60;
-
-CReminderDlg	g_ReminderDlg;
-#endif
 
 
 int main(int argc, char *argv[])
@@ -303,10 +290,10 @@ int main(int argc, char *argv[])
 		//loading modules
 		for(size_t i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
 #ifdef __MACOSX__
- 			if(i != 2)	sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module%.2lu.ogg", i + 1);
+ 			if(i != 2)	sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module%.2d.ogg", (int)i + 1);
  			else		sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module03.s3m");
 #else
- 			if(i != 2)	sprintf(achTemp, "res/module%.2d.ogg", i + 1);
+ 			if(i != 2)	sprintf(achTemp, "res/module%.2d.ogg", (int)i + 1);
  			else		sprintf(achTemp, "res/module03.s3m");
 #endif
 			printf("Loading module %s", achTemp);
@@ -318,10 +305,10 @@ int main(int argc, char *argv[])
 				}
 				*(pchEnd + 1)	= 0;
 #ifdef __MACOSX__
-				if(i != 2) { sprintf(achTemp, "../Resources/module%.2lu.ogg", i + 1); strcat(achPath, achTemp); }
+				if(i != 2) { sprintf(achTemp, "../Resources/module%.2d.ogg", (int)i + 1); strcat(achPath, achTemp); }
 				else		strcat(achPath, "../Resources/module03.s3m");
 #else
-				if(i != 2) { sprintf(achTemp, "res/module%.2d.ogg", i + 1); strcat(achPath, achTemp); }
+				if(i != 2) { sprintf(achTemp, "res/module%.2d.ogg", (int)i + 1); strcat(achPath, achTemp); }
 				else		strcat(achPath, "res/module03.s3m");
 #endif
 				g_apMod[i]	= Mix_LoadMUS(achPath);
@@ -333,24 +320,22 @@ int main(int argc, char *argv[])
 		PlayMusic2();
 	}
 
-	const double	pi	= 3.1415926535;
-	for(i = 0; i < 360; i++) {
-		g_fCos[i]	= (double)cos((pi / 180) * i);
-		g_fSin[i]	= (double)sin((pi / 180) * i);
-	}
+    for(int i = 0; i < 360; i++)
+    {
+        g_fCos[i] = cosf((M_PI / 180.0f) * i);
+        g_fSin[i] = sinf((M_PI / 180.0f) * i);
+    }
 
-	g_pnKeys						= SDL_GetKeyState(&g_nNumKeys);
-	g_pnKeys						= new Uint8[g_nNumKeys];
-	g_pbIsKeyStateChanged	= new bool[g_nNumKeys];
-	memset(g_pnKeys, 0, g_nNumKeys * sizeof(Uint8));
-	memset(g_pbIsKeyStateChanged, 0, g_nNumKeys * sizeof(bool));
+    g_keysState = SDL_GetKeyState(&g_keysStateCount);
+    g_keysStateLast = new Uint8[g_keysStateCount];
+    memset(g_keysStateLast, 0, g_keysStateCount * sizeof(Uint8));
 
 	int		nFrame		= 0;
 	Uint32	nFPStime	= 0;
-	double	fFPS		= 0;
+	float	fFPS		= 0;
 	Uint32	nPrevTime	= 0;
-	g_fSpeedCorrection	= 1.0;
-	const double    fPerFrameMs     = 1000.0 / DESIRED_FPS;
+	g_fSpeedCorrection	= 1.0f;
+	const float fPerFrameMs     = 1000.0f / DESIRED_FPS;
 
 	CLevelEditor	m_LevelEditor;
 	//g_nGameMode	= APPS_EDITOR;
@@ -368,11 +353,11 @@ int main(int argc, char *argv[])
 				nFPStime	= nTimeCurrent;
 			}
 
-			g_fSpeedCorrection	= double(nTimeCurrent - nPrevTime) / (DESIRED_FPS / 10.0);
+			g_fSpeedCorrection = (float)(nTimeCurrent - nPrevTime) / (DESIRED_FPS / 10.0f);
 			nPrevTime				= nTimeCurrent;
 
 			// volume manager
-			if(g_dwModState & KMOD_SHIFT) {
+			if(g_modState & KMOD_SHIFT) {
 				if(IsKeyPressed(SDLK_MINUS) && IsKeyStateChanged(SDLK_MINUS)) {
 					SetVolumeMusic(--g_nVolumeM);
 				}
@@ -448,7 +433,7 @@ int main(int argc, char *argv[])
 			}
 
 /*			// save screenshot to profile dir
-			if((g_dwModState & KMOD_CTRL) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
+			if((g_modState & KMOD_CTRL) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
 				char    achPath[PATH_MAX];
 				time_t  osTime	= time(0);
 				struct tm	local	= *localtime(&osTime);
@@ -485,8 +470,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	delete[]	g_pnKeys;
-	delete[]	g_pbIsKeyStateChanged;
+    delete[] g_keysStateLast;
 
 	for(size_t i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++) {
 		if(g_apMod[i])	Mix_FreeMusic(g_apMod[i]);
@@ -567,15 +551,14 @@ void SetRect(SDL_Rect *pRc, int nX, int nY, int nW, int nH) {
 	pRc->h	= nH;
 }
 
-bool IsKeyPressed(int nKey) {
-	if(g_pnKeys[nKey] == SDL_PRESSED)
-		return true;
-	return false;
+bool IsKeyPressed(int key)
+{
+    return g_keysState[key] == SDL_PRESSED;
 }
 
-bool IsKeyStateChanged(int nKey)
+bool IsKeyStateChanged(int key)
 {
-    return g_pbIsKeyStateChanged[nKey];
+    return g_keysStateLast[key] != g_keysState[key];
 }
 
 void FadeScreen()
@@ -591,20 +574,13 @@ void FadeScreen()
 
 bool UpdateKeys()
 {
-    SDL_Event evt;
-    Uint8* pnKeys = 0;
-
-    g_dwModState = SDL_GetModState();
-    pnKeys = SDL_GetKeyState(NULL);
-    for(int i = 0; i < g_nNumKeys; i++)
-    {
-        //g_pnKeys[i] != pnKeys[i] ? g_pbIsKeyStateChanged[i] = true : g_pbIsKeyStateChanged[i] = false;
-        g_pbIsKeyStateChanged[i] = (g_pnKeys[i] != pnKeys[i]);
-    }
-    memcpy(g_pnKeys, pnKeys, g_nNumKeys * sizeof(Uint8));
-
     g_nMouseDX = 0;
     g_nMouseDY = 0;
+
+    memcpy(g_keysStateLast, g_keysState, g_keysStateCount * sizeof(Uint8));
+    g_modState = SDL_GetModState();
+
+    SDL_Event evt;
     while(SDL_PollEvent(&evt))
     {
         switch(evt.type)
@@ -827,9 +803,9 @@ void StopSound(int &nChannel) {
 void SetVolumeMusic(int nVolume) {
 	if(g_bIsAudioSupported == false)	return;
 	g_nVolumeM	= nVolume;
-	if(g_nVolumeM < 0)	g_nVolumeM	= 0;
-	if(g_nVolumeM > 10)	g_nVolumeM	= 10;
-	const double	fVolumeCorrection	= MIX_MAX_VOLUME / 10.0;
+	if(g_nVolumeM < 0)	g_nVolumeM = 0;
+	if(g_nVolumeM > 10)	g_nVolumeM = 10;
+	const float fVolumeCorrection = MIX_MAX_VOLUME / 10.0f;
 	Mix_VolumeMusic(int(g_nVolumeM * fVolumeCorrection));
 	printf("Music volume %d\n", g_nVolumeM);
 }
@@ -837,9 +813,9 @@ void SetVolumeMusic(int nVolume) {
 void SetVolumeSound(int nVolume) {
 	if(g_bIsAudioSupported == false)	return;
 	g_nVolumeS	= nVolume;
-	if(g_nVolumeS < 0)	g_nVolumeS	= 0;
-	if(g_nVolumeS > 10)	g_nVolumeS	= 10;
-	const double	fVolumeCorrection	= MIX_MAX_VOLUME / 10.0;
+	if(g_nVolumeS < 0)	g_nVolumeS = 0;
+	if(g_nVolumeS > 10)	g_nVolumeS = 10;
+	const float fVolumeCorrection = MIX_MAX_VOLUME / 10.0f;
 	Mix_Volume(-1, int(g_nVolumeS * fVolumeCorrection));
 	printf("Sound volume %d\n", g_nVolumeS);
 }
@@ -876,10 +852,6 @@ void ReadWriteConfig(bool bMode) {
 			fread(&g_bOGL, sizeof(g_bOGL), 1, pFile);
 			fread(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
 			fread(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
-#if !defined(__linux__) && !defined(FULL_VERSION)
-			fread(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount), 1, pFile);
-			EncodeDecode(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount));
-#endif
 			fread(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, pFile);
 			fread(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, pFile);
 			fclose(pFile);
@@ -899,21 +871,6 @@ void ReadWriteConfig(bool bMode) {
 		else {
 			printf("error (%d) - %s\n", errno, strerror(errno));
 		}
-#if !defined(__linux__) && !defined(FULL_VERSION)
-		sprintf(achBuf, "%skey", g_achUserProfile);
-		if((pFile = fopen(achBuf, "rb"))) {
-			fread(&g_achRegName, sizeof(g_achRegName), 1, pFile);
-			fread(&g_achRegKey, sizeof(g_achRegKey), 1, pFile);
-			fclose(pFile);
-			EncodeDecode(&g_achRegName, sizeof(g_achRegName));
-			EncodeDecode(&g_achRegKey, sizeof(g_achRegKey));
-		}
-		else {
-			g_achRegName[0]	= 0;
-			g_achRegKey[0]		= 0;
-		}
-		CheckRegistration();
-#endif
 	}
 	else {
 		if((pFile = fopen(achBuf, "wb"))) {
@@ -923,10 +880,6 @@ void ReadWriteConfig(bool bMode) {
 			fwrite(&g_bOGL, sizeof(g_bOGL), 1, pFile);
 			fwrite(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
 			fwrite(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
-#if !defined(__linux__) && !defined(FULL_VERSION)
-			EncodeDecode(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount));
-			fwrite(&g_nUnregisterdCount, sizeof(g_nUnregisterdCount), 1, pFile);
-#endif
 			fwrite(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, pFile);
 			fwrite(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, pFile);
 			fclose(pFile);
@@ -943,20 +896,6 @@ void ReadWriteConfig(bool bMode) {
 		else {
 			printf("error (%d) - %s\n", errno, strerror(errno));
 		}
-#if !defined(__linux__) && !defined(FULL_VERSION)
-		sprintf(achBuf, "%skey", g_achUserProfile);
-		if((pFile = fopen(achBuf, "wb"))) {
-			if(g_bIsRegistered == false) {
-				g_achRegName[0]	= 0;
-				g_achRegKey[0]		= 0;
-			}
-			EncodeDecode(&g_achRegName, sizeof(g_achRegName));
-			EncodeDecode(&g_achRegKey, sizeof(g_achRegKey));
-			fwrite(&g_achRegName, sizeof(g_achRegName), 1, pFile);
-			fwrite(&g_achRegKey, sizeof(g_achRegKey), 1, pFile);
-			fclose(pFile);
-		}
-#endif
 	}
 }
 
@@ -1071,7 +1010,6 @@ void SetVideoMode() {
 	m_pGameBGanims		= LoadImage("gamebganims.png");
 	m_pGameWall			= LoadImage("gamewall.png");
 	m_pRacket			= LoadImage("paddle.png");
-	m_pUnregistered	= LoadImage("reminderdlg.png");
 	m_pBackground		= LoadImage("mainmenubg.jpg");
 	m_pBackground2		= LoadImage("mainmenubg2.jpg");
 	m_pMainMenuIcons	= LoadImage("mainmenuicons.png");
@@ -1095,7 +1033,6 @@ void UnsetVideoMode() {
 	SDL_FreeSurface(m_pMainMenuIcons);
 	SDL_FreeSurface(m_pBackground2);
 	SDL_FreeSurface(m_pBackground);
-	SDL_FreeSurface(m_pUnregistered);
 	SDL_FreeSurface(m_pRacket);
 	SDL_FreeSurface(m_pGameWall);
 	SDL_FreeSurface(m_pGameBGanims);
@@ -1128,67 +1065,6 @@ void UnsetVideoMode() {
 	g_Font2.Unload();
 	g_Font.Unload();
 }
-
-#if !defined(__linux__) && !defined(FULL_VERSION)
-bool CheckRegistration() {
-	const char	achKeyWord[16]     = "oPZmAtk73v4eNjE";
-	char    		achTmp[10];
-	char			achGenerated[16 + 1];
-	char			achKey[16 + 1];
-	achGenerated[16]	= 0;
-	int	i, a;
-
-	// remove dashes
-	int	nLen	= strlen(g_achRegKey);
-	for(a = 0, i = 0; i < nLen; i++) {
-		if(g_achRegKey[i] != '-')
-			achKey[a++]	= g_achRegKey[i];
-	}
-	achKey[16]	= 0;
-
-	//strcpy(g_achRegName, "Andrey Ugolnik");
-	g_bIsRegistered	= false;
-	strcpy(achGenerated, achKeyWord);
-	nLen	= strlen(g_achRegName);
-	for(i = 1; i < 16; i++) {
-		for(unsigned int a = 0; a < nLen; a++) {
-			sprintf(achTmp, "%2X", achKeyWord[i] ^ g_achRegName[a]);
-			achGenerated[i] = achTmp[a % 2];
-		}
-		sprintf(achTmp, "%2X", achGenerated[i - 1] ^ achKeyWord[i] ^ nLen);
-		switch(achTmp[1]) {
-			case '0': achTmp[1]	= 'H';	break;
-			case '1': achTmp[1]	= 'Z';	break;
-			case '8': achTmp[1]	= 'X';	break;
-			case 'A': achTmp[1]	= 'N';	break;
-			case 'B': achTmp[1]	= 'K';	break;
-			case 'C': achTmp[1]	= 'W';	break;
-			case 'D': achTmp[1]	= 'Y';	break;
-			case 'G': achTmp[1]	= 'P';	break;
-		}
-		achGenerated[i - 1]     = achTmp[1];
-	}
-	//g_Font2.DrawString(240, 300, achGenerated);
-	//strcpy(g_achRegKey, achGenerated);
-	if(CheckForBlackList(achGenerated) == false && strcmp(achGenerated, achKey) == 0)
-		g_bIsRegistered	= true;
-
-	return  g_bIsRegistered;
-}
-
-bool CheckForBlackList(const char *pchKey) {
-	const char *pchBlacklistedKeys[]	= {
-		"EKW3-4X54-Z72W-N7H5",
-		"26ZE-95X9-WNFZ-7NY4"
-	};
-	for(int i = 0; i < sizeof(pchBlacklistedKeys) / sizeof(const char**); i++) {
-		//printf("blacklisted %s\n", pchBlacklistedKeys[i]);
-		if(strcmp(pchBlacklistedKeys[i], pchKey) == 0)
-			return true;
-	}
-	return false;
-}
-#endif
 
 void SwitchFullscreen() {
 //#ifdef __linux__

@@ -35,17 +35,17 @@ public:
 	int GetTypeInStack(int nPos);
 
 protected:
-	struct _BONUS {
-		int	nType;
-		int	nFrame;
-		int	nRadius;
-		int	nSin, nCos;
-		double	origx, origy;
-		int	x, y;
-	};
-	std::vector<_BONUS>m_vecBonuses;
-	std::vector<int>m_vecBonusesStack;
-	int m_nStackPos;
+    struct _BONUS {
+        int nType;
+        int nFrame;
+        int nRadius;
+        int nSin, nCos;
+        float origx, origy;
+        int x, y;
+    };
+    std::vector<_BONUS>m_vecBonuses;
+    std::vector<int>m_vecBonusesStack;
+    int m_nStackPos;
 };
 
 #endif // !defined(AFX_BONUS_H__7CA3E36C_E48B_45D0_90E2_C70408596DF2__INCLUDED_)

@@ -35,8 +35,8 @@ public:
 protected:
 #define COOLSTRING_MAX_LEN	20
 	struct _COOL_STRING {
-/*		double	fX, fY;
-		double	fDelta;
+/*		float	fX, fY;
+		float	fDelta;
 		int	nPos;
 		int	nLen;
 		Uint8	byPoint[8][COOLSTRING_MAX_LEN * 8];*/

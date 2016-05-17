@@ -5,12 +5,11 @@
 #include "arkanoidsb.h"
 #include "arkanoidsbgame.h"
 
+#include <algorithm>
+
 // paddle size can be small (50px), default (80px), expanded (110px), big (140px)
-#define PADDLE_HEIGHT	(50 + m_nRacketSize * 30)
-#define SCORE_TO_ADDITIONAL_BALL	5000
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+#define PADDLE_HEIGHT (50 + m_nRacketSize * 30)
+#define SCORE_TO_ADDITIONAL_BALL 5000
 
 CArkanoidSBGame::CArkanoidSBGame() {
 	m_nCurrentLevel		= 0;
@@ -100,7 +99,7 @@ void CArkanoidSBGame::DoGameActive() {
 	}
 
 	if(m_bCanMovePaddle == true) {
-		const double	fMultipler	= 1.1;// * g_fSpeedCorrection;
+		const float	fMultipler	= 1.1;// * g_fSpeedCorrection;
 		if(m_bPaddleIsInvert == false) {
 			m_nRacketY	+= g_nMouseDY * fMultipler;
 			if(m_nRacketType == RT_ENGINE)	m_nRacketX	+= g_nMouseDX * fMultipler;
@@ -110,10 +109,10 @@ void CArkanoidSBGame::DoGameActive() {
 			if(m_nRacketType == RT_ENGINE)	m_nRacketX	-= g_nMouseDX * fMultipler;
 		}
 	}
-	m_nRacketY	= max(m_nRacketY, WALL_Y1);
-	m_nRacketY	= min(m_nRacketY, WALL_Y2 - PADDLE_HEIGHT);
-	m_nRacketX	= max(m_nRacketX, WALL_X1 + 50);
-	m_nRacketX	= min((m_nRacketType == RT_ENGINE ? m_nRacketX : RACKET_X), RACKET_X + 5);
+	m_nRacketY	= std::max<int>(m_nRacketY, WALL_Y1);
+	m_nRacketY	= std::min<int>(m_nRacketY, WALL_Y2 - PADDLE_HEIGHT);
+	m_nRacketX	= std::max<int>(m_nRacketX, WALL_X1 + 50);
+	m_nRacketX	= std::min<int>((m_nRacketType == RT_ENGINE ? m_nRacketX : RACKET_X), RACKET_X + 5);
 	static Uint32	dwRacketTime	= 0;
 	if(m_nRacketX > RACKET_X) {
 		if(dwRacketTime + 15 < SDL_GetTicks()) {
@@ -352,24 +351,6 @@ bool CArkanoidSBGame::DrawScreen() {
 
 	case GS_GAME_ACTIVE:
 		//if(IsKeyPressed(SDLK_g) && IsKeyStateChanged(SDLK_g))	m_GenLev.Generate(++m_nCurrentLevel, false);
-#if !defined(__linux__) && !defined(FULL_VERSION)
-		// unregistered version
-		if(g_bIsRegistered == false) {
-			if(m_dwUnregisterdTime < SDL_GetTicks()) {
-				m_dwUnregisterdTime	= SDL_GetTicks() + 1000;
-				if(m_bTutorialPause == false && g_nUnregisterdCount > 0) g_nUnregisterdCount--;
-			}
-			if(g_nUnregisterdCount == 20 * 60 || g_nUnregisterdCount == 10 * 60 ||
-				g_nUnregisterdCount ==  3 * 60 || g_nUnregisterdCount ==  1 * 60) {
-				EnableCursor(true);
-				m_nGameState			= GS_GAME_REMINDER1;
-			}
-			else if(g_nUnregisterdCount == 0) {
-				EnableCursor(true);
-				m_nGameState			= GS_GAME_REMINDER2;
-			}
-		}
-#endif
 		if(IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) {
 			SendEsc();
 		}
@@ -382,10 +363,10 @@ bool CArkanoidSBGame::DrawScreen() {
 			ProcessBonus(CBonus::TYPE_PADDLE_MAGNET + nType);
 			nType++;	nType	%= 7;
 		}
-		if(g_dwModState & KMOD_SHIFT && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
+		if(g_modState & KMOD_SHIFT && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
 			ProcessBonus(CBonus::TYPE_BALL_EXPAND);
 		}
-		if(!(g_dwModState & KMOD_SHIFT) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
+		if(!(g_modState & KMOD_SHIFT) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
 			ProcessBonus(CBonus::TYPE_BALL_SHRINK);
 		}
 		if(IsKeyPressed(SDLK_b) && IsKeyStateChanged(SDLK_b)) {
@@ -416,40 +397,7 @@ bool CArkanoidSBGame::DrawScreen() {
 	case GS_GAME_OVER:
 		bIsExit	= DoGameOver();
 		break;
-
-#if !defined(__linux__) && !defined(FULL_VERSION)
-	case GS_GAME_REMINDER1:
-		switch(g_ReminderDlg.Draw(0)) {
-		case 1:
-			g_MainMenu.SetMenuType(CMainMenu::MT_REG_KEY);
-			g_nGameMode		= APPS_MAINMENU;
-			break;
-		case 2:
-			EnableCursor(false);
-			m_nGameState	= GS_GAME_ACTIVE;
-			break;
-		}
-		break;
-	case GS_GAME_REMINDER2:
-		switch(g_ReminderDlg.Draw(1)) {
-		case 1:
-			g_MainMenu.SetMenuType(CMainMenu::MT_REG_KEY);
-			g_nGameMode		= APPS_MAINMENU;
-			break;
-		case 2:
-			g_nGameMode		= APPS_SHOULDGETNAME;
-			break;
-		}
-		break;
-#endif
 	}
-
-#if !defined(__linux__) && !defined(FULL_VERSION)
-	if(g_bIsRegistered == false && m_bTutorialPause == false &&
-		(m_nGameState != GS_GAME_REMINDER1 && m_nGameState != GS_GAME_REMINDER2)) {
-		g_Font.DrawString(0, WALL_Y1 + 30, "Unregistered version", CMyString::FONT_ALIGN_CENTER);
-	}
-#endif
 
 	return	bIsExit;
 }
@@ -524,7 +472,7 @@ void CArkanoidSBGame::DrawBricks() {
 
 		// movable bricks
 		if(m_vecLevelBricks[i].byType >= BOX_MOV_0 && m_vecLevelBricks[i].byType < BOX_SHOOT_0) {
-			double	fSpeed	= g_fSpeedCorrection * .5;
+			float	fSpeed	= g_fSpeedCorrection * .5;
 			do {
 				int	nY	= int(m_vecLevelBricks[i].fY);
 				if(m_vecLevelBricks[i].bDir == true) {
@@ -729,11 +677,6 @@ void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore) {
 		bInit	= false;
 		m_GenLev.LoadPatterns();
 	}
-#if !defined(__linux__) && !defined(FULL_VERSION)
-	if(g_nUnregisterdCount > 30 * 60)	g_nUnregisterdCount	= 30 * 60;
-	if(g_nUnregisterdCount == 0)		g_nUnregisterdCount	= 3;
-#endif
-
 	if(bRestore == true) {
 		bool	bLoaded	= false;
 		_SAVE	str;
@@ -962,7 +905,7 @@ void CArkanoidSBGame::DrawStatistic() {
 		g_Font.DrawNumber(m_nPaddleMissileCount, nX, 31);
 		nX	-= 36;
 	}
-    
+
 	int	nType = g_Ball.GetType();
 	if(nType != CBall::TYPE_WHITE)
     {
@@ -978,7 +921,7 @@ void CArkanoidSBGame::DrawStatistic() {
 		g_Font.DrawNumber(g_Ball.GetTypeCount(), nX, 31);
 		//nX	-= 36;
 	}
-    
+
 	if(m_nBonusLevelType == 0) {
 		nX	= SCREEN_WIDTH - 5 - 24;
 		for(int i = 0; i < 5; i++) {
@@ -1012,7 +955,7 @@ void CArkanoidSBGame::DoShoot() {
 					int	nY	= (int)m_vecLevelBricks[i].fY;
 					if(nY <= nLaserY + 2 && nY + BRICK_H >= nLaserY) {
 					//if(abs(nY - nLaserY) <= abs(4 - nH)) {
-						m_nLaserX	= max(m_nLaserX, (int)m_vecLevelBricks[i].fX + BRICK_W);
+						m_nLaserX	= std::max<int>(m_nLaserX, m_vecLevelBricks[i].fX + BRICK_W);
 					}
 				}
 				g_Bullet.AddBullets((int)m_nRacketY + (PADDLE_HEIGHT - 20) / 2, CBullet::TYPE_LASER);
@@ -1211,13 +1154,6 @@ void CArkanoidSBGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveA
 					g_TutorialDlg.AddDialog(nX + BRICK_W / 2, nY + BRICK_H / 2, 0, 7);
 				dwTime	= SDL_GetTicks();
 				int	nType	= g_Rnd.Get(CBonus::TYPE_LAST_BONUS);
-#if !defined(__linux__) && !defined(FULL_VERSION)
-				if(g_bIsRegistered == false) {
-					while(nType == CBonus::TYPE_BALL_FIRE || nType == CBonus::TYPE_PADDLE_MISSILE || nType == CBonus::TYPE_PADDLE_ENGINE) {
-						nType++;	nType	%= CBonus::TYPE_LAST_BONUS;
-					}
-				}
-#endif
 				g_Bonus.AddBonus(nX, nY, nType);
 				PlaySound(10);
 			}
@@ -1332,7 +1268,7 @@ int CArkanoidSBGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY) {
 	int		nAngle	= 0;
 	int		nCatet1	= nX - ((int)m_vecLevelBricks[nIndex].fX + BRICK_W / 2);
 	int		nCatet2	= nY - ((int)m_vecLevelBricks[nIndex].fY + BRICK_H / 2);
-	double	fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
+	float	fDist		= sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
 	nAngle				= (int)(57.3 * asin(nCatet2 / fDist));
 	if(nCatet1 > 0)	nAngle	= 90 + nAngle;
 	else					nAngle	= 270 - nAngle;

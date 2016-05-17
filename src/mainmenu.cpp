@@ -16,9 +16,6 @@ CMainMenu::CMainMenu()
     , m_bInitHelp(true)
     , m_bReturnToGame(false)
     , m_bIsSaveAvailable(false)
-#if !defined(__linux__) && !defined(FULL_VERSION)
-    , m_bShowReminder(false)
-#endif
 {
     m_achStoredLevelInfo[0] = 0;
     m_achName[0] = 0;
@@ -47,11 +44,6 @@ int CMainMenu::DrawMenu()
     case MT_HIGHSCORE:
         DrawMenuHighScore();
         break;
-#if !defined(__linux__) && !defined(FULL_VERSION)
-    case MT_REG_KEY:
-        DrawEnterReg();
-        break;
-#endif
     case MT_OPTIONS:
         DrawMenuOptions();
         break;
@@ -78,28 +70,8 @@ int CMainMenu::DrawMenu()
     if(m_nMenuType == MT_MAIN)
     {
         g_Font.DrawString(5, SCREEN_HEIGHT - 5 - 14, AutoVersion::FULLVERSION_STRING);
-#if !defined(__linux__) && !defined(FULL_VERSION)
-        if(g_bIsRegistered == false)
-        {
-            g_Font.DrawString(5, 5, "Unregistered version");
-        }
-        else
-        {
-            char achBuf[sizeof(g_achRegName) + 20];
-            sprintf(achBuf, "Registered to: %s", g_achRegName);
-            g_Font.DrawString(5, 5, achBuf);
-        }
-#else
-#	if defined(__linux__)
-        g_Font.DrawString(5, 5, "Registered to all Linux users");
-#	endif
-#endif
     }
-    else if(
-#if !defined(__linux__) && !defined(FULL_VERSION)
-            m_bShowReminder == false &&
-#endif
-            ((IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) || g_bMouseRB == true))
+    else if((IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) || g_bMouseRB == true)
     {
         SendEsc();
     }
@@ -125,11 +97,7 @@ int CMainMenu::DrawMenuMain()
     SetRect(&rc, 0, 0, 248, 29);
 
     int nItem = -1;
-#if !defined(__linux__) && !defined(FULL_VERSION)
-    int nCount = (g_bIsRegistered == true ? 5 : 6);
-#else
     int nCount = 5;
-#endif
     for(int i = 0; i < nCount; i++)
     {
         if(true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y + i * 29, i))
@@ -146,14 +114,6 @@ int CMainMenu::DrawMenuMain()
         case MT_QUIT:
             return 0; // exit
 
-#if !defined(__linux__) && !defined(FULL_VERSION)
-        case MT_REG_KEY:
-            if(g_bIsRegistered == false)
-            {
-                SetMenuType(nItem + 1);
-            }
-            break;
-#endif
         default:
             SetMenuType(nItem + 1);
             break;
@@ -199,44 +159,20 @@ int CMainMenu::DrawStartGame() {
         nItem	= 5;
     }
 
-#if !defined(__linux__) && !defined(FULL_VERSION)
-    if(m_bShowReminder == true) {
-        switch(g_ReminderDlg.Draw(2)) {
-        case 1:
-            SetMenuType(MT_REG_KEY);
-            g_nGameMode		= APPS_MAINMENU;
-            break;
+    if(g_bMouseLB == true) {
+        g_bMouseLB	= false;
+        switch(nItem) {
+        case 0:	return 1;	// start new game
+        case 1: return 2;	// restore game
         case 2:
-            m_bShowReminder	= false;
-            //EnableCursor(true);
-            break;
+        case 3:	g_bTutorialMode	= !g_bTutorialMode;	break;
+        case 4:
+        case 5:	g_bAutoBonusMode	= !g_bAutoBonusMode;	break;
+        case 6:	m_nMenuType	= MT_MAIN;	break;
+        case 7:	return 3;	// custom levels
+        case 8:	return 4;	// level editor
         }
     }
-    else
-#endif
-        if(g_bMouseLB == true) {
-            g_bMouseLB	= false;
-            switch(nItem) {
-            case 0:	return 1;	// start new game
-            case 1:
-#if !defined(__linux__) && !defined(FULL_VERSION)
-                    if(g_bIsRegistered == true)
-#endif
-                        return 2;	// restore game
-#if !defined(__linux__) && !defined(FULL_VERSION)
-                    else
-                        m_bShowReminder	= true;
-#endif
-                    break;
-            case 2:
-            case 3:	g_bTutorialMode	= !g_bTutorialMode;	break;
-            case 4:
-            case 5:	g_bAutoBonusMode	= !g_bAutoBonusMode;	break;
-            case 6:	m_nMenuType	= MT_MAIN;	break;
-            case 7:	return 3;	// custom levels
-            case 8:	return 4;	// level editor
-            }
-        }
 
     return -1;	// do nothing
 }
@@ -613,9 +549,6 @@ void CMainMenu::DrawMenuOptions() {
 void CMainMenu::SetMenuType(int nType, bool bReturnToGame) {
     EnableCursor(true);
     m_nMenuType				= nType;
-#if !defined(__linux__) && !defined(FULL_VERSION)
-    m_bShowReminder			= false;
-#endif
     m_bInitHelp				= true;
     m_strOpt.nBppIndex		= g_nBppIndex;
     m_strOpt.bFullscreen	= g_bFullscreen;
@@ -670,7 +603,7 @@ char CMainMenu::GetKey() {
 
     for(size_t i = 0; i < sizeof(abyScans); i++) {
         if(IsKeyPressed(abyScans[i]) && IsKeyStateChanged(abyScans[i])) {
-            if(g_dwModState & KMOD_SHIFT)
+            if(g_modState & KMOD_SHIFT)
                 return abyKeysUpper[i];
             else
                 return abyKeysLover[i];
@@ -706,144 +639,6 @@ void CMainMenu::SetEnterNameMode() {
 
 void SetPixel(int nX, int nY, Uint32 color) {
 }
-
-#if !defined(__linux__) && !defined(FULL_VERSION)
-/*!
-  \fn CMainMenu::DrawEnterReg()
-  */
-void CMainMenu::DrawEnterReg() {
-    SDL_Rect	rc;
-    static char		achBuf[sizeof(g_achRegName) + 1];
-    static bool		bName		= true;
-    static Uint32	dwTime	= 0;
-    static bool		bCursor	= true;
-    static bool		bShow		= false;
-    if(dwTime + 500 < SDL_GetTicks()) {
-        dwTime	= SDL_GetTicks();
-        bCursor	= !bCursor;
-    }
-
-    int	nPos	= (g_nCursorY - 180) / 30;
-    if(nPos == 0 || nPos == 1) {
-        if(g_bMouseLB == true) {
-            bName	= nPos == 0 ? true : false;
-            bShow	= false;
-        }
-    }
-    char	byChar	= GetKey();
-    if(bName == true) {
-        DrawHighlight(0);
-        int	nLen	= strlen(g_achRegName);
-        if(nLen < sizeof(g_achRegName) - 1) {
-            g_achRegName[nLen]		= toupper(byChar);
-            g_achRegName[nLen + 1]	= 0;
-            //CheckRegistration();
-        }
-        if(IsKeyPressed(SDLK_BACKSPACE) && IsKeyStateChanged(SDLK_BACKSPACE) && nLen > 0) {
-            g_achRegName[nLen - 1]	= 0;
-            bShow	= false;
-        }
-        sprintf(achBuf, "%s%s", g_achRegName, bCursor == true ? "_" : "");
-        g_Font2.DrawString(180, 180, achBuf);
-        g_Font2.DrawString(180, 210, g_achRegKey);
-        SetRect(&rc, 0, 0, 488, 29);
-        Blit(80 - 4, 180 - 4, g_pOptions, &rc);
-        g_Font.DrawString(0, 260, "Enter registration name, please.\nNote, that registration name in uppercase.", CMyString::FONT_ALIGN_CENTER);
-    }
-    else {
-        DrawHighlight(1);
-        int	nLen	= strlen(g_achRegKey);
-        if(nLen < sizeof(g_achRegKey) - 1) {
-            g_achRegKey[nLen]			= toupper(byChar);
-            g_achRegKey[nLen + 1]	= 0;
-        }
-        if(IsKeyPressed(SDLK_BACKSPACE) && IsKeyStateChanged(SDLK_BACKSPACE) && nLen > 0) {
-            g_achRegKey[nLen - 1]	= 0;
-            bShow	= false;
-        }
-        g_Font2.DrawString(180, 180, g_achRegName);
-        sprintf(achBuf, "%s%s", g_achRegKey, bCursor == true ? "_" : "");
-        g_Font2.DrawString(180, 210, achBuf);
-        SetRect(&rc, 0, 0, 488, 29);
-        Blit(80 - 4, 210 - 4, g_pOptions, &rc);
-        g_Font.DrawString(0, 260, "Enter registration code.\nExample: XXXX-1234-5678-YYYY.", CMyString::FONT_ALIGN_CENTER);
-    }
-    if(IsKeyPressed(SDLK_TAB) && IsKeyStateChanged(SDLK_TAB)) {
-        bName	= !bName;
-        bShow	= false;
-    }
-    if(IsKeyPressed(SDLK_UP) && IsKeyStateChanged(SDLK_UP)) {
-        bName	= true;
-        bShow	= false;
-    }
-    if(IsKeyPressed(SDLK_DOWN) && IsKeyStateChanged(SDLK_DOWN)) {
-        bName	= false;
-        bShow	= false;
-    }
-    if(IsKeyPressed(SDLK_RETURN) && IsKeyStateChanged(SDLK_RETURN)) {
-        if(CheckRegistration() == true) {
-            m_nMenuType	= MT_MAIN;
-        }
-        else	bShow		= true;
-    }
-    if(bShow == true) {
-        if(byChar)	bShow	= false;
-        g_Font.DrawString(0, 240, "Invalid registartion key", CMyString::FONT_ALIGN_CENTER);
-    }
-
-    g_Font.DrawString(0, SCREEN_HEIGHT - 20, "<Tab> move to next field, <Enter> confirm, <Esc> return to main menu.", CMyString::FONT_ALIGN_CENTER);
-
-    g_Font2.DrawString(82, 180, "NAME:");
-    g_Font2.DrawString(82, 210, "KEY:");
-
-    if(true == DrawMenuButton(MENU_ITEM_X, 360, B_OK) && g_bMouseLB == true) {
-        g_bMouseLB	= false;
-        if(CheckRegistration() == true) {
-            m_nMenuType	= MT_MAIN;
-        }
-        else	bShow	= true;
-    }
-    if(true == DrawMenuButton(MENU_ITEM_X + 124, 360, B_CANCEL) && g_bMouseLB == true) {
-        g_bMouseLB	= false;
-        bShow		= false;
-        m_nMenuType	= MT_MAIN;
-    }
-    if(true == DrawMenuButton(MENU_ITEM_X, 390, B_BUYGAME) && g_bMouseLB == true) {
-        g_bMouseLB	= false;
-        bShow		= false;
-        //m_nMenuType	= MT_MAIN;
-#if defined(SOFTONIC)
-#	ifdef _WIN32
-        ShellExecute(NULL, "open", "https://comercio.softonic.com/pv/5000", NULL, NULL, SW_SHOWNORMAL);
-#	elif __MACOSX__
-        system("open https://comercio.softonic.com/pv/4865/0/1");
-#	endif
-#else
-#	ifdef _WIN32
-        ShellExecute(NULL, "open", "arkanoidsbreg.url", NULL, NULL, SW_SHOWNORMAL);
-        //#	elif __linux__
-        //		system("konqueror http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
-#	elif __MACOSX__
-        system("open http://www.wegroup.org/games/arkanoid-games/arkanoid-space-ball.html");
-#	endif
-#endif
-    }
-}
-
-
-/*!
-  \fn CMainMenu::DrawHighlight(int nPos)
-  */
-void CMainMenu::DrawHighlight(int nPos) {
-    SDL_Rect	rc;
-    SetRect(&rc, 0, 0, 160, 22);
-    Blit(80, 180 + nPos * 30 - 1, g_pTransp, &rc);
-    Blit(80 + 160, 180 + nPos * 30 - 1, g_pTransp, &rc);
-    Blit(80 + 320, 180 + nPos * 30 - 1, g_pTransp, &rc);
-
-    Blit(80 - 4, 180 - 4 + nPos * 30, g_pOptions, 0);
-}
-#endif
 
 /*!
   \fn CMainMenu::DrawMenuButton(int nX, int nY, int nButtonId)
