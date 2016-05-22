@@ -11,7 +11,8 @@ void SetVideoMode();
 void UnsetVideoMode();
 void CommonQuit();
 bool UpdateKeys();
-void ReadWriteConfig(bool bMode);
+void readConfig();
+void writeConfig();
 void PlayMusic2();
 void SwitchFullscreen();
 bool DrawIntro();
@@ -160,7 +161,7 @@ int main(int argc, char *argv[])
 	printf("Arkanoid: Space Ball by 'WE' Group. Copyright (c) 2006-2012.\n");
 	printf("version %s.\n", AutoVersion::FULLVERSION_STRING);
 	printf("Users config dir: %s\n", g_achUserProfile);
-	ReadWriteConfig(true);
+	readConfig();
 
 	// parse command line
 	for(i = 1; i < argc; i++) {
@@ -481,7 +482,7 @@ int main(int argc, char *argv[])
 		if(g_apSnd[i])	Mix_FreeChunk(g_apSnd[i]);
 	}
 
-	ReadWriteConfig(false);
+	writeConfig();
 	UnsetVideoMode();
 	SDL_JoystickClose(g_pJoystick);
 	exit(0);
@@ -492,33 +493,41 @@ void CommonQuit() {
 	SDL_Quit();
 }
 
-SDL_Surface *LoadImage(const char *pchFileName, const Uint32 nColorKey) {
-	SDL_Surface	*pOptimizedImage	= 0;	//The optimized image that will be used
+SDL_Surface* LoadImage(const char* filename, const Uint32 colorKey)
+{
+    SDL_Surface* optimizedImage = 0; //The optimized image that will be used
 
-	// try to load image from resource from
-	unsigned int	nDataLen;
-	unsigned char	*pbyData	= g_Resource.GetDataAllocMem(pchFileName, nDataLen);
-	if(pbyData) {
-		SDL_Surface	*pTmp	= IMG_Load_RW(SDL_RWFromMem(pbyData, nDataLen), 1);
-		g_Resource.FreeMem(pbyData);
-		//SDL_Surface	*pTmp	= IMG_Load(pchFileName);
-		if(pTmp != 0) {
-			if(nColorKey != 0xff000000) {
-				SDL_SetColorKey(pTmp, SDL_SRCCOLORKEY | (g_bOGL == true ? 0 : SDL_RLEACCEL), SDL_MapRGB(g_psurfScreen->format, (nColorKey>>16)&0xff, (nColorKey>>8)&0xff, nColorKey&0xff) | SDL_ALPHA_TRANSPARENT);
-				pOptimizedImage	= SDL_DisplayFormat(pTmp);	//Create an optimized image
-			}
-			else {
-				pOptimizedImage	= SDL_DisplayFormatAlpha(pTmp);	//Create an optimized image
-			}
-			SDL_FreeSurface(pTmp);	//Free the old image
-			printf(" done.\n");
-		}
-		else {
-			printf("  --%s\n", SDL_GetError());
-		}
-	}
+    // try to load image from resource from
+    unsigned int nDataLen;
+    unsigned char* data = g_Resource.GetDataAllocMem(filename, nDataLen);
+    if(data)
+    {
+        SDL_Surface* tmp = IMG_Load_RW(SDL_RWFromMem(data, nDataLen), 1);
+        g_Resource.FreeMem(data);
+        //SDL_Surface* tmp = IMG_Load(filename);
+        if(tmp)
+        {
+            if(colorKey != 0xff000000)
+            {
+                Uint32 key = SDL_MapRGB(g_psurfScreen->format, (colorKey>>16)&0xff, (colorKey>>8)&0xff, colorKey&0xff);
+                int flag = SDL_SRCCOLORKEY | (g_bOGL ? 0 : SDL_RLEACCEL);
+                SDL_SetColorKey(tmp, flag, key | SDL_ALPHA_TRANSPARENT);
+                optimizedImage = SDL_DisplayFormat(tmp); //Create an optimized image
+            }
+            else
+            {
+                optimizedImage = SDL_DisplayFormatAlpha(tmp); //Create an optimized image
+            }
+            SDL_FreeSurface(tmp); //Free the old image
+            printf(" done.\n");
+        }
+        else
+        {
+            printf("  --%s\n", SDL_GetError());
+        }
+    }
 
-	return	pOptimizedImage;	//Return the optimized image
+    return optimizedImage; //Return the optimized image
 }
 
 void Blit(const int nX, const int nY, SDL_Surface *pImg, SDL_Rect *pSrc) {
@@ -821,316 +830,352 @@ void SetVolumeSound(int nVolume) {
 	printf("Sound volume %d\n", g_nVolumeS);
 }
 
-void EncodeDecode(void *pData, int nLen) {
-	Uint8	*p	= (Uint8*)pData;
-	Uint8	by	= 0xaa;
-	while(nLen--) {
-		*p		^= by;
-		*p		+= 128;
-		by		+= 3;
-		p++;
-	}
+void EncodeDecode(void *data, int size)
+{
+    Uint8* p = (Uint8*)data;
+    Uint8 by = 0xaa;
+    while(size--)
+    {
+        *p ^= by;
+        *p += 128;
+        by += 3;
+        p++;
+    }
 }
 
-//	bMode: true - read, false - write
-void ReadWriteConfig(bool bMode) {
-	char	achBuf[PATH_MAX];
-	FILE	*pFile;
+void readConfig()
+{
+    char buffer[PATH_MAX];
 
-	// try to create directory if not exist
+    sprintf(buffer, "%sconfig", g_achUserProfile);
+
+    FILE* file = fopen(buffer, "rb");
+    if(file)
+    {
+        fread(&g_nVolumeM, sizeof(g_nVolumeM), 1, file);
+        fread(&g_nVolumeS, sizeof(g_nVolumeS), 1, file);
+        fread(&g_bFullscreen, sizeof(g_bFullscreen), 1, file);
+        fread(&g_bOGL, sizeof(g_bOGL), 1, file);
+        fread(&g_nBppIndex, sizeof(g_nBppIndex), 1, file);
+        fread(&g_bShowFps, sizeof(g_bShowFps), 1, file);
+        fread(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, file);
+        fread(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, file);
+        fclose(file);
+        // correct variables on linux, where arkanoidsb 1.1.6 wil be installed before
+        if(g_bTutorialMode < 0 || g_bTutorialMode > 1)	g_bTutorialMode	= 1;
+        if(g_bAutoBonusMode < 0 || g_bAutoBonusMode > 1)	g_bAutoBonusMode	= 0;
+    }
+    else
+    {
+        printf("error (%d) - %s\n", errno, strerror(errno));
+    }
+
+    sprintf(buffer, "%sscores", g_achUserProfile);
+    file = fopen(buffer, "rb");
+    if(file)
+    {
+        fread(&g_strHighScore, sizeof(g_strHighScore), 1, file);
+        fclose(file);
+        EncodeDecode(&g_strHighScore, sizeof(g_strHighScore));
+    }
+    else
+    {
+        printf("error (%d) - %s\n", errno, strerror(errno));
+    }
+}
+
+void writeConfig()
+{
+    // try to create directory if not exist
 #ifdef _WIN32
-	CreateDirectory(g_achUserProfile, 0);
+    CreateDirectory(g_achUserProfile, 0);
 #else	//#elseif __linux__	// linux and mac os x
-	mkdir(g_achUserProfile, 0700);
+    mkdir(g_achUserProfile, 0700);
 #endif
 
-	sprintf(achBuf, "%sconfig", g_achUserProfile);
-	if(bMode == true) {
-		if((pFile = fopen(achBuf, "rb"))) {
-			fread(&g_nVolumeM, sizeof(g_nVolumeM), 1, pFile);
-			fread(&g_nVolumeS, sizeof(g_nVolumeS), 1, pFile);
-			fread(&g_bFullscreen, sizeof(g_bFullscreen), 1, pFile);
-			fread(&g_bOGL, sizeof(g_bOGL), 1, pFile);
-			fread(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
-			fread(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
-			fread(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, pFile);
-			fread(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, pFile);
-			fclose(pFile);
-			// correct variables on linux, where arkanoidsb 1.1.6 wil be installed before
-			if(g_bTutorialMode < 0 || g_bTutorialMode > 1)	g_bTutorialMode	= 1;
-			if(g_bAutoBonusMode < 0 || g_bAutoBonusMode > 1)	g_bAutoBonusMode	= 0;
-		}
-		else {
-			printf("error (%d) - %s\n", errno, strerror(errno));
-		}
-		sprintf(achBuf, "%sscores", g_achUserProfile);
-		if((pFile = fopen(achBuf, "rb"))) {
-			fread(&g_strHighScore, sizeof(g_strHighScore), 1, pFile);
-			fclose(pFile);
-			EncodeDecode(&g_strHighScore, sizeof(g_strHighScore));
-		}
-		else {
-			printf("error (%d) - %s\n", errno, strerror(errno));
-		}
-	}
-	else {
-		if((pFile = fopen(achBuf, "wb"))) {
-			fwrite(&g_nVolumeM, sizeof(g_nVolumeM), 1, pFile);
-			fwrite(&g_nVolumeS, sizeof(g_nVolumeS), 1, pFile);
-			fwrite(&g_bFullscreen, sizeof(g_bFullscreen), 1, pFile);
-			fwrite(&g_bOGL, sizeof(g_bOGL), 1, pFile);
-			fwrite(&g_nBppIndex, sizeof(g_nBppIndex), 1, pFile);
-			fwrite(&g_bShowFps, sizeof(g_bShowFps), 1, pFile);
-			fwrite(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, pFile);
-			fwrite(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, pFile);
-			fclose(pFile);
-		}
-		else {
-			printf("error (%d) - %s\n", errno, strerror(errno));
-		}
-		sprintf(achBuf, "%sscores", g_achUserProfile);
-		if((pFile = fopen(achBuf, "wb"))) {
-			EncodeDecode(&g_strHighScore, sizeof(g_strHighScore));
-			fwrite(&g_strHighScore, sizeof(g_strHighScore), 1, pFile);
-			fclose(pFile);
-		}
-		else {
-			printf("error (%d) - %s\n", errno, strerror(errno));
-		}
-	}
+    char buffer[PATH_MAX];
+
+    sprintf(buffer, "%sconfig", g_achUserProfile);
+    FILE* file = fopen(buffer, "wb");
+    if(file)
+    {
+        fwrite(&g_nVolumeM, sizeof(g_nVolumeM), 1, file);
+        fwrite(&g_nVolumeS, sizeof(g_nVolumeS), 1, file);
+        fwrite(&g_bFullscreen, sizeof(g_bFullscreen), 1, file);
+        fwrite(&g_bOGL, sizeof(g_bOGL), 1, file);
+        fwrite(&g_nBppIndex, sizeof(g_nBppIndex), 1, file);
+        fwrite(&g_bShowFps, sizeof(g_bShowFps), 1, file);
+        fwrite(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, file);
+        fwrite(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, file);
+        fclose(file);
+    }
+    else
+    {
+        printf("error (%d) - %s\n", errno, strerror(errno));
+    }
+
+    sprintf(buffer, "%sscores", g_achUserProfile);
+    file = fopen(buffer, "wb");
+    if(file)
+    {
+        EncodeDecode(&g_strHighScore, sizeof(g_strHighScore));
+        fwrite(&g_strHighScore, sizeof(g_strHighScore), 1, file);
+        fclose(file);
+    }
+    else
+    {
+        printf("error (%d) - %s\n", errno, strerror(errno));
+    }
 }
 
-void SetVideoMode() {
-	SDL_WM_SetCaption("Arkanoid: Space Ball", 0);
+void SetVideoMode()
+{
+    SDL_WM_SetCaption("Arkanoid: Space Ball", 0);
 
-	char	achBuf[50];
-	Uint32	dwFlags	= (g_bOGL == true ? SDL_GLSDL : 0) | SDL_HWSURFACE | SDL_DOUBLEBUF | (g_bFullscreen == true ? SDL_FULLSCREEN : 0);
-	printf("Requested video flags:\n");
-	printf("  glSDL: %s\n", dwFlags & SDL_GLSDL ? "yes" : "no");
-	printf("  Fullscreen: %s\n", dwFlags & SDL_FULLSCREEN ? "yes" : "no");
+    char achBuf[50];
+    Uint32 dwFlags = (g_bOGL == true ? SDL_GLSDL : 0) | SDL_HWSURFACE | SDL_DOUBLEBUF | (g_bFullscreen == true ? SDL_FULLSCREEN : 0);
+    printf("Requested video flags:\n");
+    printf("  glSDL: %s\n", dwFlags & SDL_GLSDL ? "yes" : "no");
+    printf("  Fullscreen: %s\n", dwFlags & SDL_FULLSCREEN ? "yes" : "no");
 
-	/*static int	nFlags	= -1;
-	if(dwFlags != nFlags) {
-		nFlags	= dwFlags;
-		const int anBpp[]	= { 32, 24, 16, 15, 8 };
-		for(int i = 0; i < sizeof(anBpp) / sizeof(int); i++) {
-			g_vecBpx.push_back(anBpp[i]);
-		}
-	}
-	int	nCount	= g_vecBpx.size();*/
-	int	nCount	= sizeof(g_anBpx) / sizeof(int);
-	if(g_nBppIndex < 0)	g_nBppIndex	= nCount - 1;
-	do {
-		g_nBppIndex		%= sizeof(g_anBpx) / sizeof(int);	// correct it to valid value
-		g_psurfScreen	= SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, g_anBpx[g_nBppIndex], dwFlags);
-		if(!g_psurfScreen) {
-			printf("Couldn't set %d x %d x %d bpx video mode: %s.\n", SCREEN_WIDTH, SCREEN_HEIGHT, g_anBpx[g_nBppIndex], SDL_GetError());
-			// remove invalid pbx
-			//g_vecBpx.erase(g_vecBpx.begin() + g_nBppIndex);
-			//nCount	= g_vecBpx.size();
-			g_nBppIndex++;
-		}
-	} while(!g_psurfScreen && --nCount > 0);
+    /*static int	nFlags	= -1;
+      if(dwFlags != nFlags) {
+      nFlags	= dwFlags;
+      const int anBpp[]	= { 32, 24, 16, 15, 8 };
+      for(int i = 0; i < sizeof(anBpp) / sizeof(int); i++) {
+      g_vecBpx.push_back(anBpp[i]);
+      }
+      }
+      int	nCount	= g_vecBpx.size();*/
+    int nCount = sizeof(g_anBpx) / sizeof(int);
+    if(g_nBppIndex < 0)
+    {
+        g_nBppIndex = nCount - 1;
+    }
+    do
+    {
+        g_nBppIndex %= sizeof(g_anBpx) / sizeof(int); // correct it to valid value
+        g_psurfScreen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, g_anBpx[g_nBppIndex], dwFlags);
+        if(!g_psurfScreen)
+        {
+            printf("Couldn't set %d x %d x %d bpx video mode: %s.\n", SCREEN_WIDTH, SCREEN_HEIGHT, g_anBpx[g_nBppIndex], SDL_GetError());
+            // remove invalid pbx
+            //g_vecBpx.erase(g_vecBpx.begin() + g_nBppIndex);
+            //nCount	= g_vecBpx.size();
+            g_nBppIndex++;
+        }
+    } while(!g_psurfScreen && --nCount > 0);
 
-	//g_psurfScreen	= SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, (g_bOGL == false ? SDL_GLSDL : 0) | SDL_DOUBLEBUF | (g_bFullscreen == true ? SDL_FULLSCREEN : 0));
-	if(!g_psurfScreen) {
-		exit(1);
-	}
-	printf("Video mode %d x %d x %d bpx created.\n", g_psurfScreen->w, g_psurfScreen->h, g_psurfScreen->format->BitsPerPixel);
+    //g_psurfScreen	= SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, (g_bOGL == false ? SDL_GLSDL : 0) | SDL_DOUBLEBUF | (g_bFullscreen == true ? SDL_FULLSCREEN : 0));
+    if(!g_psurfScreen)
+    {
+        exit(1);
+    }
+    printf("Video mode %d x %d x %d bpx created.\n", g_psurfScreen->w, g_psurfScreen->h, g_psurfScreen->format->BitsPerPixel);
 
-	// get driver name and hardware info
-	const SDL_VideoInfo	*vi	= SDL_GetVideoInfo();
-	printf("  driver name: %s\n", SDL_VideoDriverName(achBuf, sizeof(achBuf)));
-	printf("  hardware surfaces: %s\n", !vi->hw_available ? "no" : "yes");
-	printf("  window manager available: %s\n", !vi->wm_available ? "no" : "yes");
-	printf("  hardware to hardware blits accelerated: %s\n", !vi->blit_hw ? "no" : "yes");
-	printf("  hardware to hardware colorkey blits accelerated: %s\n", !vi->blit_hw_CC ? "no" : "yes");
-	printf("  hardware to hardware alpha blits: %s\n", !vi->blit_hw_A ? "no" : "yes");
-	printf("  software to hardware blits: %s\n",  !vi->blit_sw ? "no" : "yes");
-	printf("  software to hardware colorkey blits: %s\n",  !vi->blit_sw_CC ? "no" : "yes");
-	printf("  software to hardware alpha blits: %s\n",  !vi->blit_sw_A ? "no" : "yes");
-	printf("  color fills accelerated: %s\n",  !vi->blit_fill ? "no" : "yes");
-	printf("  total video memory: %d Kb\n", vi->video_mem);
+    // get driver name and hardware info
+    const SDL_VideoInfo* vi = SDL_GetVideoInfo();
+    printf("  driver name: %s\n", SDL_VideoDriverName(achBuf, sizeof(achBuf)));
+    printf("  hardware surfaces: %s\n", !vi->hw_available ? "no" : "yes");
+    printf("  window manager available: %s\n", !vi->wm_available ? "no" : "yes");
+    printf("  hardware to hardware blits accelerated: %s\n", !vi->blit_hw ? "no" : "yes");
+    printf("  hardware to hardware colorkey blits accelerated: %s\n", !vi->blit_hw_CC ? "no" : "yes");
+    printf("  hardware to hardware alpha blits: %s\n", !vi->blit_hw_A ? "no" : "yes");
+    printf("  software to hardware blits: %s\n",  !vi->blit_sw ? "no" : "yes");
+    printf("  software to hardware colorkey blits: %s\n",  !vi->blit_sw_CC ? "no" : "yes");
+    printf("  software to hardware alpha blits: %s\n",  !vi->blit_sw_A ? "no" : "yes");
+    printf("  color fills accelerated: %s\n",  !vi->blit_fill ? "no" : "yes");
+    printf("  total video memory: %d Kb\n", vi->video_mem);
 
-	SDL_ShowCursor(SDL_DISABLE);
+    SDL_ShowCursor(SDL_DISABLE);
 
-	// center window
-	SDL_SysWMinfo info;
-	SDL_VERSION(&info.version);
-	if(SDL_GetWMInfo(&info) > 0 ) {
+    // center window
+    SDL_SysWMinfo info;
+    SDL_VERSION(&info.version);
+    if(SDL_GetWMInfo(&info) > 0)
+    {
 #if defined(__linux__)
-		if(info.subsystem == SDL_SYSWM_X11) {
-			info.info.x11.lock_func();
-			int w	= DisplayWidth(info.info.x11.display, DefaultScreen(info.info.x11.display));
-			int h	= DisplayHeight(info.info.x11.display, DefaultScreen(info.info.x11.display));
-			int x	= (w - SCREEN_WIDTH)/2;
-			int y	= (h - SCREEN_HEIGHT)/2;
-			XMoveWindow(info.info.x11.display, info.info.x11.wmwindow, x, y);
-			info.info.x11.unlock_func();
-		}
+        if(info.subsystem == SDL_SYSWM_X11)
+        {
+            info.info.x11.lock_func();
+            int w = DisplayWidth(info.info.x11.display, DefaultScreen(info.info.x11.display));
+            int h = DisplayHeight(info.info.x11.display, DefaultScreen(info.info.x11.display));
+            int x = (w - SCREEN_WIDTH)/2;
+            int y = (h - SCREEN_HEIGHT)/2;
+            XMoveWindow(info.info.x11.display, info.info.x11.wmwindow, x, y);
+            info.info.x11.unlock_func();
+        }
 #elif defined(WIN32)
-		RECT rc;
-		HWND hwnd	= info.window;
-		int w	= GetSystemMetrics(SM_CXSCREEN);
-		int h	= GetSystemMetrics(SM_CYSCREEN);
-		GetWindowRect(hwnd, &rc);
-		int x	= (w - (rc.right-rc.left))/2;
-		int y	= (h - (rc.bottom-rc.top))/2;
-		SetWindowPos(hwnd, NULL, x, y, 0, 0, SWP_NOSIZE|SWP_NOZORDER);
+        RECT rc;
+        HWND hwnd = info.window;
+        int w = GetSystemMetrics(SM_CXSCREEN);
+        int h = GetSystemMetrics(SM_CYSCREEN);
+        GetWindowRect(hwnd, &rc);
+        int x = (w - (rc.right-rc.left))/2;
+        int y = (h - (rc.bottom-rc.top))/2;
+        SetWindowPos(hwnd, NULL, x, y, 0, 0, SWP_NOSIZE|SWP_NOZORDER);
 #endif
-	}
+    }
 
-	g_Font.LoadFont2("font_small.png", 5, -1, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
-	g_Font2.LoadFont2("font_big.png", 16, 0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?-%,._:");
-	g_Font3.LoadFont2("font_small2.png", 5, -1, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
-	g_FontTutorial.LoadFont2("font_tutorial.png", 5, 1);
+    g_Font.LoadFont2("font_small.png", 5, -1, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
+    g_Font2.LoadFont2("font_big.png", 16, 0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?-%,._:");
+    g_Font3.LoadFont2("font_small2.png", 5, -1, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
+    g_FontTutorial.LoadFont2("font_tutorial.png", 5, 1);
 
-	m_pEnergyHole		= LoadImage("energyhole.png");
-	m_pMonstPatrol		= LoadImage("monster_patrol.png");
-	m_pMonstCopter		= LoadImage("monster_copter.png");
-	m_pMonstEye			= LoadImage("monster_eye.png");
-	m_pMonstBlackHole	= LoadImage("monster_blackhole.png");
-	m_pMonstFighter	= LoadImage("monster_fighter.png");
-	m_pMonstHand		= LoadImage("monster_hand.png");
-	m_pMonstStone1		= LoadImage("monster_stone1.png");
-	m_pMonstStone2		= LoadImage("monster_stone2.png");
-	m_pMonstTurbine	= LoadImage("monster_turbine.png");
-	m_pMonstUfo			= LoadImage("monster_ufo.png");
-	m_pMonstWreckage1	= LoadImage("monster_wreckage1.png");
-	m_pMonstWreckage2	= LoadImage("monster_wreckage2.png");
-	m_pBall				= LoadImage("balls.png");
-	m_pVector			= LoadImage("vector.png");
-	m_pFB					= LoadImage("fb.png");
-	m_pBullet			= LoadImage("bullets.png");
-	m_pExploision		= LoadImage("exploision.png");
-	m_pBricks			= LoadImage("bricks.png");
-	m_pBricksMovBullets	= LoadImage("bricksmovbullets.png");
-	m_pBonuses			= LoadImage("bonuses.png");
-	g_pBonusesSmall	= LoadImage("bonuses_small.png");
-	g_pBonusesAura		= LoadImage("bonuses_aura.png");
-	m_pGameBGanims		= LoadImage("gamebganims.png");
-	m_pGameWall			= LoadImage("gamewall.png");
-	m_pRacket			= LoadImage("paddle.png");
-	m_pBackground		= LoadImage("mainmenubg.jpg");
-	m_pBackground2		= LoadImage("mainmenubg2.jpg");
-	m_pMainMenuIcons	= LoadImage("mainmenuicons.png");
-	m_pCursor			= LoadImage("cursor.png");
-	g_pTransp			= LoadImage("transp.png");
-	g_pTutorialDlg		= LoadImage("tutorial_dlg.png");
-	g_pSinusString		= LoadImage("sinusstring.png");
-	g_pOptions			= LoadImage("options.png");
-	//g_pBGStars		= LoadImage("stars.png");
-	g_Arkanoid.LoadBackground();
+    m_pEnergyHole		= LoadImage("energyhole.png");
+    m_pMonstPatrol		= LoadImage("monster_patrol.png");
+    m_pMonstCopter		= LoadImage("monster_copter.png");
+    m_pMonstEye			= LoadImage("monster_eye.png");
+    m_pMonstBlackHole	= LoadImage("monster_blackhole.png");
+    m_pMonstFighter	= LoadImage("monster_fighter.png");
+    m_pMonstHand		= LoadImage("monster_hand.png");
+    m_pMonstStone1		= LoadImage("monster_stone1.png");
+    m_pMonstStone2		= LoadImage("monster_stone2.png");
+    m_pMonstTurbine	= LoadImage("monster_turbine.png");
+    m_pMonstUfo			= LoadImage("monster_ufo.png");
+    m_pMonstWreckage1	= LoadImage("monster_wreckage1.png");
+    m_pMonstWreckage2	= LoadImage("monster_wreckage2.png");
+    m_pBall				= LoadImage("balls.png");
+    m_pVector			= LoadImage("vector.png");
+    m_pFB					= LoadImage("fb.png");
+    m_pBullet			= LoadImage("bullets.png");
+    m_pExploision		= LoadImage("exploision.png");
+    m_pBricks			= LoadImage("bricks.png");
+    m_pBricksMovBullets	= LoadImage("bricksmovbullets.png");
+    m_pBonuses			= LoadImage("bonuses.png");
+    g_pBonusesSmall	= LoadImage("bonuses_small.png");
+    g_pBonusesAura		= LoadImage("bonuses_aura.png");
+    m_pGameBGanims		= LoadImage("gamebganims.png");
+    m_pGameWall			= LoadImage("gamewall.png");
+    m_pRacket			= LoadImage("paddle.png");
+    m_pBackground		= LoadImage("mainmenubg.jpg");
+    m_pBackground2		= LoadImage("mainmenubg2.jpg");
+    m_pMainMenuIcons	= LoadImage("mainmenuicons.png");
+    m_pCursor			= LoadImage("cursor.png");
+    g_pTransp			= LoadImage("transp.png");
+    g_pTutorialDlg		= LoadImage("tutorial_dlg.png");
+    g_pSinusString		= LoadImage("sinusstring.png");
+    g_pOptions			= LoadImage("options.png");
+    //g_pBGStars		= LoadImage("stars.png");
+    g_Arkanoid.LoadBackground();
 }
 
-void UnsetVideoMode() {
-	g_Arkanoid.FreeBackground();
-	//SDL_FreeSurface(g_pBGStars);
-	SDL_FreeSurface(g_pOptions);
-	SDL_FreeSurface(g_pSinusString);
-	SDL_FreeSurface(g_pTutorialDlg);
-	SDL_FreeSurface(g_pTransp);
-	SDL_FreeSurface(m_pCursor);
-	SDL_FreeSurface(m_pMainMenuIcons);
-	SDL_FreeSurface(m_pBackground2);
-	SDL_FreeSurface(m_pBackground);
-	SDL_FreeSurface(m_pRacket);
-	SDL_FreeSurface(m_pGameWall);
-	SDL_FreeSurface(m_pGameBGanims);
-	SDL_FreeSurface(g_pBonusesAura);
-	SDL_FreeSurface(g_pBonusesSmall);
-	SDL_FreeSurface(m_pBonuses);
-	SDL_FreeSurface(m_pBricksMovBullets);
-	SDL_FreeSurface(m_pBricks);
-	SDL_FreeSurface(m_pExploision);
-	SDL_FreeSurface(m_pBullet);
-	SDL_FreeSurface(m_pFB);
-	SDL_FreeSurface(m_pVector);
-	SDL_FreeSurface(m_pBall);
-	SDL_FreeSurface(m_pMonstWreckage2);
-	SDL_FreeSurface(m_pMonstWreckage1);
-	SDL_FreeSurface(m_pMonstUfo);
-	SDL_FreeSurface(m_pMonstTurbine);
-	SDL_FreeSurface(m_pMonstStone2);
-	SDL_FreeSurface(m_pMonstStone1);
-	SDL_FreeSurface(m_pMonstHand);
-	SDL_FreeSurface(m_pMonstFighter);
-	SDL_FreeSurface(m_pMonstBlackHole);
-	SDL_FreeSurface(m_pMonstEye);
-	SDL_FreeSurface(m_pMonstCopter);
-	SDL_FreeSurface(m_pMonstPatrol);
-	SDL_FreeSurface(m_pEnergyHole);
+void UnsetVideoMode()
+{
+    g_Arkanoid.FreeBackground();
+    //SDL_FreeSurface(g_pBGStars);
+    SDL_FreeSurface(g_pOptions);
+    SDL_FreeSurface(g_pSinusString);
+    SDL_FreeSurface(g_pTutorialDlg);
+    SDL_FreeSurface(g_pTransp);
+    SDL_FreeSurface(m_pCursor);
+    SDL_FreeSurface(m_pMainMenuIcons);
+    SDL_FreeSurface(m_pBackground2);
+    SDL_FreeSurface(m_pBackground);
+    SDL_FreeSurface(m_pRacket);
+    SDL_FreeSurface(m_pGameWall);
+    SDL_FreeSurface(m_pGameBGanims);
+    SDL_FreeSurface(g_pBonusesAura);
+    SDL_FreeSurface(g_pBonusesSmall);
+    SDL_FreeSurface(m_pBonuses);
+    SDL_FreeSurface(m_pBricksMovBullets);
+    SDL_FreeSurface(m_pBricks);
+    SDL_FreeSurface(m_pExploision);
+    SDL_FreeSurface(m_pBullet);
+    SDL_FreeSurface(m_pFB);
+    SDL_FreeSurface(m_pVector);
+    SDL_FreeSurface(m_pBall);
+    SDL_FreeSurface(m_pMonstWreckage2);
+    SDL_FreeSurface(m_pMonstWreckage1);
+    SDL_FreeSurface(m_pMonstUfo);
+    SDL_FreeSurface(m_pMonstTurbine);
+    SDL_FreeSurface(m_pMonstStone2);
+    SDL_FreeSurface(m_pMonstStone1);
+    SDL_FreeSurface(m_pMonstHand);
+    SDL_FreeSurface(m_pMonstFighter);
+    SDL_FreeSurface(m_pMonstBlackHole);
+    SDL_FreeSurface(m_pMonstEye);
+    SDL_FreeSurface(m_pMonstCopter);
+    SDL_FreeSurface(m_pMonstPatrol);
+    SDL_FreeSurface(m_pEnergyHole);
 
-	g_FontTutorial.Unload();
-	g_Font3.Unload();
-	g_Font2.Unload();
-	g_Font.Unload();
+    g_FontTutorial.Unload();
+    g_Font3.Unload();
+    g_Font2.Unload();
+    g_Font.Unload();
 }
 
-void SwitchFullscreen() {
-//#ifdef __linux__
-//	SDL_WM_ToggleFullScreen(g_psurfScreen);	// currently works only in linux
-//#else
-	UnsetVideoMode();
-	SetVideoMode();
-//#endif
+void SwitchFullscreen()
+{
+    //SDL_WM_ToggleFullScreen(g_psurfScreen); // currently works only in linux
+    UnsetVideoMode();
+    SetVideoMode();
 }
 
-bool DrawIntro() {
-	static int		nRotates	= 0;
-	static int		nFrame	= 0;
-	static SDL_Surface	*pIntro, *pIntro2, *pSDL;
-	static bool	bLoaded	= false;
-	if(bLoaded == false) {
-		bLoaded	= true;
-		pIntro	= LoadImage("intro.png");
-		pIntro2	= LoadImage("intro2.png");
-		pSDL		= LoadImage("sdl_minibox.png");
-	}
-	SDL_FillRect(g_psurfScreen, 0, 0);
-	SDL_Rect	rc;
-	Blit((SCREEN_WIDTH - 80) / 2, (SCREEN_HEIGHT - 106) / 2, pIntro2, 0);
-	rc.w	= rc.h	= 64;
-	rc.x	= (nFrame % 4) * 64;
-	rc.y	= (nFrame / 4) * 64;
-	Blit((SCREEN_WIDTH - 64) / 2, (SCREEN_HEIGHT - 106) / 2 + 8, pIntro, &rc);
-	Blit(SCREEN_WIDTH - 88 - 5, SCREEN_HEIGHT - 44 - 5, pSDL, 0);
+bool DrawIntro()
+{
+    static int nRotates = 0;
+    static int nFrame = 0;
+    static SDL_Surface* intro = 0;
+    static SDL_Surface* intro2 = 0;
+    static SDL_Surface* sdlLogo = 0;
+    if(intro == 0)
+    {
+        intro = LoadImage("intro.png");
+        intro2 = LoadImage("intro2.png");
+        sdlLogo = LoadImage("sdl_minibox.png");
+    }
 
-	static Uint32	dwTime	= 0;
-	if(IsKeyPressed(SDLK_ESCAPE) || g_bMouseRB == true || g_bMouseLB == true) {
-		g_bMouseRB	= g_bMouseLB	= false;
-		nFrame	= 14;
-		nRotates	= 100;
-		dwTime	= 0;
-	}
-	if(dwTime + 60 < SDL_GetTicks()) {
-		dwTime  = SDL_GetTicks();
-		nFrame++;
-		nFrame  %= 16;
-		if(nFrame == 15) {
-			nRotates++;
-			if(nRotates > 10) {
-				SDL_FreeSurface(pSDL);
-				SDL_FreeSurface(pIntro2);
-				SDL_FreeSurface(pIntro);
-				EnableCursor(true);
-				return true;
-			}
-		}
-	}
+    SDL_FillRect(g_psurfScreen, 0, 0);
+    Blit((SCREEN_WIDTH - 80) / 2, (SCREEN_HEIGHT - 106) / 2, intro2, 0);
+    SDL_Rect rc;
+    rc.w = 64;
+    rc.h = 64;
+    rc.x = (nFrame % 4) * 64;
+    rc.y = (nFrame / 4) * 64;
+    Blit((SCREEN_WIDTH - 64) / 2, (SCREEN_HEIGHT - 106) / 2 + 8, intro, &rc);
+    Blit(SCREEN_WIDTH - 88 - 5, SCREEN_HEIGHT - 44 - 5, sdlLogo, 0);
 
-	return false;
+    static Uint32 dwTime = 0;
+    if(IsKeyPressed(SDLK_ESCAPE) || g_bMouseRB || g_bMouseLB)
+    {
+        g_bMouseRB = false;
+        g_bMouseLB = false;
+        nFrame = 14;
+        nRotates = 100;
+        dwTime = 0;
+    }
+    if(dwTime + 60 < SDL_GetTicks())
+    {
+        dwTime = SDL_GetTicks();
+        nFrame++;
+        nFrame %= 16;
+        if(nFrame == 15)
+        {
+            nRotates++;
+            if(nRotates > 10)
+            {
+                EnableCursor(true);
+                SDL_FreeSurface(sdlLogo);
+                SDL_FreeSurface(intro2);
+                SDL_FreeSurface(intro);
+                intro = 0;
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
-void EnableCursor(bool bEnable) {
-	static bool	bAlreadyEnabled	= false;
-	if(bAlreadyEnabled == false && bEnable == true) {
-		SDL_WM_GrabInput(SDL_GRAB_OFF);
-		g_bIsCursorVisible	= true;
-	}
-	else if(bAlreadyEnabled == true && bEnable == false) {
-		SDL_WM_GrabInput(SDL_GRAB_ON);
-		g_bIsCursorVisible	= false;
-	}
-	bAlreadyEnabled	= bEnable;
+void EnableCursor(bool enable)
+{
+    static bool isEnabled = false;
+    if(isEnabled != enable)
+    {
+        SDL_WM_GrabInput(enable ? SDL_GRAB_OFF : SDL_GRAB_ON);
+    }
+    isEnabled = enable;
+    g_bIsCursorVisible = enable;
 }
+
