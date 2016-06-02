@@ -44,105 +44,109 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int &nPaddle
 
 
 	// move balls
-	for(size_t nPos = 0; nPos < m_vecBalls.size(); nPos++) {
-		m_vecBalls[nPos].bAlreadyImpact	= false;
-		if(m_vecBalls[nPos].bIsCaptured == true)	continue;
+	for(size_t nPos = 0, size = m_vecBalls.size(); nPos < size; )
+    {
+        m_vecBalls[nPos].bAlreadyImpact	= false;
+        if(m_vecBalls[nPos].bIsCaptured == false)
+        {
+            if(m_vecBalls[nPos].fSpeed != 0) {
+                if(bAddFB == true)	AddFBs(nPos);
+                float	fSpeed		= m_vecBalls[nPos].fSpeed * g_fSpeedCorrection;
+                m_vecBalls[nPos].x	+= fSpeed * g_fSin[GetAngle(nPos)];
+                m_vecBalls[nPos].y	-= fSpeed * g_fCos[GetAngle(nPos)];
+                //if(GetAngle(nPos) > 0 && GetAngle(nPos) < 180) {
+                // ��� �������� �� ������������ � ������ ��������
+                if(IsThisBallOverObject(nPos, rcRacket.x, rcRacket.y, 16, rcRacket.h) > 0) {
+                    nPaddleX	+= 5;
+                    PlaySound(11);
+                    if(nRacketType == CArkanoidSBGame::RT_MAGNET) {
+                        m_vecBalls[nPos].fOldSpeed	= m_vecBalls[nPos].fSpeed;
+                        m_vecBalls[nPos].fSpeed		= 0;
+                        m_vecBalls[nPos].nYoffset	= int(m_vecBalls[nPos].y - rcRacket.y);
+                    }
+                    m_vecBalls[nPos].nAngle	= (210 + (120.0 / rcRacket.h) * ((rcRacket.y + rcRacket.h) - (m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2)));
+                    if(m_vecBalls[nPos].nAngle < 210)
+                        m_vecBalls[nPos].nAngle	= 210;
+                    else if(m_vecBalls[nPos].nAngle > 329)
+                        m_vecBalls[nPos].nAngle	= 329;
+                }
+                //}
 
-		if(m_vecBalls[nPos].fSpeed != 0) {
-			if(bAddFB == true)	AddFBs(nPos);
-			float	fSpeed		= m_vecBalls[nPos].fSpeed * g_fSpeedCorrection;
-			m_vecBalls[nPos].x	+= fSpeed * g_fSin[GetAngle(nPos)];
-			m_vecBalls[nPos].y	-= fSpeed * g_fCos[GetAngle(nPos)];
-			//if(GetAngle(nPos) > 0 && GetAngle(nPos) < 180) {
-				// ��� �������� �� ������������ � ������ ��������
-				if(IsThisBallOverObject(nPos, rcRacket.x, rcRacket.y, 16, rcRacket.h) > 0) {
-					nPaddleX	+= 5;
-					PlaySound(11);
-					if(nRacketType == CArkanoidSBGame::RT_MAGNET) {
-						m_vecBalls[nPos].fOldSpeed	= m_vecBalls[nPos].fSpeed;
-						m_vecBalls[nPos].fSpeed		= 0;
-						m_vecBalls[nPos].nYoffset	= int(m_vecBalls[nPos].y - rcRacket.y);
-					}
-					m_vecBalls[nPos].nAngle	= (210 + (120.0 / rcRacket.h) * ((rcRacket.y + rcRacket.h) - (m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2)));
-					if(m_vecBalls[nPos].nAngle < 210)
-						m_vecBalls[nPos].nAngle	= 210;
-					else if(m_vecBalls[nPos].nAngle > 329)
-						m_vecBalls[nPos].nAngle	= 329;
-				}
-			//}
+                if(m_vecBalls[nPos].bAlreadyImpact == false) {
+                    // calculate object size
+                    SDL_Rect	rc;
+                    memset(&rc, 0, sizeof(SDL_Rect));
+                    m_vecBrickIndex.clear();
+                    if(m_nType != TYPE_BLUE) {
+                        for(size_t nBrick = 0; nBrick < g_Arkanoid.m_vecLevelBricks.size(); nBrick++) {
+                            int	nX	= int(g_Arkanoid.m_vecLevelBricks[nBrick].fX);
+                            int	nY	= int(g_Arkanoid.m_vecLevelBricks[nBrick].fY);
+                            if(IsThisBallOverObject(nPos, nX, nY, BRICK_W, BRICK_H) > 0) {
+                                if(m_nType == TYPE_RED) {
+                                    g_Arkanoid.DoImpact(nBrick, true);
+                                    g_Exploision.AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 0);
+                                }
+                                else {
+                                    m_vecBrickIndex.push_back(nBrick);
+                                    if(rc.x < nX)	rc.x	= nX;
+                                    if(rc.y < nY)	rc.y	= nY;
+                                    if(rc.w < nX + BRICK_W)	rc.w	= nX + BRICK_W;
+                                    if(rc.h < nY + BRICK_H)	rc.h	= nY + BRICK_H;
+                                }
+                            }
+                        }
+                    }
+                    int	nIsOver;
+                    if(m_nType == TYPE_WHITE && (nIsOver = IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y)) > 0) {
+                        //printf("%d x %d, %d x %d\n", rc.x, rc.y, rc.w - rc.x, rc.h - rc.y);
+                        m_vecBalls[nPos].bAlreadyImpact	= true;
+                        if(m_nType == TYPE_WHITE) {
+                            //printf("Brick change angle %d", GetAngle(nPos));
+                            const int	anAngles[8]	= { 180, 360, 360, 180, 540, 360, 360, 540 };
+                            int	nAngle180	= (GetAngle(nPos) + 180) % 360;
+                            //printf("Pos: %d - Angle: %d", nIsOver, GetAngle(nPos));
+                            m_vecBalls[nPos].nAngle	= anAngles[nIsOver - 1] - GetAngle(nPos);
+                            //printf(" -> %d%s\n", GetAngle(nPos), GetAngle(nPos) > 359 ? " !" : "");
+                            IncrementBallSpeed(nPos);
+                            //printf(" -> %d\n", GetAngle(nPos));
+                            m_nBack	= 1;
+                            while(IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y) > 0) {
+                                m_vecBalls[nPos].x	+= (g_fSin[nAngle180]);
+                                m_vecBalls[nPos].y	-= (g_fCos[nAngle180]);
+                            }
+                            m_nBack	= 0;
+                            m_vecBalls[nPos].x	= int(m_vecBalls[nPos].x);
+                            m_vecBalls[nPos].y	= int(m_vecBalls[nPos].y);
+                            //printf("ball pos corrected (%.2d x %.2d)\n", (int)m_vecBalls[i].x, (int)m_vecBalls[i].y);
 
-			if(m_vecBalls[nPos].bAlreadyImpact == false) {
-				// calculate object size
-				SDL_Rect	rc;
-				memset(&rc, 0, sizeof(SDL_Rect));
-				m_vecBrickIndex.clear();
-				if(m_nType != TYPE_BLUE) {
-					for(size_t nBrick = 0; nBrick < g_Arkanoid.m_vecLevelBricks.size(); nBrick++) {
-						int	nX	= int(g_Arkanoid.m_vecLevelBricks[nBrick].fX);
-						int	nY	= int(g_Arkanoid.m_vecLevelBricks[nBrick].fY);
-						if(IsThisBallOverObject(nPos, nX, nY, BRICK_W, BRICK_H) > 0) {
-							if(m_nType == TYPE_RED) {
-								g_Arkanoid.DoImpact(nBrick, true);
-								g_Exploision.AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 0);
-							}
-							else {
-								m_vecBrickIndex.push_back(nBrick);
-								if(rc.x < nX)	rc.x	= nX;
-								if(rc.y < nY)	rc.y	= nY;
-								if(rc.w < nX + BRICK_W)	rc.w	= nX + BRICK_W;
-								if(rc.h < nY + BRICK_H)	rc.h	= nY + BRICK_H;
-							}
-						}
-					}
-				}
-				int	nIsOver;
-				if(m_nType == TYPE_WHITE && (nIsOver = IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y)) > 0) {
-					//printf("%d x %d, %d x %d\n", rc.x, rc.y, rc.w - rc.x, rc.h - rc.y);
-					m_vecBalls[nPos].bAlreadyImpact	= true;
-					if(m_nType == TYPE_WHITE) {
-						//printf("Brick change angle %d", GetAngle(nPos));
-						const int	anAngles[8]	= { 180, 360, 360, 180, 540, 360, 360, 540 };
-						int	nAngle180	= (GetAngle(nPos) + 180) % 360;
-						//printf("Pos: %d - Angle: %d", nIsOver, GetAngle(nPos));
-						m_vecBalls[nPos].nAngle	= anAngles[nIsOver - 1] - GetAngle(nPos);
-						//printf(" -> %d%s\n", GetAngle(nPos), GetAngle(nPos) > 359 ? " !" : "");
-						IncrementBallSpeed(nPos);
-						//printf(" -> %d\n", GetAngle(nPos));
-						m_nBack	= 1;
-						while(IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y) > 0) {
-							m_vecBalls[nPos].x	+= (g_fSin[nAngle180]);
-							m_vecBalls[nPos].y	-= (g_fCos[nAngle180]);
-						}
-						m_nBack	= 0;
-						m_vecBalls[nPos].x	= int(m_vecBalls[nPos].x);
-						m_vecBalls[nPos].y	= int(m_vecBalls[nPos].y);
-						//printf("ball pos corrected (%.2d x %.2d)\n", (int)m_vecBalls[i].x, (int)m_vecBalls[i].y);
+                            for(size_t nBrickIndex = 0; nBrickIndex < m_vecBrickIndex.size(); nBrickIndex++) {
+                                g_Arkanoid.DoImpact(m_vecBrickIndex[nBrickIndex], false);
+                            }
+                        }
+                    }
+                }
 
-						for(size_t nBrickIndex = 0; nBrickIndex < m_vecBrickIndex.size(); nBrickIndex++) {
-							g_Arkanoid.DoImpact(m_vecBrickIndex[nBrickIndex], false);
-						}
-					}
-				}
-			}
+                ImpactWithWallAngle(nPos);
 
-			ImpactWithWallAngle(nPos);
-
-			if(m_vecBalls[nPos].x > SCREEN_WIDTH) {
-				PlaySound(14);
-				swap(m_vecBalls[nPos], m_vecBalls.back());
-				m_vecBalls.resize(m_vecBalls.size() - 1);
-				nPos--;
-				nBallsLose++;
-			}
-		}
-		else {
-			m_vecBalls[nPos].y	= rcRacket.y + m_vecBalls[nPos].nYoffset;
-			if((m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter)) > rcRacket.x)
-				m_vecBalls[nPos].x	-= 2;
-			if((m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter)) < rcRacket.x)
-				m_vecBalls[nPos].x++;
-		}
-	}
+                if(m_vecBalls[nPos].x > SCREEN_WIDTH)
+                {
+                    PlaySound(14);
+                    nBallsLose++;
+                    m_vecBalls[nPos] = m_vecBalls[--size];
+                    m_vecBalls.pop_back();
+                    continue;
+                }
+            }
+            else {
+                m_vecBalls[nPos].y	= rcRacket.y + m_vecBalls[nPos].nYoffset;
+                if((m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter)) > rcRacket.x)
+                    m_vecBalls[nPos].x	-= 2;
+                if((m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter)) < rcRacket.x)
+                    m_vecBalls[nPos].x++;
+            }
+        }
+        nPos++;
+    }
 	return	nBallsLose;
 }
 
@@ -209,15 +213,18 @@ void CBall::Draw(int nPaddleType) {
 		bFBupdate	= true;
 	}
 	rc.w	= 12;	rc.h	= 12;
-	for(size_t i = 0; i < m_vecFBalls.size(); i++) {
+	for(size_t i = 0, size = m_vecFBalls.size(); i < size; )
+    {
 		rc.x	= 12 * m_nType;
 		rc.y	= 12 * m_vecFBalls[i].nFrame;
 		Blit(m_vecFBalls[i].nX, m_vecFBalls[i].nY, m_pFB, &rc);
-		if(bFBupdate == true && ++m_vecFBalls[i].nFrame == 6) {
-			swap(m_vecFBalls[i], m_vecFBalls.back());
-			m_vecFBalls.resize(m_vecFBalls.size() - 1);
-			i--;
+		if(bFBupdate == true && ++m_vecFBalls[i].nFrame == 6)
+		{
+			m_vecFBalls[i] = m_vecFBalls[--size];
+			m_vecFBalls.pop_back();
+			continue;
 		}
+	    i++;
 	}
 }
 
@@ -464,17 +471,19 @@ void CBall::ChangeAllBallsSpeed(bool bIncrease) {
 	}
 }
 
-bool CBall::RemoveOne(int &nX, int &nY) {
-	if(m_vecBalls.size() > 0) {
-		PlaySound(14);
-		nX	= (int)m_vecBalls[0].x;
-		nY	= (int)m_vecBalls[0].y;
-		swap(m_vecBalls[0], m_vecBalls.back());
-		m_vecBalls.resize(m_vecBalls.size() - 1);
-		return	true;
-	}
+bool CBall::RemoveOne(int &nX, int &nY)
+{
+    if(m_vecBalls.size() > 0)
+    {
+        PlaySound(14);
+        nX	= (int)m_vecBalls[0].x;
+        nY	= (int)m_vecBalls[0].y;
+        m_vecBalls[0] = m_vecBalls[m_vecBalls.size() - 1];
+        m_vecBalls.pop_back();
+        return true;
+    }
 
-	return	false;
+    return false;
 }
 
 void CBall::IncrementBallSpeed(int nPos) {

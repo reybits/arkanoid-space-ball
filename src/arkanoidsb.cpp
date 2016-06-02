@@ -736,10 +736,10 @@ bool UpdateKeys()
         }
     }
 
-    g_nCursorX = max(g_nCursorX, 0);
-    g_nCursorX = min(g_nCursorX, SCREEN_WIDTH);
-    g_nCursorY = max(g_nCursorY, 0);
-    g_nCursorY = min(g_nCursorY, SCREEN_HEIGHT);
+    g_nCursorX = std::max(g_nCursorX, 0);
+    g_nCursorX = std::min(g_nCursorX, SCREEN_WIDTH);
+    g_nCursorY = std::max(g_nCursorY, 0);
+    g_nCursorY = std::min(g_nCursorY, SCREEN_HEIGHT);
 
     return false;
 }
@@ -989,10 +989,10 @@ void SetVideoMode()
 #endif
     }
 
-    g_Font.LoadFont2("font_small.png", 5, -1, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
+    g_Font.LoadFont2("font_small.png", 5, -1, " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
     g_Font2.LoadFont2("font_big.png", 16, 0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?-%,._:");
-    g_Font3.LoadFont2("font_small2.png", 5, -1, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
-    g_FontTutorial.LoadFont2("font_tutorial.png", 5, 1);
+    g_Font3.LoadFont2("font_small2.png", 5, -1, " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
+    g_FontTutorial.LoadFont2("font_tutorial.png", 5, 1, nullptr);
 
     m_pEnergyHole		= LoadImage("energyhole.png");
     m_pMonstPatrol		= LoadImage("monster_patrol.png");

@@ -9,7 +9,7 @@ public:
     CMyString();
     ~CMyString();
 
-    bool LoadFont2(const char *pchFontName, int nSpace, int nKerning = 0, const char *pchCharset = 0);
+    bool LoadFont2(const char* pchFontName, int nSpace, int nKerning, const char* pchCharset);
     void SetRect(int left, int top, int width, int height);
     void Unload();
     enum { FONT_ALIGN_LEFT, FONT_ALIGN_RIGHT, FONT_ALIGN_CENTER, FONT_ALIGN_JUSTIFY };
@@ -26,7 +26,6 @@ public:
 
 private:
     int GetWordWidth(const char *pchString, int &nCharsCount);
-    bool isTransparent(SDL_Surface* Surface, Sint32 X, Sint32 Y) const;
     bool isTransparent(Sint32 x) const;
     int GetXpos(int nX, const char* pchString, int nAlign);
     Uint32 RegisterFrame(const SDL_Rect& rc);

@@ -178,7 +178,7 @@ void CLevelEditor::Draw() {
 				memcpy(pTmp + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_pbyLevels + (m_nCurrentLevel + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT), (m_nLevelsCount - m_nCurrentLevel) * (BRICKS_WIDTH * BRICKS_HEIGHT));
 				delete[]	m_pbyLevels;
 				m_pbyLevels	= pTmp;
-				m_nCurrentLevel	= min(m_nCurrentLevel, m_nLevelsCount - 1);
+				m_nCurrentLevel	= std::min(m_nCurrentLevel, m_nLevelsCount - 1);
 				memcpy(m_abyLevel, m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_abyLevel));
 			}
 		}

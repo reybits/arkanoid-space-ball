@@ -304,11 +304,11 @@ bool CMyString::LoadProps(const char* pchName)
 		memset(m_anSymbIndex, 0, sizeof(m_anSymbIndex));
 		memset(m_anSymbDy, 0, sizeof(m_anSymbDy));
 
-		SDL_Rect	rc;
-		int	x, y, w, h;
+		SDL_Rect rc;
+		int x, y, w, h;
 		Uint8 bySymbName;
 
-		char	*pchLine	= strtok(pchIniData, "\r\n");
+		char* pchLine = strtok(pchIniData, "\r\n");
 
 		while(pchLine != NULL) {
 			int	index, dummy, dy;
@@ -328,15 +328,15 @@ bool CMyString::LoadProps(const char* pchName)
 				m_nLineHeight	= dummy;
 			}
 
-			pchLine	= strtok(NULL, "\r\n");
+			pchLine = strtok(NULL, "\r\n");
 		}
 
 		g_Resource.FreeMem((unsigned char*)pchIniData);
 		printf(" done.\n");
-		return	true;
+		return true;
 	}
 
-	return	false;
+	return false;
 }
 
 bool CMyString::LoadFont2(const char* pchFontName, int nSpace, int nKerning, const char* pchCharset)
@@ -382,19 +382,14 @@ bool CMyString::LoadFont2(const char* pchFontName, int nSpace, int nKerning, con
 
 bool CMyString::isTransparent(Sint32 x) const
 {
-    return isTransparent(m_psurFont, x, 0);
-}
+    assert(m_psurFont != nullptr);
+    assert(m_psurFont->format->BytesPerPixel == 4);
+    assert(x >= 0 && x < m_psurFont->w);
 
-bool CMyString::isTransparent(SDL_Surface* pSurface, Sint32 X, Sint32 Y) const
-{
-    assert(pSurface != nullptr);
-    assert(X >= 0 && X < pSurface->w);
-    assert(pSurface->format->BytesPerPixel == 4);
+    const Uint32* bmp = (Uint32*)m_psurFont->pixels;
+    const Uint32 pixel = bmp[x];
 
-    const Uint32* bmp = (Uint32*)pSurface->pixels;
-    const Uint32 pixel = bmp[Y * pSurface->pitch / 4 + X];
-
-    const Uint8 alpha = (pixel & pSurface->format->Amask) >> pSurface->format->Ashift;
+    const Uint8 alpha = (pixel & m_psurFont->format->Amask) >> m_psurFont->format->Ashift;
     return alpha == 0;
 }
 

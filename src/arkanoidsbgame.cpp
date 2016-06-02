@@ -188,7 +188,8 @@ void CArkanoidSBGame::DoGameActive() {
 			AddScore(15);
 		}
 
-		for(size_t i = 0; i < m_vecBrickBullets.size(); i++) {
+		for(size_t i = 0, size = m_vecBrickBullets.size(); i < size; )
+		{
 			if(m_vecBrickBullets[i].fX + 10 > m_nRacketX && m_vecBrickBullets[i].fX < m_nRacketX + 12 && m_vecBrickBullets[i].fY + 10 > m_nRacketY && m_vecBrickBullets[i].fY < m_nRacketY + PADDLE_HEIGHT) {
 				g_Exploision.AddExploision((int)m_vecBrickBullets[i].fX - 12, (int)m_vecBrickBullets[i].fY - 10, 0);
 				if(m_vecBrickBullets[i].nType == 0) {
@@ -199,10 +200,12 @@ void CArkanoidSBGame::DoGameActive() {
 					m_bCanMovePaddle			= false;
 					m_nCanMovePaddleCount	= 3;
 				}
-				swap(m_vecBrickBullets[i], m_vecBrickBullets.back());
-				m_vecBrickBullets.resize(m_vecBrickBullets.size() - 1);
-				i--;
+				m_vecBrickBullets[i] = m_vecBrickBullets[--size];
+				m_vecBrickBullets.pop_back();
+				continue;
 			}
+
+			i++;
 		}
 
 		int	nPos;
@@ -211,27 +214,35 @@ void CArkanoidSBGame::DoGameActive() {
 			if(true == g_Monster.IsAcross(rc.x, rc.y, rc.w, rc.h, true)) {
 				AddScore(25);
 			}
-			for(size_t i = 0; i < m_vecBrickBullets.size(); i++) {
-				if(m_vecBrickBullets[i].fX + 10 > rc.x && m_vecBrickBullets[i].fX < rc.x + rc.w && m_vecBrickBullets[i].fY + 10 > rc.y && m_vecBrickBullets[i].fY < rc.y + rc.h) {
+			for(size_t i = 0, size = m_vecBrickBullets.size(); i < size; )
+			{
+				if(m_vecBrickBullets[i].fX + 10 > rc.x && m_vecBrickBullets[i].fX < rc.x + rc.w && m_vecBrickBullets[i].fY + 10 > rc.y && m_vecBrickBullets[i].fY < rc.y + rc.h)
+				{
 					g_Exploision.AddExploision((int)m_vecBrickBullets[i].fX - 12, (int)m_vecBrickBullets[i].fY - 10, 0);
-					swap(m_vecBrickBullets[i], m_vecBrickBullets.back());
-					m_vecBrickBullets.resize(m_vecBrickBullets.size() - 1);
-					i--;
+					m_vecBrickBullets[i] = m_vecBrickBullets[--size];
+					m_vecBrickBullets.pop_back();
+				    continue;
 				}
+
+				i++;
 			}
 		}
 
 		nPos	= 0;
 		while(g_Ball.GetPositionAndDiameter(rc, nPos) == true) {
 			if(rc.h != CBall::TYPE_BLUE) {
-				for(size_t i = 0; i < m_vecBrickBullets.size(); i++) {
-					if(g_Ball.IsThisBallOverObject(nPos - 1, (int)m_vecBrickBullets[i].fX, (int)m_vecBrickBullets[i].fY, 10, 10) > 0) {
+				for(size_t i = 0, size = m_vecBrickBullets.size(); i < size; )
+				{
+					if(g_Ball.IsThisBallOverObject(nPos - 1, (int)m_vecBrickBullets[i].fX, (int)m_vecBrickBullets[i].fY, 10, 10) > 0)
+					{
 						g_Ball.ChangeBallAngle(nPos - 1, false);
 						AddScore(15);
 						g_Exploision.AddExploision((int)m_vecBrickBullets[i].fX - 12, (int)m_vecBrickBullets[i].fY - 10, 0);
-						swap(m_vecBrickBullets[i], m_vecBrickBullets.back());
-						m_vecBrickBullets.resize(m_vecBrickBullets.size() - 1);
+						m_vecBrickBullets[i] = m_vecBrickBullets[--size];
+						m_vecBrickBullets.pop_back();
+						continue;
 					}
+					i++;
 				}
 				if(true == g_Monster.IsAcrossBall(rc, true)) {
 					g_Ball.ChangeBallAngle(nPos - 1, true);
@@ -459,14 +470,16 @@ void CArkanoidSBGame::DrawBricks() {
 		bSecondOut		= true;
 	}
 
-	for(size_t i = 0; i < m_vecLevelBricks.size(); i++) {
+	for(size_t i = 0, size = m_vecLevelBricks.size(); i < size; )
+    {
 		int	nX	= (int)m_vecLevelBricks[i].fX;
 		int	nY	= (int)m_vecLevelBricks[i].fY;
 		DrawBrick(i, bBrickAnimate, bBrickAnimate2);
 		// remove brick from list
-		if(m_vecLevelBricks[i].byType == BOX_NONE) {
-			swap(m_vecLevelBricks[i--], m_vecLevelBricks.back());
-			m_vecLevelBricks.resize(m_vecLevelBricks.size() - 1);
+		if(m_vecLevelBricks[i].byType == BOX_NONE)
+		{
+			m_vecLevelBricks[i] = m_vecLevelBricks[--size];
+			m_vecLevelBricks.pop_back();
 			continue;
 		}
 
@@ -580,6 +593,8 @@ void CArkanoidSBGame::DrawBricks() {
 		else if(m_nBonusLevelType == 0) {
 			m_nBrickCount++;
 		}
+
+	    i++;
 	}
 	// disable self destruct while we already turn all bricks to bombs
 	if(m_bSelfDestructStarted == true && m_nCountSelfDestruct == 0) {
@@ -1246,18 +1261,28 @@ void CArkanoidSBGame::DrawBrickBullets() {
 /*!
     \fn CArkanoidSBGame::MoveBrickBullets()
  */
-void CArkanoidSBGame::MoveBrickBullets() {
-	for(size_t i = 0; i < m_vecBrickBullets.size(); i++) {
-		m_vecBrickBullets[i].fX	+= (g_fSpeedCorrection * g_fSin[m_vecBrickBullets[i].nAngle]);
-		m_vecBrickBullets[i].fY	-= (g_fSpeedCorrection * g_fCos[m_vecBrickBullets[i].nAngle]);
-		if(m_vecBrickBullets[i].fX < WALL_X1 || m_vecBrickBullets[i].fX > (m_bBackWall == true ? WALL_X2 - 20 : SCREEN_WIDTH) ||
-				m_vecBrickBullets[i].fY < WALL_Y1 || m_vecBrickBullets[i].fY + 20 > WALL_Y2) {
-			if(m_vecBrickBullets[i].fX < SCREEN_WIDTH)
-				g_Exploision.AddExploision((int)m_vecBrickBullets[i].fX - 12, (int)m_vecBrickBullets[i].fY - 10, 0);
-			swap(m_vecBrickBullets[i--], m_vecBrickBullets.back());
-			m_vecBrickBullets.resize(m_vecBrickBullets.size() - 1);
-		}
-	}
+void CArkanoidSBGame::MoveBrickBullets()
+{
+    for(size_t i = 0, size = m_vecBrickBullets.size(); i < size; )
+    {
+        _BRICK_BULLET& b = m_vecBrickBullets[i];
+
+        b.fX += g_fSpeedCorrection * g_fSin[b.nAngle];
+        b.fY -= g_fSpeedCorrection * g_fCos[b.nAngle];
+        if(b.fX < WALL_X1 || b.fX > (m_bBackWall == true ? WALL_X2 - 20 : SCREEN_WIDTH) ||
+                b.fY < WALL_Y1 || b.fY + 20 > WALL_Y2)
+        {
+            if(b.fX < SCREEN_WIDTH)
+            {
+                g_Exploision.AddExploision((int)b.fX - 12, (int)b.fY - 10, 0);
+            }
+            m_vecBrickBullets[i] = m_vecBrickBullets[--size];
+            m_vecBrickBullets.pop_back();
+            continue;
+        }
+
+        i++;
+    }
 }
 
 

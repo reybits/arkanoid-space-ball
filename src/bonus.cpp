@@ -26,13 +26,15 @@ void CBonus::Move(int nRacketType) {
 		bNewPos	= true;
 	}
 
-	for(size_t i = 0; i < m_vecBonuses.size(); i++) {
+	for(size_t i = 0, size = m_vecBonuses.size(); i < size; )
+    {
 		m_vecBonuses[i].origx	+= (g_fSpeedCorrection * 0.4);
 		m_vecBonuses[i].x	= (int)m_vecBonuses[i].origx;
 		//m_vecBonuses[i].x	= int(m_vecBonuses[i].origx + g_fSin[m_vecBonuses[i].nSin] * m_vecBonuses[i].nRadius / 2);
 		m_vecBonuses[i].y	= int(m_vecBonuses[i].origy + g_fCos[m_vecBonuses[i].nCos] * m_vecBonuses[i].nRadius);
 
-		if(bNewPos == true) {
+		if(bNewPos == true)
+		{
 			//m_vecBonuses[i].nSin	+= 3;
 			//m_vecBonuses[i].nSin	%= 360;
 			m_vecBonuses[i].nCos	+= 3;
@@ -41,11 +43,15 @@ void CBonus::Move(int nRacketType) {
 			if(m_vecBonuses[i].nRadius < 20)	m_vecBonuses[i].nRadius++;
 		}
 
-		if(m_vecBonuses[i].x > SCREEN_WIDTH) {
+		if(m_vecBonuses[i].x > SCREEN_WIDTH)
+		{
 			//g_pMainFrame->m_pImix->SamplePlay(m_nSampleBonusDown, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBonuses[i].x)));
-			swap(m_vecBonuses[i], m_vecBonuses.back());
-			m_vecBonuses.resize(m_vecBonuses.size() - 1);
+			m_vecBonuses[i] = m_vecBonuses[--size];
+			m_vecBonuses.pop_back();
+			continue;
 		}
+
+		i++;
 	}
 }
 
@@ -139,17 +145,20 @@ void CBonus::AddBonus(int x, int y, int nType) {
 	g_TutorialDlg.AddDialog(bonus.x + 18, bonus.y + 18, 2, nType);
 }
 
-int CBonus::IsAcross(int nX, int nY, int nWidth, int nHeight) {
-	for(size_t i = 0; i < m_vecBonuses.size(); i++) {
-		if(m_vecBonuses[i].x + 36 >= nX && m_vecBonuses[i].x <= nX + nWidth && m_vecBonuses[i].y + 36 >= nY && m_vecBonuses[i].y <= nY + nHeight) {
-			int	nType	= m_vecBonuses[i].nType;
-			swap(m_vecBonuses[i], m_vecBonuses.back());
-			m_vecBonuses.resize(m_vecBonuses.size() - 1);
-			return	nType;
-		}
-	}
+int CBonus::IsAcross(int nX, int nY, int nWidth, int nHeight)
+{
+    for(size_t i = 0, size = m_vecBonuses.size(); i < size; i++)
+    {
+        if(m_vecBonuses[i].x + 36 >= nX && m_vecBonuses[i].x <= nX + nWidth && m_vecBonuses[i].y + 36 >= nY && m_vecBonuses[i].y <= nY + nHeight)
+        {
+            int nType = m_vecBonuses[i].nType;
+            m_vecBonuses[i] = m_vecBonuses[--size];
+            m_vecBonuses.pop_back();
+            return nType;
+        }
+    }
 
-	return	-1;
+    return -1;
 }
 
 int CBonus::GetBonusesOnScreen() {
@@ -188,27 +197,25 @@ void CBonus::AddToStack(int nType) {
 /*!
     \fn CBonus::GetBonusFromStack()
  */
-int CBonus::GetBonusFromStack() {
-	int	nCount	= m_vecBonusesStack.size();
-	if(nCount > 0) {
-		int	nType	= m_vecBonusesStack[m_nStackPos];
-		if(nCount > 1) {
-			swap(m_vecBonusesStack[m_nStackPos], m_vecBonusesStack.back());
-			m_vecBonusesStack.resize(nCount - 1);
-		}
-		else {
-			m_vecBonusesStack.clear();
-		}
-		return nType;
-	}
-	return -1;
+int CBonus::GetBonusFromStack()
+{
+    int	nCount = m_vecBonusesStack.size();
+    if(nCount > 0)
+    {
+        int nType = m_vecBonusesStack[m_nStackPos];
+        m_vecBonusesStack[m_nStackPos] = m_vecBonusesStack[m_vecBonusesStack.size() - 1];
+        m_vecBonusesStack.pop_back();
+        return nType;
+    }
+    return -1;
 }
 
 
 /*!
     \fn CBonus::GetCountInStack()
  */
-int CBonus::GetCountInStack() {
+int CBonus::GetCountInStack()
+{
 	return m_vecBonusesStack.size();
 }
 

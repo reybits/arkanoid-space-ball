@@ -309,16 +309,19 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight) {
 		}
 	}
 
-	for(i = 0; i < (int)m_vecMonster2.size(); i++) {
-		fSpeed	= g_fSpeedCorrection * m_vecMonster2[i].fSpeed;
-		m_vecMonster2[i].x	+= fSpeed * g_fSin[m_vecMonster2[i].nAngle];
-		m_vecMonster2[i].y	-= fSpeed * g_fCos[m_vecMonster2[i].nAngle];
-		if(m_vecMonster2[i].x > SCREEN_WIDTH) {
-			swap(m_vecMonster2[i], m_vecMonster2.back());
-			m_vecMonster2.resize(m_vecMonster2.size() - 1);
-			i--;
-		}
-	}
+	for(size_t i = 0, size = m_vecMonster2.size(); i < size; )
+    {
+        fSpeed = g_fSpeedCorrection * m_vecMonster2[i].fSpeed;
+        m_vecMonster2[i].x += fSpeed * g_fSin[m_vecMonster2[i].nAngle];
+        m_vecMonster2[i].y -= fSpeed * g_fCos[m_vecMonster2[i].nAngle];
+        if(m_vecMonster2[i].x > SCREEN_WIDTH)
+        {
+            m_vecMonster2[i] = m_vecMonster2[--size];
+            m_vecMonster2.pop_back();
+            continue;
+        }
+        i++;
+    }
 }
 
 bool CMonster::IsAcross(int nX, int nY, int nWidth, int nHeight, bool bRemoveMonster) {
@@ -372,27 +375,32 @@ bool CMonster::IsAcrossPaddle(int nX, int nY, int nWidth, int nHeight) {
 	return bIsAcross;
 }
 
-bool CMonster::IsAcrossPaddle2(int nX, int nY, int nWidth, int nHeight) {
-	bool	bIsAcross	= false;
+bool CMonster::IsAcrossPaddle2(int nX, int nY, int nWidth, int nHeight)
+{
+    bool bIsAcross = false;
 
-	for(int i = 0; i < (int)m_vecMonster2.size(); i++) {
-		int	nRadius1	= (nWidth + nHeight) / 4;
-		int	nRadius2	= (m_vecMonster2[i].w + m_vecMonster2[i].h) / 4;
-		int	nCatet1	= int((m_vecMonster2[i].x + m_vecMonster2[i].w / 2) - (nX + nWidth / 2));
-		int	nCatet2	= int((m_vecMonster2[i].y + m_vecMonster2[i].h / 2) - (nY + nHeight / 2));
-		if(sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) <= nRadius1 + nRadius2) {
-			bIsAcross	= true;
-			for(int a = 0; a < 6; a++) {
-				g_Exploision.AddExploision(nX - (45 - 12) / 2 + (10 - g_Rnd.Get(20)), nY - (41 - nHeight) / 2 + (nHeight / 2 - g_Rnd.Get(nHeight)), 0);
-			}
-			g_Exploision.AddExploision((int)m_vecMonster2[i].x + (m_vecMonster2[i].w - 45) / 2, (int)m_vecMonster2[i].y + (m_vecMonster2[i].h - 41) / 2, 0);
-			swap(m_vecMonster2[i], m_vecMonster2.back());
-			m_vecMonster2.resize(m_vecMonster2.size() - 1);
-			i--;
-		}
-	}
+    for(size_t i = 0, size = m_vecMonster2.size(); i < size; )
+    {
+        int	nRadius1	= (nWidth + nHeight) / 4;
+        int	nRadius2	= (m_vecMonster2[i].w + m_vecMonster2[i].h) / 4;
+        int	nCatet1	= int((m_vecMonster2[i].x + m_vecMonster2[i].w / 2) - (nX + nWidth / 2));
+        int	nCatet2	= int((m_vecMonster2[i].y + m_vecMonster2[i].h / 2) - (nY + nHeight / 2));
+        if(sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) <= nRadius1 + nRadius2)
+        {
+            bIsAcross	= true;
+            for(int a = 0; a < 6; a++)
+            {
+                g_Exploision.AddExploision(nX - (45 - 12) / 2 + (10 - g_Rnd.Get(20)), nY - (41 - nHeight) / 2 + (nHeight / 2 - g_Rnd.Get(nHeight)), 0);
+            }
+            g_Exploision.AddExploision((int)m_vecMonster2[i].x + (m_vecMonster2[i].w - 45) / 2, (int)m_vecMonster2[i].y + (m_vecMonster2[i].h - 41) / 2, 0);
+            m_vecMonster2[i] = m_vecMonster2[--size];
+            m_vecMonster2.pop_back();
+            continue;
+        }
+        i++;
+    }
 
-	return bIsAcross;
+    return bIsAcross;
 }
 
 void CMonster::ChangeMonsterAngle(int nPos) {
@@ -455,38 +463,45 @@ bool CMonster::IsAcrossBall(SDL_Rect rc, bool bRemoveMonster) {
 }
 
 
-bool CMonster::IsAcrossBall2(SDL_Rect rc) {
-	bool	bIsAcross	= false;
+bool CMonster::IsAcrossBall2(SDL_Rect rc)
+{
+    bool bIsAcross = false;
 
-	for(int i = 0; i < (int)m_vecMonster2.size(); i++) {
-		int	nRadius	= rc.w / 2;
-		int	nCatet1	= int(rc.x + nRadius - (m_vecMonster2[i].x + m_vecMonster2[i].w / 2));
-		int	nCatet2	= int(rc.y + nRadius - (m_vecMonster2[i].y + m_vecMonster2[i].h / 2));
-		if(sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) < nRadius + ((m_vecMonster2[i].w + m_vecMonster2[i].h) / 4)) {
-			g_Arkanoid.AddScore(100);
-			bIsAcross	= true;
-			g_Arkanoid.m_nGetReadyMonsters++;
-			g_Exploision.AddExploision((int)m_vecMonster2[i].x + (m_vecMonster2[i].w - 45) / 2, (int)m_vecMonster2[i].y + (m_vecMonster2[i].h - 41) / 2, 0);
-			swap(m_vecMonster2[i], m_vecMonster2.back());
-			m_vecMonster2.resize(m_vecMonster2.size() - 1);
-			i--;
-		}
-	}
+    for(size_t i = 0, size = m_vecMonster2.size(); i < size; )
+    {
+        int	nRadius	= rc.w / 2;
+        int	nCatet1	= int(rc.x + nRadius - (m_vecMonster2[i].x + m_vecMonster2[i].w / 2));
+        int	nCatet2	= int(rc.y + nRadius - (m_vecMonster2[i].y + m_vecMonster2[i].h / 2));
+        if(sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) < nRadius + ((m_vecMonster2[i].w + m_vecMonster2[i].h) / 4)) {
+            g_Arkanoid.AddScore(100);
+            bIsAcross	= true;
+            g_Arkanoid.m_nGetReadyMonsters++;
+            g_Exploision.AddExploision((int)m_vecMonster2[i].x + (m_vecMonster2[i].w - 45) / 2, (int)m_vecMonster2[i].y + (m_vecMonster2[i].h - 41) / 2, 0);
+            m_vecMonster2[i] = m_vecMonster2[--size];
+            m_vecMonster2.pop_back();
+            continue;
+        }
+        i++;
+    }
 
-	return bIsAcross;
+    return bIsAcross;
 }
 
 
 /*!
     \fn CMonster::RemoveByPos(int nPos)
  */
-void CMonster::RemoveByPos(int nPos) {
-	if(m_vecMonster[nPos].nType == MONST_PATROL) {
-		StopSound(m_nSndPatrol);
-	}
-	else if(m_vecMonster[nPos].nType == MONST_HAND) {
-		g_Ball.BallCaptured(m_vecMonster[nPos].nCapturedBallIndex, false);
-	}
-	swap(m_vecMonster[nPos], m_vecMonster.back());
-	m_vecMonster.resize(m_vecMonster.size() - 1);
+void CMonster::RemoveByPos(int nPos)
+{
+    if(m_vecMonster[nPos].nType == MONST_PATROL)
+    {
+        StopSound(m_nSndPatrol);
+    }
+    else if(m_vecMonster[nPos].nType == MONST_HAND)
+    {
+        g_Ball.BallCaptured(m_vecMonster[nPos].nCapturedBallIndex, false);
+    }
+    m_vecMonster[nPos] = m_vecMonster.back();
+    m_vecMonster.pop_back();
 }
+

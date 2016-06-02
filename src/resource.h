@@ -1,43 +1,46 @@
-#if !defined(RESOURCE_FILE_CLASS)
-#define RESOURCE_FILE_CLASS
+/**********************************************\
+*
+*  Andrey A. Ugolnik
+*  http://www.ugolnik.info
+*  andrey@ugolnik.info
+*
+\**********************************************/
+
+#pragma once
 
 #include <SDL_rwops.h>
 #include <SDL_error.h>
 #include <vector>
-using namespace std;
+#include <string>
 
-class CResource {
+class CResource
+{
 public:
-	CResource();
-	~CResource();
-	bool Open(const char *pchResource);
-	//SDL_RWops *GetFile(const char *pbyFile);
-	unsigned char *GetDataAllocMem(const char *pchName, unsigned int &nDataLen);
-	void FreeMem(unsigned char *pbyData);
-	
+    CResource();
+    ~CResource();
+
+    bool Open(const char* filename);
+    unsigned char* GetDataAllocMem(const char* name, unsigned& length);
+    void FreeMem(unsigned char* data);
+
+public:
+    void EncodeData(void* data, unsigned length);
+
+public:
+    static const unsigned RES_SIGNATURE;
+    static const unsigned char RES_XOR;
+    static const unsigned RES_MAX_NAME = 99;
+
+    struct sItemHeader
+    {
+        char name[RES_MAX_NAME + 1];
+        unsigned position; // position in resource file (seek)
+        unsigned length; // length of data
+    };
+    typedef std::vector<sItemHeader> FileList;
+
 protected:
-#define RES_SIGNATURE	((unsigned int)0x0abcd)
-#define RES_MAX_NAME		99
-#define RES_XOR			((unsigned char)0x0aa)
-	struct RES_FILE_HEADER {
-		char	achName[RES_MAX_NAME + 1];
-		unsigned char	nDataPos[4];	// position in resource file (seek)
-		unsigned char	nDataLen[4];	// length of data
-	};
-	std::vector<RES_FILE_HEADER>m_listFiles;
-	char *m_pchResource;
-	void EncodeData(const void *pbyData, int nLen);
-	unsigned int _GetUInt(unsigned char *pbyData);
-// 	struct RES_DATA {
-// 		FILE	*pFile;
-// 		long	nPos;
-// 		long	nLen;
-// 		long	nCurrentPos;
-// 	};
-// 	static int _SeekFn(SDL_RWops *context, int offset, int whence);
-// 	static int _ReadFn(SDL_RWops *context, void *ptr, int size, int maxnum);
-// 	static int _WriteFn(SDL_RWops *context, const void *ptr, int size, int num);
-// 	static int _CloseFn(SDL_RWops *context);
+    std::string m_filename;
+    FileList m_listFiles;
 };
 
-#endif

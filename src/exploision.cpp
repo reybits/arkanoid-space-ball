@@ -29,18 +29,23 @@ void CExploision::Draw(bool bBricks) {
 	}
 	SDL_Rect	rc;
 	rc.w	= 45;	rc.h	= 41;
-	for(size_t i = 0; i < m_vecExploisions.size(); i++) {
-		if((bBricks == true && m_vecExploisions[i].nType == 3) || (bBricks == false && m_vecExploisions[i].nType != 3)) {
-			rc.x	= 40 + m_vecExploisions[i].nType * 45;
-			rc.y	= m_vecExploisions[i].nFrame * 41;
-			Blit(m_vecExploisions[i].x, m_vecExploisions[i].y, m_pExploision, &rc);
-			if(bUpdate == true && ++m_vecExploisions[i].nFrame == NUM_OF_FRAMES) {
-				swap(m_vecExploisions[i], m_vecExploisions.back());
-				m_vecExploisions.resize(m_vecExploisions.size() - 1);
-				i--;
-			}
-		}
-	}
+	for(size_t i = 0, size = m_vecExploisions.size(); i < size; )
+    {
+        if((bBricks == true && m_vecExploisions[i].nType == 3) || (bBricks == false && m_vecExploisions[i].nType != 3))
+        {
+            rc.x = 40 + m_vecExploisions[i].nType * 45;
+            rc.y = m_vecExploisions[i].nFrame * 41;
+            Blit(m_vecExploisions[i].x, m_vecExploisions[i].y, m_pExploision, &rc);
+            if(bUpdate == true && ++m_vecExploisions[i].nFrame == NUM_OF_FRAMES)
+            {
+                m_vecExploisions[i] = m_vecExploisions[--size];
+                m_vecExploisions.pop_back();
+                continue;
+            }
+        }
+
+        i++;
+    }
 }
 
 void CExploision::AddExploision(int x, int y, int nType) {

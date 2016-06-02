@@ -150,9 +150,10 @@ bool CBullet::GetPositionAndSize(SDL_Rect &rc, int& nPos, bool bFromFirst) {
 	return	false;
 }
 
-void CBullet::RemoveByPos(int nPos) {
-	swap(m_vecBullets[nPos], m_vecBullets.back());
-	m_vecBullets.resize(m_vecBullets.size() - 1);
+void CBullet::RemoveByPos(int nPos)
+{
+	m_vecBullets[nPos] = m_vecBullets[m_vecBullets.size() - 1];
+	m_vecBullets.pop_back();
 }
 
 

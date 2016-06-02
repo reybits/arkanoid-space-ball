@@ -63,29 +63,30 @@ void CCoolString::Draw() {
 
 	// draw frame
 	SetRect(&rc, 0, 0, 160, 20);
-	if(m_vecCoolString.size() > 0) {
-		Blit(440, WALL_Y1, g_pTransp, &rc);
-		g_FontTutorial.SetRect(440, WALL_Y1 + 2, 160, 20);
-		g_FontTutorial.DrawString(0, 0, m_vecCoolString[0].pchString, 2);
-		if(bStep == true && --m_vecCoolString[0].nSeconds == 0) {
-			delete[]	m_vecCoolString[0].pchString;
-			if(m_vecCoolString.size() > 1) {
-				swap(m_vecCoolString[0], m_vecCoolString.back());
-			}
-			m_vecCoolString.resize(m_vecCoolString.size() - 1);
-		}
-	}
+	if(m_vecCoolString.size() > 0)
+    {
+        Blit(440, WALL_Y1, g_pTransp, &rc);
+        g_FontTutorial.SetRect(440, WALL_Y1 + 2, 160, 20);
+        g_FontTutorial.DrawString(0, 0, m_vecCoolString[0].pchString, 2);
+        if(bStep == true && --m_vecCoolString[0].nSeconds == 0)
+        {
+            delete[] m_vecCoolString[0].pchString;
+            m_vecCoolString[0] = m_vecCoolString.back();
+            m_vecCoolString.pop_back();
+        }
+    }
 }
 
 
 /*!
     \fn CCoolString::Clear()
  */
-void CCoolString::Clear() {
-	for(size_t i = 0; i < m_vecCoolString.size(); i++) {
-		delete[]	m_vecCoolString[i].pchString;
-	}
-	m_vecCoolString.clear();
+void CCoolString::Clear()
+{
+    for(size_t i = 0; i < m_vecCoolString.size(); i++) {
+        delete[] m_vecCoolString[i].pchString;
+    }
+    m_vecCoolString.clear();
 }
 
 
