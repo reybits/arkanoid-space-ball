@@ -905,7 +905,7 @@ SDL_Surface* glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 				" 1.2.5 or later is strongly"
 				" recommended!\n");
     }
-    
+
 	if(LoadGL() < 0)
 	{
 		fprintf(stderr, "glSDL/wrapper ERROR: Could not load OpenGL library!\n");
@@ -924,7 +924,7 @@ SDL_Surface* glSDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
     {
 		return NULL;
     }
-    
+
 	/* Remove flag to avoid confusion inside SDL - just in case! */
 	flags &= ~SDL_GLSDL;
 
@@ -1927,10 +1927,10 @@ SDL_Surface *glSDL_ConvertSurface
 
 
 SDL_Surface *glSDL_CreateRGBSurface
-			(Uint32 flags, int width, int height, int depth, 
+			(Uint32 flags, int width, int height, int depth,
 			Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
 {
-	SDL_Surface *s = SDL_CreateRGBSurface(flags, width, height, depth, 
+	SDL_Surface *s = SDL_CreateRGBSurface(flags, width, height, depth,
 			Rmask, Gmask, Bmask, Amask);
 	if(s)
 		GLSDL_FIX_SURFACE(s);
@@ -1980,7 +1980,7 @@ int glSDL_SaveBMP(SDL_Surface *surface, const char *file)
 	r.h = fake_screen->h;
 	if(glSDL_BlitFromGL(&r, buf, &r) < 0)
 		return -1;
-	
+
 	return SDL_SaveBMP(buf, file);
 
 	glSDL_FreeSurface(buf);
@@ -2177,7 +2177,7 @@ int glSDL_UploadSurface(SDL_Surface *surface)
 	SDL_Surface *datasurf = surface;
 	glSDL_TexInfo *txi;
 	int i;
-	/* 
+	/*
 	 * For now, we just assume that *every* texture needs
 	 * conversion before uploading.
 	 */

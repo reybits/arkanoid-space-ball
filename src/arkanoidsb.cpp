@@ -163,31 +163,6 @@ int main(int argc, char *argv[])
 	printf("Users config dir: %s\n", g_achUserProfile);
 	readConfig();
 
-	// parse command line
-	for(i = 1; i < argc; i++) {
-		if(strncmp(argv[i], "-f", 2)) {
-			g_bFullscreen	= true;
-		}
-		else if(strncmp(argv[i], "-w", 2)) {
-			g_bFullscreen	= false;
-		}
-		else if(strncmp(argv[i], "-s", 2)) {
-			g_bOGL	= false;
-		}
-		else if(strncmp(argv[i], "-g", 2)) {
-			g_bOGL	= true;
-		}
-		else if(strncmp(argv[i], "-h", 2)) {
-			printf("%s [-f | -w | -s | -g | -h]\n", argv[0]);
-			printf("  -f - fullscreen\n");
-			printf("  -w - windowed mode\n");
-			printf("  -s - software mode\n");
-			printf("  -g - use opengl\n");
-			printf("  -h - this screen\n");
-			exit(0);
-		}
-	}
-
 	char	achPath[PATH_MAX], *pchEnd;
 	strcpy(achPath, argv[0]);
 #ifdef __MACOSX__
@@ -861,9 +836,6 @@ void readConfig()
         fread(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, file);
         fread(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, file);
         fclose(file);
-        // correct variables on linux, where arkanoidsb 1.1.6 wil be installed before
-        if(g_bTutorialMode < 0 || g_bTutorialMode > 1)	g_bTutorialMode	= 1;
-        if(g_bAutoBonusMode < 0 || g_bAutoBonusMode > 1)	g_bAutoBonusMode	= 0;
     }
     else
     {
