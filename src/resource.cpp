@@ -21,7 +21,6 @@ CResource::~CResource()
 
 bool CResource::Open(const char* filename)
 {
-    return true;
     FILE* f = fopen(filename, "rb");
     if(f)
     {
@@ -67,26 +66,6 @@ bool CResource::Open(const char* filename)
 
 unsigned char* CResource::GetDataAllocMem(const char* name, unsigned& length)
 {
-    char buffer[1024];
-    snprintf(buffer, sizeof(buffer), "res/%s", name);
-    FILE* f = fopen(buffer, "rb");
-    printf("Opening '%s' resource...", buffer);
-    if(f != nullptr)
-    {
-        fseek(f, 0L, SEEK_END);
-        length = ftell(f);
-        fseek(f, 0L, SEEK_SET);
-
-        unsigned char* data = new unsigned char[length];
-        fread(data, 1, length, f);
-        fclose(f);
-
-        return data;
-    }
-    printf("\n  file '%s' not found\n", buffer);
-
-    return nullptr;
-
     if(m_filename.empty() == false)
     {
         printf("Opening '%s' resource...", name);

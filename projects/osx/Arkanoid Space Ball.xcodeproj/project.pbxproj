@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55BD39121D00527A00D43FAF /* arkanoidsb.pak in Resources */ = {isa = PBXBuildFile; fileRef = 55BD39111D00527A00D43FAF /* arkanoidsb.pak */; };
 		55BD393A1D0053EB00D43FAF /* arkanoidsb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55BD39141D0053EB00D43FAF /* arkanoidsb.cpp */; };
 		55BD393B1D0053EB00D43FAF /* arkanoidsbgame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55BD39161D0053EB00D43FAF /* arkanoidsbgame.cpp */; };
 		55BD393C1D0053EB00D43FAF /* ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55BD39181D0053EB00D43FAF /* ball.cpp */; };
@@ -27,12 +26,12 @@
 		55BD394A1D0053EB00D43FAF /* sinusstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55BD39361D0053EB00D43FAF /* sinusstring.cpp */; };
 		55BD394B1D0053EB00D43FAF /* tutorialdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55BD39381D0053EB00D43FAF /* tutorialdlg.cpp */; };
 		55BD394F1D00B9C600D43FAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BD394E1D00B9C600D43FAF /* Images.xcassets */; };
+		55BD39511D00CC6100D43FAF /* arkanoidsb.pak in Resources */ = {isa = PBXBuildFile; fileRef = 55BD39501D00CC6100D43FAF /* arkanoidsb.pak */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		559F04DA1D004B61002552D7 /* Arkanoid Space Ball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Arkanoid Space Ball.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		559F04E81D004B61002552D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		55BD39111D00527A00D43FAF /* arkanoidsb.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = arkanoidsb.pak; path = ../../../arkanoidsb.pak; sourceTree = "<group>"; };
 		55BD39141D0053EB00D43FAF /* arkanoidsb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = arkanoidsb.cpp; path = ../../src/arkanoidsb.cpp; sourceTree = "<group>"; };
 		55BD39151D0053EB00D43FAF /* arkanoidsb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arkanoidsb.h; path = ../../src/arkanoidsb.h; sourceTree = "<group>"; };
 		55BD39161D0053EB00D43FAF /* arkanoidsbgame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = arkanoidsbgame.cpp; path = ../../src/arkanoidsbgame.cpp; sourceTree = "<group>"; };
@@ -72,6 +71,7 @@
 		55BD39381D0053EB00D43FAF /* tutorialdlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tutorialdlg.cpp; path = ../../src/tutorialdlg.cpp; sourceTree = "<group>"; };
 		55BD39391D0053EB00D43FAF /* tutorialdlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tutorialdlg.h; path = ../../src/tutorialdlg.h; sourceTree = "<group>"; };
 		55BD394E1D00B9C600D43FAF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Arkanoid Space Ball/Images.xcassets"; sourceTree = SOURCE_ROOT; };
+		55BD39501D00CC6100D43FAF /* arkanoidsb.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = arkanoidsb.pak; path = ../../../res/arkanoidsb.pak; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,8 +105,8 @@
 		559F04DC1D004B61002552D7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				55BD39501D00CC6100D43FAF /* arkanoidsb.pak */,
 				55BD394E1D00B9C600D43FAF /* Images.xcassets */,
-				55BD39111D00527A00D43FAF /* arkanoidsb.pak */,
 				559F04E81D004B61002552D7 /* Info.plist */,
 			);
 			name = Resources;
@@ -215,8 +215,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55BD39511D00CC6100D43FAF /* arkanoidsb.pak in Resources */,
 				55BD394F1D00B9C600D43FAF /* Images.xcassets in Resources */,
-				55BD39121D00527A00D43FAF /* arkanoidsb.pak in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +340,6 @@
 		559F04EC1D004B61002552D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include/SDL;
@@ -361,7 +360,6 @@
 		559F04ED1D004B61002552D7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include/SDL;
