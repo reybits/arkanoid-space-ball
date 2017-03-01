@@ -10,6 +10,8 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+char VersionString[10];
+
 CMainMenu::CMainMenu()
     : m_bGetNameMode(false)
     , m_nMenuType(MT_MAIN)
@@ -19,6 +21,8 @@ CMainMenu::CMainMenu()
 {
     m_achStoredLevelInfo[0] = 0;
     m_achName[0] = 0;
+
+    snprintf(VersionString, sizeof(VersionString), "%d.%d.%d", APP_VerMajor, APP_VerMinor, APP_VerRelease);
 }
 
 CMainMenu::~CMainMenu()
@@ -69,7 +73,7 @@ int CMainMenu::DrawMenu()
 
     if(m_nMenuType == MT_MAIN)
     {
-        g_Font.DrawString(5, SCREEN_HEIGHT - 5 - 14, AutoVersion::FULLVERSION_STRING);
+        g_Font.DrawString(5, SCREEN_HEIGHT - 5 - 14, VersionString);
     }
     else if((IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) || g_bMouseRB == true)
     {

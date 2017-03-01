@@ -1,0 +1,14 @@
+/**********************************************\
+*
+*  Andrey A. Ugolnik
+*  http://www.ugolnik.info
+*  andrey@ugolnik.info
+*
+\**********************************************/
+
+#include "version.h"
+
+const char* APP_Title = "${APP_TITLE}";
+const int APP_VerMajor = ${APP_VERSION_MAJOR};
+const int APP_VerMinor = ${APP_VERSION_MINOR};
+const int APP_VerRelease = ${APP_VERSION_RELEASE};

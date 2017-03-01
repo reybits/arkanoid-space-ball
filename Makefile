@@ -1,17 +1,36 @@
-CC=g++
-CFLAGS=-O2 -c -Wall `sdl-config --cflags` -std=c++11
-LDFLAGS=-s `sdl-config --libs --cflags` -lSDL_image  -lSDL_mixer -lX11
-SOURCES=src/arkanoidsb.cpp src/arkanoidsbgame.cpp src/ball.cpp src/bonus.cpp src/bullet.cpp src/coolstring.cpp src/energyhole.cpp src/exploision.cpp src/generatelevel.cpp src/glSDL.c src/leveleditor.cpp src/mainmenu.cpp src/monster.cpp src/mystring.cpp src/resource.cpp src/sinusstring.cpp src/tutorialdlg.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=arkanoidsb
+VER_MAJOR=1
+VER_MINOR=3
+VER_RELEASE=5
+VERSION=$(VER_MAJOR).$(VER_MINOR)$(VER_RELEASE)
+BUILD_DIR_RELEASE=.build_release
+BUILD_DIR_DEBUG=.build_debug
+BUNDLE_NAME=arkanoidsb
 
-all: $(SOURCES) $(EXECUTABLE)
+PREFIX?=/usr/local
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+UNAME=$(shell uname -s)
+ifeq ($(UNAME), Darwin)
+	BUNDLE_NAME=arkanoidsb.app
+endif
 
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
+all:
+	@echo "Usage:"
+	@echo "    make <release | debug>    - make release or debug application"
+	@echo "    make <cppcheck>           - do static code verification"
+	@echo "    make <clean>              - cleanup directory"
+
+release:
+	$(shell if [ ! -d $(BUILD_DIR_RELEASE) ]; then mkdir $(BUILD_DIR_RELEASE); fi)
+	cd $(BUILD_DIR_RELEASE) ; cmake -DCMAKE_BUILD_TYPE=Release -DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. ; make ; cd ..
+	cp -r $(BUILD_DIR_RELEASE)/$(BUNDLE_NAME) .
+
+debug:
+	$(shell if [ ! -d $(BUILD_DIR_DEBUG) ]; then mkdir $(BUILD_DIR_DEBUG); fi)
+	cd $(BUILD_DIR_DEBUG) ; cmake -DCMAKE_BUILD_TYPE=Debug -DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. ; make ; cd ..
+	cp -r $(BUILD_DIR_DEBUG)/$(BUNDLE_NAME) .
+
+cppcheck:
+	cppcheck -j 1 --enable=all -f -I src src/ 2> cppcheck-output
 
 clean:
-	rm src/*.o
+	rm -fr $(BUILD_DIR_RELEASE) $(BUILD_DIR_DEBUG) $(BUNDLE_NAME) cppcheck-output $(BUNDLE_NAME)-$(VERSION)* $(BUNDLE_NAME)_$(VERSION)* *.{log,tasks,sh,xz,list} strace_out cov-int
