@@ -56,7 +56,7 @@ namespace a
 
         void readConfig()
         {
-            char buffer[PATH_MAX];
+            char buffer[MAX_PATH];
 
             snprintf(buffer, sizeof(UserProfile), "%sconfig", UserProfile);
             FILE* file = fopen(buffer, "rb");
@@ -86,7 +86,7 @@ namespace a
             mkdir(UserProfile, 0700);
 #endif
 
-            char buffer[PATH_MAX];
+            char buffer[MAX_PATH];
 
             snprintf(buffer, sizeof(UserProfile), "%sconfig", UserProfile);
             FILE* file = fopen(buffer, "wb");
@@ -122,7 +122,7 @@ namespace a
 
 #elif defined(_WIN32)
 
-            char buffer[PATH_MAX];
+            char buffer[MAX_PATH];
             //GetUserProfileDirectory(0, achTemp, sizeof(buffer));
             ExpandEnvironmentStrings("%USERPROFILE%", buffer, sizeof(buffer));
             snprintf(UserProfile, sizeof(UserProfile), "%s\\.arkanoidsb\\", buffer);

@@ -116,8 +116,6 @@ bool g_bIsAudioSupported = true;
 
 int main(int argc, char* argv[])
 {
-    char achTemp[PATH_MAX];
-
     printf("%s by 'WE' Group. Copyright (c) 2006.\n", APP_Title);
     printf("version %d.%d.%d.\n", APP_VerMajor, APP_VerMinor, APP_VerRelease);
 
@@ -130,8 +128,7 @@ int main(int argc, char* argv[])
 
     a::initialize();
 
-    char achPath[PATH_MAX];
-    char* pchEnd;
+    char achPath[MAX_PATH];
     strcpy(achPath, argv[0]);
 #ifdef __MACOSX__
     if (false == a::res()->Open("arkanoidsb.app/Contents/Resources/arkanoidsb.pak"))
@@ -140,6 +137,7 @@ int main(int argc, char* argv[])
     if (false == a::res()->Open("res/arkanoidsb.pak"))
     {
 #endif
+        char* pchEnd;
         if ((pchEnd = strrchr(achPath, '\\')) == 0 && (pchEnd = strrchr(achPath, '/')) == 0)
         {
             exit(-1);
@@ -223,6 +221,8 @@ int main(int argc, char* argv[])
     SetVideoMode();
     SDL_WarpMouse(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
+    char achTemp[MAX_PATH];
+
     if (g_bIsAudioSupported == true)
     {
         // loading sound effects
@@ -274,6 +274,7 @@ int main(int argc, char* argv[])
             }
             else
             {
+                char* pchEnd;
                 if ((pchEnd = strrchr(achPath, '\\')) == 0 && (pchEnd = strrchr(achPath, '/')) == 0)
                 {
                     achPath[0]  = 0;
@@ -451,7 +452,7 @@ int main(int argc, char* argv[])
 
             /*          // save screenshot to profile dir
                         if((g_modState & KMOD_CTRL) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
-                            char    achPath[PATH_MAX];
+                            char    achPath[MAX_PATH];
                             time_t  osTime  = time(0);
                             struct tm   local   = *localtime(&osTime);
                             sprintf(achPath, "%sarkanoidsb-%4d%2d%2d-%2d%2d.bmp", g_achUserProfile, local.tm_year + 1900, local.tm_mon + 1, local.tm_mday, local.tm_hour, local.tm_min);

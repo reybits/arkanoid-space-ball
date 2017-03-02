@@ -8,6 +8,8 @@
 
 #include "resource.h"
 
+#include <cstring>
+
 const unsigned CResource::RES_SIGNATURE = 0xabcd;
 const unsigned char CResource::RES_XOR = 0xaa;
 
@@ -60,7 +62,9 @@ bool CResource::Open(const char* filename)
         printf("Invalid resource file\n");
         fclose(f);
     }
-    printf("File not found\n");
+
+    printf("File '%s' not found.\n", filename);
+
     return false;
 }
 

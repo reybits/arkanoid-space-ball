@@ -853,7 +853,7 @@ void CGame::InitLevel(int nLevel, bool bRestore)
     m_nCountSelfDestruct    = 0;
     EnableCursor(true);
 
-    char buffer[PATH_MAX];
+    char buffer[MAX_PATH];
     snprintf(buffer, sizeof(buffer), "%ssave", a::userProfile());
 
     static bool bInit   = true;

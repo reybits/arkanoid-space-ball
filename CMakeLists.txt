@@ -22,8 +22,10 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 find_package(SDL REQUIRED)
 find_package(SDL_image REQUIRED)
 find_package(SDL_mixer REQUIRED)
+find_package(X11)
 
 include_directories(
+    ${X11_INCLUDE_DIR}
     ${SDL_INCLUDE_DIR}
     ${SDL_IMAGE_INCLUDE_DIRS}
     ${SDL_MIXER_INCLUDE_DIRS}
@@ -65,7 +67,14 @@ else()
 endif()
 
 target_link_libraries( arkanoidsb
+    ${X11_LIBRARIES}
     ${SDL_LIBRARY}
     ${SDL_IMAGE_LIBRARIES}
     ${SDL_MIXER_LIBRARIES}
     )
+
+if(X11_Xinerama_FOUND)
+    target_link_libraries( arkanoidsb
+        ${X11_Xinerama_LIB}
+        )
+endif()

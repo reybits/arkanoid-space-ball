@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-O2 -c -Wall `sdl-config --cflags`
+CFLAGS=-O2 -std=c++11 -c -Wall `sdl-config --cflags`
 LDFLAGS=`sdl-config --libs --cflags`
 SOURCES=src/resource.cpp src/rescompiler.cpp
 OBJECTS=$(SOURCES:.cpp=.o)

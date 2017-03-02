@@ -11,7 +11,7 @@
 .gradle/
 .ycm_extra_conf.py*
 /.build_*
-/rescompiler
+/tools/rescompiler/rescompiler
 Debug/
 Release/
 arkanoidsb*
