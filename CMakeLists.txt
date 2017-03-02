@@ -50,7 +50,7 @@ endif()
 
 if(APPLE)
     set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.icns)
-    set(APP_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/arkanoidsb.pak)
+    set(APP_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.pak)
     set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
     set_source_files_properties(${APP_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
