@@ -6,7 +6,7 @@
 *
 \**********************************************/
 
-#include "arkanoidsbgame.h"
+#include "game.h"
 #include "accessor.h"
 #include "ball.h"
 #include "bonus.h"
@@ -29,7 +29,7 @@
 #define PADDLE_HEIGHT (50 + m_nRacketSize * 30)
 #define SCORE_TO_ADDITIONAL_BALL 5000
 
-CArkanoidSBGame::CArkanoidSBGame(const sOptions& options)
+CGame::CGame(const sOptions& options)
     : m_options(options)
     , m_nBonusLevelType(-1)
     , m_nSndWall(-1)
@@ -43,12 +43,12 @@ CArkanoidSBGame::CArkanoidSBGame(const sOptions& options)
     m_vecLevelBricks.reserve(BRICKS_WIDTH * BRICKS_HEIGHT);
 }
 
-CArkanoidSBGame::~CArkanoidSBGame()
+CGame::~CGame()
 {
     delete[] m_pchGetReeadyInfo;
 }
 
-void CArkanoidSBGame::InitNewGame(bool bIsCustomLevels)
+void CGame::InitNewGame(bool bIsCustomLevels)
 {
     m_bIsCustomLevels   = bIsCustomLevels;
     m_bTutorialPause    = false;
@@ -64,7 +64,7 @@ void CArkanoidSBGame::InitNewGame(bool bIsCustomLevels)
     //g_pMainFrame->m_pImix->SamplePlay(m_nSampleGetReady);
 }
 
-void CArkanoidSBGame::DoGameActive()
+void CGame::DoGameActive()
 {
     if (m_bTutorialPause == true)
     {
@@ -382,7 +382,7 @@ void CArkanoidSBGame::DoGameActive()
     }
 }
 
-bool CArkanoidSBGame::DrawScreen()
+bool CGame::DrawScreen()
 {
     bool    bIsExit         = false;
 
@@ -515,7 +515,7 @@ bool CArkanoidSBGame::DrawScreen()
     return  bIsExit;
 }
 
-bool CArkanoidSBGame::DoGameOver()
+bool CGame::DoGameOver()
 {
 #define GO_ITEM_X   ((SCREEN_WIDTH - 124) / 2)
 #define GO_ITEM_Y   ((SCREEN_HEIGHT - 15) / 2)
@@ -537,7 +537,7 @@ bool CArkanoidSBGame::DoGameOver()
     return false;
 }
 
-void CArkanoidSBGame::DrawBricks()
+void CGame::DrawBricks()
 {
     Uint32          dwTime  = SDL_GetTicks();
     static Uint32   dwTimeCountToDie    = 0;
@@ -756,7 +756,7 @@ void CArkanoidSBGame::DrawBricks()
         }*/
 }
 
-void CArkanoidSBGame::DrawBrick(int nIndex, bool bNextFrame, bool bNextFrameAnim)
+void CGame::DrawBrick(int nIndex, bool bNextFrame, bool bNextFrameAnim)
 {
     SDL_Rect    src;
     int nType   = m_vecLevelBricks[nIndex].byType;
@@ -814,7 +814,7 @@ void CArkanoidSBGame::DrawBrick(int nIndex, bool bNextFrame, bool bNextFrameAnim
     }
 }
 
-void CArkanoidSBGame::DoBomb(int nIndex)
+void CGame::DoBomb(int nIndex)
 {
     int nX          = (int)m_vecLevelBricks[nIndex].fX;
     int nY          = (int)m_vecLevelBricks[nIndex].fY;
@@ -842,7 +842,7 @@ void CArkanoidSBGame::DoBomb(int nIndex)
     }
 }
 
-void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore)
+void CGame::InitLevel(int nLevel, bool bRestore)
 {
     m_vecLevelBricks.clear();
     a::coolstr()->Clear();
@@ -1023,7 +1023,7 @@ void CArkanoidSBGame::InitLevel(int nLevel, bool bRestore)
     printf("level %d, is bonus level %s\n", m_nCurrentLevel + 1, m_nBonusLevelType != -1 ? "yes" : "no");
 }
 
-void CArkanoidSBGame::DrawPaddle()
+void CGame::DrawPaddle()
 {
     SDL_Rect    src;
 
@@ -1086,7 +1086,7 @@ void CArkanoidSBGame::DrawPaddle()
     }
 }
 
-void CArkanoidSBGame::DrawStatistic()
+void CGame::DrawStatistic()
 {
     char    achBuff[20];
     a::fnt2()->SetRect(97, 0, 56, SCREEN_HEIGHT);
@@ -1194,7 +1194,7 @@ void CArkanoidSBGame::DrawStatistic()
     }
 }
 
-void CArkanoidSBGame::DoShoot()
+void CGame::DoShoot()
 {
     int nLaserY = (int)m_nRacketY + (PADDLE_HEIGHT - 2) / 2;
 
@@ -1237,7 +1237,7 @@ void CArkanoidSBGame::DoShoot()
     m_nLaserX   = WALL_X1;
 }
 
-void CArkanoidSBGame::ProcessBonus(int nBonusType)
+void CGame::ProcessBonus(int nBonusType)
 {
     if (nBonusType == -1)
     {
@@ -1368,7 +1368,7 @@ void CArkanoidSBGame::ProcessBonus(int nBonusType)
     }
 }
 
-void CArkanoidSBGame::DoImpact(int nIndex, bool bRemoveAll)
+void CGame::DoImpact(int nIndex, bool bRemoveAll)
 {
     m_nCombosBricks++;
     m_dwCombosTime  = SDL_GetTicks();
@@ -1424,7 +1424,7 @@ void CArkanoidSBGame::DoImpact(int nIndex, bool bRemoveAll)
     }
 }
 
-void CArkanoidSBGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveAll)
+void CGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveAll)
 {
     if (bRemoveAll == true)
     {
@@ -1464,7 +1464,7 @@ void CArkanoidSBGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveA
     m_vecLevelBricks[nIndex].byType = byToBrickType;
 }
 
-void CArkanoidSBGame::AddScore(int nScore)
+void CGame::AddScore(int nScore)
 {
     m_nGetReadyScore    += nScore;
     m_nScore                += nScore;
@@ -1476,7 +1476,7 @@ void CArkanoidSBGame::AddScore(int nScore)
     }
 }
 
-void CArkanoidSBGame::ResetAll()
+void CGame::ResetAll()
 {
     m_dwCombosTime              = 0;
     m_nCombosBricks         = 0;
@@ -1526,7 +1526,7 @@ void CArkanoidSBGame::ResetAll()
     }
 }
 
-void CArkanoidSBGame::DrawBrickBullets()
+void CGame::DrawBrickBullets()
 {
     SDL_Rect            rc;
     static Uint32   dwTime  = 0;
@@ -1551,7 +1551,7 @@ void CArkanoidSBGame::DrawBrickBullets()
     }
 }
 
-void CArkanoidSBGame::MoveBrickBullets()
+void CGame::MoveBrickBullets()
 {
     for (size_t i = 0, size = m_vecBrickBullets.size(); i < size;)
     {
@@ -1575,7 +1575,7 @@ void CArkanoidSBGame::MoveBrickBullets()
     }
 }
 
-int CArkanoidSBGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY)
+int CGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY)
 {
     int     nAngle  = 0;
     int     nCatet1 = nX - ((int)m_vecLevelBricks[nIndex].fX + BRICK_W / 2);
@@ -1593,7 +1593,7 @@ int CArkanoidSBGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY)
     return ((360 + nAngle) % 360);
 }
 
-bool CArkanoidSBGame::IsEmptyBrickPos(const int nSkipPos, const int nX, const int nY)
+bool CGame::IsEmptyBrickPos(const int nSkipPos, const int nX, const int nY)
 {
     for (size_t i = 0; i < m_vecLevelBricks.size(); i++)
     {
@@ -1612,7 +1612,7 @@ bool CArkanoidSBGame::IsEmptyBrickPos(const int nSkipPos, const int nX, const in
     return  true;
 }
 
-bool CArkanoidSBGame::DrawGetReady()
+bool CGame::DrawGetReady()
 {
     char    achBuf[50];
 
@@ -1666,14 +1666,14 @@ bool CArkanoidSBGame::DrawGetReady()
     return false;
 }
 
-void CArkanoidSBGame::AddGetReeadyInfo(const char* pchString)
+void CGame::AddGetReeadyInfo(const char* pchString)
 {
     delete[]    m_pchGetReeadyInfo;
     m_pchGetReeadyInfo  = new char[strlen(pchString) + 5];
     sprintf(m_pchGetReeadyInfo, "[ %s ]", pchString);
 }
 
-void CArkanoidSBGame::RemoveOneLives()
+void CGame::RemoveOneLives()
 {
     m_nLives--;
     EnableCursor(true);
@@ -1691,7 +1691,7 @@ void CArkanoidSBGame::RemoveOneLives()
     }
 }
 
-void CArkanoidSBGame::LoadBackground()
+void CGame::LoadBackground()
 {
     if (m_nLevelImage != m_nCurrentLevel)
     {
@@ -1710,14 +1710,14 @@ void CArkanoidSBGame::LoadBackground()
     }
 }
 
-void CArkanoidSBGame::FreeBackground()
+void CGame::FreeBackground()
 {
     m_nLevelImage   = -1;
     SDL_FreeSurface(g_pGameBG);
     g_pGameBG   = 0;
 }
 
-void CArkanoidSBGame::DrawBackground()
+void CGame::DrawBackground()
 {
     // loading new background
     LoadBackground();
@@ -1768,7 +1768,7 @@ void CArkanoidSBGame::DrawBackground()
     Blit(380 + nPumpX, 73, m_pGameBGanims, &rc);
 }
 
-void CArkanoidSBGame::DrawAreYouSure()
+void CGame::DrawAreYouSure()
 {
 #define MENU_ITEM_X ((SCREEN_WIDTH - 248) / 2)
 #define MANU_ITEM_Y ((SCREEN_HEIGHT - 15) / 2)
@@ -1818,7 +1818,7 @@ void CArkanoidSBGame::DrawAreYouSure()
     }
 }
 
-void CArkanoidSBGame::DrawPause()
+void CGame::DrawPause()
 {
 #define PAUSE_ITEM_X    ((SCREEN_WIDTH - 124) / 2)
 #define PAUSE_ITEM_Y    ((SCREEN_HEIGHT - 15) / 2)
@@ -1836,7 +1836,7 @@ void CArkanoidSBGame::DrawPause()
     }
 }
 
-void CArkanoidSBGame::SetPause()
+void CGame::SetPause()
 {
     if (m_nGameState == GS_GAME_ACTIVE)
     {
@@ -1845,7 +1845,7 @@ void CArkanoidSBGame::SetPause()
     }
 }
 
-void CArkanoidSBGame::RestoreGame()
+void CGame::RestoreGame()
 {
     InitLevel(0, true);
 
@@ -1853,7 +1853,7 @@ void CArkanoidSBGame::RestoreGame()
 }
 
 /*
-void CArkanoidSBGame::DrawRestoreGame() {
+void CGame::DrawRestoreGame() {
     FadeScreen();
 // #define MAX_SAVE_NAME   30
 //  struct _SAVED_GAME {
@@ -1882,7 +1882,7 @@ void CArkanoidSBGame::DrawRestoreGame() {
 }
 */
 
-void CArkanoidSBGame::SendEsc()
+void CGame::SendEsc()
 {
     switch (m_nGameState)
     {

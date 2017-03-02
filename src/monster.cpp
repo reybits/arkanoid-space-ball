@@ -8,10 +8,10 @@
 
 #include "arkanoidsb.h"
 #include "accessor.h"
-#include "arkanoidsbgame.h"
 #include "ball.h"
-#include "exploision.h"
 #include "defines.h"
+#include "exploision.h"
+#include "game.h"
 #include "monster.h"
 #include "random.h"
 #include "tutorialdlg.h"
@@ -105,7 +105,7 @@ void CMonster::AddMonster(int x, int y, int nType)
         switch (nType)
         {
         case MONST_PATROL:
-            if (m_nSndPatrol == -1 && a::ark()->m_nGameState == CArkanoidSBGame::GS_GAME_ACTIVE)
+            if (m_nSndPatrol == -1 && a::ark()->m_nGameState == CGame::GS_GAME_ACTIVE)
             {
                 m_nSndPatrol  = PlaySound(2);
             }

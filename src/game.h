@@ -13,7 +13,7 @@
 #include <SDL.h>
 #include <vector>
 
-class CArkanoidSBGame final
+class CGame final
 {
     friend class CGenerateLevel;
     friend class CBall;
@@ -21,8 +21,8 @@ class CArkanoidSBGame final
     friend class CMonster;
 
 public:
-    CArkanoidSBGame(const sOptions& options);
-    ~CArkanoidSBGame();
+    CGame(const sOptions& options);
+    ~CGame();
 
     enum { GS_GAME_ACTIVE, /*GS_GAME_RESTORE, */GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };
     enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };

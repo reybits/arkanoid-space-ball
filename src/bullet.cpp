@@ -8,9 +8,9 @@
 
 #include "bullet.h"
 #include "accessor.h"
-#include "arkanoidsbgame.h"
 #include "defines.h"
 #include "exploision.h"
+#include "game.h"
 
 CBullet::CBullet()
 {

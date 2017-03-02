@@ -8,7 +8,7 @@
 
 #include "arkanoidsb.h"
 #include "accessor.h"
-#include "arkanoidsbgame.h"
+#include "game.h"
 #include "leveleditor.h"
 #include "mainmenu.h"
 #include "mystring.h"

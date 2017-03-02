@@ -8,7 +8,7 @@
 
 #include "generatelevel.h"
 #include "accessor.h"
-#include "arkanoidsbgame.h"
+#include "game.h"
 #include "random.h"
 #include "resource.h"
 

@@ -8,7 +8,7 @@
 
 #pragma once
 
-class CArkanoidSBGame;
+class CGame;
 class CBall;
 class CBonus;
 class CBullet;
@@ -35,7 +35,7 @@ namespace a
 
     CRandom& rnd();
     CResource* res();
-    CArkanoidSBGame* ark();
+    CGame* ark();
     CMainMenu* menu();
     CTutorialDlg* tutDlg();
     CMyString* fnt1();

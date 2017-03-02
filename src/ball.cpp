@@ -8,9 +8,9 @@
 
 #include "ball.h"
 #include "accessor.h"
-#include "arkanoidsbgame.h"
 #include "defines.h"
 #include "exploision.h"
+#include "game.h"
 #include "random.h"
 
 #include <cmath>
@@ -77,7 +77,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                 {
                     nPaddleX    += 5;
                     PlaySound(11);
-                    if (nRacketType == CArkanoidSBGame::RT_MAGNET)
+                    if (nRacketType == CGame::RT_MAGNET)
                     {
                         m_vecBalls[nPos].fOldSpeed  = m_vecBalls[nPos].fSpeed;
                         m_vecBalls[nPos].fSpeed     = 0;
@@ -228,7 +228,7 @@ void CBall::Draw(int nPaddleType)
         //      if(bAddFB == true)  AddFBs(nPos);
 
         // show vector
-        if (nPaddleType == CArkanoidSBGame::RT_MAGNET && m_vecBalls[nPos].bIsCaptured == false && ((bFirst == true && m_vecBalls[nPos].fSpeed == 0) || m_vecBalls[nPos].fSpeed != 0))
+        if (nPaddleType == CGame::RT_MAGNET && m_vecBalls[nPos].bIsCaptured == false && ((bFirst == true && m_vecBalls[nPos].fSpeed == 0) || m_vecBalls[nPos].fSpeed != 0))
         {
             if (bFirst == true  && m_vecBalls[nPos].fSpeed == 0)
             {

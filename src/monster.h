@@ -13,7 +13,7 @@
 
 class CMonster final
 {
-    friend class CArkanoidSBGame;
+    friend class CGame;
 public:
     CMonster();
     ~CMonster();

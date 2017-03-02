@@ -7,13 +7,13 @@
 \**********************************************/
 
 #include "accessor.h"
-#include "arkanoidsbgame.h"
 #include "ball.h"
 #include "bonus.h"
 #include "bullet.h"
 #include "coolstring.h"
 #include "energyhole.h"
 #include "exploision.h"
+#include "game.h"
 #include "mainmenu.h"
 #include "monster.h"
 #include "mystring.h"
@@ -37,22 +37,22 @@ namespace a
         sOptions Options;
         sHighscores Highscores;
 
-        std::unique_ptr<CResource> g_Resource;
-        std::unique_ptr<CArkanoidSBGame> g_Arkanoid;
-        std::unique_ptr<CMainMenu> g_MainMenu;
-        std::unique_ptr<CTutorialDlg> g_TutorialDlg;
-        std::unique_ptr<CMyString> g_Font;
-        std::unique_ptr<CMyString> g_Font2;
-        std::unique_ptr<CMyString> g_Font3;
-        std::unique_ptr<CMyString> g_FontTutorial;
-        std::unique_ptr<CSinusString> g_SinusString;
-        std::unique_ptr<CBall> g_Ball;
-        std::unique_ptr<CBullet> g_Bullet;
-        std::unique_ptr<CBonus> g_Bonus;
-        std::unique_ptr<CMonster> g_Monster;
-        std::unique_ptr<CEnergyHole> g_EnergyHole;
-        std::unique_ptr<CCoolString> g_CoolString;
-        std::unique_ptr<CExploision> g_Exploision;
+        std::unique_ptr<CResource> Resource;
+        std::unique_ptr<CGame> Game;
+        std::unique_ptr<CMainMenu> MainMenu;
+        std::unique_ptr<CTutorialDlg> TutorialDlg;
+        std::unique_ptr<CMyString> Font;
+        std::unique_ptr<CMyString> Font2;
+        std::unique_ptr<CMyString> Font3;
+        std::unique_ptr<CMyString> FontTutorial;
+        std::unique_ptr<CSinusString> SinusString;
+        std::unique_ptr<CBall> Ball;
+        std::unique_ptr<CBullet> Bullet;
+        std::unique_ptr<CBonus> Bonus;
+        std::unique_ptr<CMonster> Monster;
+        std::unique_ptr<CEnergyHole> EnergyHole;
+        std::unique_ptr<CCoolString> CoolString;
+        std::unique_ptr<CExploision> Exploision;
 
         void readConfig()
         {
@@ -142,42 +142,42 @@ namespace a
         printf("Users config dir: %s\n", UserProfile);
         readConfig();
 
-        g_Resource.reset(new CResource());
-        g_Arkanoid.reset(new CArkanoidSBGame(Options));
-        g_MainMenu.reset(new CMainMenu(Options, Highscores));
-        g_TutorialDlg.reset(new CTutorialDlg(Options));
-        g_Font.reset(new CMyString());
-        g_Font2.reset(new CMyString());
-        g_Font3.reset(new CMyString());
-        g_FontTutorial.reset(new CMyString());
-        g_SinusString.reset(new CSinusString());
-        g_Ball.reset(new CBall());
-        g_Bullet.reset(new CBullet());
-        g_Bonus.reset(new CBonus());
-        g_Monster.reset(new CMonster());
-        g_EnergyHole.reset(new CEnergyHole());
-        g_CoolString.reset(new CCoolString());
-        g_Exploision.reset(new CExploision());
+        Resource.reset(new CResource());
+        Game.reset(new CGame(Options));
+        MainMenu.reset(new CMainMenu(Options, Highscores));
+        TutorialDlg.reset(new CTutorialDlg(Options));
+        Font.reset(new CMyString());
+        Font2.reset(new CMyString());
+        Font3.reset(new CMyString());
+        FontTutorial.reset(new CMyString());
+        SinusString.reset(new CSinusString());
+        Ball.reset(new CBall());
+        Bullet.reset(new CBullet());
+        Bonus.reset(new CBonus());
+        Monster.reset(new CMonster());
+        EnergyHole.reset(new CEnergyHole());
+        CoolString.reset(new CCoolString());
+        Exploision.reset(new CExploision());
     }
 
     void deinitialize()
     {
-        g_Exploision.reset();
-        g_CoolString.reset();
-        g_EnergyHole.reset();
-        g_Monster.reset();
-        g_Bonus.reset();
-        g_Bullet.reset();
-        g_Ball.reset();
-        g_SinusString.reset();
-        g_FontTutorial.reset();
-        g_Font3.reset();
-        g_Font2.reset();
-        g_Font.reset();
-        g_TutorialDlg.reset();
-        g_MainMenu.reset();
-        g_Arkanoid.reset();
-        g_Resource.reset();
+        Exploision.reset();
+        CoolString.reset();
+        EnergyHole.reset();
+        Monster.reset();
+        Bonus.reset();
+        Bullet.reset();
+        Ball.reset();
+        SinusString.reset();
+        FontTutorial.reset();
+        Font3.reset();
+        Font2.reset();
+        Font.reset();
+        TutorialDlg.reset();
+        MainMenu.reset();
+        Game.reset();
+        Resource.reset();
 
         writeConfig();
     }
@@ -194,82 +194,82 @@ namespace a
 
     CResource* res()
     {
-        return g_Resource.get();
+        return Resource.get();
     }
 
-    CArkanoidSBGame* ark()
+    CGame* ark()
     {
-        return g_Arkanoid.get();
+        return Game.get();
     }
 
     CMainMenu* menu()
     {
-        return g_MainMenu.get();
+        return MainMenu.get();
     }
 
     CTutorialDlg* tutDlg()
     {
-        return g_TutorialDlg.get();
+        return TutorialDlg.get();
     }
 
     CMyString* fnt1()
     {
-        return g_Font.get();
+        return Font.get();
     }
 
     CMyString* fnt2()
     {
-        return g_Font2.get();
+        return Font2.get();
     }
 
     CMyString* fnt3()
     {
-        return g_Font3.get();
+        return Font3.get();
     }
 
     CMyString* fntTut()
     {
-        return g_FontTutorial.get();
+        return FontTutorial.get();
     }
 
     CSinusString* fntSin()
     {
-        return g_SinusString.get();
+        return SinusString.get();
     }
 
     CBall* ball()
     {
-        return g_Ball.get();
+        return Ball.get();
     }
 
     CBullet* bullet()
     {
-        return g_Bullet.get();
+        return Bullet.get();
     }
 
     CBonus* bonus()
     {
-        return g_Bonus.get();
+        return Bonus.get();
     }
 
     CMonster* monst()
     {
-        return g_Monster.get();
+        return Monster.get();
     }
 
     CEnergyHole* hole()
     {
-        return g_EnergyHole.get();
+        return EnergyHole.get();
     }
 
     CCoolString* coolstr()
     {
-        return g_CoolString.get();
+        return CoolString.get();
     }
 
     CExploision* expl()
     {
-        return g_Exploision.get();
+        return Exploision.get();
     }
 
     sHighscores& high()
