@@ -1,32 +1,34 @@
-// arkanoidsb.cpp : Defines the entry point for the application.
-//
+/**********************************************\
+*
+*  Copyright (C) 2006 by Andrey A. Ugolnik
+*  http://www.ugolnik.info
+*  andrey@ugolnik.info
+*
+\**********************************************/
 
 #include "arkanoidsb.h"
-#include <SDL_syswm.h>
-#include <sys/stat.h>
+#include "accessor.h"
+#include "arkanoidsbgame.h"
+#include "bonus.h"
+#include "defines.h"
+#include "leveleditor.h"
+#include "mainmenu.h"
+#include "mystring.h"
+#include "resource.h"
+#include "tutorialdlg.h"
 #include "version.h"
 
+#include "glSDL.h"
+#include <SDL_mixer.h>
+#include <SDL_image.h>
+#include <SDL_syswm.h>
 
-void SetVideoMode();
-void UnsetVideoMode();
-void CommonQuit();
-bool UpdateKeys();
-void readConfig();
-void writeConfig();
-void PlayMusic2();
-void SwitchFullscreen();
-bool DrawIntro();
+#include <cmath>
 
-char g_achUserProfile[PATH_MAX] = { 0 };
+SDL_Surface* g_psurfScreen = nullptr;
 
-SDL_Surface* g_psurfScreen = 0;
-bool g_bFullscreen = true;
-bool g_bOGL = true;
-int g_anBpx[5] = { 32, 24, 16, 15, 8 };
-int g_nBppIndex = 0;
-bool g_bShowFps = false;
-bool g_bTutorialMode = true;
-bool g_bAutoBonusMode = true;
+sOptions m_options;
+int g_bppList[5] = { 32, 24, 16, 15, 8 };
 
 float g_fSpeedCorrection;
 float g_fCos[360];
@@ -51,10 +53,6 @@ int g_nCursorX = SCREEN_WIDTH / 2;
 int g_nCursorY = SCREEN_HEIGHT / 2;
 
 int g_nGameMode = APPS_INTRO;
-int m_nLastHiScorePos   = -1;
-int m_nLastGameScore        = 0;
-int m_nLastGameLevel        = 0;
-_HIGHSCORE  g_strHighScore[10];
 
 SDL_Surface* m_pEnergyHole;
 SDL_Surface* m_pMonstPatrol;
@@ -115,63 +113,31 @@ const char* g_pachSnd[] =
 Mix_Chunk* g_apSnd[sizeof(g_pachSnd) / sizeof(const char*)];
 Mix_Music* g_apMod[3];
 bool g_bIsAudioSupported = true;
-int g_nVolumeM = 3;
-int g_nVolumeS = 4;
-
-CResource       g_Resource;
-
-CMyString       g_Font;
-CMyString       g_Font2;
-CMyString       g_Font3;
-CRandom         g_Rnd;
-CMonster        g_Monster;
-CEnergyHole     g_EnergyHole;
-CBonus          g_Bonus;
-CExploision     g_Exploision;
-CBullet         g_Bullet;
-CBall           g_Ball;
-CMainMenu       g_MainMenu;
-CArkanoidSBGame g_Arkanoid;
-CCoolString     g_CoolString;
-CSinusString    g_CSinusString;
-CTutorialDlg    g_TutorialDlg;
-CMyString       g_FontTutorial;
-
 
 int main(int argc, char* argv[])
 {
     char achTemp[PATH_MAX];
 
-#ifdef __linux__
-    if (getenv("XDG_CONFIG_HOME"))
-    {
-        sprintf(g_achUserProfile, "%s/arkanoidsb/", getenv("XDG_CONFIG_HOME"));
-    }
-    else
-    {
-        sprintf(g_achUserProfile, "%s/.config/arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
-    }
-#elif _WIN32
-    int nLen = sizeof(achTemp);
-    //GetUserProfileDirectory(0, achTemp, nLen);
-    ExpandEnvironmentStrings("%USERPROFILE%", achTemp, nLen);
-    sprintf(g_achUserProfile, "%s\\.arkanoidsb\\", achTemp);
-#else
-    sprintf(g_achUserProfile, "%s/Library/Application Support/arkanoidsb/", getenv("HOME") ? getenv("HOME") : ".");
-#endif
     printf("%s by 'WE' Group. Copyright (c) 2006.\n", APP_Title);
     printf("version %d.%d.%d.\n", APP_VerMajor, APP_VerMinor, APP_VerRelease);
-    printf("Users config dir: %s\n", g_achUserProfile);
-    readConfig();
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        printf("Couldn't initialize SDL-video: %s\n", SDL_GetError());
+        exit(-2);
+    }
+    atexit(CommonQuit);
+
+    a::initialize();
 
     char achPath[PATH_MAX];
     char* pchEnd;
     strcpy(achPath, argv[0]);
 #ifdef __MACOSX__
-    if (false == g_Resource.Open("arkanoidsb.app/Contents/Resources/arkanoidsb.pak"))
+    if (false == a::res()->Open("arkanoidsb.app/Contents/Resources/arkanoidsb.pak"))
     {
 #else
-    if (false == g_Resource.Open("res/arkanoidsb.pak"))
+    if (false == a::res()->Open("res/arkanoidsb.pak"))
     {
 #endif
         if ((pchEnd = strrchr(achPath, '\\')) == 0 && (pchEnd = strrchr(achPath, '/')) == 0)
@@ -184,18 +150,11 @@ int main(int argc, char* argv[])
 #else
         strcat(achPath, "res/arkanoidsb.pak");
 #endif
-        if (false == g_Resource.Open(achPath))
+        if (false == a::res()->Open(achPath))
         {
             exit(-1);
         }
     }
-
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        printf("Couldn't initialize SDL-video: %s\n", SDL_GetError());
-        exit(-2);
-    }
-    atexit(CommonQuit);
 
     EnableCursor(false);
 
@@ -245,9 +204,9 @@ int main(int argc, char* argv[])
     unsigned nDataLen;
     unsigned char* pbyData;
 #ifndef __MACOSX__
-    pbyData = g_Resource.GetDataAllocMem("icon.bmp", nDataLen);
+    pbyData = a::res()->GetDataAllocMem("icon.bmp", nDataLen);
     SDL_Surface* pIcon  = SDL_LoadBMP_RW(SDL_RWFromMem(pbyData, nDataLen), 1);
-    g_Resource.FreeMem(pbyData);
+    a::res()->FreeMem(pbyData);
     if (0 != pIcon)
     {
         printf(" done.\n");
@@ -270,11 +229,11 @@ int main(int argc, char* argv[])
         for (size_t i = 0; i < sizeof(g_pachSnd) / sizeof(const char*); i++)
         {
             // try to load image from resource from
-            pbyData = g_Resource.GetDataAllocMem(g_pachSnd[i], nDataLen);
+            pbyData = a::res()->GetDataAllocMem(g_pachSnd[i], nDataLen);
             if (pbyData)
             {
                 g_apSnd[i]  = Mix_LoadWAV_RW(SDL_RWFromMem(pbyData, nDataLen), 1);
-                g_Resource.FreeMem(pbyData);
+                a::res()->FreeMem(pbyData);
                 if (0 != g_apSnd[i])
                 {
                     printf(" done.\n");
@@ -352,7 +311,7 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        SetVolumeSound(g_nVolumeS);
+        SetVolumeSound(m_options.soundVolume);
         PlayMusic2();
     }
 
@@ -398,48 +357,48 @@ int main(int argc, char* argv[])
             {
                 if (IsKeyPressed(SDLK_MINUS) && IsKeyStateChanged(SDLK_MINUS))
                 {
-                    SetVolumeMusic(--g_nVolumeM);
+                    SetVolumeMusic(--m_options.musicVolume);
                 }
                 if (IsKeyPressed(SDLK_EQUALS) && IsKeyStateChanged(SDLK_EQUALS))
                 {
-                    SetVolumeMusic(++g_nVolumeM);
+                    SetVolumeMusic(++m_options.musicVolume);
                 }
             }
             else
             {
                 if (IsKeyPressed(SDLK_MINUS) && IsKeyStateChanged(SDLK_MINUS))
                 {
-                    SetVolumeSound(--g_nVolumeS);
+                    SetVolumeSound(--m_options.soundVolume);
                 }
                 if (IsKeyPressed(SDLK_EQUALS) && IsKeyStateChanged(SDLK_EQUALS))
                 {
-                    SetVolumeSound(++g_nVolumeS);
+                    SetVolumeSound(++m_options.soundVolume);
                 }
             }
             if (g_nGameMode == APPS_MAINMENU)
             {
-                switch (g_MainMenu.DrawMenu())
+                switch (a::menu()->DrawMenu())
                 {
                 case 0:
                     g_nGameMode = APPS_EXIT;
                     break;
                 case 1:
-                    g_TutorialDlg.Reset();
-                    g_Arkanoid.InitNewGame(false);
+                    a::tutDlg()->Reset();
+                    a::ark()->InitNewGame(false);
                     g_nGameMode = APPS_GAME;
                     PlayMusic(true);
                     break;
                 case 2:
-                    g_TutorialDlg.Reset();
-                    g_Arkanoid.RestoreGame();
+                    a::tutDlg()->Reset();
+                    a::ark()->RestoreGame();
                     g_nGameMode = APPS_GAME;
                     PlayMusic(true);
                     break;
                 case 3:
                     // TODO check for valid custom levels
 
-                    g_TutorialDlg.Reset();
-                    g_Arkanoid.InitNewGame(true);
+                    a::tutDlg()->Reset();
+                    a::ark()->InitNewGame(true);
                     g_nGameMode = APPS_GAME;
                     PlayMusic(true);
                     break;
@@ -451,7 +410,7 @@ int main(int argc, char* argv[])
             }
             else if (g_nGameMode == APPS_GAME)
             {
-                if (g_Arkanoid.DrawScreen() == true)
+                if (a::ark()->DrawScreen() == true)
                 {
                     PlayMusic2();
                     g_nGameMode = APPS_SHOULDGETNAME;
@@ -459,14 +418,16 @@ int main(int argc, char* argv[])
             }
             else if (g_nGameMode == APPS_SHOULDGETNAME)
             {
-                g_Arkanoid.GetGameData(m_nLastGameScore, m_nLastGameLevel);
-                if (m_nLastGameScore > g_strHighScore[9].nScore)
+                auto& h = a::high();
+                h.lastScore = a::ark()->getScore();
+                h.lastLevel = a::ark()->getLevel();
+                if (h.lastScore > h.entries[9].score)
                 {
-                    g_MainMenu.SetEnterNameMode();
+                    a::menu()->SetEnterNameMode();
                 }
                 else
                 {
-                    g_MainMenu.SetMenuType(CMainMenu::MT_MAIN);
+                    a::menu()->SetMenuType(CMainMenu::MT_MAIN);
                 }
                 g_nGameMode = APPS_MAINMENU;
             }
@@ -480,7 +441,7 @@ int main(int argc, char* argv[])
             else if (g_nGameMode == APPS_EDITOR)
             {
                 m_LevelEditor.Draw();
-                if ((true == g_MainMenu.DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 200, WALL_Y2 - 30, CMainMenu::B_OK) && g_bMouseLB == true) || IsKeyPressed(SDLK_ESCAPE))
+                if ((true == a::menu()->DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 200, WALL_Y2 - 30, CMainMenu::B_OK) && g_bMouseLB == true) || IsKeyPressed(SDLK_ESCAPE))
                 {
                     g_bMouseLB  = false;
                     m_LevelEditor.Save();
@@ -498,17 +459,17 @@ int main(int argc, char* argv[])
                         }
             */          if (IsKeyPressed(SDLK_f) && IsKeyStateChanged(SDLK_f))
             {
-                g_bShowFps  = !g_bShowFps;
-                //printf("show fps %s\n", g_bShowFps == true ? "on" : "off");
+                m_options.showFps  = !m_options.showFps;
+                //printf("show fps %s\n", m_options.showFps == true ? "on" : "off");
             }
 
             if (g_bIsCursorVisible == true)
             {
                 Blit(g_nCursorX - 8, g_nCursorY, m_pCursor, 0);
             }
-            if (g_bShowFps == true)
+            if (m_options.showFps == true)
             {
-                g_Font.DrawNumber((int)fFPS, 5, 5, 1);
+                a::fnt1()->DrawNumber((int)fFPS, 5, 5, 1);
             }
 
             SDL_Flip(g_psurfScreen);
@@ -526,7 +487,7 @@ int main(int argc, char* argv[])
         else
         {
             SDL_FillRect(g_psurfScreen, 0, 0);
-            g_Font2.DrawString(0, SCREEN_HEIGHT / 2, "FOCUS LOST - GAME INACTIVE", 2);
+            a::fnt2()->DrawString(0, SCREEN_HEIGHT / 2, "FOCUS LOST - GAME INACTIVE", 2);
             SDL_Flip(g_psurfScreen);
             SDL_Delay(200);
         }
@@ -550,14 +511,16 @@ int main(int argc, char* argv[])
         }
     }
 
-    writeConfig();
     UnsetVideoMode();
     SDL_JoystickClose(g_pJoystick);
+
     exit(0);
 }
 
 void CommonQuit()
 {
+    a::initialize();
+
     Mix_CloseAudio();
     SDL_Quit();
 }
@@ -568,18 +531,18 @@ SDL_Surface* LoadImage(const char* filename, const Uint32 colorKey)
 
     // try to load image from resource from
     unsigned int nDataLen;
-    unsigned char* data = g_Resource.GetDataAllocMem(filename, nDataLen);
+    unsigned char* data = a::res()->GetDataAllocMem(filename, nDataLen);
     if (data)
     {
         SDL_Surface* tmp = IMG_Load_RW(SDL_RWFromMem(data, nDataLen), 1);
-        g_Resource.FreeMem(data);
+        a::res()->FreeMem(data);
         //SDL_Surface* tmp = IMG_Load(filename);
         if (tmp)
         {
             if (colorKey != 0xff000000)
             {
                 Uint32 key = SDL_MapRGB(g_psurfScreen->format, (colorKey >> 16) & 0xff, (colorKey >> 8) & 0xff, colorKey & 0xff);
-                int flag = SDL_SRCCOLORKEY | (g_bOGL ? 0 : SDL_RLEACCEL);
+                int flag = SDL_SRCCOLORKEY | (m_options.opengl ? 0 : SDL_RLEACCEL);
                 SDL_SetColorKey(tmp, flag, key | SDL_ALPHA_TRANSPARENT);
                 optimizedImage = SDL_DisplayFormat(tmp); //Create an optimized image
             }
@@ -673,7 +636,7 @@ bool UpdateKeys()
                 {
                     if (g_nGameMode == APPS_GAME)
                     {
-                        g_Arkanoid.SetPause();
+                        a::ark()->SetPause();
                     }
                     Mix_PauseMusic();
                     //printf("Arkanoid: Space Ball inactive\n");
@@ -715,13 +678,13 @@ bool UpdateKeys()
             case 4:
                 if (g_nGameMode == APPS_GAME)
                 {
-                    g_Bonus.SetPosStack(false);
+                    a::bonus()->SetPosStack(false);
                 }
                 break;
             case 5:
                 if (g_nGameMode == APPS_GAME)
                 {
-                    g_Bonus.SetPosStack(true);
+                    a::bonus()->SetPosStack(true);
                 }
                 break;
             }
@@ -748,7 +711,7 @@ bool UpdateKeys()
             }
             else if ((evt.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) && evt.key.keysym.sym == SDLK_RETURN)
             {
-                g_bFullscreen = !g_bFullscreen;
+                m_options.fullscreen = !m_options.fullscreen;
                 SwitchFullscreen();
             }
             break;
@@ -766,25 +729,25 @@ bool UpdateKeys()
             {
                 if (g_nGameMode == APPS_GAME)
                 {
-                    g_Bonus.SetPosStack(false);
+                    a::bonus()->SetPosStack(false);
                 }
             }
             else if (evt.jbutton.button == 3)
             {
                 if (g_nGameMode == APPS_GAME)
                 {
-                    g_Bonus.SetPosStack(true);
+                    a::bonus()->SetPosStack(true);
                 }
             }
             if (evt.jbutton.button == 4)
             {
                 if (g_nGameMode == APPS_GAME)
                 {
-                    g_Arkanoid.SendEsc();
+                    a::ark()->SendEsc();
                 }
                 if (g_nGameMode == APPS_MAINMENU)
                 {
-                    g_MainMenu.SendEsc();
+                    a::menu()->SendEsc();
                 }
             }
             break;
@@ -834,13 +797,13 @@ bool UpdateKeys()
         //g_bMouseRB    = false;
         //}
         //if(SDL_JoystickGetButton(g_pJoystick, 2)) {
-        //if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(false);
+        //if(g_nGameMode == APPS_GAME) a::bonus()->SetPosStack(false);
         //}
         //else if(SDL_JoystickGetButton(g_pJoystick, 3)) {
-        //if(g_nGameMode == APPS_GAME) g_Bonus.SetPosStack(true);
+        //if(g_nGameMode == APPS_GAME) a::bonus()->SetPosStack(true);
         //}
         //if(SDL_JoystickGetButton(g_pJoystick, 4)) {
-        //g_Arkanoid.SendEsc();
+        //a::ark()->SendEsc();
         //}
         int nDelta = SDL_JoystickGetAxis(g_pJoystick, 0);
         if ((nDelta < -3200) || (nDelta > 3200))
@@ -885,7 +848,7 @@ void PlayMusic(bool bFromFirst)
     Mix_HookMusicFinished(musicFinished);
     Mix_PlayMusic(g_apMod[nModule++], 0);
     nModule %= (sizeof(g_apMod) / sizeof(Mix_Music*) - 1);
-    SetVolumeMusic(g_nVolumeM);
+    SetVolumeMusic(m_options.musicVolume);
 }
 
 // menu music
@@ -902,7 +865,7 @@ void PlayMusic2()
     }
     Mix_HookMusicFinished(musicFinished2);
     Mix_PlayMusic(g_apMod[sizeof(g_apMod) / sizeof(Mix_Music*) - 1], 0);
-    SetVolumeMusic(g_nVolumeM);
+    SetVolumeMusic(m_options.musicVolume);
 }
 
 int PlaySound(int nSndIndex, int nLoopsCount)
@@ -933,136 +896,23 @@ void StopSound(int& nChannel)
 
 void SetVolumeMusic(int nVolume)
 {
-    if (g_bIsAudioSupported == false)
+    if (g_bIsAudioSupported)
     {
-        return;
+        m_options.musicVolume = std::min(10, std::max(0, nVolume));
+        printf("Music volume %d\n", m_options.musicVolume);
+        const float coeff = MIX_MAX_VOLUME / 10.0f;
+        Mix_VolumeMusic(m_options.musicVolume * coeff);
     }
-    g_nVolumeM  = nVolume;
-    if (g_nVolumeM < 0)
-    {
-        g_nVolumeM = 0;
-    }
-    if (g_nVolumeM > 10)
-    {
-        g_nVolumeM = 10;
-    }
-    const float fVolumeCorrection = MIX_MAX_VOLUME / 10.0f;
-    Mix_VolumeMusic(int(g_nVolumeM * fVolumeCorrection));
-    printf("Music volume %d\n", g_nVolumeM);
 }
 
 void SetVolumeSound(int nVolume)
 {
     if (g_bIsAudioSupported == false)
     {
-        return;
-    }
-    g_nVolumeS  = nVolume;
-    if (g_nVolumeS < 0)
-    {
-        g_nVolumeS = 0;
-    }
-    if (g_nVolumeS > 10)
-    {
-        g_nVolumeS = 10;
-    }
-    const float fVolumeCorrection = MIX_MAX_VOLUME / 10.0f;
-    Mix_Volume(-1, int(g_nVolumeS * fVolumeCorrection));
-    printf("Sound volume %d\n", g_nVolumeS);
-}
-
-void EncodeDecode(void* data, int size)
-{
-    Uint8* p = (Uint8*)data;
-    Uint8 by = 0xaa;
-    while (size--)
-    {
-        *p ^= by;
-        *p += 128;
-        by += 3;
-        p++;
-    }
-}
-
-void readConfig()
-{
-    char buffer[PATH_MAX];
-
-    sprintf(buffer, "%sconfig", g_achUserProfile);
-
-    FILE* file = fopen(buffer, "rb");
-    if (file)
-    {
-        fread(&g_nVolumeM, sizeof(g_nVolumeM), 1, file);
-        fread(&g_nVolumeS, sizeof(g_nVolumeS), 1, file);
-        fread(&g_bFullscreen, sizeof(g_bFullscreen), 1, file);
-        fread(&g_bOGL, sizeof(g_bOGL), 1, file);
-        fread(&g_nBppIndex, sizeof(g_nBppIndex), 1, file);
-        fread(&g_bShowFps, sizeof(g_bShowFps), 1, file);
-        fread(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, file);
-        fread(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, file);
-        fclose(file);
-    }
-    else
-    {
-        printf("error (%d) - %s\n", errno, strerror(errno));
-    }
-
-    sprintf(buffer, "%sscores", g_achUserProfile);
-    file = fopen(buffer, "rb");
-    if (file)
-    {
-        fread(&g_strHighScore, sizeof(g_strHighScore), 1, file);
-        fclose(file);
-        EncodeDecode(&g_strHighScore, sizeof(g_strHighScore));
-    }
-    else
-    {
-        printf("error (%d) - %s\n", errno, strerror(errno));
-    }
-}
-
-void writeConfig()
-{
-    // try to create directory if not exist
-#ifdef _WIN32
-    CreateDirectory(g_achUserProfile, 0);
-#else   //#elseif __linux__ // linux and mac os x
-    mkdir(g_achUserProfile, 0700);
-#endif
-
-    char buffer[PATH_MAX];
-
-    sprintf(buffer, "%sconfig", g_achUserProfile);
-    FILE* file = fopen(buffer, "wb");
-    if (file)
-    {
-        fwrite(&g_nVolumeM, sizeof(g_nVolumeM), 1, file);
-        fwrite(&g_nVolumeS, sizeof(g_nVolumeS), 1, file);
-        fwrite(&g_bFullscreen, sizeof(g_bFullscreen), 1, file);
-        fwrite(&g_bOGL, sizeof(g_bOGL), 1, file);
-        fwrite(&g_nBppIndex, sizeof(g_nBppIndex), 1, file);
-        fwrite(&g_bShowFps, sizeof(g_bShowFps), 1, file);
-        fwrite(&g_bTutorialMode, sizeof(g_bTutorialMode), 1, file);
-        fwrite(&g_bAutoBonusMode, sizeof(g_bAutoBonusMode), 1, file);
-        fclose(file);
-    }
-    else
-    {
-        printf("error (%d) - %s\n", errno, strerror(errno));
-    }
-
-    sprintf(buffer, "%sscores", g_achUserProfile);
-    file = fopen(buffer, "wb");
-    if (file)
-    {
-        EncodeDecode(&g_strHighScore, sizeof(g_strHighScore));
-        fwrite(&g_strHighScore, sizeof(g_strHighScore), 1, file);
-        fclose(file);
-    }
-    else
-    {
-        printf("error (%d) - %s\n", errno, strerror(errno));
+        m_options.soundVolume = std::min(10, std::max(0, nVolume));
+        printf("Music volume %d\n", m_options.soundVolume);
+        const float coeff = MIX_MAX_VOLUME / 10.0f;
+        Mix_Volume(-1, m_options.soundVolume * coeff);
     }
 }
 
@@ -1071,41 +921,26 @@ void SetVideoMode()
     SDL_WM_SetCaption("Arkanoid: Space Ball", 0);
 
     char achBuf[50];
-    Uint32 dwFlags = (g_bOGL == true ? SDL_GLSDL : 0) | SDL_HWSURFACE | SDL_DOUBLEBUF | (g_bFullscreen == true ? SDL_FULLSCREEN : 0);
+    Uint32 dwFlags = (m_options.opengl == true ? SDL_GLSDL : 0) | SDL_HWSURFACE | SDL_DOUBLEBUF | (m_options.fullscreen == true ? SDL_FULLSCREEN : 0);
     printf("Requested video flags:\n");
     printf("  glSDL: %s\n", dwFlags & SDL_GLSDL ? "yes" : "no");
     printf("  Fullscreen: %s\n", dwFlags & SDL_FULLSCREEN ? "yes" : "no");
 
-    /*static int    nFlags  = -1;
-      if(dwFlags != nFlags) {
-      nFlags    = dwFlags;
-      const int anBpp[] = { 32, 24, 16, 15, 8 };
-      for(int i = 0; i < sizeof(anBpp) / sizeof(int); i++) {
-      g_vecBpx.push_back(anBpp[i]);
-      }
-      }
-      int   nCount  = g_vecBpx.size();*/
-    int nCount = sizeof(g_anBpx) / sizeof(int);
-    if (g_nBppIndex < 0)
+    const uint32_t bppCount = sizeof(g_bppList) / sizeof(g_bppList[0]);
+    for (uint32_t i = 0; i < bppCount; i++)
     {
-        g_nBppIndex = nCount - 1;
-    }
-    do
-    {
-        g_nBppIndex %= sizeof(g_anBpx) / sizeof(int); // correct it to valid value
-        g_psurfScreen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, g_anBpx[g_nBppIndex], dwFlags);
-        if (!g_psurfScreen)
+        const auto bpp = g_bppList[m_options.bppIdx];
+        g_psurfScreen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, bpp, dwFlags);
+        if (g_psurfScreen != nullptr)
         {
-            printf("Couldn't set %d x %d x %d bpx video mode: %s.\n", SCREEN_WIDTH, SCREEN_HEIGHT, g_anBpx[g_nBppIndex], SDL_GetError());
-            // remove invalid pbx
-            //g_vecBpx.erase(g_vecBpx.begin() + g_nBppIndex);
-            //nCount    = g_vecBpx.size();
-            g_nBppIndex++;
+            break;
         }
-    }
-    while (!g_psurfScreen && --nCount > 0);
 
-    //g_psurfScreen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, (g_bOGL == false ? SDL_GLSDL : 0) | SDL_DOUBLEBUF | (g_bFullscreen == true ? SDL_FULLSCREEN : 0));
+        printf("Couldn't set %d x %d x %d bpx video mode: %s.\n", SCREEN_WIDTH, SCREEN_HEIGHT, bpp, SDL_GetError());
+        m_options.bppIdx = (m_options.bppIdx + 1) % bppCount;
+    }
+
+    //g_psurfScreen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, (m_options.opengl == false ? SDL_GLSDL : 0) | SDL_DOUBLEBUF | (m_options.fullscreen == true ? SDL_FULLSCREEN : 0));
     if (!g_psurfScreen)
     {
         exit(1);
@@ -1156,10 +991,10 @@ void SetVideoMode()
 #endif
     }
 
-    g_Font.LoadFont2("font_small.png", 5, -1, " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
-    g_Font2.LoadFont2("font_big.png", 16, 0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?-%,._:");
-    g_Font3.LoadFont2("font_small2.png", 5, -1, " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
-    g_FontTutorial.LoadFont2("font_tutorial.png", 5, 1, nullptr);
+    a::fnt1()->LoadFont2("font_small.png", 5, -1, " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
+    a::fnt2()->LoadFont2("font_big.png", 16, 0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?-%,._:");
+    a::fnt3()->LoadFont2("font_small2.png", 5, -1, " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~");
+    a::fntTut()->LoadFont2("font_tutorial.png", 5, 1, nullptr);
 
     m_pEnergyHole       = LoadImage("energyhole.png");
     m_pMonstPatrol      = LoadImage("monster_patrol.png");
@@ -1196,12 +1031,12 @@ void SetVideoMode()
     g_pSinusString      = LoadImage("sinusstring.png");
     g_pOptions          = LoadImage("options.png");
     //g_pBGStars        = LoadImage("stars.png");
-    g_Arkanoid.LoadBackground();
+    a::ark()->LoadBackground();
 }
 
 void UnsetVideoMode()
 {
-    g_Arkanoid.FreeBackground();
+    a::ark()->FreeBackground();
     //SDL_FreeSurface(g_pBGStars);
     SDL_FreeSurface(g_pOptions);
     SDL_FreeSurface(g_pSinusString);
@@ -1238,10 +1073,10 @@ void UnsetVideoMode()
     SDL_FreeSurface(m_pMonstPatrol);
     SDL_FreeSurface(m_pEnergyHole);
 
-    g_FontTutorial.Unload();
-    g_Font3.Unload();
-    g_Font2.Unload();
-    g_Font.Unload();
+    a::fntTut()->Unload();
+    a::fnt3()->Unload();
+    a::fnt2()->Unload();
+    a::fnt1()->Unload();
 }
 
 void SwitchFullscreen()

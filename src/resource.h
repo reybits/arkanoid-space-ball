@@ -1,6 +1,6 @@
 /**********************************************\
 *
-*  Andrey A. Ugolnik
+*  Copyright (C) 2006 by Andrey A. Ugolnik
 *  http://www.ugolnik.info
 *  andrey@ugolnik.info
 *
@@ -8,12 +8,10 @@
 
 #pragma once
 
-#include <SDL_rwops.h>
-#include <SDL_error.h>
 #include <vector>
 #include <string>
 
-class CResource
+class CResource final
 {
 public:
     CResource();
@@ -43,4 +41,3 @@ protected:
     std::string m_filename;
     FileList m_listFiles;
 };
-

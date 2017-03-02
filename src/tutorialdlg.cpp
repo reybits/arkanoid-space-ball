@@ -1,57 +1,46 @@
-/***************************************************************************
- *   Copyright (C) 2006 by Andrey A. Ugolnik                               *
- *   andrey@wegroup.org                                                    *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
-#include "arkanoidsb.h"
+/**********************************************\
+*
+*  Copyright (C) 2006 by Andrey A. Ugolnik
+*  http://www.ugolnik.info
+*  andrey@ugolnik.info
+*
+\**********************************************/
+
 #include "tutorialdlg.h"
+#include "accessor.h"
+#include "defines.h"
+#include "mystring.h"
 
-CTutorialDlg::CTutorialDlg() {
+#include <SDL.h>
+
+CTutorialDlg::CTutorialDlg(sOptions& options)
+    : m_options(options)
+{
 }
 
-
-CTutorialDlg::~CTutorialDlg() {
+CTutorialDlg::~CTutorialDlg()
+{
 }
 
-
-/*!
-    \fn CTutorialDlg::OpenDialog(int nX, int nY, const char *pchText)
-    nX, nY - center of object that require help
- */
-void CTutorialDlg::AddDialog(int nX, int nY, int nCategory, int nMsgId) {
-	if(g_bTutorialMode == true && m_abShownDialogs[nCategory][nMsgId] == false) {
-		m_abShownDialogs[nCategory][nMsgId]	= true;	// do not show this dialog again
-		_TUTORIAL	tut;
-		tut.nX			= nX;
-		tut.nY			= nY;
-		tut.nCategory	= nCategory;
-		tut.nMsgId		= nMsgId;
-		m_vecTutorialDlg.push_back(tut);
-		m_bTutorialMode	= g_bTutorialMode;
-	}
+void CTutorialDlg::AddDialog(int nX, int nY, int nCategory, int nMsgId)
+{
+    if (m_options.tutorialMode == true && m_abShownDialogs[nCategory][nMsgId] == false)
+    {
+        m_abShownDialogs[nCategory][nMsgId] = true; // do not show this dialog again
+        sTutorial   tut;
+        tut.nX          = nX;
+        tut.nY          = nY;
+        tut.nCategory   = nCategory;
+        tut.nMsgId      = nMsgId;
+        m_vecTutorialDlg.push_back(tut);
+        m_tutorialMode = m_options.tutorialMode;
+    }
 }
 
-
-/*!
-    \fn CTutorialDlg::ShowDialog(int nX, int nY)
- */
 bool CTutorialDlg::ShowDialog()
 {
-    const char* pachText[] = {
+    const char* pachText[] =
+    {
         "CANNON\n\nDANGER! Cannons fire on you (it's shots are inverted your mouse for 3 seconds).",
         "SELF DESTRUCTION\n\nWhen on level stay 5 bricks or less self destruction activated and starts within 20 seconds.",
         "CATCH BONUS\n\nYou catched bonus placed in to stack. Use right mouse button to use bonus. Use mouse scroll to select bonus.",
@@ -62,7 +51,8 @@ bool CTutorialDlg::ShowDialog()
         "BONUS BRICK\n\nATTENTION! This brick always has a bonus.",
         "STRONG BRICKS\n\n15 - hit-bricks. These bricks not need to be cleared.",
     };
-    const char* pachMonsters[] = {
+    const char* pachMonsters[] =
+    {
         "KAMIKAZE\n\nDANGER! It�s a kamikaze - this monster blows up the paddle.",
         "HELICOPTER\n\nFollows the nearest ball.",
         "ROBOTIC EYE\n\nATTENTION! Robotic eye follows your paddle.",
@@ -74,7 +64,8 @@ bool CTutorialDlg::ShowDialog()
         "FIERY METEORITE\n\nDANGER! Fiery meteorite blows up the paddle.",
         "ICE-METEORITE\n\nDANGER! Ice-meteorite freezes up the paddle for 3 seconds.",
     };
-    const char* pachBonuses[] = {
+    const char* pachBonuses[] =
+    {
         "SPLIT BALL\n\nThis bonus doubles number of your balls.",
         "FIREBALL\n\nYour ball will burn through bricks for 8 seconds.",
         "GHOST BALL\n\nATTENTION! Your ball will crossing through bricks for 8 seconds. (Bad bonus!)",
@@ -92,32 +83,37 @@ bool CTutorialDlg::ShowDialog()
         "NUCLEAR BOMB\n\nThis bonus decreases all bricks to 1-hit-bricks and kills all monsters.",
     };
 
-    if(g_bTutorialMode == true && m_vecTutorialDlg.size() > 0)
+    if (m_options.tutorialMode == true && m_vecTutorialDlg.size() > 0)
     {
         EnableCursor(true);
-        int	x	= m_vecTutorialDlg[0].nX + 15;
-        int	y	= m_vecTutorialDlg[0].nY - 188 - 15;
-        int	ndy	= 20;
+        int x   = m_vecTutorialDlg[0].nX + 15;
+        int y   = m_vecTutorialDlg[0].nY - 188 - 15;
+        int ndy = 20;
 
-        SDL_Rect	rc;
+        SDL_Rect    rc;
         SetRect(&rc, 0, 0, 256, 188);
-        if(m_vecTutorialDlg[0].nX > SCREEN_WIDTH / 2) {
-            rc.x	= 256;
-            x		= m_vecTutorialDlg[0].nX - 256 - 15;
+        if (m_vecTutorialDlg[0].nX > SCREEN_WIDTH / 2)
+        {
+            rc.x    = 256;
+            x       = m_vecTutorialDlg[0].nX - 256 - 15;
         }
-        if(m_vecTutorialDlg[0].nY < SCREEN_HEIGHT / 2) {
-            rc.y	= 188;
-            y		= m_vecTutorialDlg[0].nY + 15;
-            ndy	+= 26;
+        if (m_vecTutorialDlg[0].nY < SCREEN_HEIGHT / 2)
+        {
+            rc.y    = 188;
+            y       = m_vecTutorialDlg[0].nY + 15;
+            ndy += 26;
         }
 
-        int	nButton	= -1;
-        if(g_nCursorY >= y + ndy + 110 && g_nCursorY <= y + ndy + 110 + 20) {
-            if(g_nCursorX > x + 115 && g_nCursorX < x + 115 + 100) {
-                nButton	= 0;
+        int nButton = -1;
+        if (g_nCursorY >= y + ndy + 110 && g_nCursorY <= y + ndy + 110 + 20)
+        {
+            if (g_nCursorX > x + 115 && g_nCursorX < x + 115 + 100)
+            {
+                nButton = 0;
             }
-            if(g_nCursorX > x + 220 && g_nCursorX < x + 220 + 25) {
-                nButton	= 1;
+            if (g_nCursorX > x + 220 && g_nCursorX < x + 220 + 25)
+            {
+                nButton = 1;
             }
         }
         // show dialog
@@ -127,34 +123,42 @@ bool CTutorialDlg::ShowDialog()
         Blit(x + 115, y + ndy + 110, g_pTutorialDlg, &rc);
         SetRect(&rc, 220 + (nButton == 1 ? 256 : 0), 376, 25, 20);
         Blit(x + 220, y + ndy + 110, g_pTutorialDlg, &rc);
-        if(!m_bTutorialMode) {
+        if (!m_tutorialMode)
+        {
             SetRect(&rc, 0, 376, 12, 20);
             Blit(x + 197, y + ndy + 110, g_pTutorialDlg, &rc);
         }
         // show message
-        const char	*pchText	= 0;
-        switch(m_vecTutorialDlg[0].nCategory)
+        const char*  pchText    = 0;
+        switch (m_vecTutorialDlg[0].nCategory)
         {
-        case 0: pchText	= pachText[m_vecTutorialDlg[0].nMsgId];		break;
-        case 1: pchText	= pachMonsters[m_vecTutorialDlg[0].nMsgId];	break;
-        case 2: pchText	= pachBonuses[m_vecTutorialDlg[0].nMsgId];	break;
+        case 0:
+            pchText = pachText[m_vecTutorialDlg[0].nMsgId];
+            break;
+        case 1:
+            pchText = pachMonsters[m_vecTutorialDlg[0].nMsgId];
+            break;
+        case 2:
+            pchText = pachBonuses[m_vecTutorialDlg[0].nMsgId];
+            break;
         }
-        g_FontTutorial.SetRect(x + 20, y + ndy, 216, 110);
-        g_FontTutorial.DrawString2(0, 0, pchText);
-        //g_FontTutorial.SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        a::fntTut()->SetRect(x + 20, y + ndy, 216, 110);
+        a::fntTut()->DrawString2(0, 0, pchText);
+        //a::fntTut()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        if(nButton == 0 && g_bMouseLB == true) {
+        if (nButton == 0 && g_bMouseLB == true)
+        {
             printf("WE ARE HERE\n");
-            g_bMouseLB	= false;
-            m_bTutorialMode	= !m_bTutorialMode;
+            g_bMouseLB  = false;
+            m_tutorialMode = !m_tutorialMode;
         }
 
-        if(g_bMouseRB || (nButton == 1 && g_bMouseLB))
+        if (g_bMouseRB || (nButton == 1 && g_bMouseLB))
         {
             g_bMouseRB = false;
             g_bMouseLB = false;
             EnableCursor(false);
-            g_bTutorialMode		= m_bTutorialMode;
+            m_options.tutorialMode = m_tutorialMode;
             m_vecTutorialDlg[0] = m_vecTutorialDlg.back();
             m_vecTutorialDlg.pop_back();
         }
@@ -165,12 +169,7 @@ bool CTutorialDlg::ShowDialog()
     return false;
 }
 
-
-/*!
-    \fn CTutorialDlg::Reset()
- */
 void CTutorialDlg::Reset()
 {
-	memset(m_abShownDialogs, 0, sizeof(m_abShownDialogs));
+    memset(m_abShownDialogs, 0, sizeof(m_abShownDialogs));
 }
-

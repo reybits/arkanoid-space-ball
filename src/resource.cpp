@@ -1,6 +1,6 @@
 /**********************************************\
 *
-*  Andrey A. Ugolnik
+*  Copyright (C) 2006 by Andrey A. Ugolnik
 *  http://www.ugolnik.info
 *  andrey@ugolnik.info
 *
@@ -22,12 +22,12 @@ CResource::~CResource()
 bool CResource::Open(const char* filename)
 {
     FILE* f = fopen(filename, "rb");
-    if(f)
+    if (f)
     {
         unsigned signature;
         // read signature
         fread(&signature, 1, sizeof(signature), f);
-        if(signature == RES_SIGNATURE)
+        if (signature == RES_SIGNATURE)
         {
             // read files count
             unsigned count;
@@ -37,10 +37,10 @@ bool CResource::Open(const char* filename)
             m_listFiles.reserve(count);
 
             sItemHeader header;
-            for(unsigned i = 0; i < count; i++)
+            for (unsigned i = 0; i < count; i++)
             {
                 // read and store files list
-                if(sizeof(header) == fread(&header, 1, sizeof(header), f))
+                if (sizeof(header) == fread(&header, 1, sizeof(header), f))
                 {
                     EncodeData(&header, sizeof(header));
                     //printf("header '%s' %d bytes\n", header.name, header.length);
@@ -66,18 +66,18 @@ bool CResource::Open(const char* filename)
 
 unsigned char* CResource::GetDataAllocMem(const char* name, unsigned& length)
 {
-    if(m_filename.empty() == false)
+    if (m_filename.empty() == false)
     {
         printf("Opening '%s' resource...", name);
-        for(size_t i = 0, size = m_listFiles.size(); i < size; i++)
+        for (size_t i = 0, size = m_listFiles.size(); i < size; i++)
         {
-            if(strcmp(m_listFiles[i].name, name) == 0)
+            if (strcmp(m_listFiles[i].name, name) == 0)
             {
                 length = m_listFiles[i].length;
                 unsigned char* data = new unsigned char[length];
 
                 FILE* f = fopen(m_filename.c_str(), "rb");
-                if(f)
+                if (f)
                 {
                     fseek(f, m_listFiles[i].position, SEEK_SET);
                     fread(data, 1, length, f);
@@ -105,9 +105,8 @@ void CResource::FreeMem(unsigned char* data)
 void CResource::EncodeData(void* data, unsigned length)
 {
     unsigned char* p = static_cast<unsigned char*>(data);
-    while(length--)
+    while (length--)
     {
         *p++ ^= RES_XOR;
     }
 }
-

@@ -1,38 +1,41 @@
-// Bullet.h: interface for the CBullet class.
-//
-//////////////////////////////////////////////////////////////////////
+/**********************************************\
+*
+*  Copyright (C) 2006 by Andrey A. Ugolnik
+*  http://www.ugolnik.info
+*  andrey@ugolnik.info
+*
+\**********************************************/
 
-#if !defined(AFX_BULLET_H__EC7B9A82_2C3E_4B9F_901F_C27257812739__INCLUDED_)
-#define AFX_BULLET_H__EC7B9A82_2C3E_4B9F_901F_C27257812739__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-class CBullet {
+#include <SDL.h>
+#include <vector>
+
+class CBullet final
+{
 public:
-	bool GetPositionAndSize(SDL_Rect &rc, int& nPos, bool bFromFirst);
-	void Move();
-	bool IsAcross(int nX, int nY, int nWidth, int nHeight, bool &bRemoveAll, int &nType);
-	enum _TYPES { TYPE_LASER, TYPE_MISSILE, TYPE_PLASMA };
-	void AddBullets(int y, int nType);
-	void RemoveAll();
-	void Draw();
-	CBullet();
-	virtual ~CBullet();
-	void ChangeAngle(int nPos, bool bRotate);
+    CBullet();
+    ~CBullet();
+
+    bool GetPositionAndSize(SDL_Rect& rc, int& nPos, bool bFromFirst);
+    void Move();
+    bool IsAcross(int nX, int nY, int nWidth, int nHeight, bool& bRemoveAll, int& nType);
+    enum _TYPES { TYPE_LASER, TYPE_MISSILE, TYPE_PLASMA };
+    void AddBullets(int y, int nType);
+    void RemoveAll();
+    void Draw();
+    void ChangeAngle(int nPos, bool bRotate);
 
 protected:
-	int GetAngle(int nPos);
-	void RemoveByPos(int nPos);
-	struct _BULLET {
-		int		nType;
-		float		x, y;
-		float		nAngle;
-		int		w;	// laser related
-		Uint32	dwLaser;
-	};
-	std::vector<_BULLET>m_vecBullets;
+    int GetAngle(int nPos);
+    void RemoveByPos(int nPos);
+    struct _BULLET
+    {
+        int     nType;
+        float       x, y;
+        float       nAngle;
+        int     w;  // laser related
+        Uint32  dwLaser;
+    };
+    std::vector<_BULLET>m_vecBullets;
 };
-
-#endif // !defined(AFX_BULLET_H__EC7B9A82_2C3E_4B9F_901F_C27257812739__INCLUDED_)
