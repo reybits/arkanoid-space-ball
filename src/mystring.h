@@ -17,41 +17,49 @@ public:
     CMyString();
     ~CMyString();
 
-    bool LoadFont2(const char* pchFontName, int nSpace, int nKerning, const char* pchCharset);
-    void SetRect(int left, int top, int width, int height);
+    bool loadFont(const char* fontName, const char* fontIniName, const char* fontShadowName = nullptr);
+    bool loadFont(const char* fontName, int space, int kerning, const char* charset);
     void Unload();
-    enum { FONT_ALIGN_LEFT, FONT_ALIGN_RIGHT, FONT_ALIGN_CENTER, FONT_ALIGN_JUSTIFY };
-    void DrawNumber(int nNum, int nX, int nY, int nAlign = FONT_ALIGN_LEFT);
-    int GetStringWidth(const char* pchString);
-    int GetStringWidth2(const char* pchString, int& nSpaces);
-    void DrawStringSinus(int nX, int nY, const char* pchString, int nAplituda, int nPos, int nAlign = FONT_ALIGN_LEFT);
-    void DrawString(int nX, int nY, const char* pchString, int nAlign = FONT_ALIGN_LEFT);
-    void DrawString2(int nX, int nY, const char* pchString);
-    bool LoadFont(const char* pchFontName, const char* pchFontShadowName, const char* pchFontIniName);
-    bool LoadFont(const char* pchFontName, const char* pchFontIniName);
+
+    void SetRect(int left, int top, int width, int height);
+
+    enum class eAlign { Left, Right, Center, Justify };
+    void DrawNumber(int nNum, int nX, int nY, eAlign align = eAlign::Left);
+
+    void DrawStringSinus(int nX, int nY, const char* str, int nAplituda, int nPos, eAlign align = eAlign::Left);
+    void DrawString(int nX, int nY, const char* str, eAlign align = eAlign::Left);
+    void DrawString2(int nX, int nY, const char* str);
+
+    int GetStringWidth(const char* str);
+    int GetStringWidth(const char* str, int& spacesCount);
+
     void SetShadowOffset(int nDx = 1, int nDy = 1);
     void EnableShadow(bool bEnable = true);
 
 private:
-    int GetWordWidth(const char* pchString, int& nCharsCount);
-    bool isTransparent(Sint32 x) const;
-    int GetXpos(int nX, const char* pchString, int nAlign);
+    int GetWordWidth(const char* str, int& nCharsCount);
+    bool isTransparent(int x) const;
+    int GetXpos(int nX, const char* str, eAlign align);
     Uint32 RegisterFrame(const SDL_Rect& rc);
     Uint32 GetFrameWidth(Uint32 index);
     bool LoadProps(const char* pchName);
 
 private:
+    SDL_Surface* m_fnt;
+    SDL_Surface* m_shadow;
+
+    int m_lineHeight;
+
+    bool m_drawShadow;
+
     float m_fJustifyWidth;
-    int m_nKerning;
-    int m_nShadowDx, m_nShadowDy;
-    bool m_bIsShadowAvailable;
-    bool m_bDrawShadow;
-    SDL_Surface* m_psurFont;
-    SDL_Surface* m_psurFontShadow;
-    float m_afSin[360];
-    int m_nLineHeight;
-    std::vector<SDL_Rect> m_frames;
-    SDL_Rect m_WindowRect;
+    int m_kerning;
+    int m_nShadowDx;
+    int m_nShadowDy;
+
     int m_anSymbDy[256];
-    int m_anSymbIndex[256];
+    uint32_t m_symbIndex[256];
+    std::vector<SDL_Rect> m_frames;
+
+    SDL_Rect m_winRect;
 };

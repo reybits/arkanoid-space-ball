@@ -18,7 +18,6 @@
 
 CEnergyHole::CEnergyHole()
 {
-    RemoveAll();
 }
 
 CEnergyHole::~CEnergyHole()
@@ -35,10 +34,10 @@ void CEnergyHole::Draw()
     SDL_Rect rc;
     rc.x = 0;
     rc.w = rc.h = 80;
-    for (size_t i = 0; i < m_vecEnergyHole.size(); i++)
+    for (const auto& v : m_vecEnergyHole)
     {
-        rc.y = !m_vecEnergyHole[i].is_over ? 0 : 80;
-        Blit((Uint32)m_vecEnergyHole[i].x, (Uint32)m_vecEnergyHole[i].y, m_pEnergyHole, &rc);
+        rc.y = !v.is_over ? 0 : 80;
+        Blit(v.x, v.y, m_pEnergyHole, &rc);
     }
 }
 
@@ -56,42 +55,41 @@ void CEnergyHole::AddEnergyHole()
 
 void CEnergyHole::Move()
 {
-    Uint32 time = SDL_GetTicks();
+    auto curTime = SDL_GetTicks();
+    const float speed = g_fSpeedCorrection * 0.2f;
 
-    for (size_t i = 0; i < m_vecEnergyHole.size(); i++)
+    for (auto& v : m_vecEnergyHole)
     {
-        float speed = g_fSpeedCorrection * 0.2f;
-
         // change angle
-        if (m_vecEnergyHole[i].move_time + 5000 < time)
+        if (v.move_time + 5000 < curTime)
         {
-            m_vecEnergyHole[i].move_time = time;
-            m_vecEnergyHole[i].angle += a::rnd().Get(90);
-            m_vecEnergyHole[i].angle %= 360;
+            v.move_time = curTime;
+            v.angle += a::rnd().Get(90);
+            v.angle %= 360;
         }
-        m_vecEnergyHole[i].x += (speed * g_fSin[m_vecEnergyHole[i].angle]);
-        m_vecEnergyHole[i].y -= (speed * g_fCos[m_vecEnergyHole[i].angle]);
+        v.x += speed * g_fSin[v.angle];
+        v.y -= speed * g_fCos[v.angle];
 
-        m_vecEnergyHole[i].x = std::min<int>(RACKET_X - 80 - 60, m_vecEnergyHole[i].x);
-        m_vecEnergyHole[i].x = std::max<int>(WALL_X1, m_vecEnergyHole[i].x);
-        m_vecEnergyHole[i].y = std::min<int>(WALL_Y2 - 80, m_vecEnergyHole[i].y);
-        m_vecEnergyHole[i].y = std::max<int>(WALL_Y1, m_vecEnergyHole[i].y);
-        m_vecEnergyHole[i].is_over = false;
+        v.x = std::min<int>(RACKET_X - 80 - 60, v.x);
+        v.x = std::max<int>(WALL_X1, v.x);
+        v.y = std::min<int>(WALL_Y2 - 80, v.y);
+        v.y = std::max<int>(WALL_Y1, v.y);
+        v.is_over = false;
 
         SDL_Rect rc;
         // is ball over energy hole? correct ball angle then
         int idx = 0;
         while (a::ball()->GetPositionAndDiameter(rc, idx))
         {
-            int c1 = (m_vecEnergyHole[i].x + 80 / 2) - (rc.x + rc.w / 2);
-            int c2 = (m_vecEnergyHole[i].y + 80 / 2) - (rc.y + rc.w / 2);
+            const float c1 = (v.x + 80 * 0.5f) - (rc.x + rc.w * 0.5f);
+            const float c2 = (v.y + 80 * 0.5f) - (rc.y + rc.w * 0.5f);
             float distance = sqrtf(c1 * c1 + c2 * c2);
-            if (distance < 80 / 2)
+            if (distance < 80 * 0.5f)
             {
                 a::tutDlg()->AddDialog(rc.x + rc.w / 2, rc.y + rc.w / 2, 0, 5);
 
-                m_vecEnergyHole[i].is_over = true;
-                int angle = (int)(57.3 * asin(c2 / distance));
+                v.is_over = true;
+                int angle = (int)(57.3 * asinf(c2 / distance));
                 if (c1 > 0)
                 {
                     angle = a::ball()->GetAngle(idx - 1) - (90 + angle) % 360;
@@ -115,13 +113,13 @@ void CEnergyHole::Move()
         a::bullet()->GetPositionAndSize(rc, idx, true);
         while (a::bullet()->GetPositionAndSize(rc, idx, false))
         {
-            int c1 = (m_vecEnergyHole[i].x + 80 / 2) - (rc.x + rc.w / 2);
-            int c2 = (m_vecEnergyHole[i].y + 80 / 2) - (rc.y + rc.h / 2);
-            float distance = sqrtf(c1 * c1 + c2 * c2);
-            if (distance < 80 / 2)
+            const float c1 = (v.x + 80 * 0.5f) - (rc.x + rc.w * 0.5f);
+            const float c2 = (v.y + 80 * 0.5f) - (rc.y + rc.h * 0.5f);
+            const float distance = sqrtf(c1 * c1 + c2 * c2);
+            if (distance < 80 * 0.5f)
             {
                 a::tutDlg()->AddDialog(rc.x + rc.w / 2, rc.y + rc.h / 2, 0, 6);
-                m_vecEnergyHole[i].is_over = true;
+                v.is_over = true;
                 if (c2 > 0)
                 {
                     a::bullet()->ChangeAngle(idx - 1, false);

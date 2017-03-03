@@ -523,9 +523,9 @@ bool CGame::DoGameOver()
     FadeScreen();
 
     char    achBuf[50];
-    a::fnt2()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 - 10, "GAME OVER", CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 - 10, "GAME OVER", CMyString::eAlign::Center);
     sprintf(achBuf, "Your achieve %d level, and gain %d score points", m_nCurrentLevel + 1, m_nScore);
-    a::fnt1()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 + 20, achBuf, CMyString::FONT_ALIGN_CENTER);
+    a::fnt1()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 + 20, achBuf, CMyString::eAlign::Center);
 
     bool    bIsOver = a::menu()->DrawMenuButton(GO_ITEM_X, GO_ITEM_Y + 40, CMainMenu::B_OK);
     if (g_bMouseRB == true || (g_bMouseLB == true && true == bIsOver) || (IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)))
@@ -1072,7 +1072,7 @@ void CGame::DrawPaddle()
     }
     if (m_bPaddleIsInvert == true)
     {
-        a::fnt1()->DrawNumber(m_nPaddleInvertCount, 0, (int)m_nRacketY + PADDLE_HEIGHT, 2);
+        a::fnt1()->DrawNumber(m_nPaddleInvertCount, 0, (int)m_nRacketY + PADDLE_HEIGHT, CMyString::eAlign::Center);
     }
     a::fnt1()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     if (m_bCanMovePaddle == false)
@@ -1090,13 +1090,13 @@ void CGame::DrawStatistic()
 {
     char    achBuff[20];
     a::fnt2()->SetRect(97, 0, 56, SCREEN_HEIGHT);
-    a::fnt2()->DrawNumber(m_nCurrentLevel + 1, 99, 19, CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawNumber(m_nCurrentLevel + 1, 99, 19, CMyString::eAlign::Center);
 
     a::fnt2()->SetRect(174, 0, 141, SCREEN_HEIGHT);
-    a::fnt2()->DrawNumber(m_nScore, 177, 19, CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawNumber(m_nScore, 177, 19, CMyString::eAlign::Center);
 
     a::fnt2()->SetRect(338, 0, 56, SCREEN_HEIGHT);
-    a::fnt2()->DrawNumber(m_nLives >= 0 ? m_nLives : 0, 342, 19, CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawNumber(m_nLives >= 0 ? m_nLives : 0, 342, 19, CMyString::eAlign::Center);
     a::fnt2()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     int nX  = 598;
@@ -1188,9 +1188,9 @@ void CGame::DrawStatistic()
     else if (m_nBonusLevelType == 1)
     {
         sprintf(achBuff, "%d:%02d", m_nBonusLevelTicks / 60, m_nBonusLevelTicks % 60);
-        a::fnt1()->DrawString(5, 10, achBuff, 1);
+        a::fnt1()->DrawString(5, 10, achBuff, CMyString::eAlign::Right);
         //sprintf(achBuff, "power: %d%%", 100 / m_nGetReadyBallsLose);
-        //a::fnt1()->DrawString(5, 10, achBuff, 1);
+        //a::fnt1()->DrawString(5, 10, achBuff, CMyString::eAlign::Right);
     }
 }
 
@@ -1623,38 +1623,38 @@ bool CGame::DrawGetReady()
         sprintf(achBuf, "LEVEL %d\nGET READY!", m_nCurrentLevel + 1);
         if (m_pchGetReeadyInfo != 0 && m_nLevelPrev != -2)
         {
-            a::fnt3()->DrawString(0, 218, m_pchGetReeadyInfo, 2);
+            a::fnt3()->DrawString(0, 218, m_pchGetReeadyInfo, CMyString::eAlign::Center);
         }
     }
     else if (m_nBonusLevelType == 0)
     {
         sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
-        a::fnt3()->DrawString(0, 218, "You should destroy all cannons, don't lost more than 5 balls!", 2);
+        a::fnt3()->DrawString(0, 218, "You should destroy all cannons, don't lost more than 5 balls!", CMyString::eAlign::Center);
     }
     else if (m_nBonusLevelType == 1)
     {
         sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
-        a::fnt3()->DrawString(0, 218, "You should destroy all wreckage!", 2);
+        a::fnt3()->DrawString(0, 218, "You should destroy all wreckage!", CMyString::eAlign::Center);
     }
-    a::fnt2()->DrawString(0, 170, achBuf, CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawString(0, 170, achBuf, CMyString::eAlign::Center);
 
     // do not show that info while we restore game
     if (m_nLevelPrev != -2)
     {
         a::fnt1()->DrawString(200, 240 + 2, "Bricks destroyed");
-        a::fnt2()->DrawNumber(m_nGetReadyBricks, 200, 240, CMyString::FONT_ALIGN_RIGHT);
+        a::fnt2()->DrawNumber(m_nGetReadyBricks, 200, 240, CMyString::eAlign::Right);
 
         a::fnt1()->DrawString(200, 260 + 2, "Monsters destroyed");
-        a::fnt2()->DrawNumber(m_nGetReadyMonsters, 200, 260, CMyString::FONT_ALIGN_RIGHT);
+        a::fnt2()->DrawNumber(m_nGetReadyMonsters, 200, 260, CMyString::eAlign::Right);
 
         a::fnt1()->DrawString(200, 280 + 2, "Gained score");
-        a::fnt2()->DrawNumber(m_nGetReadyScore, 200, 280, CMyString::FONT_ALIGN_RIGHT);
+        a::fnt2()->DrawNumber(m_nGetReadyScore, 200, 280, CMyString::eAlign::Right);
 
         a::fnt1()->DrawString(200, 300 + 2, "Bonuses collected");
-        a::fnt2()->DrawNumber(m_nGetReadyBonuses, 200, 300, CMyString::FONT_ALIGN_RIGHT);
+        a::fnt2()->DrawNumber(m_nGetReadyBonuses, 200, 300, CMyString::eAlign::Right);
 
         a::fnt1()->DrawString(200, 320 + 2, "Balls lost");
-        a::fnt2()->DrawNumber(m_nGetReadyBallsLose, 200, 320, CMyString::FONT_ALIGN_RIGHT);
+        a::fnt2()->DrawNumber(m_nGetReadyBallsLose, 200, 320, CMyString::eAlign::Right);
     }
 
     bool    bIsOver = a::menu()->DrawMenuButton((SCREEN_WIDTH - 124) / 2, 350, CMainMenu::B_OK);
@@ -1774,8 +1774,8 @@ void CGame::DrawAreYouSure()
 #define MANU_ITEM_Y ((SCREEN_HEIGHT - 15) / 2)
 
     FadeScreen();
-    a::fnt2()->DrawString(0, MANU_ITEM_Y - 10, "ARE YOU SURE TO LEAVE", CMyString::FONT_ALIGN_CENTER);
-    a::fnt2()->DrawString(0, MANU_ITEM_Y + 10, "THIS BOARD", CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawString(0, MANU_ITEM_Y - 10, "ARE YOU SURE TO LEAVE", CMyString::eAlign::Center);
+    a::fnt2()->DrawString(0, MANU_ITEM_Y + 10, "THIS BOARD", CMyString::eAlign::Center);
 
     int nItem   = -1;
     if (true == a::menu()->DrawMenuButton(MENU_ITEM_X, MANU_ITEM_Y + 40, CMainMenu::B_OK))
@@ -1825,8 +1825,8 @@ void CGame::DrawPause()
 
     FadeScreen();
 
-    a::fnt2()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 - 10, "GAME PAUSED", CMyString::FONT_ALIGN_CENTER);
-    a::fnt1()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 + 20, "Press <P> key to unpause.", CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 - 10, "GAME PAUSED", CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 + 20, "Press <P> key to unpause.", CMyString::eAlign::Center);
 
     bool    bIsOver = a::menu()->DrawMenuButton(PAUSE_ITEM_X, PAUSE_ITEM_Y + 40, CMainMenu::B_OK);
     if (g_bMouseRB == true || (g_bMouseLB == true && true == bIsOver) ||

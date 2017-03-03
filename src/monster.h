@@ -32,23 +32,24 @@ public:
     void Draw2();
     void RemoveAll();
 
-protected:
+private:
+    void ChangeMonsterAngle(size_t idx);
+    void RemoveByPos(size_t idx);
+
+private:
     int m_nSndPatrol;
     bool m_bBackWall;
-    struct _MONSTER
+    struct sMonster
     {
         int nType;
-        float   x, y;
+        float x;
+        float y;
         int w, h, nFrame, nFramesCount, nAngle;
         float   fSpeed; // wreckage related
-        SDL_Surface* pSurface;
+        SDL_Surface* img;
         int nCaptureMode;           // MONST_HAND: 0 - none, 1 - ball captured, 2 - ball released
         int nCapturedBallIndex; // MONST_HAND: captured ball index
     };
-    void ChangeMonsterAngle(int nPos);
-    void RemoveByPos(int nPos);
-    std::vector<_MONSTER>m_vecMonster2;
-
-private:
-    std::vector<_MONSTER>m_vecMonster;
+    std::vector<sMonster>m_vecMonster2;
+    std::vector<sMonster>m_vecMonster;
 };

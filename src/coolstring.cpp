@@ -58,7 +58,7 @@ void CCoolString::Draw()
     {
         Blit(440, WALL_Y1, g_pTransp, &rc);
         a::fntTut()->SetRect(440, WALL_Y1 + 2, 160, 20);
-        a::fntTut()->DrawString(0, 0, m_vecCoolString[0].pchString, 2);
+        a::fntTut()->DrawString(0, 0, m_vecCoolString[0].pchString, CMyString::eAlign::Center);
         if (bStep == true && --m_vecCoolString[0].nSeconds == 0)
         {
             delete[] m_vecCoolString[0].pchString;

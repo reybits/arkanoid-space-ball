@@ -169,9 +169,9 @@ int CMainMenu::DrawStartGame()
     {
         nItem   = 6;
     }
-    a::fnt2()->DrawString(0, MENU_ITEM_Y - 110, m_achStoredLevelInfo, 2);
-    a::fnt1()->DrawString(0, MENU_ITEM_Y + 120, "Do you wish to get some help while playing (Tutorial)?", 2);
-    a::fnt2()->DrawString(0, MENU_ITEM_Y + 120 + 20 + 2, (m_options.tutorialMode == true ? "YES" : "NO"), 2);
+    a::fnt2()->DrawString(0, MENU_ITEM_Y - 110, m_achStoredLevelInfo, CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, MENU_ITEM_Y + 120, "Do you wish to get some help while playing (Tutorial)?", CMyString::eAlign::Center);
+    a::fnt2()->DrawString(0, MENU_ITEM_Y + 120 + 20 + 2, (m_options.tutorialMode == true ? "YES" : "NO"), CMyString::eAlign::Center);
     if (true == DrawMenuButton(SCREEN_WIDTH / 2 - 77 - 40, MENU_ITEM_Y + 120 + 20, B_PREV))
     {
         nItem   = 2;
@@ -180,8 +180,8 @@ int CMainMenu::DrawStartGame()
     {
         nItem   = 3;
     }
-    a::fnt1()->DrawString(0, MENU_ITEM_Y + 170, "Do you wish to auto use bonuses (like usual arkanoid)?", 2);
-    a::fnt2()->DrawString(0, MENU_ITEM_Y + 170 + 20 + 2, (m_options.autoBonusMode == true ? "YES" : "NO"), 2);
+    a::fnt1()->DrawString(0, MENU_ITEM_Y + 170, "Do you wish to auto use bonuses (like usual arkanoid)?", CMyString::eAlign::Center);
+    a::fnt2()->DrawString(0, MENU_ITEM_Y + 170 + 20 + 2, (m_options.autoBonusMode == true ? "YES" : "NO"), CMyString::eAlign::Center);
     if (true == DrawMenuButton(SCREEN_WIDTH / 2 - 77 - 40, MENU_ITEM_Y + 170 + 20, B_PREV))
     {
         nItem   = 4;
@@ -240,11 +240,11 @@ void CMainMenu::DrawMenuRules()
 
     if (nPage == 0)
     {
-        a::fnt2()->DrawString(0, 20, "BASIC CONTROLS", CMyString::FONT_ALIGN_CENTER);
+        a::fnt2()->DrawString(0, 20, "BASIC CONTROLS", CMyString::eAlign::Center);
         a::fnt1()->SetRect(100, 0, SCREEN_WIDTH - 200, SCREEN_HEIGHT);
         a::fnt1()->DrawString2(0,  50, "To manage your paddle, simply move your mouse in the direction you want the paddle to move. The Left mouse button will launch the sphere into play and shoot your weapons - if you have collected the appropriate power-up. The Esc key, or Pause key will pause the game and bring up menu screens.");
 
-        a::fnt2()->DrawString(0, 180, "GOALS", CMyString::FONT_ALIGN_CENTER);
+        a::fnt2()->DrawString(0, 180, "GOALS", CMyString::eAlign::Center);
         a::fnt1()->DrawString2(0, 210, "There are two main goals of \"Arkanoid: Space Ball\":");
         a::fnt1()->DrawString2(0, 230, "a) Keep your ball in play for as long as possible to advance to the next round.");
         a::fnt1()->DrawString2(0, 270, "b) Accumulate the highest score possible by breaking as many bricks, collecting as many power-ups, and destroying as many monsters as you can.");
@@ -252,7 +252,7 @@ void CMainMenu::DrawMenuRules()
     }
     else if (nPage == 1)
     {
-        a::fnt2()->DrawString(0, 20, "RULES OF PLAY", CMyString::FONT_ALIGN_CENTER);
+        a::fnt2()->DrawString(0, 20, "RULES OF PLAY", CMyString::eAlign::Center);
         a::fnt1()->SetRect(100, 0, SCREEN_WIDTH - 200, SCREEN_HEIGHT);
         a::fnt1()->DrawString2(0,  50, "To start, you are given three lives. The number of reserve lives is displayed on the scoreboard on the top of the screen. The game is over if you have no reserve spheres. Every 5000 points will get you a reserve life. Each level in \"Arkanoid: Space Ball\" is comprised of a varying number of bricks. Most of these bricks are destructible by bouncing your ball off of them (or shooting them) between one and four times. When all such one-to-four-hit bricks have been cleared, you will have successfully completed the level and will automatically advance to the next rlevel. Note that many levels contain 15-time-hit bricks that do not need to be cleared. All levels of the game are grouped into sets of 5. When you will complete a given set of 5 levels you reach a Bonus level. You have to reach as many scores as you can by shaking down enemy gunnery or debris flying on you at a Bonus level. If you have a Bonus level with gunnery you have to pass 5 balls. In case of debris �you have to pass 3 pushing off debris with paddle.\nThere are two modes of the game: the first one is usual when bonuses activate by taking them at once. The second mode is an accumulation of bonuses when you may chose any balls for using.");
         //a::fnt1()->DrawString(0, 350, "�� �� ������ ��������� 3 ������������ �������� � ��������.");
@@ -260,18 +260,18 @@ void CMainMenu::DrawMenuRules()
     }
     else if (nPage == 2)
     {
-        a::fnt2()->DrawString(0, 20, "BRICKS", CMyString::FONT_ALIGN_CENTER);
-        a::fnt1()->DrawString(0, 50, "One strike bricks (easy to destroy). Red animated brick always has a bonus.", CMyString::FONT_ALIGN_CENTER);
+        a::fnt2()->DrawString(0, 20, "BRICKS", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 50, "One strike bricks (easy to destroy). Red animated brick always has a bonus.", CMyString::eAlign::Center);
         for (i = BOX_0; i < BOX_DBL_0; i++)
         {
             DrawBrick(70 + ((i - 1) % 25) * 20, 80 + ((i - 1) / 25) * 30, i);
         }
-        a::fnt1()->DrawString(0, 160, "Strong bricks (4-strike briks)", CMyString::FONT_ALIGN_CENTER);
+        a::fnt1()->DrawString(0, 160, "Strong bricks (4-strike briks)", CMyString::eAlign::Center);
         for (i = BOX_DBL_0; i < BOX_IM_0; i++)
         {
             DrawBrick(220 + ((i - BOX_DBL_0) % 10) * 20, 190 + ((i - BOX_DBL_0) / 10) * 30, i);
         }
-        a::fnt1()->DrawString(0, 300, "Very strong (3), movable (3), mortiras (2), bombs (2)", CMyString::FONT_ALIGN_CENTER);
+        a::fnt1()->DrawString(0, 300, "Very strong (3), movable (3), mortiras (2), bombs (2)", CMyString::eAlign::Center);
         int x = (SCREEN_WIDTH - (BOX_END - BOX_IM_0) * 20 - 3 * 15) / 2;
         for (i = BOX_IM_0; i < BOX_END; i++)
         {
@@ -285,7 +285,7 @@ void CMainMenu::DrawMenuRules()
     }
     else if (nPage == 3)
     {
-        a::fnt2()->DrawString(0, 20, "POWER-UPS", CMyString::FONT_ALIGN_CENTER);
+        a::fnt2()->DrawString(0, 20, "POWER-UPS", CMyString::eAlign::Center);
         a::fnt1()->SetRect(100, 0, SCREEN_WIDTH - 200, SCREEN_HEIGHT);
         a::fnt1()->DrawString2(0, 50, "Power-ups are available across all environments. They have the potential to both help and hinder you as you try to complete each round.");
         a::fnt1()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -342,7 +342,7 @@ void CMainMenu::DrawMenuRules()
                 anFrameBonus[nBon]  %= 15;
             }
         }
-        a::fnt3()->DrawString(0, 400, "(*) - available only in registered version", 2);
+        a::fnt3()->DrawString(0, 400, "(*) - available only in registered version", CMyString::eAlign::Center);
     }
     else if (nPage == 4)
     {
@@ -355,7 +355,7 @@ void CMainMenu::DrawMenuRules()
                 a::monst()->AddMonster(40 + (i % 2 == 1 ? SCREEN_WIDTH / 2 : 0), 100 + (i / 2) * 60, i);
             }
         }
-        a::fnt2()->DrawString(0, 20, "OBJECTS", CMyString::FONT_ALIGN_CENTER);
+        a::fnt2()->DrawString(0, 20, "OBJECTS", CMyString::eAlign::Center);
         a::monst()->Draw();
         const char*  pachDescr[]    =
         {
@@ -379,24 +379,24 @@ void CMainMenu::DrawMenuRules()
     }
     else if (nPage == 5)
     {
-        a::fnt2()->DrawString(0, 100, "CREDITS", CMyString::FONT_ALIGN_CENTER);
-        a::fnt3()->DrawString(0, 130, "'WE' Group", 2);
+        a::fnt2()->DrawString(0, 100, "CREDITS", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 130, "'WE' Group", CMyString::eAlign::Center);
 #if !defined(REMOVE_URLS)
-        a::fnt1()->DrawString(0,  150, "http://www.wegroup.org", 2);
-        a::fnt1()->DrawString(0,  170, "Copyright (c) 2006-2012. All Rights Reserved.", 2);
-        a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::FONT_ALIGN_CENTER);
-        a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", 2);
-        a::fnt1()->DrawString(0,  270, "http://www.libsdl.org", 2);
-        a::fnt3()->DrawString(0, 290, "glSDL / David Olofson", 2);
-        a::fnt1()->DrawString(0,  310, "http://www.olofson.net", 2);
-        a::fnt3()->DrawString(0, 330, "Music / Sergey Eybog", 2);
-        a::fnt1()->DrawString(0,  350, "http://www.lesser-vibes.com", 2);
+        a::fnt1()->DrawString(0,  150, "http://www.wegroup.org", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0,  170, "Copyright (c) 2006-2012. All Rights Reserved.", CMyString::eAlign::Center);
+        a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0,  270, "http://www.libsdl.org", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 290, "glSDL / David Olofson", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0,  310, "http://www.olofson.net", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 330, "Music / Sergey Eybog", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0,  350, "http://www.lesser-vibes.com", CMyString::eAlign::Center);
 #else
-        a::fnt1()->DrawString(0,  150, "Copyright (c) 2006-2007. All Rights Reserved.", 2);
-        a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::FONT_ALIGN_CENTER);
-        a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", 2);
-        a::fnt3()->DrawString(0, 270, "glSDL / David Olofson", 2);
-        a::fnt3()->DrawString(0, 290, "Music / Sergey Eybog", 2);
+        a::fnt1()->DrawString(0,  150, "Copyright (c) 2006-2007. All Rights Reserved.", CMyString::eAlign::Center);
+        a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 270, "glSDL / David Olofson", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 290, "Music / Sergey Eybog", CMyString::eAlign::Center);
 #endif
     }
 
@@ -411,7 +411,7 @@ void CMainMenu::DrawMenuRules()
 
     char    achBuf[20];
     sprintf(achBuf, "Page %d of %d", nPage + 1, 6);
-    a::fnt1()->DrawString(10, SCREEN_HEIGHT - 22, achBuf, CMyString::FONT_ALIGN_RIGHT);
+    a::fnt1()->DrawString(10, SCREEN_HEIGHT - 22, achBuf, CMyString::eAlign::Right);
 
     int nItem   = -1;
     if (true == DrawMenuButton(MENU_ITEM_X + 62, 430, B_OK))
@@ -499,8 +499,8 @@ void CMainMenu::DrawMenuHighScore()
     char    achBuf[102];
 
     a::fnt2()->DrawString(20, nScoreY - 20, "BEST PLAYERS NAME");
-    a::fnt2()->DrawString(100, nScoreY - 20, "SCORE", 1);
-    a::fnt2()->DrawString(20, nScoreY - 20, "LEV", 1);
+    a::fnt2()->DrawString(100, nScoreY - 20, "SCORE", CMyString::eAlign::Right);
+    a::fnt2()->DrawString(20, nScoreY - 20, "LEV", CMyString::eAlign::Right);
     auto& h = m_highscores.entries;
     for (int i = 0; i < 10; i++)
     {
@@ -513,7 +513,7 @@ void CMainMenu::DrawMenuHighScore()
             }
             else
             {
-                a::fnt1()->DrawString(0, 80, "Enter Your name, please", CMyString::FONT_ALIGN_CENTER);
+                a::fnt1()->DrawString(0, 80, "Enter Your name, please", CMyString::eAlign::Center);
                 int nLen = strlen(m_achName);
                 if (nLen < 100)
                 {
@@ -548,15 +548,15 @@ void CMainMenu::DrawMenuHighScore()
                     m_achName[nLen - 1] = 0;
                 }
             }
-            a::fnt2()->DrawNumber(h[i].score, 100, (i + 1) * 20 + nScoreY, 1);
-            a::fnt2()->DrawNumber(h[i].level, 20, (i + 1) * 20 + nScoreY, 1);
+            a::fnt2()->DrawNumber(h[i].score, 100, (i + 1) * 20 + nScoreY, CMyString::eAlign::Right);
+            a::fnt2()->DrawNumber(h[i].level, 20, (i + 1) * 20 + nScoreY, CMyString::eAlign::Right);
         }
         else
         {
             a::fnt2()->DrawNumber(i + 1, 20, (i + 1) * 20 + nScoreY);
             a::fnt1()->DrawString(60, (i + 1) * 20 + nScoreY, h[i].name);
-            a::fnt2()->DrawNumber(h[i].score, 100, (i + 1) * 20 + nScoreY, 1);
-            a::fnt2()->DrawNumber(h[i].level, 20, (i + 1) * 20 + nScoreY, 1);
+            a::fnt2()->DrawNumber(h[i].score, 100, (i + 1) * 20 + nScoreY, CMyString::eAlign::Right);
+            a::fnt2()->DrawNumber(h[i].level, 20, (i + 1) * 20 + nScoreY, CMyString::eAlign::Right);
         }
     }
 
@@ -693,28 +693,28 @@ void CMainMenu::DrawMenuOptions()
         }
     }
 
-    a::fnt1()->DrawString(0, 100 - 15, "Music volume", 2);
-    a::fnt1()->DrawString(0, 150 - 15, "Sound Effects volume", 2);
-    a::fnt1()->DrawString(0, 200 - 15, "Fullscreen mode", 2);
-    a::fnt1()->DrawString(0, 250 - 15, "Color depth (bits-per-pixel)", 2);
-    a::fnt1()->DrawString(0, 300 - 15, "Use OpenGL rendering", 2);
+    a::fnt1()->DrawString(0, 100 - 15, "Music volume", CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, 150 - 15, "Sound Effects volume", CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, 200 - 15, "Fullscreen mode", CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, 250 - 15, "Color depth (bits-per-pixel)", CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, 300 - 15, "Use OpenGL rendering", CMyString::eAlign::Center);
     if (m_optionsDirty)
     {
-        a::fnt3()->DrawString(0, 340, "Apply settings", 2);
+        a::fnt3()->DrawString(0, 340, "Apply settings", CMyString::eAlign::Center);
     }
 
     char achBuf[10];
     sprintf(achBuf, "%d%%", m_options.musicVolume * 10);
-    a::fnt2()->DrawString(0, 100 + 2, achBuf, 2);//    a::fnt2()->DrawNumber(m_options.musicVolume, 82, 180, 2);
+    a::fnt2()->DrawString(0, 100 + 2, achBuf, CMyString::eAlign::Center);//    a::fnt2()->DrawNumber(m_options.musicVolume, 82, 180, 2);
     sprintf(achBuf, "%d%%", m_options.soundVolume * 10);
-    a::fnt2()->DrawString(0, 150 + 2, achBuf, 2);//a::fnt2()->DrawNumber(m_options.soundVolume, 82, 210, 2);
-    a::fnt2()->DrawString(0, 200 + 2, (m_options.fullscreen == true ? "YES" : "NO"), 2);
-    a::fnt2()->DrawNumber(g_bppList[m_options.bppIdx], 0, 250 + 2, 2);
-    a::fnt2()->DrawString(0, 300 + 2, (m_options.opengl == true ? "YES" : "NO"), 2);
+    a::fnt2()->DrawString(0, 150 + 2, achBuf, CMyString::eAlign::Center);//a::fnt2()->DrawNumber(m_options.soundVolume, 82, 210, 2);
+    a::fnt2()->DrawString(0, 200 + 2, (m_options.fullscreen == true ? "YES" : "NO"), CMyString::eAlign::Center);
+    a::fnt2()->DrawNumber(g_bppList[m_options.bppIdx], 0, 250 + 2, CMyString::eAlign::Center);
+    a::fnt2()->DrawString(0, 300 + 2, (m_options.opengl == true ? "YES" : "NO"), CMyString::eAlign::Center);
 
     a::fnt1()->DrawString(0, SCREEN_HEIGHT - 52, "<Shift> + <+> or <Shift> + <-> - increase/decrease music volume.\n"\
-                      "<+> or <->  - increase/decrease effects volume", CMyString::FONT_ALIGN_CENTER);
-    a::fnt1()->DrawString(0, SCREEN_HEIGHT - 20, "<Esc> return to main menu.", CMyString::FONT_ALIGN_CENTER);
+                      "<+> or <->  - increase/decrease effects volume", CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, SCREEN_HEIGHT - 20, "<Esc> return to main menu.", CMyString::eAlign::Center);
 }
 
 void CMainMenu::SetMenuType(int nType, bool bReturnToGame)

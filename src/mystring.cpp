@@ -14,23 +14,34 @@
 #include <cassert>
 #include <cmath>
 
-CMyString::CMyString()
+namespace
 {
-    m_psurFont              = 0;
-    m_psurFontShadow        = 0;
-    m_bIsShadowAvailable    = false;
-    m_nShadowDx             = 1;
-    m_nShadowDy             = 1;
-    m_nKerning              = 0;
-    m_nLineHeight           = 0;
-    m_WindowRect.x          = 0;
-    m_WindowRect.y          = 0;
-    m_WindowRect.w          = SCREEN_WIDTH;
-    m_WindowRect.h          = SCREEN_HEIGHT;
-    for (int i = 0; i < 360; i++)
+
+    bool InitializeSin = true;
+    float Sin[360];
+
+}
+
+CMyString::CMyString()
+    : m_fnt(nullptr)
+    , m_shadow(nullptr)
+    , m_lineHeight(0)
+    , m_drawShadow(false)
+    , m_fJustifyWidth(0.0f)
+    , m_kerning(0)
+    , m_nShadowDx(1)
+    , m_nShadowDy(1)
+{
+    if (InitializeSin)
     {
-        m_afSin[i] = sinf((M_PI / 180.0f) * i);
+        InitializeSin = false;
+        for (int i = 0; i < 360; i++)
+        {
+            Sin[i] = sinf((M_PI / 180.0f) * i);
+        }
     }
+
+    m_winRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 }
 
 CMyString::~CMyString()
@@ -38,27 +49,24 @@ CMyString::~CMyString()
     Unload();
 }
 
-bool CMyString::LoadFont(const char* pchFontName, const char* pchFontIniName)
+bool CMyString::loadFont(const char* fontName, const char* fontIniName, const char* fontShadowName)
 {
-    m_psurFont = LoadImage(pchFontName);
-    if (m_psurFont != nullptr)
+    if (fontShadowName != nullptr)
     {
-        return LoadProps(pchFontIniName);
+        m_shadow = LoadImage(fontShadowName);
+        if (m_shadow != nullptr)
+        {
+            m_drawShadow = true;
+        }
+    }
+
+    m_fnt = LoadImage(fontName);
+    if (m_fnt != nullptr)
+    {
+        return LoadProps(fontIniName);
     }
 
     return false;
-}
-
-bool CMyString::LoadFont(const char* pchFontName, const char* pchFontShadowName, const char* pchFontIniName)
-{
-    m_psurFontShadow = LoadImage(pchFontShadowName);
-    if (m_psurFontShadow != nullptr)
-    {
-        m_bIsShadowAvailable = true;
-        m_bDrawShadow = true;
-    }
-
-    return LoadFont(pchFontName, pchFontIniName);
 }
 
 void CMyString::SetShadowOffset(int nDx, int nDy)
@@ -69,7 +77,7 @@ void CMyString::SetShadowOffset(int nDx, int nDy)
 
 void CMyString::EnableShadow(bool bEnable)
 {
-    m_bDrawShadow = bEnable;
+    m_drawShadow = bEnable;
 }
 
 Uint32 CMyString::GetFrameWidth(Uint32 index)
@@ -81,113 +89,118 @@ Uint32 CMyString::GetFrameWidth(Uint32 index)
     return 0;
 }
 
-void CMyString::DrawString(int nX, int nY, const char* pchString, int nAlign)
+void CMyString::DrawString(int nX, int nY, const char* str, eAlign align)
 {
-    if (pchString == NULL)
+    if (str == nullptr)
     {
         return;
     }
 
-    int nYPos   = m_WindowRect.y + nY;
-    float   nXPos   = GetXpos(nX, pchString, nAlign);
+    int nYPos = m_winRect.y + nY;
+    float nXPos = GetXpos(nX, str, align);
 
-    Uint32  dwFrame     = 0;
-    int     nFrameWidth = 0;
-    while (*pchString)
+    while (*str)
     {
-        Uint8   bySymb  = *pchString++;
+        const uint8_t bySymb = *str++;
         if (bySymb == '\n')
         {
-            nXPos   = GetXpos(nX, pchString, nAlign);
-            nYPos   += m_nLineHeight;
+            nXPos = GetXpos(nX, str, align);
+            nYPos += m_lineHeight;
             continue;
         }
-        if (nAlign == FONT_ALIGN_JUSTIFY && bySymb == ' ')
+        if (align == eAlign::Justify && bySymb == ' ')
         {
-            nXPos   += m_fJustifyWidth;
+            nXPos += m_fJustifyWidth;
             continue;
         }
-        dwFrame     = m_anSymbIndex[bySymb];
-        nFrameWidth = GetFrameWidth(dwFrame);
-        SDL_Rect    rc, rcShadow;
-        rc.x    = (Sint16)nXPos;
-        rc.y    = nYPos + m_anSymbDy[bySymb];
-        if (m_bDrawShadow == true && m_bIsShadowAvailable == true)
+
+        const auto idx = m_symbIndex[bySymb];
+        auto frame = &m_frames[idx];
+
+        SDL_Rect rc;
+        rc.x = nXPos;
+        rc.y = nYPos + m_anSymbDy[bySymb];
+        if (m_drawShadow == true && m_shadow != nullptr)
         {
-            rcShadow.x  = rc.x + m_nShadowDx;
-            rcShadow.y  = rc.y + m_nShadowDy;
-            SDL_BlitSurface(m_psurFontShadow, &m_frames[dwFrame], g_psurfScreen, &rcShadow);
+            SDL_Rect rcShadow;
+            rcShadow.x = rc.x + m_nShadowDx;
+            rcShadow.y = rc.y + m_nShadowDy;
+            SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
         }
-        SDL_BlitSurface(m_psurFont, &m_frames[dwFrame], g_psurfScreen, &rc);
-        nXPos   += nFrameWidth + m_nKerning;
+        SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
+
+        const int width = GetFrameWidth(idx);
+        nXPos += width + m_kerning;
     }
 }
 
-int CMyString::GetXpos(int nX, const char* pchString, int nAlign)
+int CMyString::GetXpos(int nX, const char* str, eAlign align)
 {
-    if (nAlign == FONT_ALIGN_RIGHT)
+    if (align == eAlign::Right)
     {
-        return m_WindowRect.x + m_WindowRect.w - nX - GetStringWidth(pchString);
+        return m_winRect.x + m_winRect.w - nX - GetStringWidth(str);
     }
-    else if (nAlign == FONT_ALIGN_CENTER)
+    else if (align == eAlign::Center)
     {
-        return m_WindowRect.x + (m_WindowRect.w - GetStringWidth(pchString)) / 2;
+        return m_winRect.x + (m_winRect.w - GetStringWidth(str)) / 2;
     }
-    else if (nAlign == FONT_ALIGN_LEFT)
+    else if (align == eAlign::Left)
     {
-        return m_WindowRect.x + nX;
+        return m_winRect.x + nX;
     }
     else
     {
         int nSpaces;
-        int nWidth  = GetStringWidth2(pchString, nSpaces);
-        m_fJustifyWidth = (m_WindowRect.w - nWidth) / (float)nSpaces;
-        return m_WindowRect.x + nX;
+        int nWidth = GetStringWidth(str, nSpaces);
+        m_fJustifyWidth = (m_winRect.w - nWidth) / (float)nSpaces;
+        return m_winRect.x + nX;
     }
 }
 
-int CMyString::GetWordWidth(const char* pchString, int& nCharsCount)
+int CMyString::GetWordWidth(const char* str, int& nCharsCount)
 {
-    int nStrWidth   = 0;
-    nCharsCount     = 0;
-    while (*pchString && *pchString != ' ' &&  *pchString != '\n')
+    int nStrWidth = 0;
+    nCharsCount = 0;
+    while (*str && *str != ' ' &&  *str != '\n')
     {
         nCharsCount++;
-        nStrWidth   += GetFrameWidth(m_anSymbIndex[(int) * pchString++]);
+        nStrWidth += GetFrameWidth(m_symbIndex[(int)*str++]);
     }
 
-    return  nStrWidth + m_nKerning * nCharsCount;
+    return nStrWidth + m_kerning * nCharsCount;
 }
 
-void CMyString::DrawString2(int nX, int nY, const char* pchString)
+void CMyString::DrawString2(int nX, int nY, const char* str)
 {
-    if (pchString == NULL)
+    if (str == nullptr)
     {
         return;
     }
 
-    int nYPos   = m_WindowRect.y + nY;
+    int nYPos = m_winRect.y + nY;
 
-    Uint32  dwFrame = 0;
-    int nFrameWidth = 0;
-    int nSpaceWidth = GetFrameWidth(m_anSymbIndex[(int)' ']);
+    int nSpaceWidth = GetFrameWidth(m_symbIndex[(int)' ']);
 
-    while (*pchString)
+    while (*str)
     {
-        char*    pchTmp = (char*)pchString;
-        int nCharsWord, nCharsLine  = 0, nSpaces    = -1, nWidthWord, nWidthLine    = 0;
+        const char* pchTmp = str;
+        int nCharsWord;
+        int nCharsLine = 0;
+        int nSpaces = -1;
+        int nWidthWord;
+        int nWidthLine = 0;
         while (*pchTmp)
         {
-            nWidthWord  = GetWordWidth(pchTmp, nCharsWord);
-            if (nWidthLine + nWidthWord + nSpaceWidth * nSpaces < m_WindowRect.w)
+            nWidthWord = GetWordWidth(pchTmp, nCharsWord);
+            if (nWidthLine + nWidthWord + nSpaceWidth * nSpaces < m_winRect.w)
             {
-                nWidthLine  += nWidthWord;
-                pchTmp      += nCharsWord;
-                nCharsLine  += nCharsWord;
+                nWidthLine += nWidthWord;
+                pchTmp     += nCharsWord;
+                nCharsLine += nCharsWord;
                 nSpaces++;
                 while (*pchTmp == ' ')
                 {
-                    pchTmp++;    // skip spaces
+                    pchTmp++; // skip spaces
                 }
             }
             else
@@ -195,11 +208,11 @@ void CMyString::DrawString2(int nX, int nY, const char* pchString)
                 break;
             }
         }
-        m_fJustifyWidth = (m_WindowRect.w - nWidthLine) / (float)nSpaces;
-        float   nXPos   = m_WindowRect.x + nX;
+        m_fJustifyWidth = (m_winRect.w - nWidthLine) / (float)nSpaces;
+        float nXPos = m_winRect.x + nX;
         while (nCharsLine)
         {
-            Uint8   bySymb  = *pchString++;
+            Uint8 bySymb = *str++;
             if (bySymb == ' ')
             {
                 if (*pchTmp)
@@ -208,123 +221,127 @@ void CMyString::DrawString2(int nX, int nY, const char* pchString)
                 }
                 else
                 {
-                    nXPos    += nSpaceWidth;
+                    nXPos += nSpaceWidth;
                 }
                 continue;
             }
             nCharsLine--;
-            dwFrame     = m_anSymbIndex[bySymb];
-            nFrameWidth = GetFrameWidth(dwFrame);
-            SDL_Rect    rc, rcShadow;
-            rc.x    = (int)nXPos;
-            rc.y    = nYPos + m_anSymbDy[bySymb];
-            if (m_bDrawShadow == true && m_bIsShadowAvailable == true)
+
+            const auto idx = m_symbIndex[bySymb];
+            auto frame = &m_frames[idx];
+
+            SDL_Rect rc;
+            rc.x = nXPos;
+            rc.y = nYPos + m_anSymbDy[bySymb];
+            if (m_drawShadow == true && m_shadow != nullptr)
             {
-                rcShadow.x  = rc.x + m_nShadowDx;
-                rcShadow.y  = rc.y + m_nShadowDy;
-                SDL_BlitSurface(m_psurFontShadow, &m_frames[dwFrame], g_psurfScreen, &rcShadow);
+                SDL_Rect rcShadow;
+                rcShadow.x = rc.x + m_nShadowDx;
+                rcShadow.y = rc.y + m_nShadowDy;
+                SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
             }
-            SDL_BlitSurface(m_psurFont, &m_frames[dwFrame], g_psurfScreen, &rc);
-            nXPos   += nFrameWidth + m_nKerning;
+            SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
+
+            const int width = GetFrameWidth(idx);
+            nXPos += width + m_kerning;
         }
-        nYPos   += m_nLineHeight;
-        if (*pchString == '\n')
+        nYPos += m_lineHeight;
+        if (*str == '\n')
         {
-            pchString++;
+            str++;
         }
-        while (*pchString == ' ')
+        while (*str == ' ')
         {
-            pchString++;    // skip spaces
+            str++; // skip spaces
         }
     }
 }
 
-void CMyString::DrawStringSinus(int nX, int nY, const char* pchString, int nAplituda, int nPos, int nAlign)
+void CMyString::DrawStringSinus(int nX, int nY, const char* str, int nAplituda, int nPos, eAlign align)
 {
-    if (pchString == NULL)
+    if (str == nullptr)
     {
         return;
     }
 
-    int nYPos   = m_WindowRect.y + nY;
-    int nXPos   = GetXpos(nX, pchString, nAlign);
+    int nYPos = m_winRect.y + nY;
+    int nXPos = GetXpos(nX, str, align);
 
-    Uint32  dwFrame     = 0;
-    int     nFrameWidth = 0;
-    while (*pchString)
+    while (*str)
     {
-        nPos    %= 360;
-        Uint8   bySymb  = *pchString++;
+        nPos %= 360;
+        Uint8 bySymb = *str++;
 
         if (bySymb == '\n')
         {
-            nXPos   = GetXpos(nX, pchString, nAlign);
-            nYPos   += m_nLineHeight;
+            nXPos = GetXpos(nX, str, align);
+            nYPos += m_lineHeight;
             continue;
         }
 
-        dwFrame     = m_anSymbIndex[bySymb];
-        nFrameWidth = GetFrameWidth(dwFrame);
-        SDL_Rect    rc, rcShadow;
-        rc.x    = nXPos;
-        rc.y    = nYPos + (int)(m_afSin[nPos] * nAplituda) + m_anSymbDy[bySymb];
-        if (m_bDrawShadow == true && m_bIsShadowAvailable == true)
+        const auto idx = m_symbIndex[bySymb];
+        auto frame = &m_frames[idx];
+
+        SDL_Rect rc;
+        rc.x = nXPos;
+        rc.y = nYPos + (int)(Sin[nPos] * nAplituda) + m_anSymbDy[bySymb];
+        if (m_drawShadow == true && m_shadow != nullptr)
         {
-            rcShadow.x  = rc.x + m_nShadowDx;
-            rcShadow.y  = rc.y + m_nShadowDy;
-            SDL_BlitSurface(m_psurFontShadow, &m_frames[dwFrame], g_psurfScreen, &rcShadow);
+            SDL_Rect rcShadow;
+            rcShadow.x = rc.x + m_nShadowDx;
+            rcShadow.y = rc.y + m_nShadowDy;
+            SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
         }
-        SDL_BlitSurface(m_psurFont, &m_frames[dwFrame], g_psurfScreen, &rc);
-        nPos    += nFrameWidth;
-        nXPos   += nFrameWidth;
+        SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
+
+        const int width = GetFrameWidth(idx);
+        nPos += width;
+        nXPos += width;
     }
 }
 
-void CMyString::DrawNumber(int nNum, int nX, int nY, int nAlign)
+void CMyString::DrawNumber(int nNum, int nX, int nY, eAlign align)
 {
-    char    achBuf[20];
+    char achBuf[20];
     sprintf(achBuf, "%d", nNum);
-    DrawString(nX, nY, achBuf, nAlign);
+    DrawString(nX, nY, achBuf, align);
 }
 
-int CMyString::GetStringWidth(const char* pchString)
+int CMyString::GetStringWidth(const char* str)
 {
-    int nSymbolsCount   = 0;
-    int nStrWidth       = 0;
-    Uint8   bySymb          = 0;
+    int symbolsCount = 0;
+    int width = 0;
 
-    while (*pchString && bySymb != '\n')
+    for (uint8_t symb = *str; *str && symb != '\n'; symb = *str++)
     {
-        nSymbolsCount++;
-        bySymb  = *pchString++;
-        nStrWidth   += GetFrameWidth(m_anSymbIndex[bySymb]);
+        symbolsCount++;
+        width += GetFrameWidth(m_symbIndex[symb]);
     }
 
-    return  nStrWidth + m_nKerning * nSymbolsCount;
+    return width + m_kerning * symbolsCount;
 }
 
-int CMyString::GetStringWidth2(const char* pchString, int& nSpaces)
+int CMyString::GetStringWidth(const char* str, int& spacesCount)
 {
-    int nSymbolsCount   = 0;
-    int nStrWidth       = 0;
-    Uint8   bySymb          = 0;
+    int symbolsCount = 0;
+    int width = 0;
 
-    nSpaces = 0;
-    while (*pchString && bySymb != '\n')
+    spacesCount = 0;
+
+    for (uint8_t symb = *str; *str && symb != '\n'; symb = *str++)
     {
-        bySymb  = *pchString++;
-        if (bySymb == ' ')
+        if (symb == ' ')
         {
-            nSpaces++;
+            spacesCount++;
         }
         else
         {
-            nSymbolsCount++;
-            nStrWidth   += GetFrameWidth(m_anSymbIndex[bySymb]);
+            symbolsCount++;
+            width += GetFrameWidth(m_symbIndex[symb]);
         }
     }
 
-    return nStrWidth + m_nKerning * nSymbolsCount;
+    return width + m_kerning * symbolsCount;
 }
 
 Uint32 CMyString::RegisterFrame(const SDL_Rect& rc)
@@ -335,86 +352,65 @@ Uint32 CMyString::RegisterFrame(const SDL_Rect& rc)
 
 void CMyString::Unload()
 {
-    if (m_psurFont != nullptr)
+    if (m_fnt != nullptr)
     {
-        SDL_FreeSurface(m_psurFont);
-        m_psurFont = nullptr;
+        SDL_FreeSurface(m_fnt);
+        m_fnt = nullptr;
     }
 }
 
 void CMyString::SetRect(int left, int top, int width, int height)
 {
-    m_WindowRect.x = left;
-    m_WindowRect.y = top;
-    m_WindowRect.w = width;
-    m_WindowRect.h = height;
+    m_winRect.x = left;
+    m_winRect.y = top;
+    m_winRect.w = width;
+    m_winRect.h = height;
 }
 
 bool CMyString::LoadProps(const char* pchName)
 {
     unsigned int nDataLen;
-    char* pchIniData = (char*)a::res()->GetDataAllocMem(pchName, nDataLen);
-    /*  if(!pchIniData) {
-            printf("  trying to load from disk...\n");
-            FILE    *pFile  = fopen(MakePath(pchName), "r");
-            if(pFile != 0) {
-                fseek(pFile, 0, SEEK_END);
-                nDataLen    = ftell(pFile);
-                fseek(pFile, 0, SEEK_SET);
-                char    *pchIniData = new char[nDataLen + 1];
-                fread(pchIniData, nDataLen, 1, pFile);
-                fclose(pFile);
-            }
-            else {
-                printf("  %s\n", strerror(errno));
-            }
-        }*/
-    if (pchIniData != 0)
+    char* data = (char*)a::res()->GetDataAllocMem(pchName, nDataLen);
+    if (data != nullptr)
     {
-        memset(m_anSymbIndex, 0, sizeof(m_anSymbIndex));
+        memset(m_symbIndex, 0, sizeof(m_symbIndex));
         memset(m_anSymbDy, 0, sizeof(m_anSymbDy));
 
-        SDL_Rect rc;
-        int x, y, w, h;
-        Uint8 bySymbName;
+        int x, y;
+        uint32_t w, h;
 
-        char* pchLine = strtok(pchIniData, "\r\n");
+        char* pchLine = strtok(data, "\r\n");
 
-        while (pchLine != NULL)
+        while (pchLine != nullptr)
         {
+            uint8_t bySymbName;
             int index, dummy, dy;
-            if (sscanf(pchLine, "Char=\"%c\"; %d,%d,%d,%d; %d,%d,%d", &bySymbName, &x, &y, &w, &h, &dummy, &dummy, &dy) == 8)
+            if (sscanf(pchLine, "Char=\"%c\"; %d,%d,%u,%u; %d,%d,%d", &bySymbName, &x, &y, &w, &h, &dummy, &dummy, &dy) == 8)
             {
-                rc.x    = x;
-                rc.y    = y;
-                rc.w    = w;
-                rc.h   = h;
-                m_anSymbIndex[bySymbName]   = (int)RegisterFrame(rc) - 1;
-                m_anSymbDy[bySymbName]      = dy;
+                const SDL_Rect rc{ (int16_t)x, (int16_t)y, (uint16_t)w, (uint16_t)h };
+                m_symbIndex[bySymbName] = RegisterFrame(rc) - 1;
+                m_anSymbDy[bySymbName] = dy;
             }
-            else if (sscanf(pchLine, "Char=%x; %d,%d,%d,%d; %d,%d,%d", &index, &x, &y, &w, &h, &dummy, &dummy, &dy) == 8)
+            else if (sscanf(pchLine, "Char=%x; %d,%d,%u,%u; %d,%d,%d", &index, &x, &y, &w, &h, &dummy, &dummy, &dy) == 8)
             {
                 if (index > 256)
                 {
                     index -= 848;
                 }
-                bySymbName  = index;
-                rc.x    = x;
-                rc.y    = y;
-                rc.w    = w;
-                rc.h   = h;
-                m_anSymbIndex[bySymbName]   = (int)RegisterFrame(rc) - 1;
-                m_anSymbDy[bySymbName]      = dy;
+                bySymbName = index;
+                const SDL_Rect rc{ (int16_t)x, (int16_t)y, (uint16_t)w, (uint16_t)h };
+                m_symbIndex[bySymbName] = RegisterFrame(rc) - 1;
+                m_anSymbDy[bySymbName] = dy;
             }
             else if (sscanf(pchLine, "Height=%d", &dummy) == 1)
             {
-                m_nLineHeight   = dummy;
+                m_lineHeight = dummy;
             }
 
-            pchLine = strtok(NULL, "\r\n");
+            pchLine = strtok(nullptr, "\r\n");
         }
 
-        a::res()->FreeMem((unsigned char*)pchIniData);
+        a::res()->FreeMem((unsigned char*)data);
         printf(" done.\n");
         return true;
     }
@@ -422,40 +418,39 @@ bool CMyString::LoadProps(const char* pchName)
     return false;
 }
 
-bool CMyString::LoadFont2(const char* pchFontName, int nSpace, int nKerning, const char* pchCharset)
+bool CMyString::loadFont(const char* fontName, int space, int kerning, const char* charset)
 {
-    if (pchCharset == nullptr)
+    if (charset == nullptr)
     {
-        pchCharset = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+        charset = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
     }
 
-    m_nKerning = nKerning;
-    m_psurFont = LoadImage(pchFontName);
-    if (m_psurFont != nullptr)
+    m_kerning = kerning;
+    m_fnt = LoadImage(fontName);
+    if (m_fnt != nullptr)
     {
-        memset(m_anSymbIndex, 0, sizeof(m_anSymbIndex));
+        memset(m_symbIndex, 0, sizeof(m_symbIndex));
         memset(m_anSymbDy, 0, sizeof(m_anSymbDy));
-        m_nLineHeight = m_psurFont->h - 1;
+        m_lineHeight = m_fnt->h - 1;
 
-        SDL_Rect rc{ 0, 1, 0, (Uint16)m_nLineHeight };
-        int nXpos = 0;
-        while (nXpos < m_psurFont->w)
+        SDL_Rect rc{ 0, 1, 0, (Uint16)m_lineHeight };
+        for (int x = 0; x < m_fnt->w; x++)
         {
-            if (isTransparent(nXpos))
+            if (isTransparent(x))
             {
-                rc.x = nXpos;
-                while (nXpos < m_psurFont->w - 1 && isTransparent(nXpos))
+                rc.x = x;
+                while (x < m_fnt->w && isTransparent(x))
                 {
-                    nXpos++;
+                    x++;
                 }
-                rc.w = nXpos - rc.x;
-                Uint8 bySymbName = *pchCharset++;
-                m_anSymbIndex[bySymbName] = (int)RegisterFrame(rc) - 1;
+                rc.w = x - rc.x;
+                Uint8 bySymbName = *charset++;
+                m_symbIndex[bySymbName] = RegisterFrame(rc) - 1;
+                // printf("sym '%c': %d , %d - %d x %d\n", (char)bySymbName, (int)rc.x, (int)rc.y, (int)rc.w, (int)rc.h);
             }
-            nXpos++;
         }
 
-        m_anSymbIndex[(int)' '] = (int)RegisterFrame({ 0, 0, (Uint16)nSpace, 0 }) - 1;
+        m_symbIndex[(int)' '] = RegisterFrame({ 0, 0, (Uint16)space, 0 }) - 1;
 
         return true;
     }
@@ -463,15 +458,15 @@ bool CMyString::LoadFont2(const char* pchFontName, int nSpace, int nKerning, con
     return false;
 }
 
-bool CMyString::isTransparent(Sint32 x) const
+bool CMyString::isTransparent(int x) const
 {
-    assert(m_psurFont != nullptr);
-    assert(m_psurFont->format->BytesPerPixel == 4);
-    assert(x >= 0 && x < m_psurFont->w);
+    assert(m_fnt != nullptr);
+    assert(m_fnt->format->BytesPerPixel == 4);
+    assert(x >= 0 && x < m_fnt->w);
 
-    const Uint32* bmp = (Uint32*)m_psurFont->pixels;
+    auto bmp = (const uint32_t*)m_fnt->pixels;
     const Uint32 pixel = bmp[x];
 
-    const Uint8 alpha = (pixel & m_psurFont->format->Amask) >> m_psurFont->format->Ashift;
+    const Uint8 alpha = (pixel & m_fnt->format->Amask) >> m_fnt->format->Ashift;
     return alpha == 0;
 }

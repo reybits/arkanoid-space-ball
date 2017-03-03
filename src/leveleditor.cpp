@@ -29,7 +29,7 @@ CLevelEditor::~CLevelEditor()
 
 void CLevelEditor::Draw()
 {
-    SDL_Rect    rc;
+    SDL_Rect rc;
     int nX, nY;
 
     EnableCursor(true);
@@ -42,9 +42,9 @@ void CLevelEditor::Draw()
         }
     }
     a::fnt2()->SetRect(97, 0, 56, SCREEN_HEIGHT);
-    a::fnt2()->DrawNumber(m_nCurrentLevel + 1, 99, 19, CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawNumber(m_nCurrentLevel + 1, 99, 19, CMyString::eAlign::Center);
     a::fnt2()->SetRect(338, 0, 56, SCREEN_HEIGHT);
-    a::fnt2()->DrawNumber(m_nLevelsCount, 342, 19, CMyString::FONT_ALIGN_CENTER);
+    a::fnt2()->DrawNumber(m_nLevelsCount, 342, 19, CMyString::eAlign::Center);
     a::fnt2()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     if (IsKeyPressed(SDLK_TAB) && IsKeyStateChanged(SDLK_TAB))

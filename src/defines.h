@@ -168,7 +168,7 @@ extern int          g_nVolumeS;
 
 extern void EnableCursor(bool bEnable);
 extern SDL_Surface* LoadImage(const char* pchFileName, const unsigned nColorKey = 0xff000000);
-extern void Blit(const int nX, const int nY, SDL_Surface* pImg, SDL_Rect* pSrc);
+extern void Blit(int nX, int nY, SDL_Surface* pImg, SDL_Rect* pSrc);
 extern void BlitStretch(int nX, int nY, SDL_Surface* pImg, SDL_Rect* pSrc, float fScale);
 extern void SetRect(SDL_Rect* pRc, int nX, int nY, int nW, int nH);
 extern char* MakePath(const char* pchFileName);

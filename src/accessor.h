@@ -24,6 +24,7 @@ class CSinusString;
 class CTutorialDlg;
 
 struct sHighscores;
+struct sOptions;
 
 namespace a
 {
@@ -32,6 +33,8 @@ namespace a
     void deinitialize();
 
     const char* userProfile();
+
+    sOptions& opt();
 
     CRandom& rnd();
     CResource* res();

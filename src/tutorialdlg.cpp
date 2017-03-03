@@ -148,7 +148,6 @@ bool CTutorialDlg::ShowDialog()
 
         if (nButton == 0 && g_bMouseLB == true)
         {
-            printf("WE ARE HERE\n");
             g_bMouseLB  = false;
             m_tutorialMode = !m_tutorialMode;
         }

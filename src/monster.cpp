@@ -20,7 +20,7 @@
 
 CMonster::CMonster()
 {
-    m_nSndPatrol    = -1;
+    m_nSndPatrol = -1;
     m_vecMonster.reserve(20);
     m_vecMonster2.reserve(10);
     RemoveAll();
@@ -39,54 +39,59 @@ void CMonster::RemoveAll()
 
 void CMonster::Draw()
 {
-    SDL_Rect    rc;
-    rc.y    = 0;
-    static Uint32   dwTime  = 0;
-    bool                bUpdate = false;
-    if (dwTime + 30 < SDL_GetTicks())
+    static Uint32 curTime = 0;
+    bool updated = false;
+    if (curTime + 30 < SDL_GetTicks())
     {
-        dwTime  = SDL_GetTicks();
-        bUpdate = true;
+        curTime = SDL_GetTicks();
+        updated = true;
     }
-    for (int i = 0; i < (int)m_vecMonster.size(); i++)
+
+    SDL_Rect rc;
+    rc.y = 0;
+    for (auto& v : m_vecMonster)
     {
-        if (bUpdate == true && m_vecMonster[i].nCaptureMode == 0)
+        if (updated == true && v.nCaptureMode == 0)
         {
-            m_vecMonster[i].nFrame++;
-            m_vecMonster[i].nFrame  %= m_vecMonster[i].nFramesCount;
+            v.nFrame++;
+            v.nFrame %= v.nFramesCount;
         }
-        rc.x    = m_vecMonster[i].nFrame * m_vecMonster[i].w;
-        rc.w    = m_vecMonster[i].w;
-        rc.h    = m_vecMonster[i].h;
-        Blit((int)m_vecMonster[i].x, (int)m_vecMonster[i].y, m_vecMonster[i].pSurface, &rc);
+        rc.x = v.nFrame * v.w;
+        rc.w = v.w;
+        rc.h = v.h;
+        Blit(v.x, v.y, v.img, &rc);
     }
 }
 
 void CMonster::Draw2()
 {
-    SDL_Rect    rc, rc2;
-    rc.y    = 0;
+    SDL_Rect rc2;
     SetRect(&rc2, WALL_X1, WALL_Y1, SCREEN_WIDTH - WALL_X1, WALL_Y2 - WALL_Y1);
     SDL_SetClipRect(g_psurfScreen, &rc2);
-    static Uint32   dwTime  = 0;
-    bool                bUpdate = false;
-    if (dwTime + 50 < SDL_GetTicks())
+
+    static Uint32 curTime = 0;
+    bool updated = false;
+    if (curTime + 50 < SDL_GetTicks())
     {
-        dwTime  = SDL_GetTicks();
-        bUpdate = true;
+        curTime = SDL_GetTicks();
+        updated = true;
     }
-    for (int i = 0; i < (int)m_vecMonster2.size(); i++)
+
+    SDL_Rect rc;
+    rc.y = 0;
+    for (auto& v : m_vecMonster2)
     {
-        if (bUpdate == true)
+        if (updated == true)
         {
-            m_vecMonster2[i].nFrame++;
-            m_vecMonster2[i].nFrame %= m_vecMonster2[i].nFramesCount;
+            v.nFrame++;
+            v.nFrame %= v.nFramesCount;
         }
-        rc.x    = m_vecMonster2[i].nFrame * m_vecMonster2[i].w;
-        rc.w    = m_vecMonster2[i].w;
-        rc.h    = m_vecMonster2[i].h;
-        Blit((int)m_vecMonster2[i].x, (int)m_vecMonster2[i].y, m_vecMonster2[i].pSurface, &rc);
+        rc.x = v.nFrame * v.w;
+        rc.w = v.w;
+        rc.h = v.h;
+        Blit(v.x, v.y, v.img, &rc);
     }
+
     SDL_SetClipRect(g_psurfScreen, 0);
 }
 
@@ -94,7 +99,7 @@ void CMonster::AddMonster(int x, int y, int nType)
 {
     if (nType >= 0 && nType < MONST_END)
     {
-        _MONSTER    monster;
+        sMonster monster;
         monster.nType           = nType;
         monster.x               = (float)x;
         monster.y               = (float)y;
@@ -110,65 +115,75 @@ void CMonster::AddMonster(int x, int y, int nType)
                 m_nSndPatrol  = PlaySound(2);
             }
             monster.nFramesCount    = 10;
-            monster.pSurface        = m_pMonstPatrol;
+            monster.img        = m_pMonstPatrol;
             monster.w               = 64;
             monster.h               = 48;
             break;
+
         case MONST_COPTER:
             monster.nFramesCount    = 5;
-            monster.pSurface        = m_pMonstCopter;
+            monster.img        = m_pMonstCopter;
             monster.w               = 64;
             monster.h               = 48;
             break;
+
         case MONST_EYE:
             monster.nFramesCount    = 30;
-            monster.pSurface        = m_pMonstEye;
+            monster.img        = m_pMonstEye;
             monster.w               = 32;
             monster.h               = 32;
             break;
+
         case MONST_BLACKHOLE:
             monster.nFramesCount    = 5;
-            monster.pSurface        = m_pMonstBlackHole;
+            monster.img        = m_pMonstBlackHole;
             monster.w               = 64;
             monster.h               = 48;
             break;
+
         case MONST_FIGHTER:
             monster.nFramesCount    = 10;
-            monster.pSurface        = m_pMonstFighter;
+            monster.img        = m_pMonstFighter;
             monster.w               = 64;
             monster.h               = 48;
             break;
+
         case MONST_HAND:
             monster.nFramesCount    = 30;
-            monster.pSurface        = m_pMonstHand;
+            monster.img        = m_pMonstHand;
             monster.w               = 64;
             monster.h               = 48;
             break;
+
         case MONST_TURBINE:
             monster.nFramesCount    = 20;
-            monster.pSurface        = m_pMonstTurbine;
+            monster.img        = m_pMonstTurbine;
             monster.w               = 32;
             monster.h               = 32;
             break;
+
         case MONST_UFO:
             monster.nFramesCount    = 10;
-            monster.pSurface        = m_pMonstUfo;
+            monster.img        = m_pMonstUfo;
             monster.w               = 64;
             monster.h               = 48;
             break;
+
         case MONST_STONE1:
             monster.nFramesCount    = 30;
-            monster.pSurface        = m_pMonstStone1;
+            monster.img        = m_pMonstStone1;
             monster.w               = 32;
             monster.h               = 24;
             break;
+
         case MONST_STONE2:
             monster.nFramesCount    = 30;
-            monster.pSurface        = m_pMonstStone2;
+            monster.img        = m_pMonstStone2;
             monster.w               = 32;
             monster.h               = 24;
             break;
         }
+
         m_vecMonster.push_back(monster);
         a::tutDlg()->AddDialog(int(monster.x + monster.w / 2), int(monster.y + monster.h / 2), 1, nType);
     }
@@ -176,19 +191,19 @@ void CMonster::AddMonster(int x, int y, int nType)
 
 void CMonster::AddMonster2()
 {
-    _MONSTER    monster;
+    sMonster    monster;
     monster.nType   = a::rnd().Get(2);
     switch (monster.nType)
     {
     case M_WRECKAGE1:
         monster.nFramesCount    = 10;
-        monster.pSurface        = m_pMonstWreckage1;
+        monster.img        = m_pMonstWreckage1;
         monster.w               = 64;
         monster.h               = 48;
         break;
     case M_WRECKAGE2:
         monster.nFramesCount    = 30;
-        monster.pSurface        = m_pMonstWreckage2;
+        monster.img        = m_pMonstWreckage2;
         monster.w               = 64;
         monster.h               = 48;
         break;
@@ -204,37 +219,40 @@ void CMonster::AddMonster2()
 
 void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight)
 {
-    int i;
-    SDL_Rect    rc;
+    SDL_Rect rc;
     m_bBackWall = bBackWall;
-    float   fSpeed  = g_fSpeedCorrection * 0.7;
+    float fSpeed = g_fSpeedCorrection * 0.7;
 
-    for (i = 0; i < (int)m_vecMonster.size(); i++)
+    for (size_t i = 0, size = m_vecMonster.size(); i < size; i++)
     {
-        if (m_vecMonster[i].nType == MONST_PATROL)
+        auto& v = m_vecMonster[i];
+
+        if (v.nType == MONST_PATROL)
         {
-            m_vecMonster[i].x   += (2 * g_fSpeedCorrection);
-            if (m_vecMonster[i].x > SCREEN_WIDTH)
+            v.x += (2 * g_fSpeedCorrection);
+            if (v.x > SCREEN_WIDTH)
             {
                 RemoveByPos(i--);
+                size--;
             }
         }
-        else if (m_vecMonster[i].nType == MONST_COPTER)
+        else if (v.nType == MONST_COPTER)
         {
-            int nAngle = 0, nPos = 0;
-            float   fMinDist    = SCREEN_WIDTH;
-            bool    bFindBall   = false;
+            int nAngle = 0;
+            int nPos = 0;
+            float minDist = std::numeric_limits<float>::max();
+            bool bFindBall = false;
             while (a::ball()->GetPositionAndDiameter(rc, nPos) == true)
             {
-                int nCatet1 = (rc.x + rc.w / 2) - ((int)m_vecMonster[i].x + 32);
-                int nCatet2 = (rc.y + rc.w / 2) - ((int)m_vecMonster[i].y + 24);
-                float fDist     = sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
-                if (fDist < fMinDist && rc.h != CBall::TYPE_BLUE)
+                const float c1 = (rc.x + rc.w * 0.5f) - (v.x + 32);
+                const float c2 = (rc.y + rc.w * 0.5f) - (v.y + 24);
+                const float dist = sqrtf(c1 * c1 + c2 * c2);
+                if (dist < minDist && rc.h != CBall::TYPE_BLUE)
                 {
-                    bFindBall   = true;
-                    fMinDist    = fDist;
-                    nAngle  = (int)(57.3 * asin(nCatet2 / fDist));
-                    if (nCatet1 > 0)
+                    bFindBall = true;
+                    minDist = dist;
+                    nAngle  = (int)(57.3 * asinf(c2 / dist));
+                    if (c1 > 0)
                     {
                         nAngle    = (90 + nAngle) % 360;
                     }
@@ -248,167 +266,171 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight)
             {
                 for (int nIterations = 0; nIterations < 2; nIterations++)
                 {
-                    if (m_vecMonster[i].nAngle < nAngle)
+                    if (v.nAngle < nAngle)
                     {
-                        if (abs(m_vecMonster[i].nAngle - nAngle) >= 180)
+                        if (abs(v.nAngle - nAngle) >= 180)
                         {
-                            m_vecMonster[i].nAngle--;
+                            v.nAngle--;
                         }
                         else
                         {
-                            m_vecMonster[i].nAngle++;
+                            v.nAngle++;
                         }
                     }
                     else
                     {
-                        if (abs(m_vecMonster[i].nAngle - nAngle) < 180)
+                        if (abs(v.nAngle - nAngle) < 180)
                         {
-                            m_vecMonster[i].nAngle--;
+                            v.nAngle--;
                         }
                         else
                         {
-                            m_vecMonster[i].nAngle++;
+                            v.nAngle++;
                         }
                     }
-                    m_vecMonster[i].nAngle  += 360;
-                    m_vecMonster[i].nAngle  %= 360;
-                    if (nAngle == m_vecMonster[i].nAngle)
+                    v.nAngle  += 360;
+                    v.nAngle  %= 360;
+                    if (nAngle == v.nAngle)
                     {
                         break;
                     }
                 }
-                //m_vecMonster[i].nAngle    %= 360;
-                m_vecMonster[i].x   += (fSpeed * g_fSin[m_vecMonster[i].nAngle]);
-                m_vecMonster[i].y   -= (fSpeed * g_fCos[m_vecMonster[i].nAngle]);
+                //v.nAngle    %= 360;
+                v.x += fSpeed * g_fSin[v.nAngle];
+                v.y -= fSpeed * g_fCos[v.nAngle];
             }
         }
-        else if (m_vecMonster[i].nType == MONST_HAND)
+        else if (v.nType == MONST_HAND)
         {
-            if (m_vecMonster[i].nCaptureMode == 0)
+            if (v.nCaptureMode == 0)
             {
-                int nAngle = 0, nPos = 0;
-                float   fMinDist    = SCREEN_WIDTH;
-                bool    bFindBall   = false;
+                int nAngle = 0;
+                int nPos = 0;
+                float minDist = std::numeric_limits<float>::max();
+                bool bFindBall = false;
                 while (a::ball()->GetPositionAndDiameter(rc, nPos) == true)
                 {
-                    int nCatet1 = (rc.x + rc.w / 2) - ((int)m_vecMonster[i].x + 32);
-                    int nCatet2 = (rc.y + rc.w / 2) - ((int)m_vecMonster[i].y + 24);
-                    float fDist     = sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
-                    if (fDist < 3)
+                    const float c1 = (rc.x + rc.w * 0.5f) - (v.x + 32);
+                    const float c2 = (rc.y + rc.w * 0.5f) - (v.y + 24);
+                    const float dist = sqrtf(c1 * c1 + c2 * c2);
+                    if (dist < 3)
                     {
-                        m_vecMonster[i].nCaptureMode            = 1;
-                        m_vecMonster[i].nCapturedBallIndex  = nPos - 1;
-                        m_vecMonster[i].nFrame                  = 4;
-                        m_vecMonster[i].nAngle                  = 240 + a::rnd().Get(60);
-                        a::ball()->BallCaptured(m_vecMonster[i].nCapturedBallIndex, true);
+                        v.nCaptureMode       = 1;
+                        v.nCapturedBallIndex = nPos - 1;
+                        v.nFrame             = 4;
+                        v.nAngle             = 240 + a::rnd().Get(60);
+                        a::ball()->BallCaptured(v.nCapturedBallIndex, true);
                     }
-                    else if (fDist < fMinDist)
+                    else if (dist < minDist)
                     {
-                        bFindBall   = true;
-                        fMinDist    = fDist;
-                        nAngle  = (int)(57.3 * asin(nCatet2 / fDist));
-                        if (nCatet1 > 0)
+                        bFindBall = true;
+                        minDist = dist;
+                        nAngle = (int)(57.3 * asinf(c2 / dist));
+                        if (c1 > 0)
                         {
-                            nAngle    = (90 + nAngle) % 360;
+                            nAngle = (90 + nAngle) % 360;
                         }
                         else
                         {
-                            nAngle    = (270 - nAngle) % 360;
+                            nAngle = (270 - nAngle) % 360;
                         }
                     }
                 }
+
                 if (bFindBall == true)
                 {
                     for (int nIterations = 0; nIterations < 1 + g_fSpeedCorrection * 8; nIterations++)
                     {
-                        if (m_vecMonster[i].nAngle < nAngle)
+                        if (v.nAngle < nAngle)
                         {
-                            if (abs(m_vecMonster[i].nAngle - nAngle) >= 180)
+                            if (abs(v.nAngle - nAngle) >= 180)
                             {
-                                m_vecMonster[i].nAngle--;
+                                v.nAngle--;
                             }
                             else
                             {
-                                m_vecMonster[i].nAngle++;
+                                v.nAngle++;
                             }
                         }
                         else
                         {
-                            if (abs(m_vecMonster[i].nAngle - nAngle) < 180)
+                            if (abs(v.nAngle - nAngle) < 180)
                             {
-                                m_vecMonster[i].nAngle--;
+                                v.nAngle--;
                             }
                             else
                             {
-                                m_vecMonster[i].nAngle++;
+                                v.nAngle++;
                             }
                         }
-                        m_vecMonster[i].nAngle  += 360;
-                        m_vecMonster[i].nAngle  %= 360;
-                        if (nAngle == m_vecMonster[i].nAngle)
+                        v.nAngle += 360;
+                        v.nAngle %= 360;
+                        if (nAngle == v.nAngle)
                         {
                             break;
                         }
                     }
-                    float   fSpeed  = g_fSpeedCorrection * 2.5;
-                    m_vecMonster[i].x   += (fSpeed * g_fSin[m_vecMonster[i].nAngle]);
-                    m_vecMonster[i].y   -= (fSpeed * g_fCos[m_vecMonster[i].nAngle]);
+                    const float delta = g_fSpeedCorrection * 2.5f;
+                    v.x += delta * g_fSin[v.nAngle];
+                    v.y -= delta * g_fCos[v.nAngle];
                 }
             }
             else
             {
-                m_vecMonster[i].x   += (fSpeed * g_fSin[m_vecMonster[i].nAngle]);
-                m_vecMonster[i].y   -= (fSpeed * g_fCos[m_vecMonster[i].nAngle]);
+                v.x += fSpeed * g_fSin[v.nAngle];
+                v.y -= fSpeed * g_fCos[v.nAngle];
                 ChangeMonsterAngle(i);
-                if (m_vecMonster[i].nCaptureMode == 1)
+                if (v.nCaptureMode == 1)
                 {
-                    a::ball()->SetCapturedBallPos(m_vecMonster[i].nCapturedBallIndex, m_vecMonster[i].x, m_vecMonster[i].y);
-                    if (abs((int)m_vecMonster[i].x - (RACKET_X - 140)) < 5)
+                    a::ball()->SetCapturedBallPos(v.nCapturedBallIndex, v.x, v.y);
+                    if (abs((int)v.x - (RACKET_X - 140)) < 5)
                     {
-                        a::ball()->BallCaptured(m_vecMonster[i].nCapturedBallIndex, false);
-                        m_vecMonster[i].nCaptureMode    = 2;
-                        m_vecMonster[i].nAngle          = 90;
-                        m_vecMonster[i].nFrame          = 0;
+                        a::ball()->BallCaptured(v.nCapturedBallIndex, false);
+                        v.nCaptureMode = 2;
+                        v.nAngle       = 90;
+                        v.nFrame       = 0;
                     }
                 }
                 else
                 {
-                    if (m_vecMonster[i].x > SCREEN_WIDTH)
+                    if (v.x > SCREEN_WIDTH)
                     {
                         RemoveByPos(i--);
+                        size--;
                     }
                 }
             }
         }
-        else if (m_vecMonster[i].nType == MONST_EYE)
+        else if (v.nType == MONST_EYE)
         {
-            if (m_vecMonster[i].x < RACKET_X - 60)
+            if (v.x < RACKET_X - 60)
             {
-                m_vecMonster[i].x += fSpeed;
+                v.x += fSpeed;
             }
-            if (m_vecMonster[i].y + m_vecMonster[i].h / 2 - 5 + a::rnd().Get(10) < nPaddleY + nPaddleHeight / 2)
+            if (v.y + v.h / 2 - 5 + a::rnd().Get(10) < nPaddleY + nPaddleHeight / 2)
             {
-                m_vecMonster[i].y += fSpeed;
+                v.y += fSpeed;
             }
             else
             {
-                m_vecMonster[i].y -= fSpeed;
+                v.y -= fSpeed;
             }
         }
         else
         {
-            m_vecMonster[i].x   += (fSpeed * g_fSin[m_vecMonster[i].nAngle]);
-            m_vecMonster[i].y   -= (fSpeed * g_fCos[m_vecMonster[i].nAngle]);
-            if (m_vecMonster[i].nType == MONST_STONE1 || m_vecMonster[i].nType == MONST_STONE2)
+            v.x += (fSpeed * g_fSin[v.nAngle]);
+            v.y -= (fSpeed * g_fCos[v.nAngle]);
+            if (v.nType == MONST_STONE1 || v.nType == MONST_STONE2)
             {
-                if (m_vecMonster[i].x < WALL_X1 || m_vecMonster[i].x > (m_bBackWall == true ? WALL_X2 - m_vecMonster[i].w : SCREEN_WIDTH) ||
-                    m_vecMonster[i].y < WALL_Y1 || m_vecMonster[i].y + m_vecMonster[i].h > WALL_Y2)
+                if (v.x < WALL_X1 || v.x > (m_bBackWall == true ? WALL_X2 - v.w : SCREEN_WIDTH) ||
+                    v.y < WALL_Y1 || v.y + v.h > WALL_Y2)
                 {
-                    if (m_vecMonster[i].x < SCREEN_WIDTH)
+                    if (v.x < SCREEN_WIDTH)
                     {
-                        a::expl()->AddExploision((int)m_vecMonster[i].x + (m_vecMonster[i].w - 45) / 2, (int)m_vecMonster[i].y + (m_vecMonster[i].h - 41) / 2, 0);
+                        a::expl()->AddExploision((int)v.x + (v.w - 45) / 2, (int)v.y + (v.h - 41) / 2, 0);
                     }
                     RemoveByPos(i--);
+                    size--;
                 }
             }
             else
@@ -420,12 +442,14 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight)
 
     for (size_t i = 0, size = m_vecMonster2.size(); i < size;)
     {
-        fSpeed = g_fSpeedCorrection * m_vecMonster2[i].fSpeed;
-        m_vecMonster2[i].x += fSpeed * g_fSin[m_vecMonster2[i].nAngle];
-        m_vecMonster2[i].y -= fSpeed * g_fCos[m_vecMonster2[i].nAngle];
-        if (m_vecMonster2[i].x > SCREEN_WIDTH)
+        auto& v = m_vecMonster2[i];
+
+        const float delta = g_fSpeedCorrection * v.fSpeed;
+        v.x += delta * g_fSin[v.nAngle];
+        v.y -= delta * g_fCos[v.nAngle];
+        if (v.x > SCREEN_WIDTH)
         {
-            m_vecMonster2[i] = m_vecMonster2[--size];
+            v = m_vecMonster2[--size];
             m_vecMonster2.pop_back();
             continue;
         }
@@ -435,22 +459,25 @@ void CMonster::Move(bool bBackWall, int nPaddleY, int nPaddleHeight)
 
 bool CMonster::IsAcross(int nX, int nY, int nWidth, int nHeight, bool bRemoveMonster)
 {
-    bool    bIsAcross   = false;
+    bool bIsAcross = false;
 
-    for (int i = 0; i < (int)m_vecMonster.size(); i++)
+    for (size_t i = 0, size = m_vecMonster.size(); i < size; i++)
     {
-        int nRadius1    = (nWidth + nHeight) / 4;
-        int nRadius2    = (m_vecMonster[i].w - (m_vecMonster[i].nType == MONST_HAND ? 20 : 0) + m_vecMonster[i].h) / 4;
-        int nCatet1 = int((m_vecMonster[i].x + m_vecMonster[i].w / 2) - (nX + nWidth / 2));
-        int nCatet2 = int((m_vecMonster[i].y + m_vecMonster[i].h / 2) - (nY + nHeight / 2));
-        if (sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) <= nRadius1 + nRadius2)
+        const auto& v = m_vecMonster[i];
+
+        const float r1 = (nWidth + nHeight) / 4.0f;
+        const float r2 = (v.w - (v.nType == MONST_HAND ? 20 : 0) + v.h) / 4.0f;
+        const float c1 = ((v.x + v.w * 0.5f) - (nX + nWidth * 0.5f));
+        const float c2 = ((v.y + v.h * 0.5f) - (nY + nHeight * 0.5f));
+        if (sqrtf(c1 * c1 + c2 * c2) <= r1 + r2)
         {
-            bIsAcross   = true;
+            bIsAcross = true;
             a::ark()->m_nGetReadyMonsters++;
             if (bRemoveMonster == true)
             {
-                a::expl()->AddExploision((int)m_vecMonster[i].x + (m_vecMonster[i].w - 45) / 2, (int)m_vecMonster[i].y + (m_vecMonster[i].h - 41) / 2, 0);
+                a::expl()->AddExploision(v.x + (v.w - 45) / 2, v.y + (v.h - 41) / 2, 0);
                 RemoveByPos(i--);
+                size--;
             }
         }
     }
@@ -460,34 +487,37 @@ bool CMonster::IsAcross(int nX, int nY, int nWidth, int nHeight, bool bRemoveMon
 
 bool CMonster::IsAcrossPaddle(int nX, int nY, int nWidth, int nHeight)
 {
-    bool    bIsAcross   = false;
+    bool bIsAcross = false;
 
-    for (int i = 0; i < (int)m_vecMonster.size(); i++)
+    for (size_t i = 0, size = m_vecMonster.size(); i < size; i++)
     {
-        int nRadius1    = (nWidth + nHeight) / 4;
-        int nRadius2    = (m_vecMonster[i].w - (m_vecMonster[i].nType == MONST_HAND ? 20 : 0) + m_vecMonster[i].h) / 4;
-        int nCatet1 = int((m_vecMonster[i].x + m_vecMonster[i].w / 2) - (nX + nWidth / 2));
-        int nCatet2 = int((m_vecMonster[i].y + m_vecMonster[i].h / 2) - (nY + nHeight / 2));
-        if (sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) <= nRadius1 + nRadius2)
+        const auto& v = m_vecMonster[i];
+
+        const float r1 = (nWidth + nHeight) / 4.0f;
+        const float r2 = (v.w - (v.nType == MONST_HAND ? 20 : 0) + v.h) / 4.0f;
+        const float c1 = (v.x + v.w * 0.5f) - (nX + nWidth * 0.5f);
+        const float c2 = (v.y + v.h * 0.5f) - (nY + nHeight * 0.5f);
+        if (sqrtf(c1 * c1 + c2 * c2) <= r1 + r2)
         {
-            bIsAcross   = true;
+            bIsAcross = true;
             a::ark()->m_nGetReadyMonsters++;
-            if (m_vecMonster[i].nType == MONST_STONE2)
+            if (v.nType == MONST_STONE2)
             {
-                a::ark()->m_bCanMovePaddle     = false;
-                a::ark()->m_nCanMovePaddleCount    = 3;
+                a::ark()->m_bCanMovePaddle = false;
+                a::ark()->m_nCanMovePaddleCount = 3;
             }
-            else if (m_vecMonster[i].nType == MONST_PATROL || m_vecMonster[i].nType == MONST_STONE1)
+            else if (v.nType == MONST_PATROL || v.nType == MONST_STONE1)
             {
                 for (int a = 0; a < 6; a++)
                 {
                     a::expl()->AddExploision(nX - (45 - 12) / 2 + (10 - a::rnd().Get(20)), nY - (41 - nHeight) / 2 + (nHeight / 2 - a::rnd().Get(nHeight)), 0);
                 }
-                a::ark()->AddGetReeadyInfo(m_vecMonster[i].nType == MONST_PATROL ? "Kamikaze impact paddle" : "Meteor impact paddle");
+                a::ark()->AddGetReeadyInfo(v.nType == MONST_PATROL ? "Kamikaze impact paddle" : "Meteor impact paddle");
                 a::ark()->RemoveOneLives();
             }
-            a::expl()->AddExploision((int)m_vecMonster[i].x + (m_vecMonster[i].w - 45) / 2, (int)m_vecMonster[i].y + (m_vecMonster[i].h - 41) / 2, 0);
+            a::expl()->AddExploision(v.x + (v.w - 45) / 2, v.y + (v.h - 41) / 2, 0);
             RemoveByPos(i--);
+            size--;
         }
     }
 
@@ -500,19 +530,21 @@ bool CMonster::IsAcrossPaddle2(int nX, int nY, int nWidth, int nHeight)
 
     for (size_t i = 0, size = m_vecMonster2.size(); i < size;)
     {
-        int nRadius1    = (nWidth + nHeight) / 4;
-        int nRadius2    = (m_vecMonster2[i].w + m_vecMonster2[i].h) / 4;
-        int nCatet1 = int((m_vecMonster2[i].x + m_vecMonster2[i].w / 2) - (nX + nWidth / 2));
-        int nCatet2 = int((m_vecMonster2[i].y + m_vecMonster2[i].h / 2) - (nY + nHeight / 2));
-        if (sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) <= nRadius1 + nRadius2)
+        auto& v = m_vecMonster2[i];
+
+        const float r1 = (nWidth + nHeight) / 4;
+        const float r2 = (v.w + v.h) / 4;
+        const float c1 = (v.x + v.w * 0.5f) - (nX + nWidth * 0.5f);
+        const float c2 = (v.y + v.h * 0.5f) - (nY + nHeight * 0.5f);
+        if (sqrtf(c1 * c1 + c2 * c2) <= r1 + r2)
         {
-            bIsAcross   = true;
+            bIsAcross = true;
             for (int a = 0; a < 6; a++)
             {
                 a::expl()->AddExploision(nX - (45 - 12) / 2 + (10 - a::rnd().Get(20)), nY - (41 - nHeight) / 2 + (nHeight / 2 - a::rnd().Get(nHeight)), 0);
             }
-            a::expl()->AddExploision((int)m_vecMonster2[i].x + (m_vecMonster2[i].w - 45) / 2, (int)m_vecMonster2[i].y + (m_vecMonster2[i].h - 41) / 2, 0);
-            m_vecMonster2[i] = m_vecMonster2[--size];
+            a::expl()->AddExploision(v.x + (v.w - 45) / 2, v.y + (v.h - 41) / 2, 0);
+            v = m_vecMonster2[--size];
             m_vecMonster2.pop_back();
             continue;
         }
@@ -522,85 +554,90 @@ bool CMonster::IsAcrossPaddle2(int nX, int nY, int nWidth, int nHeight)
     return bIsAcross;
 }
 
-void CMonster::ChangeMonsterAngle(int nPos)
+void CMonster::ChangeMonsterAngle(size_t idx)
 {
-    if (m_vecMonster[nPos].nType == MONST_HAND && m_vecMonster[nPos].nCaptureMode == 2)
+    auto& v = m_vecMonster[idx];
+
+    if (v.nType == MONST_HAND && v.nCaptureMode == 2)
     {
         return;
     }
-    m_vecMonster[nPos].nAngle   %= 360;
-    if (m_vecMonster[nPos].x < WALL_X1)
+    v.nAngle %= 360;
+    if (v.x < WALL_X1)
     {
-        if (m_vecMonster[nPos].nAngle >= 180 && m_vecMonster[nPos].nAngle < 270)
+        if (v.nAngle >= 180 && v.nAngle < 270)
         {
-            m_vecMonster[nPos].nAngle = 180 - (m_vecMonster[nPos].nAngle - 180);
+            v.nAngle = 180 - (v.nAngle - 180);
         }
-        else if (m_vecMonster[nPos].nAngle >= 270 && m_vecMonster[nPos].nAngle < 360)
+        else if (v.nAngle >= 270 && v.nAngle < 360)
         {
-            m_vecMonster[nPos].nAngle = 360 - m_vecMonster[nPos].nAngle;
+            v.nAngle = 360 - v.nAngle;
         }
     }
-    else if (m_vecMonster[nPos].x + m_vecMonster[nPos].w > WALL_X2)
+    else if (v.x + v.w > WALL_X2)
     {
-        if (m_vecMonster[nPos].nAngle >= 0 && m_vecMonster[nPos].nAngle < 90)
+        if (v.nAngle >= 0 && v.nAngle < 90)
         {
-            m_vecMonster[nPos].nAngle = 360 - m_vecMonster[nPos].nAngle;
+            v.nAngle = 360 - v.nAngle;
         }
-        else if (m_vecMonster[nPos].nAngle >= 90 && m_vecMonster[nPos].nAngle < 180)
+        else if (v.nAngle >= 90 && v.nAngle < 180)
         {
-            m_vecMonster[nPos].nAngle = 180 + 180 - m_vecMonster[nPos].nAngle;
+            v.nAngle = 180 + 180 - v.nAngle;
         }
     }
-    else if (m_vecMonster[nPos].y < WALL_Y1)
+    else if (v.y < WALL_Y1)
     {
-        if (m_vecMonster[nPos].nAngle >= 0 && m_vecMonster[nPos].nAngle < 90)
+        if (v.nAngle >= 0 && v.nAngle < 90)
         {
-            m_vecMonster[nPos].nAngle = 180 - m_vecMonster[nPos].nAngle;
+            v.nAngle = 180 - v.nAngle;
         }
-        else if (m_vecMonster[nPos].nAngle >= 270 && m_vecMonster[nPos].nAngle < 360)
+        else if (v.nAngle >= 270 && v.nAngle < 360)
         {
-            m_vecMonster[nPos].nAngle = 180 + (360 - m_vecMonster[nPos].nAngle);
+            v.nAngle = 180 + (360 - v.nAngle);
         }
     }
-    else if (m_vecMonster[nPos].y + m_vecMonster[nPos].h > WALL_Y2)
+    else if (v.y + v.h > WALL_Y2)
     {
-        if (m_vecMonster[nPos].nAngle >= 90 && m_vecMonster[nPos].nAngle < 180)
+        if (v.nAngle >= 90 && v.nAngle < 180)
         {
-            m_vecMonster[nPos].nAngle = 180 - m_vecMonster[nPos].nAngle;
+            v.nAngle = 180 - v.nAngle;
         }
-        else if (m_vecMonster[nPos].nAngle >= 180 && m_vecMonster[nPos].nAngle < 270)
+        else if (v.nAngle >= 180 && v.nAngle < 270)
         {
-            m_vecMonster[nPos].nAngle = 360 - (m_vecMonster[nPos].nAngle - 180);
+            v.nAngle = 360 - (v.nAngle - 180);
         }
     }
 
-    m_vecMonster[nPos].x    = std::max<int>(m_vecMonster[nPos].x, WALL_X1);
-    m_vecMonster[nPos].x    = std::min<int>(m_vecMonster[nPos].x, WALL_X2 - m_vecMonster[nPos].w);
-    m_vecMonster[nPos].y    = std::max<int>(m_vecMonster[nPos].y, WALL_Y1);
-    m_vecMonster[nPos].y    = std::min<int>(m_vecMonster[nPos].y, WALL_Y2 - m_vecMonster[nPos].h);
+    v.x = std::max<int>(v.x, WALL_X1);
+    v.x = std::min<int>(v.x, WALL_X2 - v.w);
+    v.y = std::max<int>(v.y, WALL_Y1);
+    v.y = std::min<int>(v.y, WALL_Y2 - v.h);
 }
 
 
 bool CMonster::IsAcrossBall(SDL_Rect rc, bool bRemoveMonster)
 {
-    bool    bIsAcross   = false;
+    bool bIsAcross = false;
 
-    for (int i = 0; i < (int)m_vecMonster.size(); i++)
+    for (size_t i = 0, size = m_vecMonster.size(); i < size; i++)
     {
-        if (m_vecMonster[i].nType != MONST_HAND)
+        const auto& v = m_vecMonster[i];
+
+        if (v.nType != MONST_HAND)
         {
-            int nRadius = rc.w / 2;
-            int nCatet1 = int(rc.x + nRadius - (m_vecMonster[i].x + m_vecMonster[i].w / 2));
-            int nCatet2 = int(rc.y + nRadius - (m_vecMonster[i].y + m_vecMonster[i].h / 2));
-            if (sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) < nRadius + ((m_vecMonster[i].w + m_vecMonster[i].h) / 4))
+            const float nRadius = rc.w * 0.5f;
+            const float c1 = rc.x + nRadius - (v.x + v.w * 0.5f);
+            const float c2 = rc.y + nRadius - (v.y + v.h * 0.5f);
+            if (sqrtf(c1 * c1 + c2 * c2) < nRadius + ((v.w + v.h) / 4))
             {
                 a::ark()->AddScore(25);
-                bIsAcross   = true;
+                bIsAcross = true;
                 if (bRemoveMonster == true)
                 {
                     a::ark()->m_nGetReadyMonsters++;
-                    a::expl()->AddExploision((int)m_vecMonster[i].x + (m_vecMonster[i].w - 45) / 2, (int)m_vecMonster[i].y + (m_vecMonster[i].h - 41) / 2, 0);
+                    a::expl()->AddExploision(v.x + (v.w - 45) / 2, v.y + (v.h - 41) / 2, 0);
                     RemoveByPos(i--);
+                    size--;
                 }
             }
         }
@@ -616,16 +653,18 @@ bool CMonster::IsAcrossBall2(SDL_Rect rc)
 
     for (size_t i = 0, size = m_vecMonster2.size(); i < size;)
     {
-        int nRadius = rc.w / 2;
-        int nCatet1 = int(rc.x + nRadius - (m_vecMonster2[i].x + m_vecMonster2[i].w / 2));
-        int nCatet2 = int(rc.y + nRadius - (m_vecMonster2[i].y + m_vecMonster2[i].h / 2));
-        if (sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2) < nRadius + ((m_vecMonster2[i].w + m_vecMonster2[i].h) / 4))
+        auto& v = m_vecMonster2[i];
+
+        const float nRadius = rc.w * 0.5f;
+        const float c1 = rc.x + nRadius - (v.x + v.w * 0.5f);
+        const float c2 = rc.y + nRadius - (v.y + v.h * 0.5f);
+        if (sqrtf(c1 * c1 + c2 * c2) < nRadius + ((v.w + v.h) / 4))
         {
             a::ark()->AddScore(100);
-            bIsAcross   = true;
+            bIsAcross = true;
             a::ark()->m_nGetReadyMonsters++;
-            a::expl()->AddExploision((int)m_vecMonster2[i].x + (m_vecMonster2[i].w - 45) / 2, (int)m_vecMonster2[i].y + (m_vecMonster2[i].h - 41) / 2, 0);
-            m_vecMonster2[i] = m_vecMonster2[--size];
+            a::expl()->AddExploision((int)v.x + (v.w - 45) / 2, (int)v.y + (v.h - 41) / 2, 0);
+            v = m_vecMonster2[--size];
             m_vecMonster2.pop_back();
             continue;
         }
@@ -635,20 +674,18 @@ bool CMonster::IsAcrossBall2(SDL_Rect rc)
     return bIsAcross;
 }
 
-
-/*!
-    \fn CMonster::RemoveByPos(int nPos)
- */
-void CMonster::RemoveByPos(int nPos)
+void CMonster::RemoveByPos(size_t idx)
 {
-    if (m_vecMonster[nPos].nType == MONST_PATROL)
+    auto& v = m_vecMonster[idx];
+
+    if (v.nType == MONST_PATROL)
     {
         StopSound(m_nSndPatrol);
     }
-    else if (m_vecMonster[nPos].nType == MONST_HAND)
+    else if (v.nType == MONST_HAND)
     {
-        a::ball()->BallCaptured(m_vecMonster[nPos].nCapturedBallIndex, false);
+        a::ball()->BallCaptured(v.nCapturedBallIndex, false);
     }
-    m_vecMonster[nPos] = m_vecMonster.back();
+    v = m_vecMonster.back();
     m_vecMonster.pop_back();
 }

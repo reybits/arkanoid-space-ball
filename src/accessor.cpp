@@ -187,6 +187,11 @@ namespace a
         return UserProfile;
     }
 
+    sOptions& opt()
+    {
+        return Options;
+    }
+
     CRandom& rnd()
     {
         return Rnd;
