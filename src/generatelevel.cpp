@@ -168,7 +168,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
         }
     }
 
-    printf("Total bricks on level %lu\n", a::ark()->m_vecLevelBricks.size());
+    printf("Total bricks on level %u\n", (uint32_t)a::ark()->m_vecLevelBricks.size());
 }
 
 void CGenerateLevel::_FillLevel(int nLevel, int nPos)
