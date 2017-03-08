@@ -19,6 +19,11 @@ endif()
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
+if( CMAKE_BUILD_PLATFORM STREQUAL "Emscripten" )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1" )
+    set( CMAKE_EXE_LINKER_FLAGS "-o index.html --embed-file res/arkanoidsb.pak" )
+endif()
+
 find_package(SDL REQUIRED)
 find_package(SDL_image REQUIRED)
 find_package(SDL_mixer REQUIRED)
@@ -44,11 +49,11 @@ configure_file(
     )
 
 file( GLOB_RECURSE APP_SOURCES "src/*.c" "src/*.cpp")
-if(APPLE)
+if(APPLE AND NOT CMAKE_BUILD_PLATFORM)
     file( GLOB_RECURSE APP_SOURCES ${APP_SOURCES} "src/*.m")
 endif()
 
-if(APPLE)
+if(APPLE AND NOT CMAKE_BUILD_PLATFORM)
     set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.icns)
     set(APP_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.pak)
     set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")

@@ -4,6 +4,7 @@ VER_RELEASE=5
 VERSION=$(VER_MAJOR).$(VER_MINOR)$(VER_RELEASE)
 BUILD_DIR_RELEASE=.build_release
 BUILD_DIR_DEBUG=.build_debug
+BUILD_DIR_EMSCRIPTEN=.build_emscripten
 BUNDLE_NAME=arkanoidsb
 
 PREFIX?=/usr/local
@@ -16,6 +17,7 @@ endif
 all:
 	@echo "Usage:"
 	@echo "    make <release | debug>    - make release or debug application"
+	@echo "    make <emscripten>         - make release of web version"
 	@echo "    make <cppcheck>           - do static code verification"
 	@echo "    make <clean>              - cleanup directory"
 
@@ -32,8 +34,13 @@ debug: package
 	cd $(BUILD_DIR_DEBUG) ; cmake -DCMAKE_BUILD_TYPE=Debug -DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. ; make ; cd ..
 	cp -r $(BUILD_DIR_DEBUG)/$(BUNDLE_NAME) .
 
+emscripten: package
+	$(shell if [ ! -d $(BUILD_DIR_EMSCRIPTEN) ]; then mkdir $(BUILD_DIR_EMSCRIPTEN); fi)
+	cd $(BUILD_DIR_EMSCRIPTEN) ; cmake -DCMAKE_BUILD_PLATFORM=Emscripten -DCMAKE_BUILD_TYPE=Release -DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. ; make ; cd ..
+	cp -r $(BUILD_DIR_EMSCRIPTEN)/$(BUNDLE_NAME) .
+
 cppcheck:
 	cppcheck -j 1 --enable=all -f -I src src/ 2> cppcheck-output
 
 clean:
-	rm -fr $(BUILD_DIR_RELEASE) $(BUILD_DIR_DEBUG) $(BUNDLE_NAME) cppcheck-output $(BUNDLE_NAME)-$(VERSION)* $(BUNDLE_NAME)_$(VERSION)* *.{log,tasks,sh,xz,list} strace_out cov-int
+	rm -fr $(BUILD_DIR_RELEASE) $(BUILD_DIR_DEBUG) $(BUILD_DIR_EMSCRIPTEN) $(BUNDLE_NAME) cppcheck-output $(BUNDLE_NAME)-$(VERSION)* $(BUNDLE_NAME)_$(VERSION)* *.{log,tasks,sh,xz,list} strace_out cov-int
