@@ -601,28 +601,27 @@ void SetVolumeSound(int nVolume)
 
 bool DrawIntro()
 {
-    /*
     static int nRotates = 0;
     static int nFrame = 0;
-    static SDL_Surface* intro = 0;
-    static SDL_Surface* intro2 = 0;
-    static SDL_Surface* sdlLogo = 0;
-    if (intro == 0)
+    static SDL_Surface* intro = nullptr;
+    static SDL_Surface* intro2 = nullptr;
+    static SDL_Surface* sdlLogo = nullptr;
+    if (intro == nullptr)
     {
-        intro = LoadImage("intro.png");
-        intro2 = LoadImage("intro2.png");
-        sdlLogo = LoadImage("sdl_minibox.png");
+        intro = a::res()->loadImage("intro.png");
+        intro2 = a::res()->loadImage("intro2.png");
+        sdlLogo = a::res()->loadImage("sdl_minibox.png");
     }
 
-    SDL_FillRect(g_psurfScreen, 0, 0);
-    Blit((SCREEN_WIDTH - 80) / 2, (SCREEN_HEIGHT - 106) / 2, intro2, 0);
+    clear(0);
+    render((SCREEN_WIDTH - 80) / 2, (SCREEN_HEIGHT - 106) / 2, intro2, 0);
     SDL_Rect rc;
     rc.w = 64;
     rc.h = 64;
     rc.x = (nFrame % 4) * 64;
     rc.y = (nFrame / 4) * 64;
-    Blit((SCREEN_WIDTH - 64) / 2, (SCREEN_HEIGHT - 106) / 2 + 8, intro, &rc);
-    Blit(SCREEN_WIDTH - 88 - 5, SCREEN_HEIGHT - 44 - 5, sdlLogo, 0);
+    render((SCREEN_WIDTH - 64) / 2, (SCREEN_HEIGHT - 106) / 2 + 8, intro, &rc);
+    render(SCREEN_WIDTH - 88 - 5, SCREEN_HEIGHT - 44 - 5, sdlLogo, 0);
 
     static Uint32 dwTime = 0;
     if (IsKeyPressed(SDLK_ESCAPE) || g_bMouseRB || g_bMouseLB)
@@ -647,15 +646,13 @@ bool DrawIntro()
                 SDL_FreeSurface(sdlLogo);
                 SDL_FreeSurface(intro2);
                 SDL_FreeSurface(intro);
-                intro = 0;
+                intro = nullptr;
                 return true;
             }
         }
     }
 
     return false;
-    */
-    return true;
 }
 
 void EnableCursor(bool enable)

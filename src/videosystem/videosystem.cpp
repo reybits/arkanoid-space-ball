@@ -14,6 +14,8 @@
 
 #include "../glSDL.h"
 
+#include <cstdlib>
+
 namespace
 {
     SDL_Surface* ScreenSurface = nullptr;
@@ -125,6 +127,11 @@ void endFrame()
 int getFps()
 {
     return fps;
+}
+
+void clear(unsigned color)
+{
+    SDL_FillRect(ScreenSurface, nullptr, color);
 }
 
 void scissor(SDL_Rect* rc)

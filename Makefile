@@ -44,9 +44,9 @@ emscripten: package
 	$(shell if [ ! -d $(BUILD_DIR_EMSCRIPTEN) ]; then mkdir $(BUILD_DIR_EMSCRIPTEN); fi)
 	cp res/arkanoidsb.pak $(BUILD_DIR_EMSCRIPTEN)/
 	cd $(BUILD_DIR_EMSCRIPTEN) \
-		&& emmake cmake -DCMAKE_BUILD_PLATFORM=Emscripten -DCMAKE_BUILD_TYPE=Release \
+		&& cmake -DCMAKE_BUILD_PLATFORM=Emscripten -DCMAKE_BUILD_TYPE=Release \
 		-DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. \
-		&& emmake make
+		&& make
 	rm -fr html && mkdir html
 	cp $(BUILD_DIR_EMSCRIPTEN)/index.* html/
 
