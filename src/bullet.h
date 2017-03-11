@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "defines.h"
+
 #include <SDL.h>
 #include <vector>
 
@@ -17,25 +19,30 @@ public:
     CBullet();
     ~CBullet();
 
-    bool GetPositionAndSize(SDL_Rect& rc, int& nPos, bool bFromFirst);
+    size_t getCount() const { return m_bullets.size(); }
+    sBulletDescription getDescription(size_t idx) const;
+
     void Move();
-    bool IsAcross(int nX, int nY, int nWidth, int nHeight, bool& bRemoveAll, int& nType);
-    enum _TYPES { TYPE_LASER, TYPE_MISSILE, TYPE_PLASMA };
-    void AddBullets(int y, int nType);
+
+    bool IsAcross(int nX, int nY, int nWidth, int nHeight, bool& bRemoveAll, eBulletType& type);
+    void AddBullets(int y, eBulletType type);
     void RemoveAll();
     void Draw();
-    void ChangeAngle(int nPos, bool bRotate);
+    void ChangeAngle(size_t nPos, bool bRotate);
 
-protected:
-    int GetAngle(int nPos);
-    void RemoveByPos(int nPos);
-    struct _BULLET
+private:
+    int GetAngle(size_t nPos);
+    size_t RemoveByPos(size_t nPos);
+
+private:
+    struct sBullet
     {
-        int     nType;
-        float       x, y;
-        float       nAngle;
-        int     w;  // laser related
-        Uint32  dwLaser;
+        eBulletType type;
+        float x;
+        float y;
+        float nAngle;
+        int w; // laser related
+        Uint32 dwLaser;
     };
-    std::vector<_BULLET>m_vecBullets;
+    std::vector<sBullet> m_bullets;
 };

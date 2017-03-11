@@ -8,10 +8,8 @@
 
 #pragma once
 
-void SetVideoMode();
-void UnsetVideoMode();
 void CommonQuit();
 bool UpdateKeys();
 void PlayMusic2();
-void SwitchFullscreen();
 bool DrawIntro();
+void gameLoop();

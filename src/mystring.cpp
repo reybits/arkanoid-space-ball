@@ -9,7 +9,7 @@
 #include "mystring.h"
 #include "accessor.h"
 #include "defines.h"
-#include "resource.h"
+#include "videosystem/videosystem.h"
 
 #include <cassert>
 #include <cmath>
@@ -53,14 +53,14 @@ bool CMyString::loadFont(const char* fontName, const char* fontIniName, const ch
 {
     if (fontShadowName != nullptr)
     {
-        m_shadow = LoadImage(fontShadowName);
+        m_shadow = a::res()->loadImage(fontShadowName);
         if (m_shadow != nullptr)
         {
             m_drawShadow = true;
         }
     }
 
-    m_fnt = LoadImage(fontName);
+    m_fnt = a::res()->loadImage(fontName);
     if (m_fnt != nullptr)
     {
         return LoadProps(fontIniName);
@@ -122,12 +122,14 @@ void CMyString::DrawString(int nX, int nY, const char* str, eAlign align)
         rc.y = nYPos + m_anSymbDy[bySymb];
         if (m_drawShadow == true && m_shadow != nullptr)
         {
-            SDL_Rect rcShadow;
-            rcShadow.x = rc.x + m_nShadowDx;
-            rcShadow.y = rc.y + m_nShadowDy;
-            SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
+            render(rc.x + m_nShadowDx, rc.y + m_nShadowDy, m_shadow, frame);
+            // SDL_Rect rcShadow;
+            // rcShadow.x = rc.x + m_nShadowDx;
+            // rcShadow.y = rc.y + m_nShadowDy;
+            // SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
         }
-        SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
+        render(rc.x, rc.y, m_fnt, frame);
+        // SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
 
         const int width = GetFrameWidth(idx);
         nXPos += width + m_kerning;
@@ -235,12 +237,14 @@ void CMyString::DrawString2(int nX, int nY, const char* str)
             rc.y = nYPos + m_anSymbDy[bySymb];
             if (m_drawShadow == true && m_shadow != nullptr)
             {
-                SDL_Rect rcShadow;
-                rcShadow.x = rc.x + m_nShadowDx;
-                rcShadow.y = rc.y + m_nShadowDy;
-                SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
+                render(rc.x + m_nShadowDx, rc.y + m_nShadowDy, m_shadow, frame);
+                // SDL_Rect rcShadow;
+                // rcShadow.x = rc.x + m_nShadowDx;
+                // rcShadow.y = rc.y + m_nShadowDy;
+                // SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
             }
-            SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
+            render(rc.x, rc.y, m_fnt, frame);
+            // SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
 
             const int width = GetFrameWidth(idx);
             nXPos += width + m_kerning;
@@ -287,12 +291,14 @@ void CMyString::DrawStringSinus(int nX, int nY, const char* str, int nAplituda, 
         rc.y = nYPos + (int)(Sin[nPos] * nAplituda) + m_anSymbDy[bySymb];
         if (m_drawShadow == true && m_shadow != nullptr)
         {
-            SDL_Rect rcShadow;
-            rcShadow.x = rc.x + m_nShadowDx;
-            rcShadow.y = rc.y + m_nShadowDy;
-            SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
+            render(rc.x + m_nShadowDx, rc.y + m_nShadowDy, m_shadow, frame);
+            // SDL_Rect rcShadow;
+            // rcShadow.x = rc.x + m_nShadowDx;
+            // rcShadow.y = rc.y + m_nShadowDy;
+            // SDL_BlitSurface(m_shadow, frame, g_psurfScreen, &rcShadow);
         }
-        SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
+        render(rc.x, rc.y, m_fnt, frame);
+        // SDL_BlitSurface(m_fnt, frame, g_psurfScreen, &rc);
 
         const int width = GetFrameWidth(idx);
         nPos += width;
@@ -426,7 +432,7 @@ bool CMyString::loadFont(const char* fontName, int space, int kerning, const cha
     }
 
     m_kerning = kerning;
-    m_fnt = LoadImage(fontName);
+    m_fnt = a::res()->loadImage(fontName);
     if (m_fnt != nullptr)
     {
         memset(m_symbIndex, 0, sizeof(m_symbIndex));

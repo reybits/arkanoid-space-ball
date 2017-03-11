@@ -16,17 +16,17 @@ public:
     CExploision();
     ~CExploision();
 
-    int GetCount();
+    size_t GetCount();
     void RemoveAll();
-    void AddExploision(int x, int y, int nType);
+    void AddExploision(int x, int y, int type);
     void Draw(bool bBricks);
 
-protected:
-    struct _EXPLOISION
+private:
+    struct eExpl
     {
         int x, y;
-        int nType;
+        int type;
         int nFrame;
     };
-    std::vector<_EXPLOISION>m_vecExploisions;
+    std::vector<eExpl> m_exlosions;
 };

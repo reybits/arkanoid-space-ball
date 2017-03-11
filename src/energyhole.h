@@ -22,7 +22,7 @@ public:
     void Draw();
     void Move();
 
-protected:
+private:
     struct sEnergyHole
     {
         float x;
@@ -33,5 +33,5 @@ protected:
         int angle;
         bool is_over;
     };
-    std::vector<sEnergyHole> m_vecEnergyHole;
+    std::vector<sEnergyHole> m_holes;
 };

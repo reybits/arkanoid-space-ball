@@ -20,14 +20,16 @@ endif()
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 if( CMAKE_BUILD_PLATFORM STREQUAL "Emscripten" )
-    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1" )
-    set( CMAKE_EXE_LINKER_FLAGS "-o index.html --embed-file res/arkanoidsb.pak" )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1 -s USE_SDL_IMAGE=1 -s STB_IMAGE=1 -s TOTAL_MEMORY=32000000" )
+    set( CMAKE_EXE_LINKER_FLAGS "-o index.html --embed-file arkanoidsb.pak" )
 endif()
 
-find_package(SDL REQUIRED)
-find_package(SDL_image REQUIRED)
-find_package(SDL_mixer REQUIRED)
-find_package(X11)
+if(NOT CMAKE_BUILD_PLATFORM)
+    find_package(SDL REQUIRED)
+    find_package(SDL_image REQUIRED)
+    find_package(SDL_mixer REQUIRED)
+    find_package(X11)
+endif()
 
 include_directories(
     ${X11_INCLUDE_DIR}

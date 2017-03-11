@@ -49,6 +49,37 @@ enum { BOX_NONE,
        BOX_END
      };
 
+enum class eBallType
+{
+    WHITE,
+    RED,
+    BLUE
+};
+
+struct sBallDescription
+{
+    eBallType type;
+    int x;
+    int y;
+    int diameter;
+    bool bIsCaptured;
+};
+
+enum class eBulletType
+{
+    LASER,
+    MISSILE,
+    PLASMA
+};
+
+struct sBulletDescription
+{
+    float x;
+    float y;
+    float w;
+    float h;
+};
+
 struct _BRICK
 {
     float   fX, fY;             // brick's position on screen in px
@@ -123,61 +154,19 @@ extern int          g_nCursorX;
 extern int          g_nCursorY;
 extern bool         g_bIsCursorVisible;
 
-extern SDL_Surface* m_pEnergyHole;
-extern SDL_Surface* m_pMonstCopter;
-extern SDL_Surface* m_pMonstPatrol;
-extern SDL_Surface* m_pMonstEye;
-extern SDL_Surface* m_pMonstBlackHole;
-extern SDL_Surface* m_pMonstFighter;
-extern SDL_Surface* m_pMonstHand;
-extern SDL_Surface* m_pMonstStone1;
-extern SDL_Surface* m_pMonstStone2;
-extern SDL_Surface* m_pMonstTurbine;
-extern SDL_Surface* m_pMonstUfo;
-extern SDL_Surface* m_pMonstWreckage1;
-extern SDL_Surface* m_pMonstWreckage2;
-extern SDL_Surface* m_pBall;
-extern SDL_Surface* m_pVector;
-extern SDL_Surface* m_pFB;
-extern SDL_Surface* m_pBullet;
-extern SDL_Surface* m_pExploision;
-extern SDL_Surface* m_pBricks;
-extern SDL_Surface* m_pBricksMov;
-extern SDL_Surface* m_pBricksMovBullets;
-extern SDL_Surface* m_pBonuses;
-extern SDL_Surface* g_pBonusesSmall;
-extern SDL_Surface* g_pBonusesAura;
-extern SDL_Surface* g_pGameBG;
-extern SDL_Surface* m_pGameBGanims;
-extern SDL_Surface* m_pRacket;
-extern SDL_Surface* m_pGameWall;
-extern SDL_Surface* m_pRacket;
-extern SDL_Surface* m_pBackground;
-extern SDL_Surface* m_pBackground2;
-extern SDL_Surface* m_pMainMenuIcons;
-extern SDL_Surface* g_pTransp;
-extern SDL_Surface* g_pTutorialDlg;
-extern SDL_Surface* g_pSinusString;
-extern SDL_Surface* g_pOptions;
-//extern SDL_Surface* g_pBGStars;
-
 extern Mix_Chunk*    g_apSnd[];
 extern Mix_Music*    g_apMod[];
 extern int          g_nVolumeM;
 extern int          g_nVolumeS;
 
 extern void EnableCursor(bool bEnable);
-extern SDL_Surface* LoadImage(const char* pchFileName, const unsigned nColorKey = 0xff000000);
-extern void Blit(int nX, int nY, SDL_Surface* pImg, SDL_Rect* pSrc);
-extern void BlitStretch(int nX, int nY, SDL_Surface* pImg, SDL_Rect* pSrc, float fScale);
 extern void SetRect(SDL_Rect* pRc, int nX, int nY, int nW, int nH);
-extern char* MakePath(const char* pchFileName);
 extern bool IsKeyPressed(int nKey);
 extern bool IsKeyStateChanged(int nKey);
-extern void FadeScreen();
-extern void SwitchFullscreen();
+
 extern void PlayMusic(bool bFromFirst);
 extern int PlaySound(int nSndIndex, int nLoopsCount = 0);
 extern void StopSound(int& nChannel);
+
 extern void SetVolumeMusic(int nVolume);
 extern void SetVolumeSound(int nVolume);

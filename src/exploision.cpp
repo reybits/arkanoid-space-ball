@@ -8,14 +8,15 @@
 
 #include "exploision.h"
 #include "defines.h"
+#include "videosystem/videosystem.h"
 
 #include <SDL.h>
 
-#define NUM_OF_FRAMES    9
+#define NUM_OF_FRAMES 9
 
 CExploision::CExploision()
 {
-    m_vecExploisions.reserve(30);
+    m_exlosions.reserve(30);
 }
 
 CExploision::~CExploision()
@@ -24,31 +25,33 @@ CExploision::~CExploision()
 
 void CExploision::Draw(bool bBricks)
 {
-    static Uint32   dwTime  = 0;
-    static bool     bUpdate = false;
+    static Uint32 dwTime = 0;
+    static bool bUpdate = false;
     if (bBricks == true)
     {
         bUpdate = false;
         if (dwTime + 80 < SDL_GetTicks())
         {
-            dwTime  = SDL_GetTicks();
+            dwTime = SDL_GetTicks();
             bUpdate = true;
         }
     }
-    SDL_Rect    rc;
-    rc.w    = 45;
-    rc.h    = 41;
-    for (size_t i = 0, size = m_vecExploisions.size(); i < size;)
+    SDL_Rect rc;
+    rc.w = 45;
+    rc.h = 41;
+    for (size_t i = 0, size = m_exlosions.size(); i < size;)
     {
-        if ((bBricks == true && m_vecExploisions[i].nType == 3) || (bBricks == false && m_vecExploisions[i].nType != 3))
+        auto& e = m_exlosions[i];
+
+        if ((bBricks == true && e.type == 3) || (bBricks == false && e.type != 3))
         {
-            rc.x = 40 + m_vecExploisions[i].nType * 45;
-            rc.y = m_vecExploisions[i].nFrame * 41;
-            Blit(m_vecExploisions[i].x, m_vecExploisions[i].y, m_pExploision, &rc);
-            if (bUpdate == true && ++m_vecExploisions[i].nFrame == NUM_OF_FRAMES)
+            rc.x = 40 + e.type * 45;
+            rc.y = e.nFrame * 41;
+            render(e.x, e.y, eImage::Exploision, &rc);
+            if (bUpdate == true && ++e.nFrame == NUM_OF_FRAMES)
             {
-                m_vecExploisions[i] = m_vecExploisions[--size];
-                m_vecExploisions.pop_back();
+                m_exlosions[i] = m_exlosions[--size];
+                m_exlosions.pop_back();
                 continue;
             }
         }
@@ -57,23 +60,23 @@ void CExploision::Draw(bool bBricks)
     }
 }
 
-void CExploision::AddExploision(int x, int y, int nType)
+void CExploision::AddExploision(int x, int y, int type)
 {
-    _EXPLOISION expl;
-    expl.nType      = nType;
-    expl.x          = x;
-    expl.y          = y;
-    expl.nFrame     = 0;
-    m_vecExploisions.push_back(expl);
+    eExpl e;
+    e.type = type;
+    e.x = x;
+    e.y = y;
+    e.nFrame = 0;
+    m_exlosions.push_back(e);
     PlaySound(15);
 }
 
 void CExploision::RemoveAll()
 {
-    m_vecExploisions.clear();
+    m_exlosions.clear();
 }
 
-int CExploision::GetCount()
+size_t CExploision::GetCount()
 {
-    return  m_vecExploisions.size();
+    return m_exlosions.size();
 }

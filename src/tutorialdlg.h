@@ -31,5 +31,5 @@ private:
         int nX, nY;
         int nCategory, nMsgId;
     };
-    std::vector<sTutorial>m_vecTutorialDlg;
+    std::vector<sTutorial> m_vecTutorialDlg;
 };

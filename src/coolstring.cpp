@@ -10,10 +10,12 @@
 #include "accessor.h"
 #include "defines.h"
 #include "mystring.h"
+#include "videosystem/videosystem.h"
 
 #include "coolfont.hpp"
 
 #include <SDL.h>
+#include <cstdio>
 
 CCoolString::CCoolString()
 {
@@ -28,35 +30,35 @@ CCoolString::~CCoolString()
 void CCoolString::Add(const char* pchFormat, ...)
 {
     va_list ap;
-    char    achBuf[50];
+    char achBuf[50];
 
     va_start(ap, pchFormat);
     vsprintf(achBuf, pchFormat, ap);
     va_end(ap);
 
-    _COOL_STRING    cs;
-    cs.pchString    = new char[strlen(achBuf) + 1];
-    cs.nSeconds     = 2;    // 1/2 seconds to show
+    _COOL_STRING cs;
+    cs.pchString = new char[strlen(achBuf) + 1];
+    cs.nSeconds = 2; // 1/2 seconds to show
     strcpy(cs.pchString, achBuf);
     m_vecCoolString.push_back(cs);
 }
 
 void CCoolString::Draw()
 {
-    SDL_Rect    rc;
-    static Uint32   dwTime  = 0;
-    bool    bStep   = false;
+    SDL_Rect rc;
+    static Uint32 dwTime = 0;
+    bool bStep = false;
     if (dwTime + 650 < SDL_GetTicks())
     {
-        dwTime  = SDL_GetTicks();
-        bStep   = true;
+        dwTime = SDL_GetTicks();
+        bStep = true;
     }
 
     // draw frame
     SetRect(&rc, 0, 0, 160, 20);
     if (m_vecCoolString.size() > 0)
     {
-        Blit(440, WALL_Y1, g_pTransp, &rc);
+        render(440, WALL_Y1, eImage::Transp, &rc);
         a::fntTut()->SetRect(440, WALL_Y1 + 2, 160, 20);
         a::fntTut()->DrawString(0, 0, m_vecCoolString[0].pchString, CMyString::eAlign::Center);
         if (bStep == true && --m_vecCoolString[0].nSeconds == 0)
@@ -79,5 +81,5 @@ void CCoolString::Clear()
 
 int CCoolString::GetCount()
 {
-    return  m_vecCoolString.size();
+    return m_vecCoolString.size();
 }

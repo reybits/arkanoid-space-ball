@@ -26,21 +26,32 @@ package:
 
 release: package
 	$(shell if [ ! -d $(BUILD_DIR_RELEASE) ]; then mkdir $(BUILD_DIR_RELEASE); fi)
-	cd $(BUILD_DIR_RELEASE) ; cmake -DCMAKE_BUILD_TYPE=Release -DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. ; make ; cd ..
+	cd $(BUILD_DIR_RELEASE) \
+		; cmake -DCMAKE_BUILD_TYPE=Release \
+		-DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. \
+		; make
 	cp -r $(BUILD_DIR_RELEASE)/$(BUNDLE_NAME) .
 
 debug: package
 	$(shell if [ ! -d $(BUILD_DIR_DEBUG) ]; then mkdir $(BUILD_DIR_DEBUG); fi)
-	cd $(BUILD_DIR_DEBUG) ; cmake -DCMAKE_BUILD_TYPE=Debug -DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. ; make ; cd ..
+	cd $(BUILD_DIR_DEBUG) \
+		; cmake -DCMAKE_BUILD_TYPE=Debug \
+		-DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. \
+		; make
 	cp -r $(BUILD_DIR_DEBUG)/$(BUNDLE_NAME) .
 
 emscripten: package
 	$(shell if [ ! -d $(BUILD_DIR_EMSCRIPTEN) ]; then mkdir $(BUILD_DIR_EMSCRIPTEN); fi)
-	cd $(BUILD_DIR_EMSCRIPTEN) ; cmake -DCMAKE_BUILD_PLATFORM=Emscripten -DCMAKE_BUILD_TYPE=Release -DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. ; make ; cd ..
-	cp -r $(BUILD_DIR_EMSCRIPTEN)/$(BUNDLE_NAME) .
+	cp res/arkanoidsb.pak $(BUILD_DIR_EMSCRIPTEN)/
+	cd $(BUILD_DIR_EMSCRIPTEN) \
+		&& emmake cmake -DCMAKE_BUILD_PLATFORM=Emscripten -DCMAKE_BUILD_TYPE=Release \
+		-DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. \
+		&& emmake make
+	rm -fr html && mkdir html
+	cp $(BUILD_DIR_EMSCRIPTEN)/index.* html/
 
 cppcheck:
 	cppcheck -j 1 --enable=all -f -I src src/ 2> cppcheck-output
 
 clean:
-	rm -fr $(BUILD_DIR_RELEASE) $(BUILD_DIR_DEBUG) $(BUILD_DIR_EMSCRIPTEN) $(BUNDLE_NAME) cppcheck-output $(BUNDLE_NAME)-$(VERSION)* $(BUNDLE_NAME)_$(VERSION)* *.{log,tasks,sh,xz,list} strace_out cov-int
+	rm -fr $(BUILD_DIR_RELEASE) $(BUILD_DIR_DEBUG) $(BUILD_DIR_EMSCRIPTEN) $(BUNDLE_NAME) html/ cppcheck-output $(BUNDLE_NAME)-$(VERSION)* $(BUNDLE_NAME)_$(VERSION)* *.{log,tasks,sh,xz,list} strace_out cov-int

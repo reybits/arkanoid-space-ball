@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "bonus.h"
 #include "generatelevel.h"
 
 #include <SDL.h>
@@ -24,14 +25,31 @@ public:
     CGame(const sOptions& options);
     ~CGame();
 
-    enum { GS_GAME_ACTIVE, /*GS_GAME_RESTORE, */GS_GAME_PAUSED, GS_GET_READY, GS_GAME_OVER, GS_GAME_AREYOUSURE_EXIT, GS_GAME_REMINDER1, GS_GAME_REMINDER2 };
-    enum _RACKET_TYPE { RT_NORMAL, RT_LASER, RT_MISSILE, RT_PLASMA, RT_MAGNET, RT_ENGINE };
+    enum
+    {
+        GS_GAME_ACTIVE,
+        /*GS_GAME_RESTORE, */ GS_GAME_PAUSED,
+        GS_GET_READY,
+        GS_GAME_OVER,
+        GS_GAME_AREYOUSURE_EXIT,
+        GS_GAME_REMINDER1,
+        GS_GAME_REMINDER2
+    };
+    enum _RACKET_TYPE
+    {
+        RT_NORMAL,
+        RT_LASER,
+        RT_MISSILE,
+        RT_PLASMA,
+        RT_MAGNET,
+        RT_ENGINE
+    };
     void SetPause();
     bool DrawReminder(int nReminderType);
     void AddScore(int nScore);
     void DoImpact(int nIndex, bool bRemoveAll);
     //void DoImpact2(int nBx, int nBy, int nBrick, bool bRemoveAll);
-    void ProcessBonus(int nBonusType);
+    void ProcessBonus(CBonus::eType nBonusType);
     int getScore() const
     {
         return m_nScore;
@@ -62,8 +80,8 @@ private:
     void DoGameActive();
     void DrawPaddle();
     void InitLevel(int nLevel, bool bRestore = false);
-    void DoBomb(int nIndex);
-    void DrawBrick(int nIndex, bool bNextFrame, bool bNextFrameAnim);
+    void DoBomb(size_t idx);
+    void DrawBrick(size_t idx, bool bNextFrameAnim);
     void DrawBricks();
     void ResetAll();
     void DrawBrickBullets();
@@ -76,14 +94,14 @@ private:
 private:
     const sOptions& m_options;
     int m_nLaserX;
-    std::vector<_BRICK>m_vecLevelBricks;
-    int m_nLevelPrev;   // store previous level number: -1 - usualy, -2 - inform, that we restore game
+    std::vector<_BRICK> m_vecLevelBricks;
+    int m_nLevelPrev; // store previous level number: -1 - usualy, -2 - inform, that we restore game
     struct _STARS
     {
-        float   fX, fY, fSpeed;
+        float fX, fY, fSpeed;
         int nType, nFrame;
     };
-    std::vector<_STARS>m_vecStars;
+    std::vector<_STARS> m_vecStars;
     int m_nBonusLevelType;
     int m_nBonusLevelTicks;
     int m_nSndWall; // store channel number for stop
@@ -91,14 +109,14 @@ private:
     Uint32 m_dwUnregisterdTime;
     int m_nScoreToAdditionalBall;
     Uint8 m_byChar;
-    struct _BRICK_BULLET
+    struct sBrickBullet
     {
-        int     nType;
-        int     nAngle;
-        int     nFrame;
-        float   fX, fY;
+        int nType;
+        int nAngle;
+        int nFrame;
+        float fX, fY;
     };
-    std::vector<_BRICK_BULLET>m_vecBrickBullets;
+    std::vector<sBrickBullet> m_vecBrickBullets;
     int m_nTotalBonusesInLevel;
     int m_nCanMovePaddleCount;
     bool m_bPaddleIsInvert;
@@ -133,4 +151,6 @@ private:
     char* m_pchGetReeadyInfo;
     bool m_bTutorialPause;
     bool m_bIsCustomLevels;
+
+    SDL_Surface* m_background = nullptr;
 };

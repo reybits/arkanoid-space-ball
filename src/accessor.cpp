@@ -23,6 +23,7 @@
 #include "tutorialdlg.h"
 #include "utils.h"
 
+#include <cstdlib>
 #include <memory>
 #include <sys/stat.h>
 

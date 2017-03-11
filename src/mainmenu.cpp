@@ -6,16 +6,17 @@
 *
 \**********************************************/
 
-#include "arkanoidsb.h"
+#include "mainmenu.h"
 #include "accessor.h"
+#include "arkanoidsb.h"
 #include "bonus.h"
 #include "defines.h"
-#include "mainmenu.h"
 #include "monster.h"
 #include "mystring.h"
 #include "sinusstring.h"
 #include "utils.h"
 #include "version.h"
+#include "videosystem/videosystem.h"
 
 #include <cstdio>
 
@@ -65,16 +66,15 @@ int CMainMenu::DrawMenu()
         break;
     }
 
-    const char achTips[] =
-        "TIP: Try change video mode to increase performance.   "\
-        "TIP: Kamikaze and fiery meteorite blows up the paddle.   "\
-        "TIP: Ice-meteorite freezes up the paddle for 3 seconds.   "\
-        "TIP: To gain additional scores try to destroy very strong bricks.   "\
-        "TIP: Nuclear bomb blows up some bricks around.   "\
-        "TIP: Cannon fires on you (shots are frozen or invert paddle movement).   "\
-        "TIP: Red brick always has a bonus.   "\
-        "TIP: Right mouse button - return to main menu.   "\
-        " ";
+    const char achTips[] = "TIP: Try change video mode to increase performance.   "
+                           "TIP: Kamikaze and fiery meteorite blows up the paddle.   "
+                           "TIP: Ice-meteorite freezes up the paddle for 3 seconds.   "
+                           "TIP: To gain additional scores try to destroy very strong bricks.   "
+                           "TIP: Nuclear bomb blows up some bricks around.   "
+                           "TIP: Cannon fires on you (shots are frozen or invert paddle movement).   "
+                           "TIP: Red brick always has a bonus.   "
+                           "TIP: Right mouse button - return to main menu.   "
+                           " ";
     static bool bInit = true;
     if (bInit == true)
     {
@@ -102,11 +102,11 @@ void CMainMenu::DrawBackground()
 {
     if (m_nMenuType == MT_MAIN)
     {
-        Blit(0, 0, m_pBackground, 0);
+        render(0, 0, eImage::MainmenuBg);
     }
     else
     {
-        Blit(0, 0, m_pBackground2, 0);
+        render(0, 0, eImage::MainmenuBg2);
     }
 }
 
@@ -145,10 +145,10 @@ int CMainMenu::DrawMenuMain()
 int CMainMenu::DrawStartGame()
 {
     //a::fnt2()->DrawString(0, MENU_ITEM_Y - 60, "SELECT APPROPRIATE ACTION", 2);
-    int nItem   = -1;
+    int nItem = -1;
     if (true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y - 80, B_NEWGAME))
     {
-        nItem   = 0;
+        nItem = 0;
     }
     if (true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y - 80 + 29, B_RESTORE))
     {
@@ -159,47 +159,47 @@ int CMainMenu::DrawStartGame()
     }
     if (true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y - 80 + 58, B_CUSTOMLEVELS))
     {
-        nItem   = 7;
+        nItem = 7;
     }
     if (true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y - 80 + 87, B_LEVELEDITOR))
     {
-        nItem   = 8;
+        nItem = 8;
     }
     if (true == DrawMenuButton(MENU_ITEM_X + 62, MENU_ITEM_Y - 80 + 116, B_CANCEL))
     {
-        nItem   = 6;
+        nItem = 6;
     }
     a::fnt2()->DrawString(0, MENU_ITEM_Y - 110, m_achStoredLevelInfo, CMyString::eAlign::Center);
     a::fnt1()->DrawString(0, MENU_ITEM_Y + 120, "Do you wish to get some help while playing (Tutorial)?", CMyString::eAlign::Center);
     a::fnt2()->DrawString(0, MENU_ITEM_Y + 120 + 20 + 2, (m_options.tutorialMode == true ? "YES" : "NO"), CMyString::eAlign::Center);
     if (true == DrawMenuButton(SCREEN_WIDTH / 2 - 77 - 40, MENU_ITEM_Y + 120 + 20, B_PREV))
     {
-        nItem   = 2;
+        nItem = 2;
     }
     if (true == DrawMenuButton(SCREEN_WIDTH / 2 + 40, MENU_ITEM_Y + 120 + 20, B_NEXT))
     {
-        nItem   = 3;
+        nItem = 3;
     }
     a::fnt1()->DrawString(0, MENU_ITEM_Y + 170, "Do you wish to auto use bonuses (like usual arkanoid)?", CMyString::eAlign::Center);
     a::fnt2()->DrawString(0, MENU_ITEM_Y + 170 + 20 + 2, (m_options.autoBonusMode == true ? "YES" : "NO"), CMyString::eAlign::Center);
     if (true == DrawMenuButton(SCREEN_WIDTH / 2 - 77 - 40, MENU_ITEM_Y + 170 + 20, B_PREV))
     {
-        nItem   = 4;
+        nItem = 4;
     }
     if (true == DrawMenuButton(SCREEN_WIDTH / 2 + 40, MENU_ITEM_Y + 170 + 20, B_NEXT))
     {
-        nItem   = 5;
+        nItem = 5;
     }
 
     if (g_bMouseLB == true)
     {
-        g_bMouseLB  = false;
+        g_bMouseLB = false;
         switch (nItem)
         {
         case 0:
-            return 1;   // start new game
+            return 1; // start new game
         case 1:
-            return 2;   // restore game
+            return 2; // restore game
         case 2:
         case 3:
             m_options.tutorialMode = !m_options.tutorialMode;
@@ -212,37 +212,37 @@ int CMainMenu::DrawStartGame()
             m_nMenuType = MT_MAIN;
             break;
         case 7:
-            return 3;   // custom levels
+            return 3; // custom levels
         case 8:
-            return 4;   // level editor
+            return 4; // level editor
         }
     }
 
-    return -1;  // do nothing
+    return -1; // do nothing
 }
 
 void CMainMenu::PlaySFX(int nItem)
 {
-    static int  nPrevItem   = -1;
+    static int nPrevItem = -1;
     if (nItem != -1 && nItem != nPrevItem)
     {
-        PlaySound(5);// g_pMainFrame->m_pImix->SamplePlay(m_nSampleOver);
+        PlaySound(5); // g_pMainFrame->m_pImix->SamplePlay(m_nSampleOver);
     }
-    nPrevItem   = nItem;
+    nPrevItem = nItem;
 }
 
 void CMainMenu::DrawMenuRules()
 {
-    SDL_Rect    rc;
-    int i   = 120;
+    SDL_Rect rc;
+    int i = 120;
 
-    static int  nPage   = 0;
+    static int nPage = 0;
 
     if (nPage == 0)
     {
         a::fnt2()->DrawString(0, 20, "BASIC CONTROLS", CMyString::eAlign::Center);
         a::fnt1()->SetRect(100, 0, SCREEN_WIDTH - 200, SCREEN_HEIGHT);
-        a::fnt1()->DrawString2(0,  50, "To manage your paddle, simply move your mouse in the direction you want the paddle to move. The Left mouse button will launch the sphere into play and shoot your weapons - if you have collected the appropriate power-up. The Esc key, or Pause key will pause the game and bring up menu screens.");
+        a::fnt1()->DrawString2(0, 50, "To manage your paddle, simply move your mouse in the direction you want the paddle to move. The Left mouse button will launch the sphere into play and shoot your weapons - if you have collected the appropriate power-up. The Esc key, or Pause key will pause the game and bring up menu screens.");
 
         a::fnt2()->DrawString(0, 180, "GOALS", CMyString::eAlign::Center);
         a::fnt1()->DrawString2(0, 210, "There are two main goals of \"Arkanoid: Space Ball\":");
@@ -254,7 +254,7 @@ void CMainMenu::DrawMenuRules()
     {
         a::fnt2()->DrawString(0, 20, "RULES OF PLAY", CMyString::eAlign::Center);
         a::fnt1()->SetRect(100, 0, SCREEN_WIDTH - 200, SCREEN_HEIGHT);
-        a::fnt1()->DrawString2(0,  50, "To start, you are given three lives. The number of reserve lives is displayed on the scoreboard on the top of the screen. The game is over if you have no reserve spheres. Every 5000 points will get you a reserve life. Each level in \"Arkanoid: Space Ball\" is comprised of a varying number of bricks. Most of these bricks are destructible by bouncing your ball off of them (or shooting them) between one and four times. When all such one-to-four-hit bricks have been cleared, you will have successfully completed the level and will automatically advance to the next rlevel. Note that many levels contain 15-time-hit bricks that do not need to be cleared. All levels of the game are grouped into sets of 5. When you will complete a given set of 5 levels you reach a Bonus level. You have to reach as many scores as you can by shaking down enemy gunnery or debris flying on you at a Bonus level. If you have a Bonus level with gunnery you have to pass 5 balls. In case of debris �you have to pass 3 pushing off debris with paddle.\nThere are two modes of the game: the first one is usual when bonuses activate by taking them at once. The second mode is an accumulation of bonuses when you may chose any balls for using.");
+        a::fnt1()->DrawString2(0, 50, "To start, you are given three lives. The number of reserve lives is displayed on the scoreboard on the top of the screen. The game is over if you have no reserve spheres. Every 5000 points will get you a reserve life. Each level in \"Arkanoid: Space Ball\" is comprised of a varying number of bricks. Most of these bricks are destructible by bouncing your ball off of them (or shooting them) between one and four times. When all such one-to-four-hit bricks have been cleared, you will have successfully completed the level and will automatically advance to the next rlevel. Note that many levels contain 15-time-hit bricks that do not need to be cleared. All levels of the game are grouped into sets of 5. When you will complete a given set of 5 levels you reach a Bonus level. You have to reach as many scores as you can by shaking down enemy gunnery or debris flying on you at a Bonus level. If you have a Bonus level with gunnery you have to pass 5 balls. In case of debris �you have to pass 3 pushing off debris with paddle.\nThere are two modes of the game: the first one is usual when bonuses activate by taking them at once. The second mode is an accumulation of bonuses when you may chose any balls for using.");
         //a::fnt1()->DrawString(0, 350, "�� �� ������ ��������� 3 ������������ �������� � ��������.");
         a::fnt1()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     }
@@ -280,7 +280,7 @@ void CMainMenu::DrawMenuRules()
                 x += 15;
             }
             DrawBrick(x, 330, i);
-            x   += BRICK_W;
+            x += BRICK_W;
         }
     }
     else if (nPage == 3)
@@ -290,46 +290,46 @@ void CMainMenu::DrawMenuRules()
         a::fnt1()->DrawString2(0, 50, "Power-ups are available across all environments. They have the potential to both help and hinder you as you try to complete each round.");
         a::fnt1()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        static int      anFrameBonus[]  = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 };
-        static Uint32   dwTimeBonus = 0;
-        bool                bFrameStep  = false;
+        static int anFrameBonus[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 };
+        static Uint32 dwTimeBonus = 0;
+        bool bFrameStep = false;
         if (dwTimeBonus + 30 < SDL_GetTicks())
         {
             dwTimeBonus = SDL_GetTicks();
-            bFrameStep  = true;
+            bFrameStep = true;
         }
-        const char*  pachDescr[]    =
-        {
+        const char* pachDescr[] = {
             "Split balls",
-            "Fireballs for 8 seconds (*)",
+            "Fireballs for 8 seconds",
             "Ghost balls for 8 seconds",
             "Expand ball size",
             "Shrink ball size",
             "Magnetic balls",
             "Plazma canon",
-            "Missile cannon (*)",
+            "Missile cannon",
             "Laser cannon",
-            "Flying paddle (*)",
+            "Flying paddle",
             "Expand paddle size",
             "Shrink paddle size",
             "Force field for 30 seconds",
             "Slowdown balls and objects",
             "Decrease brick strength"
         };
-        for (int nBon = 0; nBon < CBonus::TYPE_LAST_BONUS; nBon++)
+
+        for (unsigned nBon = 0; nBon < (unsigned)CBonus::eType::Count; nBon++)
         {
-            rc.x    = 36 * anFrameBonus[nBon];
-            rc.y    = 36 * nBon;
-            rc.w    = 36;
-            rc.h    = 36;
-            int nX  = 45;
+            rc.x = 36 * anFrameBonus[nBon];
+            rc.y = 36 * nBon;
+            rc.w = 36;
+            rc.h = 36;
+            int nX = 45;
             if (nBon % 2 == 1)
             {
-                nX    += SCREEN_WIDTH / 2;
+                nX += SCREEN_WIDTH / 2;
             }
-            Blit(nX, i, m_pBonuses, &rc);
+            render(nX, i, eImage::Bonuses, &rc);
             //          if(nBon == CBonus::TYPE_BALL_BLUE || nBon == CBonus::TYPE_BALL_SHRINK || nBon == CBonus::TYPE_PADDLE_SHRINK) {
-            //              Blit(nX - 12, i - 12, g_pBonusesAura, 0);
+            //              render(nX - 12, i - 12, g_pBonusesAura, 0);
             //          }
             a::fnt1()->DrawString(nX + 45, i + 8, pachDescr[nBon]);
             if (nBon % 2 == 1)
@@ -339,10 +339,9 @@ void CMainMenu::DrawMenuRules()
             if (bFrameStep == true)
             {
                 anFrameBonus[nBon]++;
-                anFrameBonus[nBon]  %= 15;
+                anFrameBonus[nBon] %= 15;
             }
         }
-        a::fnt3()->DrawString(0, 400, "(*) - available only in registered version", CMyString::eAlign::Center);
     }
     else if (nPage == 4)
     {
@@ -350,15 +349,15 @@ void CMainMenu::DrawMenuRules()
         {
             m_bInitHelp = false;
             a::monst()->RemoveAll();
-            for (int i = CMonster::MONST_PATROL; i < CMonster::MONST_END; i++)
+            for (unsigned i = (unsigned)CMonster::eMonsters::PATROL; i < (unsigned)CMonster::eMonsters::WRECKAGE1; i++)
             {
-                a::monst()->AddMonster(40 + (i % 2 == 1 ? SCREEN_WIDTH / 2 : 0), 100 + (i / 2) * 60, i);
+                const auto type = (CMonster::eMonsters)i;
+                a::monst()->AddMonster(40 + (i % 2 == 1 ? SCREEN_WIDTH / 2 : 0), 100 + (i / 2) * 60, type);
             }
         }
         a::fnt2()->DrawString(0, 20, "OBJECTS", CMyString::eAlign::Center);
-        a::monst()->Draw();
-        const char*  pachDescr[]    =
-        {
+        a::monst()->DrawMonsters();
+        const char* pachDescr[] = {
             "It's a kamikaze - this monster blows up the paddle.", "Follows the nearest ball.",
             "Robotic eye follows your paddle.", "Disturb to ball moving",
             "This monster disturb to ball moving.", "Robotic hand catches your paddle and holds it at the moment.",
@@ -367,10 +366,10 @@ void CMainMenu::DrawMenuRules()
         };
         for (int nBon = 0; nBon < 10; nBon++)
         {
-            int nX  = 120;
+            int nX = 120;
             if (nBon % 2 == 1)
             {
-                nX  += SCREEN_WIDTH / 2;
+                nX += SCREEN_WIDTH / 2;
             }
             a::fnt1()->SetRect(nX, 0, SCREEN_WIDTH / 2 - 120 - 40, SCREEN_HEIGHT);
             a::fnt1()->DrawString2(0, 100 + (nBon / 2) * 60, pachDescr[nBon]);
@@ -382,17 +381,17 @@ void CMainMenu::DrawMenuRules()
         a::fnt2()->DrawString(0, 100, "CREDITS", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 130, "'WE' Group", CMyString::eAlign::Center);
 #if !defined(REMOVE_URLS)
-        a::fnt1()->DrawString(0,  150, "http://www.wegroup.org", CMyString::eAlign::Center);
-        a::fnt1()->DrawString(0,  170, "Copyright (c) 2006-2012. All Rights Reserved.", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 150, "http://www.wegroup.org", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 170, "Copyright (c) 2006-2012. All Rights Reserved.", CMyString::eAlign::Center);
         a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", CMyString::eAlign::Center);
-        a::fnt1()->DrawString(0,  270, "http://www.libsdl.org", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 270, "http://www.libsdl.org", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 290, "glSDL / David Olofson", CMyString::eAlign::Center);
-        a::fnt1()->DrawString(0,  310, "http://www.olofson.net", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 310, "http://www.olofson.net", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 330, "Music / Sergey Eybog", CMyString::eAlign::Center);
-        a::fnt1()->DrawString(0,  350, "http://www.lesser-vibes.com", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 350, "http://www.lesser-vibes.com", CMyString::eAlign::Center);
 #else
-        a::fnt1()->DrawString(0,  150, "Copyright (c) 2006-2007. All Rights Reserved.", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 150, "Copyright (c) 2006-2007. All Rights Reserved.", CMyString::eAlign::Center);
         a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 270, "glSDL / David Olofson", CMyString::eAlign::Center);
@@ -409,27 +408,27 @@ void CMainMenu::DrawMenuRules()
         nPage++;
     }
 
-    char    achBuf[20];
+    char achBuf[20];
     sprintf(achBuf, "Page %d of %d", nPage + 1, 6);
     a::fnt1()->DrawString(10, SCREEN_HEIGHT - 22, achBuf, CMyString::eAlign::Right);
 
-    int nItem   = -1;
+    int nItem = -1;
     if (true == DrawMenuButton(MENU_ITEM_X + 62, 430, B_OK))
     {
-        nItem   = 0;
+        nItem = 0;
     }
     if (nPage > 0 && true == DrawMenuButton(SCREEN_WIDTH / 2 - 62 - 77 - 10, 430, B_PREV))
     {
-        nItem   = 1;
+        nItem = 1;
     }
     if (nPage < 5 && true == DrawMenuButton(SCREEN_WIDTH / 2 + 62 + 10, 430, B_NEXT))
     {
-        nItem   = 2;
+        nItem = 2;
     }
 
     if (g_bMouseLB == true)
     {
-        g_bMouseLB  = false;
+        g_bMouseLB = false;
         switch (nItem)
         {
         case 0:
@@ -453,24 +452,24 @@ void CMainMenu::DrawMenuRules()
 
 void CMainMenu::DrawBrick(int nX, int nY, int nType)
 {
-    SDL_Rect    src;
-    static int      nFrame  = 0;
-    static Uint32   dwTime  = 0;
-    static bool     bDir        = true;
+    SDL_Rect src;
+    static int nFrame = 0;
+    static Uint32 dwTime = 0;
+    static bool bDir = true;
     if (dwTime + 100 < SDL_GetTicks())
     {
-        dwTime  = SDL_GetTicks();
+        dwTime = SDL_GetTicks();
         nFrame++;
-        nFrame  %= 5;
+        nFrame %= 5;
         if (!nFrame)
         {
-            bDir  = !bDir;
+            bDir = !bDir;
         }
     }
 
     if (nType < BOX_40)
     {
-        src.y   = ((nType - 1) / 10) * BRICK_H;
+        src.y = ((nType - 1) / 10) * BRICK_H;
     }
     else if (nType < BOX_DBL_0)
     {
@@ -485,18 +484,18 @@ void CMainMenu::DrawBrick(int nX, int nY, int nType)
     }
     else
     {
-        src.y   = ((nType - 1) / 10 + 4) * BRICK_H;
+        src.y = ((nType - 1) / 10 + 4) * BRICK_H;
     }
-    src.x   = ((nType - 1) % 10) * BRICK_W;
-    src.w   = BRICK_W;
-    src.h   = BRICK_H;
-    Blit(nX, nY, m_pBricks, &src);
+    src.x = ((nType - 1) % 10) * BRICK_W;
+    src.w = BRICK_W;
+    src.h = BRICK_H;
+    render(nX, nY, eImage::Bricks, &src);
 }
 
 void CMainMenu::DrawMenuHighScore()
 {
-    int nScoreY         = 130;
-    char    achBuf[102];
+    int nScoreY = 130;
+    char achBuf[102];
 
     a::fnt2()->DrawString(20, nScoreY - 20, "BEST PLAYERS NAME");
     a::fnt2()->DrawString(100, nScoreY - 20, "SCORE", CMyString::eAlign::Right);
@@ -517,14 +516,14 @@ void CMainMenu::DrawMenuHighScore()
                 int nLen = strlen(m_achName);
                 if (nLen < 100)
                 {
-                    m_achName[nLen]     = GetKey();
+                    m_achName[nLen] = GetKey();
                     m_achName[nLen + 1] = 0;
                 }
-                static Uint32   dwTime  = 0;
-                static bool bCursor     = true;
+                static Uint32 dwTime = 0;
+                static bool bCursor = true;
                 if (dwTime + 500 < SDL_GetTicks())
                 {
-                    dwTime  = SDL_GetTicks();
+                    dwTime = SDL_GetTicks();
                     bCursor = !bCursor;
                 }
                 snprintf(achBuf, sizeof(achBuf), "%s%s", m_achName, bCursor == true ? "_" : "");
@@ -540,7 +539,7 @@ void CMainMenu::DrawMenuHighScore()
                     {
                         strcpy(h[m_highscores.lastPos].name, m_achName);
                     }
-                    m_bGetNameMode  = false;
+                    m_bGetNameMode = false;
                 }
                 //nLen  = strlen(m_achName);
                 if (IsKeyPressed(SDLK_BACKSPACE) && IsKeyStateChanged(SDLK_BACKSPACE) && nLen > 0)
@@ -566,7 +565,7 @@ void CMainMenu::DrawMenuHighScore()
         {
             if (g_bMouseLB == true)
             {
-                g_bMouseLB  = false;
+                g_bMouseLB = false;
                 m_nMenuType = MT_MAIN;
             }
         }
@@ -613,15 +612,15 @@ void CMainMenu::DrawMenuOptions()
 
     if (g_bMouseLB == true)
     {
-        g_bMouseLB  = false;
+        g_bMouseLB = false;
 
         if (nItem != -1)
         {
-            g_bMouseLB  = false;
+            g_bMouseLB = false;
             if (m_optionsDirty && nItem == 0)
             {
                 m_optionsDirty = false;
-                SwitchFullscreen();
+                switchFullscreen();
             }
             else
             {
@@ -705,15 +704,16 @@ void CMainMenu::DrawMenuOptions()
 
     char achBuf[10];
     sprintf(achBuf, "%d%%", m_options.musicVolume * 10);
-    a::fnt2()->DrawString(0, 100 + 2, achBuf, CMyString::eAlign::Center);//    a::fnt2()->DrawNumber(m_options.musicVolume, 82, 180, 2);
+    a::fnt2()->DrawString(0, 100 + 2, achBuf, CMyString::eAlign::Center); //    a::fnt2()->DrawNumber(m_options.musicVolume, 82, 180, 2);
     sprintf(achBuf, "%d%%", m_options.soundVolume * 10);
-    a::fnt2()->DrawString(0, 150 + 2, achBuf, CMyString::eAlign::Center);//a::fnt2()->DrawNumber(m_options.soundVolume, 82, 210, 2);
+    a::fnt2()->DrawString(0, 150 + 2, achBuf, CMyString::eAlign::Center); //a::fnt2()->DrawNumber(m_options.soundVolume, 82, 210, 2);
     a::fnt2()->DrawString(0, 200 + 2, (m_options.fullscreen == true ? "YES" : "NO"), CMyString::eAlign::Center);
     a::fnt2()->DrawNumber(g_bppList[m_options.bppIdx], 0, 250 + 2, CMyString::eAlign::Center);
     a::fnt2()->DrawString(0, 300 + 2, (m_options.opengl == true ? "YES" : "NO"), CMyString::eAlign::Center);
 
-    a::fnt1()->DrawString(0, SCREEN_HEIGHT - 52, "<Shift> + <+> or <Shift> + <-> - increase/decrease music volume.\n"\
-                      "<+> or <->  - increase/decrease effects volume", CMyString::eAlign::Center);
+    a::fnt1()->DrawString(0, SCREEN_HEIGHT - 52, "<Shift> + <+> or <Shift> + <-> - increase/decrease music volume.\n"
+                                                 "<+> or <->  - increase/decrease effects volume",
+                          CMyString::eAlign::Center);
     a::fnt1()->DrawString(0, SCREEN_HEIGHT - 20, "<Esc> return to main menu.", CMyString::eAlign::Center);
 }
 
@@ -728,7 +728,7 @@ void CMainMenu::SetMenuType(int nType, bool bReturnToGame)
     {
         char buffer[MAX_PATH];
         snprintf(buffer, sizeof(buffer), "%ssave", a::userProfile());
-        m_bIsSaveAvailable  = false;
+        m_bIsSaveAvailable = false;
         FILE* file = fopen(buffer, "rb");
         if (file)
         {
@@ -753,8 +753,7 @@ void CMainMenu::SetMenuType(int nType, bool bReturnToGame)
 
 char CMainMenu::GetKey()
 {
-    const Uint8 abyScans[]  =
-    {
+    const Uint8 abyScans[] = {
         /*      1    2    3    4    5    6    7    8    9    0    -    =        */
         SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7, SDLK_8, SDLK_9, SDLK_0, SDLK_MINUS, SDLK_EQUALS,
         /*      Q    W    E    R    T    Y    U    I    O    P    [    ]        */
@@ -764,15 +763,13 @@ char CMainMenu::GetKey()
         /*      Z    X    C    V    B    N    M    ,    .    /    Spc  `        */
         SDLK_z, SDLK_x, SDLK_c, SDLK_v, SDLK_b, SDLK_n, SDLK_m, SDLK_COMMA, SDLK_PERIOD, SDLK_SLASH, SDLK_SPACE, SDLK_BACKQUOTE
     };
-    const Uint8 abyKeysLover[]  =
-    {
+    const Uint8 abyKeysLover[] = {
         '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
         'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']',
         'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '\\',
         'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', ' ', '`',
     };
-    const Uint8 abyKeysUpper[]  =
-    {
+    const Uint8 abyKeysUpper[] = {
         '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+',
         'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}',
         'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', '|',
@@ -825,21 +822,22 @@ bool CMainMenu::DrawMenuButton(int nX, int nY, int nButtonId)
     {
         int x, y, w;
     };
-    static const _BUTTON buttons[] =
-    {
-        { 0,   0, 248 },                    // start new game
-        { 0,  29, 248 },                    // highscores
-        { 0,  58, 248 },                    // options
-        { 0,  87, 248 },                    // help
-        { 0, 116, 248 },                    // exit
-        { 0, 145, 248 },                    // register
-        { 0, 174, 124 }, { 124, 174, 124 }, // OK, CANCEL
-        { 0, 203,  77 }, { 124, 203,  77 }, // <, >
-        { 0, 232, 248 },                    // start new game
-        { 0, 261, 248 },                    // restore game
-        { 0, 290, 248 },                    // buy game
-        { 0, 319, 248 },                    // level editor
-        { 0, 348, 248 },                    // custom levels
+    static const _BUTTON buttons[] = {
+        { 0, 0, 248 },   // start new game
+        { 0, 29, 248 },  // highscores
+        { 0, 58, 248 },  // options
+        { 0, 87, 248 },  // help
+        { 0, 116, 248 }, // exit
+        { 0, 145, 248 }, // register
+        { 0, 174, 124 },
+        { 124, 174, 124 }, // OK, CANCEL
+        { 0, 203, 77 },
+        { 124, 203, 77 }, // <, >
+        { 0, 232, 248 },  // start new game
+        { 0, 261, 248 },  // restore game
+        { 0, 290, 248 },  // buy game
+        { 0, 319, 248 },  // level editor
+        { 0, 348, 248 },  // custom levels
     };
     const int w = buttons[nButtonId].w;
     bool bIsOver = false;
@@ -854,16 +852,16 @@ bool CMainMenu::DrawMenuButton(int nX, int nY, int nButtonId)
 
     SDL_Rect rc;
     SetRect(&rc, buttons[nButtonId].x + (bIsOver ? 248 : 0), buttons[nButtonId].y, buttons[nButtonId].w, 29);
-    Blit(nX, nY, m_pMainMenuIcons, &rc);
+    render(nX, nY, eImage::MainMenuIcons, &rc);
 
     return bIsOver;
 }
 
 void CMainMenu::SendEsc()
 {
-    g_bMouseRB      = false;
-    m_nMenuType     = MT_MAIN;
-    m_bGetNameMode  = false;
+    g_bMouseRB = false;
+    m_nMenuType = MT_MAIN;
+    m_bGetNameMode = false;
     if (m_bReturnToGame == true)
     {
         g_nGameMode = APPS_GAME;

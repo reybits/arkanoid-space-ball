@@ -11,10 +11,11 @@
 #include "defines.h"
 #include "exploision.h"
 #include "game.h"
+#include "videosystem/videosystem.h"
 
 CBullet::CBullet()
 {
-    m_vecBullets.reserve(10);
+    m_bullets.reserve(10);
 }
 
 CBullet::~CBullet()
@@ -23,18 +24,20 @@ CBullet::~CBullet()
 
 void CBullet::Move()
 {
-    for (size_t i = 0; i < m_vecBullets.size(); i++)
+    for (size_t i = 0, size = m_bullets.size(); i < size; i++)
     {
-        if (m_vecBullets[i].nType != TYPE_LASER)
+        auto& bullet = m_bullets[i];
+
+        if (bullet.type != eBulletType::LASER)
         {
-            int nAngle  = GetAngle(i);
-            m_vecBullets[i].x   += g_fSin[nAngle] * 2 * g_fSpeedCorrection;
-            m_vecBullets[i].y   -= g_fCos[nAngle] * 2 * g_fSpeedCorrection;
-            int nX  = (int)m_vecBullets[i].x;
-            int nY  = (int)m_vecBullets[i].y;
+            int nAngle = GetAngle(i);
+            bullet.x += g_fSin[nAngle] * 2 * g_fSpeedCorrection;
+            bullet.y -= g_fCos[nAngle] * 2 * g_fSpeedCorrection;
+            int nX = (int)bullet.x;
+            int nY = (int)bullet.y;
             if (nX < WALL_X1 || nY < WALL_Y1 || nY + 20 > WALL_Y2)
             {
-                if (m_vecBullets[i].nType == TYPE_MISSILE)
+                if (bullet.type == eBulletType::MISSILE)
                 {
                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 0);
                 }
@@ -42,14 +45,14 @@ void CBullet::Move()
                 {
                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 1);
                 }
-                RemoveByPos(i);
+                size = RemoveByPos(i);
             }
         }
         else
         {
-            if (m_vecBullets[i].dwLaser + 30 < SDL_GetTicks())
+            if (bullet.dwLaser + 30 < SDL_GetTicks())
             {
-                RemoveByPos(i);
+                size = RemoveByPos(i);
             }
         }
     }
@@ -57,161 +60,162 @@ void CBullet::Move()
 
 void CBullet::Draw()
 {
-    Uint32  dwTime  = SDL_GetTicks();
-    static Uint32   dwFrame = 0;
-    static int      nFrame  = 0;
+    Uint32 dwTime = SDL_GetTicks();
+    static Uint32 dwFrame = 0;
+    static int nFrame = 0;
     if (dwFrame + 100 < dwTime)
     {
-        dwFrame     = dwTime;
+        dwFrame = dwTime;
         nFrame++;
-        nFrame  %= 10;
+        nFrame %= 10;
     }
 
-    SDL_Rect    rc;
-    for (size_t i = 0; i < m_vecBullets.size(); i++)
+    SDL_Rect rc;
+    for (const auto& bullet : m_bullets)
     {
-        switch (m_vecBullets[i].nType)
+        switch (bullet.type)
         {
-        case TYPE_LASER:
-            rc.x    = 0;
-            rc.y    = 40;// + m_vecBullets[i].nFrameFlame * 20;
-            rc.w    = m_vecBullets[i].w;
-            rc.h    = 20;
+        case eBulletType::LASER:
+            rc.x = 0;
+            rc.y = 40; // + bullet.nFrameFlame * 20;
+            rc.w = bullet.w;
+            rc.h = 20;
             break;
-        case TYPE_MISSILE:
-            rc.x    = 54 * nFrame;
-            rc.y    = 0;
-            rc.w    = 54;
-            rc.h    = 20;
+        case eBulletType::MISSILE:
+            rc.x = 54 * nFrame;
+            rc.y = 0;
+            rc.w = 54;
+            rc.h = 20;
             break;
-        case TYPE_PLASMA:
-            rc.x    = 54 * nFrame;
-            rc.y    = 20;
-            rc.w    = 54;
-            rc.h    = 20;
+        case eBulletType::PLASMA:
+            rc.x = 54 * nFrame;
+            rc.y = 20;
+            rc.w = 54;
+            rc.h = 20;
             break;
         }
-        Blit((int)m_vecBullets[i].x, (int)m_vecBullets[i].y, m_pBullet, &rc);
+        render(bullet.x, bullet.y, eImage::Bullets, &rc);
     }
 }
 
 void CBullet::RemoveAll()
 {
-    m_vecBullets.clear();
+    m_bullets.clear();
 }
 
-void CBullet::AddBullets(int y, int nType)
+void CBullet::AddBullets(int y, eBulletType type)
 {
-    _BULLET bullet;
-    bullet.nType            = nType;
-    bullet.x                    = nType != TYPE_LASER ? RACKET_X : a::ark()->m_nLaserX;
-    bullet.y                    = y;
-    bullet.nAngle           = 270;
-    bullet.w                    = RACKET_X - a::ark()->m_nLaserX - 15 + 8;
-    bullet.dwLaser          = SDL_GetTicks();
-    m_vecBullets.push_back(bullet);
+    sBullet bullet;
+    bullet.type = type;
+    bullet.x = type != eBulletType::LASER ? RACKET_X : a::ark()->m_nLaserX;
+    bullet.y = y;
+    bullet.nAngle = 270;
+    bullet.w = RACKET_X - a::ark()->m_nLaserX - 15 + 8;
+    bullet.dwLaser = SDL_GetTicks();
+    m_bullets.push_back(bullet);
 }
 
-bool CBullet::IsAcross(int nX, int nY, int nWidth, int nHeight, bool& bRemoveAll, int& nType)
+bool CBullet::IsAcross(int nX, int nY, int nWidth, int nHeight, bool& bRemoveAll, eBulletType& type)
 {
-    for (size_t i = 0; i < m_vecBullets.size(); i++)
+    for (size_t i = 0, size = m_bullets.size(); i < size; i++)
     {
-        if (m_vecBullets[i].nType == TYPE_LASER)
+        auto& bullet = m_bullets[i];
+
+        if (bullet.type == eBulletType::LASER)
         {
-            if (m_vecBullets[i].x + m_vecBullets[i].w >= nX && m_vecBullets[i].x <= nX + nWidth &&
-                m_vecBullets[i].y + (20 - 2) / 2 + 2 >= nY && m_vecBullets[i].y + (20 - 2) / 2 <= nY + nHeight)
+            if (bullet.x + bullet.w >= nX && bullet.x <= nX + nWidth && bullet.y + (20 - 2) / 2 + 2 >= nY && bullet.y + (20 - 2) / 2 <= nY + nHeight)
             {
                 a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 2);
                 //RemoveByPos(i);
-                m_vecBullets[i].x++;    // do not allow to across again
-                bRemoveAll  = false;
-                nType           = m_vecBullets[i].nType;
-                return  true;
+                bullet.x++; // do not allow to across again
+                bRemoveAll = false;
+                type = bullet.type;
+                return true;
             }
         }
         else
         {
-            if (m_vecBullets[i].x + 54 >= nX && m_vecBullets[i].x <= nX + nWidth &&
-                m_vecBullets[i].y + 20 >= nY && m_vecBullets[i].y <= nY + nHeight)
+            if (bullet.x + 54 >= nX && bullet.x <= nX + nWidth && bullet.y + 20 >= nY && bullet.y <= nY + nHeight)
             {
-                switch (m_vecBullets[i].nType)
+                switch (bullet.type)
                 {
-                case TYPE_MISSILE:
+                case eBulletType::MISSILE:
                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 0);
                     RemoveByPos(i);
-                    bRemoveAll  = true;
-                    nType           = m_vecBullets[i].nType;
+                    bRemoveAll = true;
+                    type = bullet.type;
                     break;
-                case TYPE_PLASMA:
+
+                case eBulletType::PLASMA:
                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 1);
-                    bRemoveAll  = true;
-                    nType           = m_vecBullets[i].nType;
+                    bRemoveAll = true;
+                    type = bullet.type;
+                    break;
+
+                case eBulletType::LASER: // do nothing
                     break;
                 }
-                return  true;
+                return true;
             }
         }
     }
 
-    return  false;
+    return false;
 }
 
-bool CBullet::GetPositionAndSize(SDL_Rect& rc, int& nPos, bool bFromFirst)
+sBulletDescription CBullet::getDescription(size_t idx) const
 {
-    if (bFromFirst == true)
+    const auto& bullet = m_bullets[idx];
+
+    sBulletDescription desc;
+
+    desc.x = bullet.x;
+    desc.y = bullet.y;
+    switch (bullet.type)
     {
-        nPos    = 0;
-        return  true;
+    case eBulletType::MISSILE:
+        desc.w = 46;
+        desc.h = 20;
+        break;
+
+    case eBulletType::PLASMA:
+        desc.w = 30;
+        desc.h = 20;
+        break;
+
+    case eBulletType::LASER:
+        desc.y += (20 - 2) / 2;
+        desc.w = bullet.w;
+        desc.h = 2;
+        break;
     }
 
-    while (nPos < (int)m_vecBullets.size())
-    {
-        rc.x    = (int)m_vecBullets[nPos].x;
-        rc.y    = (int)m_vecBullets[nPos].y;
-        // ��� � ��������� ������ � ������
-        switch (m_vecBullets[nPos].nType)
-        {
-        case TYPE_MISSILE:
-            rc.w    = 46;
-            rc.h    = 20;
-            break;
-        case TYPE_PLASMA:
-            rc.w    = 30;
-            rc.h    = 20;
-            break;
-        case TYPE_LASER:
-            rc.y    += (20 - 2) / 2;
-            rc.w    = m_vecBullets[nPos].w;
-            rc.h    = 2;
-            break;
-        }
-        nPos++;
-        return  true;
-    }
-
-    return  false;
+    return desc;
 }
 
-void CBullet::RemoveByPos(int nPos)
+size_t CBullet::RemoveByPos(size_t nPos)
 {
-    m_vecBullets[nPos] = m_vecBullets[m_vecBullets.size() - 1];
-    m_vecBullets.pop_back();
+    const auto size = m_bullets.size();
+    m_bullets[nPos] = m_bullets[size - 1];
+    m_bullets.pop_back();
+
+    return size - 1;
 }
 
-void CBullet::ChangeAngle(int nPos, bool bRotate)
+void CBullet::ChangeAngle(size_t nPos, bool bRotate)
 {
-    float   fAngle  = 0.5 * g_fSpeedCorrection;
+    float fAngle = 0.5f * g_fSpeedCorrection;
     if (bRotate == false)
     {
-        m_vecBullets[nPos].nAngle   += (360 - fAngle);
+        m_bullets[nPos].nAngle += (360 - fAngle);
     }
     else
     {
-        m_vecBullets[nPos].nAngle   += fAngle;
+        m_bullets[nPos].nAngle += fAngle;
     }
 }
 
-int CBullet::GetAngle(int nPos)
+int CBullet::GetAngle(size_t nPos)
 {
-    return (int)(m_vecBullets[nPos].nAngle + 360) % 360;
+    return (int)(m_bullets[nPos].nAngle + 360) % 360;
 }

@@ -16,39 +16,50 @@ public:
     CBonus();
     ~CBonus();
 
-    int GetBonusesOnScreen();
+    size_t GetBonusesOnScreen() const;
     void Move(int nRacketType);
-    int IsAcross(int nX, int nY, int nWidth, int nHeight);
-    enum _TYPES
+
+    enum class eType : unsigned
     {
-        TYPE_BALL_SPLIT, TYPE_BALL_FIRE, TYPE_BALL_BLUE, TYPE_BALL_EXPAND, TYPE_BALL_SHRINK,
-        TYPE_PADDLE_MAGNET, TYPE_PADDLE_FIRE, TYPE_PADDLE_MISSILE, TYPE_PADDLE_LASER,
-        TYPE_PADDLE_ENGINE, TYPE_PADDLE_EXPAND, TYPE_PADDLE_SHRINK,
-        TYPE_WALL,
-        TYPE_FREEZE,
-        TYPE_DESTROY,
-        TYPE_LAST_BONUS // Only marker!
+        BALL_SPLIT,
+        BALL_FIRE,
+        BALL_BLUE,
+        BALL_EXPAND,
+        BALL_SHRINK,
+        PADDLE_MAGNET,
+        PADDLE_FIRE,
+        PADDLE_MISSILE,
+        PADDLE_LASER,
+        PADDLE_ENGINE,
+        PADDLE_EXPAND,
+        PADDLE_SHRINK,
+        WALL,
+        FREEZE,
+        DESTROY,
+
+        Count // Only marker!
     };
-    void AddBonus(int x, int y, int nType);
+    eType IsAcross(int nX, int nY, int nWidth, int nHeight);
+    void AddBonus(int x, int y, eType type);
     void RemoveAll(bool bAndStackToo);
     void Draw();
     void SetPosStack(bool bNext);
-    void AddToStack(int nType);
-    int GetBonusFromStack();
-    int GetCountInStack();
-    int GetTypeInStack(int nPos);
+    void AddToStack(eType type);
+    eType GetBonusFromStack();
+    size_t GetCountInStack() const;
+    eType GetTypeInStack(size_t nPos) const;
 
-protected:
-    struct _BONUS
+private:
+    struct sBonus
     {
-        int nType;
+        eType type;
         int nFrame;
         int nRadius;
         int nSin, nCos;
         float origx, origy;
         int x, y;
     };
-    std::vector<_BONUS>m_vecBonuses;
-    std::vector<int>m_vecBonusesStack;
+    std::vector<sBonus> m_bounses;
+    std::vector<eType> m_stack;
     int m_nStackPos;
 };

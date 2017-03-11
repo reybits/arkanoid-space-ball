@@ -13,8 +13,10 @@
 #include "defines.h"
 #include "random.h"
 #include "tutorialdlg.h"
+#include "videosystem/videosystem.h"
 
 #include <cmath>
+#include <cstdlib>
 
 CEnergyHole::CEnergyHole()
 {
@@ -26,7 +28,7 @@ CEnergyHole::~CEnergyHole()
 
 void CEnergyHole::RemoveAll()
 {
-    m_vecEnergyHole.clear();
+    m_holes.clear();
 }
 
 void CEnergyHole::Draw()
@@ -34,10 +36,10 @@ void CEnergyHole::Draw()
     SDL_Rect rc;
     rc.x = 0;
     rc.w = rc.h = 80;
-    for (const auto& v : m_vecEnergyHole)
+    for (const auto& v : m_holes)
     {
         rc.y = !v.is_over ? 0 : 80;
-        Blit(v.x, v.y, m_pEnergyHole, &rc);
+        render(v.x, v.y, eImage::EnergyHole, &rc);
     }
 }
 
@@ -50,7 +52,7 @@ void CEnergyHole::AddEnergyHole()
     hole.time = 0;
     hole.move_time = 0;
     hole.angle = a::rnd().Get(360);
-    m_vecEnergyHole.push_back(hole);
+    m_holes.push_back(hole);
 }
 
 void CEnergyHole::Move()
@@ -58,7 +60,7 @@ void CEnergyHole::Move()
     auto curTime = SDL_GetTicks();
     const float speed = g_fSpeedCorrection * 0.2f;
 
-    for (auto& v : m_vecEnergyHole)
+    for (auto& v : m_holes)
     {
         // change angle
         if (v.move_time + 5000 < curTime)
@@ -76,57 +78,63 @@ void CEnergyHole::Move()
         v.y = std::max<int>(WALL_Y1, v.y);
         v.is_over = false;
 
-        SDL_Rect rc;
         // is ball over energy hole? correct ball angle then
-        int idx = 0;
-        while (a::ball()->GetPositionAndDiameter(rc, idx))
+        auto balls = a::ball();
+        for (size_t idx = 0, size = balls->GetBallsCount(); idx < size; idx++)
         {
-            const float c1 = (v.x + 80 * 0.5f) - (rc.x + rc.w * 0.5f);
-            const float c2 = (v.y + 80 * 0.5f) - (rc.y + rc.w * 0.5f);
-            float distance = sqrtf(c1 * c1 + c2 * c2);
-            if (distance < 80 * 0.5f)
+            const auto& desc = balls->getDescription(idx);
+            if (desc.bIsCaptured == false)
             {
-                a::tutDlg()->AddDialog(rc.x + rc.w / 2, rc.y + rc.w / 2, 0, 5);
+                const float radius = desc.diameter * 0.5f;
+                const float c1 = (v.x + 80 * 0.5f) - (desc.x + radius);
+                const float c2 = (v.y + 80 * 0.5f) - (desc.y + radius);
+                const float distance = sqrtf(c1 * c1 + c2 * c2);
+                if (distance < 80 * 0.5f)
+                {
+                    a::tutDlg()->AddDialog(desc.x + radius, desc.y + radius, 0, 5);
 
-                v.is_over = true;
-                int angle = (int)(57.3 * asinf(c2 / distance));
-                if (c1 > 0)
-                {
-                    angle = a::ball()->GetAngle(idx - 1) - (90 + angle) % 360;
-                }
-                else
-                {
-                    angle = a::ball()->GetAngle(idx - 1) - (270 - angle) % 360;
-                }
-                if (abs(angle) < 180)
-                {
-                    a::ball()->ChangeAngle(idx - 1, angle < 0 ? true : false);
-                }
-                else
-                {
-                    a::ball()->ChangeAngle(idx - 1, angle < 0 ? false : true);
+                    v.is_over = true;
+                    int angle = (int)(57.3 * asinf(c2 / distance));
+                    if (c1 > 0)
+                    {
+                        angle = balls->getAngle(idx) - (90 + angle) % 360;
+                    }
+                    else
+                    {
+                        angle = balls->getAngle(idx) - (270 - angle) % 360;
+                    }
+                    if (abs(angle) < 180)
+                    {
+                        balls->ChangeAngle(idx, angle < 0 ? true : false);
+                    }
+                    else
+                    {
+                        balls->ChangeAngle(idx, angle < 0 ? false : true);
+                    }
                 }
             }
         }
 
         // is bullet over energy hole? correct bullet angle then
-        a::bullet()->GetPositionAndSize(rc, idx, true);
-        while (a::bullet()->GetPositionAndSize(rc, idx, false))
+        auto bullets = a::bullet();
+        for (size_t idx = 0, size = bullets->getCount(); idx < size; idx++)
         {
-            const float c1 = (v.x + 80 * 0.5f) - (rc.x + rc.w * 0.5f);
-            const float c2 = (v.y + 80 * 0.5f) - (rc.y + rc.h * 0.5f);
+            const auto& desc = bullets->getDescription(idx);
+            const float radius = desc.h * 0.5f;
+            const float c1 = (v.x + 80 * 0.5f) - (desc.x + radius);
+            const float c2 = (v.y + 80 * 0.5f) - (desc.y + radius);
             const float distance = sqrtf(c1 * c1 + c2 * c2);
             if (distance < 80 * 0.5f)
             {
-                a::tutDlg()->AddDialog(rc.x + rc.w / 2, rc.y + rc.h / 2, 0, 6);
+                a::tutDlg()->AddDialog(desc.x + radius, desc.y + radius, 0, 6);
                 v.is_over = true;
                 if (c2 > 0)
                 {
-                    a::bullet()->ChangeAngle(idx - 1, false);
+                    bullets->ChangeAngle(idx, false);
                 }
                 else
                 {
-                    a::bullet()->ChangeAngle(idx - 1, true);
+                    bullets->ChangeAngle(idx, true);
                 }
             }
         }

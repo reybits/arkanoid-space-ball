@@ -11,6 +11,48 @@
 #include <vector>
 #include <string>
 
+enum class eImage
+{
+    EnergyHole,
+    MonsterPatrol,
+    MonsterCopter,
+    MonsterEye,
+    MonsterBlackhole,
+    MonsterFighter,
+    MonsterHand,
+    MonsterStone1,
+    MonsterStone2,
+    MonsterTurbine,
+    MonsterUfo,
+    MonsterWreckage1,
+    MonsterWreckage2,
+    Balls,
+    Vector,
+    Fb,
+    Bullets,
+    Exploision,
+    Bricks,
+    BricksMovBullets,
+    Bonuses,
+    BonusesSmall,
+    BonusesAura,
+    GameBGanims,
+    GameWall,
+    Paddle,
+    MainmenuBg,
+    MainmenuBg2,
+    MainMenuIcons,
+    Cursor,
+    Transp,
+    TutorialDlg,
+    SinusString,
+    Options,
+
+    Count
+};
+
+struct SDL_Surface;
+
 class CResource final
 {
 public:
@@ -18,11 +60,20 @@ public:
     ~CResource();
 
     bool Open(const char* filename);
-    unsigned char* GetDataAllocMem(const char* name, unsigned& length);
-    void FreeMem(unsigned char* data);
+    unsigned char* GetDataAllocMem(const char* name, unsigned& length) const;
+    void FreeMem(unsigned char* data) const;
+
+    void preloadImages();
+    void purgeImages();
+
+    SDL_Surface* getImage(eImage id) const
+    {
+        return m_images[(unsigned)id];
+    }
 
 public:
-    void EncodeData(void* data, unsigned length);
+    void EncodeData(void* data, unsigned length) const;
+    SDL_Surface* loadImage(const char* filename) const;
 
 public:
     static const unsigned RES_SIGNATURE;
@@ -37,7 +88,9 @@ public:
     };
     typedef std::vector<sItemHeader> FileList;
 
-protected:
+private:
     std::string m_filename;
     FileList m_listFiles;
+
+    SDL_Surface* m_images[(unsigned)eImage::Count];
 };

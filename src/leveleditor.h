@@ -22,7 +22,7 @@ public:
     void Load();
     void Save();
 
-protected:
+private:
     Uint8* m_pbyLevels;
     int m_nCurrentLevel;
     int m_nLevelsCount;

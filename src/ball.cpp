@@ -12,6 +12,7 @@
 #include "exploision.h"
 #include "game.h"
 #include "random.h"
+#include "videosystem/videosystem.h"
 
 #include <cmath>
 
@@ -22,8 +23,8 @@ CBall::CBall()
 {
     m_nBack = 0;
     m_vecBrickIndex.reserve(8);
-    m_vecBalls.reserve(10);
-    m_vecFBalls.reserve(200);
+    m_balls.reserve(10);
+    m_fbs.reserve(200);
     RemoveAll();
 }
 
@@ -33,83 +34,84 @@ CBall::~CBall()
 
 int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddleX)
 {
-    int nBallsLose  = 0;
+    int nBallsLose = 0;
     m_bBackWall = bBackWall;
 
-    Uint32  dwTime  = SDL_GetTicks();
+    Uint32 dwTime = SDL_GetTicks();
 
-    static Uint32   dwBlueTime  = 0;
+    static Uint32 dwBlueTime = 0;
     if (dwBlueTime + 1000 < dwTime)
     {
-        dwBlueTime  = dwTime;
-        if (m_nType != TYPE_WHITE && --m_nPrevTypeCount == 0)
+        dwBlueTime = dwTime;
+        if (m_type != eBallType::WHITE && --m_nPrevTypeCount == 0)
         {
-            m_nType   = TYPE_WHITE;
+            m_type = eBallType::WHITE;
         }
     }
-    static Uint32   dwTimeAddFb = 0;
-    bool                bAddFB      = false;
+    static Uint32 dwTimeAddFb = 0;
+    bool bAddFB = false;
     if (dwTimeAddFb + 20 < dwTime)
     {
         dwTimeAddFb = dwTime;
-        bAddFB      = true;
+        bAddFB = true;
     }
 
-
     // move balls
-    for (size_t nPos = 0, size = m_vecBalls.size(); nPos < size;)
+    for (size_t nPos = 0, size = m_balls.size(); nPos < size;)
     {
-        m_vecBalls[nPos].bAlreadyImpact = false;
-        if (m_vecBalls[nPos].bIsCaptured == false)
+        auto& ball = m_balls[nPos];
+
+        ball.bAlreadyImpact = false;
+        if (ball.bIsCaptured == false)
         {
-            if (m_vecBalls[nPos].fSpeed != 0)
+            if (ball.fSpeed != 0)
             {
                 if (bAddFB == true)
                 {
                     AddFBs(nPos);
                 }
-                float   fSpeed      = m_vecBalls[nPos].fSpeed * g_fSpeedCorrection;
-                m_vecBalls[nPos].x  += fSpeed * g_fSin[GetAngle(nPos)];
-                m_vecBalls[nPos].y  -= fSpeed * g_fCos[GetAngle(nPos)];
-                //if(GetAngle(nPos) > 0 && GetAngle(nPos) < 180) {
+                float fSpeed = ball.fSpeed * g_fSpeedCorrection;
+                ball.x += fSpeed * g_fSin[getAngle(ball)];
+                ball.y -= fSpeed * g_fCos[getAngle(ball)];
+                //if(getAngle(nPos) > 0 && getAngle(nPos) < 180) {
                 // ��� �������� �� ������������ � ������ ��������
                 if (IsThisBallOverObject(nPos, rcRacket.x, rcRacket.y, 16, rcRacket.h) > 0)
                 {
-                    nPaddleX    += 5;
+                    nPaddleX += 5;
                     PlaySound(11);
                     if (nRacketType == CGame::RT_MAGNET)
                     {
-                        m_vecBalls[nPos].fOldSpeed  = m_vecBalls[nPos].fSpeed;
-                        m_vecBalls[nPos].fSpeed     = 0;
-                        m_vecBalls[nPos].nYoffset   = int(m_vecBalls[nPos].y - rcRacket.y);
+                        ball.fOldSpeed = ball.fSpeed;
+                        ball.fSpeed = 0;
+                        ball.nYoffset = int(ball.y - rcRacket.y);
                     }
-                    m_vecBalls[nPos].nAngle = (210 + (120.0 / rcRacket.h) * ((rcRacket.y + rcRacket.h) - (m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2)));
-                    if (m_vecBalls[nPos].nAngle < 210)
+                    ball.nAngle = (210 + (120.0 / rcRacket.h) * ((rcRacket.y + rcRacket.h) - (ball.y + getDiameter(ball) / 2)));
+                    if (ball.nAngle < 210)
                     {
-                        m_vecBalls[nPos].nAngle   = 210;
+                        ball.nAngle = 210;
                     }
-                    else if (m_vecBalls[nPos].nAngle > 329)
+                    else if (ball.nAngle > 329)
                     {
-                        m_vecBalls[nPos].nAngle   = 329;
+                        ball.nAngle = 329;
                     }
                 }
                 //}
 
-                if (m_vecBalls[nPos].bAlreadyImpact == false)
+                if (ball.bAlreadyImpact == false)
                 {
                     // calculate object size
-                    SDL_Rect    rc;
+                    SDL_Rect rc;
                     memset(&rc, 0, sizeof(SDL_Rect));
                     m_vecBrickIndex.clear();
-                    if (m_nType != TYPE_BLUE)
+                    if (m_type != eBallType::BLUE)
                     {
                         for (size_t nBrick = 0; nBrick < a::ark()->m_vecLevelBricks.size(); nBrick++)
                         {
-                            int nX  = int(a::ark()->m_vecLevelBricks[nBrick].fX);
-                            int nY  = int(a::ark()->m_vecLevelBricks[nBrick].fY);
+                            int nX = a::ark()->m_vecLevelBricks[nBrick].fX;
+                            int nY = a::ark()->m_vecLevelBricks[nBrick].fY;
                             if (IsThisBallOverObject(nPos, nX, nY, BRICK_W, BRICK_H) > 0)
                             {
-                                if (m_nType == TYPE_RED)
+                                if (m_type == eBallType::RED)
                                 {
                                     a::ark()->DoImpact(nBrick, true);
                                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 0);
@@ -119,49 +121,49 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                                     m_vecBrickIndex.push_back(nBrick);
                                     if (rc.x < nX)
                                     {
-                                        rc.x  = nX;
+                                        rc.x = nX;
                                     }
                                     if (rc.y < nY)
                                     {
-                                        rc.y  = nY;
+                                        rc.y = nY;
                                     }
                                     if (rc.w < nX + BRICK_W)
                                     {
-                                        rc.w  = nX + BRICK_W;
+                                        rc.w = nX + BRICK_W;
                                     }
                                     if (rc.h < nY + BRICK_H)
                                     {
-                                        rc.h  = nY + BRICK_H;
+                                        rc.h = nY + BRICK_H;
                                     }
                                 }
                             }
                         }
                     }
                     int nIsOver;
-                    if (m_nType == TYPE_WHITE && (nIsOver = IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y)) > 0)
+                    if (m_type == eBallType::WHITE && (nIsOver = IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y)) > 0)
                     {
                         //printf("%d x %d, %d x %d\n", rc.x, rc.y, rc.w - rc.x, rc.h - rc.y);
-                        m_vecBalls[nPos].bAlreadyImpact = true;
-                        if (m_nType == TYPE_WHITE)
+                        ball.bAlreadyImpact = true;
+                        if (m_type == eBallType::WHITE)
                         {
-                            //printf("Brick change angle %d", GetAngle(nPos));
-                            const int   anAngles[8] = { 180, 360, 360, 180, 540, 360, 360, 540 };
-                            int nAngle180   = (GetAngle(nPos) + 180) % 360;
-                            //printf("Pos: %d - Angle: %d", nIsOver, GetAngle(nPos));
-                            m_vecBalls[nPos].nAngle = anAngles[nIsOver - 1] - GetAngle(nPos);
-                            //printf(" -> %d%s\n", GetAngle(nPos), GetAngle(nPos) > 359 ? " !" : "");
+                            //printf("Brick change angle %d", getAngle(nPos));
+                            const int anAngles[8] = { 180, 360, 360, 180, 540, 360, 360, 540 };
+                            int nAngle180 = (getAngle(ball) + 180) % 360;
+                            //printf("Pos: %d - Angle: %d", nIsOver, getAngle(nPos));
+                            ball.nAngle = anAngles[nIsOver - 1] - getAngle(ball);
+                            //printf(" -> %d%s\n", getAngle(nPos), getAngle(nPos) > 359 ? " !" : "");
                             IncrementBallSpeed(nPos);
-                            //printf(" -> %d\n", GetAngle(nPos));
+                            //printf(" -> %d\n", getAngle(nPos));
                             m_nBack = 1;
                             while (IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y) > 0)
                             {
-                                m_vecBalls[nPos].x  += (g_fSin[nAngle180]);
-                                m_vecBalls[nPos].y  -= (g_fCos[nAngle180]);
+                                ball.x += (g_fSin[nAngle180]);
+                                ball.y -= (g_fCos[nAngle180]);
                             }
                             m_nBack = 0;
-                            m_vecBalls[nPos].x  = int(m_vecBalls[nPos].x);
-                            m_vecBalls[nPos].y  = int(m_vecBalls[nPos].y);
-                            //printf("ball pos corrected (%.2d x %.2d)\n", (int)m_vecBalls[i].x, (int)m_vecBalls[i].y);
+                            ball.x = int(ball.x);
+                            ball.y = int(ball.y);
+                            //printf("ball pos corrected (%.2d x %.2d)\n", (int)ball.x, (int)ball.y);
 
                             for (size_t nBrickIndex = 0; nBrickIndex < m_vecBrickIndex.size(); nBrickIndex++)
                             {
@@ -173,46 +175,46 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
 
                 ImpactWithWallAngle(nPos);
 
-                if (m_vecBalls[nPos].x > SCREEN_WIDTH)
+                if (ball.x > SCREEN_WIDTH)
                 {
                     PlaySound(14);
                     nBallsLose++;
-                    m_vecBalls[nPos] = m_vecBalls[--size];
-                    m_vecBalls.pop_back();
+                    m_balls[nPos] = m_balls[--size];
+                    m_balls.pop_back();
                     continue;
                 }
             }
             else
             {
-                m_vecBalls[nPos].y  = rcRacket.y + m_vecBalls[nPos].nYoffset;
-                if ((m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter)) > rcRacket.x)
+                ball.y = rcRacket.y + ball.nYoffset;
+                if ((ball.x + getDiameter(ball)) > rcRacket.x)
                 {
-                    m_vecBalls[nPos].x    -= 2;
+                    ball.x -= 2;
                 }
-                if ((m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter)) < rcRacket.x)
+                if ((ball.x + getDiameter(ball)) < rcRacket.x)
                 {
-                    m_vecBalls[nPos].x++;
+                    ball.x++;
                 }
             }
         }
         nPos++;
     }
-    return  nBallsLose;
+    return nBallsLose;
 }
 
 void CBall::Draw(int nPaddleType)
 {
-    SDL_Rect    rc;
+    SDL_Rect rc;
 
-    Uint32  dwTime  = SDL_GetTicks();
+    Uint32 dwTime = SDL_GetTicks();
 
-    static Uint32   dwFrame = 0;
-    static int      nFrame  = 0;
+    static Uint32 dwFrame = 0;
+    static int nFrame = 0;
     if (dwFrame + 50 < dwTime)
     {
         dwFrame = dwTime;
         nFrame++;
-        nFrame  %= 10;
+        nFrame %= 10;
     }
     //  static Uint32   dwTimeAddFb = 0;
     //  bool                bAddFB      = false;
@@ -221,82 +223,83 @@ void CBall::Draw(int nPaddleType)
     //      bAddFB      = true;
     //  }
 
-    bool    bFirst  = true;
+    bool bFirst = true;
     //  static int  nStep   = 0;
-    for (size_t nPos = 0; nPos < m_vecBalls.size(); nPos++)
+    for (const auto& ball : m_balls)
     {
-        //      if(bAddFB == true)  AddFBs(nPos);
+        // if(bAddFB == true)  AddFBs(nPos);
 
         // show vector
-        if (nPaddleType == CGame::RT_MAGNET && m_vecBalls[nPos].bIsCaptured == false && ((bFirst == true && m_vecBalls[nPos].fSpeed == 0) || m_vecBalls[nPos].fSpeed != 0))
+        if (nPaddleType == CGame::RT_MAGNET && ball.bIsCaptured == false && ((bFirst == true && ball.fSpeed == 0) || ball.fSpeed != 0))
         {
-            if (bFirst == true  && m_vecBalls[nPos].fSpeed == 0)
+            if (bFirst == true && ball.fSpeed == 0)
             {
-                bFirst    = false;
+                bFirst = false;
             }
-            rc.y    = 0;
-            rc.w    = 4;
-            rc.h    = 4;
-            int nFrame2     = 0;
-            float   x   = m_vecBalls[nPos].x + (CalcDiameter(m_vecBalls[nPos].nDiameter) - 4) / 2;
-            float   y   = m_vecBalls[nPos].y + (CalcDiameter(m_vecBalls[nPos].nDiameter) - 4) / 2;
-            /*          x   += g_fSin[GetAngle(nPos)] * nStep;
-                        y   -= g_fCos[GetAngle(nPos)] * nStep;
+            rc.y = 0;
+            rc.w = 4;
+            rc.h = 4;
+            int nFrame2 = 0;
+            float x = ball.x + (getDiameter(ball) - 4) / 2;
+            float y = ball.y + (getDiameter(ball) - 4) / 2;
+            /*          x   += g_fSin[getAngle(ball)] * nStep;
+                        y   -= g_fCos[getAngle(ball)] * nStep;
                         nStep++;
                         nStep   %= 15;*/
             do
             {
-                rc.x    = nFrame2++ * 4;
+                rc.x = nFrame2++ * 4;
                 nFrame2 %= 5;
-                Blit(int(x), int(y), m_pVector, &rc);
-                x   += g_fSin[GetAngle(nPos)] * 15;
-                y   -= g_fCos[GetAngle(nPos)] * 15;
-            }
-            while (x > WALL_X1 && x + 4 < (m_bBackWall == true ? WALL_X2 : SCREEN_WIDTH) && y > WALL_Y1 && y + 4 < WALL_Y2);
+                render(x, y, eImage::Vector, &rc);
+                x += g_fSin[getAngle(ball)] * 15;
+                y -= g_fCos[getAngle(ball)] * 15;
+            } while (x > WALL_X1 && x + 4 < (m_bBackWall == true ? WALL_X2 : SCREEN_WIDTH) && y > WALL_Y1 && y + 4 < WALL_Y2);
         }
 
-        switch (m_vecBalls[nPos].nDiameter)
+        switch (ball.nDiameter)
         {
         case 0:
-            rc.y    = 0;
+            rc.y = 0;
             break;
         case 1:
-            rc.y    = 12;
+            rc.y = 12;
             break;
         case 2:
-            rc.y    = 32;
+            rc.y = 32;
             break;
         case 3:
-            rc.y    = 56;
+            rc.y = 56;
             break;
         case 4:
-            rc.y    = 88;
+            rc.y = 88;
             break;
         }
-        rc.x    = nFrame * CalcDiameter(m_vecBalls[nPos].nDiameter);
-        rc.y    += m_nType * 128;
-        rc.w    = rc.h  = CalcDiameter(m_vecBalls[nPos].nDiameter);
-        Blit((int)m_vecBalls[nPos].x, (int)m_vecBalls[nPos].y, m_pBall, &rc);
+        rc.x = nFrame * getDiameter(ball);
+        rc.y += (int)m_type * 128;
+        rc.w = rc.h = getDiameter(ball);
+        render(ball.x, ball.y, eImage::Balls, &rc);
     }
 
-    static Uint32   dwFBtime        = 0;
-    bool                bFBupdate   = false;
+    static Uint32 dwFBtime = 0;
+    bool bFBupdate = false;
     if (dwFBtime + 50 < dwTime)
     {
-        dwFBtime        = dwTime;
-        bFBupdate   = true;
+        dwFBtime = dwTime;
+        bFBupdate = true;
     }
-    rc.w    = 12;
-    rc.h    = 12;
-    for (size_t i = 0, size = m_vecFBalls.size(); i < size;)
+    rc.w = 12;
+    rc.h = 12;
+    for (size_t i = 0, size = m_fbs.size(); i < size;)
     {
-        rc.x    = 12 * m_nType;
-        rc.y    = 12 * m_vecFBalls[i].nFrame;
-        Blit(m_vecFBalls[i].nX, m_vecFBalls[i].nY, m_pFB, &rc);
-        if (bFBupdate == true && ++m_vecFBalls[i].nFrame == 6)
+        auto& fb = m_fbs[i];
+
+        rc.x = 12 * (int)m_type;
+        rc.y = 12 * fb.nFrame;
+        render(fb.nX, fb.nY, eImage::Fb, &rc);
+        if (bFBupdate == true && ++fb.nFrame == 6)
         {
-            m_vecFBalls[i] = m_vecFBalls[--size];
-            m_vecFBalls.pop_back();
+            m_fbs[i] = m_fbs[--size];
+            m_fbs.pop_back();
             continue;
         }
         i++;
@@ -305,313 +308,313 @@ void CBall::Draw(int nPaddleType)
 
 void CBall::RemoveAll()
 {
-    m_vecBalls.clear();
-    m_vecFBalls.clear();
-    m_nType             = TYPE_WHITE;
-    m_nPrevTypeCount    = 0;
+    m_balls.clear();
+    m_fbs.clear();
+    m_type = eBallType::WHITE;
+    m_nPrevTypeCount = 0;
 }
 
 void CBall::AddBall(int x, int y)
 {
-    _BALL   ball;
-    ball.x              = (float)x;
-    ball.y              = (float)y;
-    ball.nYoffset       = y - (int)a::ark()->m_nRacketY;
-    ball.nDiameter      = 1;
-    ball.fSpeed         = 0;
-    ball.fOldSpeed      = -1;
-    ball.nImpacts       = 0;
-    ball.nAngle         = INIT_ANGLE;
+    sBall ball;
+    ball.x = (float)x;
+    ball.y = (float)y;
+    ball.nYoffset = y - (int)a::ark()->m_nRacketY;
+    ball.nDiameter = 1;
+    ball.fSpeed = 0;
+    ball.fOldSpeed = -1;
+    ball.nImpacts = 0;
+    ball.nAngle = INIT_ANGLE;
     ball.dwTimeCanAddFb = 0;
     ball.bAlreadyImpact = false;
-    ball.bIsCaptured    = false;
-    m_vecBalls.push_back(ball);
+    ball.bIsCaptured = false;
+    m_balls.push_back(ball);
 }
 
 void CBall::AddBall(int x, int y, int nAngle)
 {
-    _BALL   ball;
-    ball.x              = (float)x;
-    ball.y              = (float)y;
-    ball.nYoffset       = 0;
-    ball.nDiameter      = 1;
-    ball.fSpeed         = INIT_BALL_SPEED;
-    ball.fOldSpeed      = -1;
-    ball.nImpacts       = 0;
-    ball.nAngle         = nAngle;
+    sBall ball;
+    ball.x = (float)x;
+    ball.y = (float)y;
+    ball.nYoffset = 0;
+    ball.nDiameter = 1;
+    ball.fSpeed = INIT_BALL_SPEED;
+    ball.fOldSpeed = -1;
+    ball.nImpacts = 0;
+    ball.nAngle = nAngle;
     ball.dwTimeCanAddFb = 0;
     ball.bAlreadyImpact = false;
-    ball.bIsCaptured    = false;
-    m_vecBalls.push_back(ball);
+    ball.bIsCaptured = false;
+    m_balls.push_back(ball);
 }
 
 int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight)
 {
+    const auto& ball = m_balls[nPos];
+
     // calculate first angle
-    int nObjAngle   = int(57.3 * atan((float)nWidth / (float)nHeight));
-    int nObjXc  = nX + nWidth / 2;  // center of object
-    int nObjYc  = nY + nHeight / 2;
-    int nBallR  = CalcDiameter(m_vecBalls[nPos].nDiameter) / 2; // ball radius
-    int nBallXc = int(m_vecBalls[nPos].x + nBallR); // ball center coords
-    int nBallYc = int(m_vecBalls[nPos].y + nBallR);
+    int nObjAngle = int(57.3 * atan((float)nWidth / (float)nHeight));
+    int nObjXc = nX + nWidth / 2; // center of object
+    int nObjYc = nY + nHeight / 2;
+    int nBallR = getDiameter(ball) / 2; // ball radius
+    int nBallXc = int(ball.x + nBallR); // ball center coords
+    int nBallYc = int(ball.y + nBallR);
     int nCatet1 = nObjXc - nBallXc;
     int nCatet2 = nObjYc - nBallYc;
 
-    float   fDist1      = sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
-    int     nAngle  = int(57.3 * asin(nCatet2 / fDist1));
+    float fDist1 = sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
+    int nAngle = int(57.3 * asin(nCatet2 / fDist1));
     if (nCatet1 > 0)
     {
-        nAngle    = 90 + nAngle;
+        nAngle = 90 + nAngle;
     }
     else
     {
-        nAngle    = 270 - nAngle;
+        nAngle = 270 - nAngle;
     }
-    nAngle  = ((360 + nAngle) % 360);
+    nAngle = ((360 + nAngle) % 360);
 
     int nIsOver;
-    float   fDist2;
+    float fDist2;
     if (nAngle < nObjAngle)
     {
-        fDist2  = (nHeight / 2) / g_fCos[nAngle];
+        fDist2 = (nHeight / 2) / g_fCos[nAngle];
         nIsOver = 1;
     }
     else if (nAngle < 90)
     {
-        fDist2  = (nWidth / 2) / g_fCos[90 - nAngle];
+        fDist2 = (nWidth / 2) / g_fCos[90 - nAngle];
         nIsOver = 2;
     }
     else if (nAngle < 180 - nObjAngle)
     {
-        fDist2  = (nWidth / 2) / g_fCos[nAngle - 90];
+        fDist2 = (nWidth / 2) / g_fCos[nAngle - 90];
         nIsOver = 3;
     }
     else if (nAngle < 180)
     {
-        fDist2  = (nHeight / 2) / g_fCos[180 - nAngle];
+        fDist2 = (nHeight / 2) / g_fCos[180 - nAngle];
         nIsOver = 4;
     }
     else if (nAngle < 180 + nObjAngle)
     {
-        fDist2  = (nHeight / 2) / g_fCos[nAngle - 180];
+        fDist2 = (nHeight / 2) / g_fCos[nAngle - 180];
         nIsOver = 5;
     }
     else if (nAngle < 270)
     {
-        fDist2  = (nWidth / 2) / g_fCos[270 - nAngle];
+        fDist2 = (nWidth / 2) / g_fCos[270 - nAngle];
         nIsOver = 6;
     }
     else if (nAngle < 360 - nObjAngle)
     {
-        fDist2  = (nWidth / 2) / g_fCos[nAngle - 270];
+        fDist2 = (nWidth / 2) / g_fCos[nAngle - 270];
         nIsOver = 7;
     }
     else /*if(nAngle < 360) */
     {
-        fDist2  = (nHeight / 2) / g_fCos[360 - nAngle];
+        fDist2 = (nHeight / 2) / g_fCos[360 - nAngle];
         nIsOver = 8;
     }
 
     if (fDist2 + nBallR + m_nBack > fDist1)
     {
-        return    nIsOver;
+        return nIsOver;
     }
 
-    return  0;
+    return 0;
 }
 
 bool CBall::StartBall(int nTop, int nBottom)
 {
-    for (size_t i = 0; i < m_vecBalls.size(); i++)
+    for (size_t i = 0, size = m_balls.size(); i < size; i++)
     {
-        if (m_vecBalls[i].fSpeed == 0)
+        auto& ball = m_balls[i];
+
+        if (ball.fSpeed == 0)
         {
-            if (m_vecBalls[i].fOldSpeed != -1)
+            if (ball.fOldSpeed != -1)
             {
-                m_vecBalls[i].fSpeed    = m_vecBalls[i].fOldSpeed;
+                ball.fSpeed = ball.fOldSpeed;
             }
             else
             {
-                m_vecBalls[i].fSpeed    = INIT_BALL_SPEED;
+                ball.fSpeed = INIT_BALL_SPEED;
             }
-            return  true;
+            return true;
         }
     }
 
-    return  false;
+    return false;
 }
 
 void CBall::ImpactWithWallAngle(int nPos)
 {
-    // ��������� ������������ ���� �� ������� � AddExploision
-    if (m_vecBalls[nPos].x <= WALL_X1)
-    {
-        if (m_nType == TYPE_RED)
-        {
-            a::expl()->AddExploision(WALL_X1 - 16, (int)m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, 0);
-        }
-        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+    auto& ball = m_balls[nPos];
 
-        if ((GetAngle(nPos) >= 180 && GetAngle(nPos) < 270) || (GetAngle(nPos) >= 270 && GetAngle(nPos) < 360))
+    if (ball.x <= WALL_X1)
+    {
+        if (m_type == eBallType::RED)
         {
-            m_vecBalls[nPos].nAngle = 360 - GetAngle(nPos);
+            a::expl()->AddExploision(WALL_X1 - 16, (int)ball.y + getDiameter(ball) / 2 - 16, 0);
+        }
+        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * ball.x)));
+
+        const auto angle = getAngle(ball);
+        if ((angle >= 180 && angle < 270) || (angle >= 270 && angle < 360))
+        {
+            ball.nAngle = 360 - angle;
         }
         IncrementBallSpeed(nPos);
     }
-    else if (m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter) >= WALL_X2 && m_bBackWall == true)
+    else if (ball.x + getDiameter(ball) >= WALL_X2 && m_bBackWall == true)
     {
-        if (m_nType == TYPE_RED)
+        if (m_type == eBallType::RED)
         {
-            a::expl()->AddExploision(WALL_X2 - 16, (int)m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, 0);
+            a::expl()->AddExploision(WALL_X2 - 16, (int)ball.y + getDiameter(ball) / 2 - 16, 0);
         }
-        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * ball.x)));
 
-        if ((GetAngle(nPos) >= 0 && GetAngle(nPos) < 90) || (GetAngle(nPos) >= 90 && GetAngle(nPos) < 180))
+        const auto angle = getAngle(ball);
+        if ((angle >= 0 && angle < 90) || (angle >= 90 && angle < 180))
         {
-            m_vecBalls[nPos].nAngle = 360 - GetAngle(nPos);
+            ball.nAngle = 360 - angle;
         }
         IncrementBallSpeed(nPos);
     }
-    else if (m_vecBalls[nPos].y <= WALL_Y1)
+    else if (ball.y <= WALL_Y1)
     {
-        if (m_nType == TYPE_RED)
+        if (m_type == eBallType::RED)
         {
-            a::expl()->AddExploision((int)m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, WALL_Y1 - 16, 0);
+            a::expl()->AddExploision((int)ball.x + getDiameter(ball) / 2 - 16, WALL_Y1 - 16, 0);
         }
-        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * ball.x)));
 
-        if (GetAngle(nPos) >= 0 && GetAngle(nPos) < 90)
+        const auto angle = getAngle(ball);
+        if (angle >= 0 && angle < 90)
         {
-            m_vecBalls[nPos].nAngle = 180 - GetAngle(nPos);
+            ball.nAngle = 180 - angle;
         }
-        else if (GetAngle(nPos) >= 270 && GetAngle(nPos) < 360)
+        else if (angle >= 270 && angle < 360)
         {
-            m_vecBalls[nPos].nAngle = 540 - GetAngle(nPos);
+            ball.nAngle = 540 - angle;
         }
         IncrementBallSpeed(nPos);
     }
-    else if (m_vecBalls[nPos].y + CalcDiameter(m_vecBalls[nPos].nDiameter) >= WALL_Y2)
+    else if (ball.y + getDiameter(ball) >= WALL_Y2)
     {
-        if (m_nType == TYPE_RED)
+        if (m_type == eBallType::RED)
         {
-            a::expl()->AddExploision((int)m_vecBalls[nPos].x + CalcDiameter(m_vecBalls[nPos].nDiameter) / 2 - 16, WALL_Y2 - 16, 0);
+            a::expl()->AddExploision((int)ball.x + getDiameter(ball) / 2 - 16, WALL_Y2 - 16, 0);
         }
-        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * m_vecBalls[nPos].x)));
+        //g_pMainFrame->m_pImix->SamplePlay(m_nSampleBallUp, 100, (int)(-100 + ((200.0 / SCREEN_WIDTH) * ball.x)));
 
-        if (GetAngle(nPos) >= 90 && GetAngle(nPos) < 180)
+        const auto angle = getAngle(ball);
+        if (angle >= 90 && angle < 180)
         {
-            m_vecBalls[nPos].nAngle = 180 - GetAngle(nPos);
+            ball.nAngle = 180 - angle;
         }
-        else if (GetAngle(nPos) >= 180 && GetAngle(nPos) < 270)
+        else if (angle >= 180 && angle < 270)
         {
-            m_vecBalls[nPos].nAngle = 540 - GetAngle(nPos);
+            ball.nAngle = 540 - angle;
         }
         IncrementBallSpeed(nPos);
     }
 
-    m_vecBalls[nPos].x  = std::max<int>(m_vecBalls[nPos].x, WALL_X1);
-    m_vecBalls[nPos].x  = std::min<int>(m_vecBalls[nPos].x, (m_bBackWall == true ? WALL_X2 - CalcDiameter(m_vecBalls[nPos].nDiameter) : SCREEN_WIDTH + 1));
-    m_vecBalls[nPos].y  = std::max<int>(m_vecBalls[nPos].y, WALL_Y1);
-    m_vecBalls[nPos].y  = std::min<int>(m_vecBalls[nPos].y, (WALL_Y2 - CalcDiameter(m_vecBalls[nPos].nDiameter)));
-}
-
-int CBall::GetBallsCount()
-{
-    return  m_vecBalls.size();
+    ball.x = std::max<int>(ball.x, WALL_X1);
+    ball.x = std::min<int>(ball.x, (m_bBackWall == true ? WALL_X2 - getDiameter(ball) : SCREEN_WIDTH + 1));
+    ball.y = std::max<int>(ball.y, WALL_Y1);
+    ball.y = std::min<int>(ball.y, (WALL_Y2 - getDiameter(ball)));
 }
 
 void CBall::ChangeBallSize(int nDelta)
 {
-    for (size_t i = 0; i < m_vecBalls.size(); i++)
+    for (auto& ball : m_balls)
     {
-        m_vecBalls[i].nDiameter += nDelta;
-        m_vecBalls[i].nDiameter = std::min<int>(m_vecBalls[i].nDiameter, 4);
-        m_vecBalls[i].nDiameter = std::max<int>(m_vecBalls[i].nDiameter, 0);
+        ball.nDiameter += nDelta;
+        ball.nDiameter = std::min<int>(ball.nDiameter, 4);
+        ball.nDiameter = std::max<int>(ball.nDiameter, 0);
     }
 }
 
-bool CBall::GetPositionAndDiameter(SDL_Rect& rc, int& nPos)
+sBallDescription CBall::getDescription(size_t idx) const
 {
-    for (; (size_t)nPos < m_vecBalls.size(); nPos++)
-    {
-        if (m_vecBalls[nPos].bIsCaptured == false)
-        {
-            rc.x    = (int)m_vecBalls[nPos].x;
-            rc.y    = (int)m_vecBalls[nPos].y;
-            rc.w    = CalcDiameter(m_vecBalls[nPos].nDiameter);
-            rc.h    = m_nType;
-            nPos++;
-            return  true;
-        }
-    }
+    auto& ball = m_balls[idx];
 
-    return  false;
+    sBallDescription desc;
+
+    desc.type = m_type;
+    desc.x = ball.x;
+    desc.y = ball.y;
+    desc.diameter = getDiameter(ball);
+    desc.bIsCaptured = ball.bIsCaptured;
+
+    return desc;
 }
 
 void CBall::SetAllBallsToBlue()
 {
-    m_nType             = TYPE_BLUE;
-    m_nPrevTypeCount    = 8;
+    m_type = eBallType::BLUE;
+    m_nPrevTypeCount = 8;
 }
 
 void CBall::SetAllBallsToFire()
 {
-    m_nType             = TYPE_RED;
-    m_nPrevTypeCount    = 8;
+    m_type = eBallType::RED;
+    m_nPrevTypeCount = 8;
 }
 
 void CBall::SplitBalls()
 {
-    std::vector<_BALL>tmp;
-    tmp.reserve(m_vecBalls.size());
-    for (size_t i = 0; i < m_vecBalls.size(); i++)
+    auto tempList = m_balls;
+
+    m_balls.reserve(m_balls.size() + tempList.size());
+    for (auto& ball : tempList)
     {
-        tmp.push_back(m_vecBalls[i]);
-    }
-    for (size_t i = 0; i < tmp.size(); i++)
-    {
-        tmp[i].nAngle       = ((int)tmp[i].nAngle + 45) % 360;
-        tmp[i].bIsCaptured  = false;
-        m_vecBalls.push_back(tmp[i]);
+        ball.nAngle = (int)(ball.nAngle + 45) % 360;
+        ball.bIsCaptured = false;
+        m_balls.push_back(ball);
     }
 }
 
 void CBall::ChangeBallAngle(int nPos, bool bRotate)
 {
-    if (m_vecBalls[nPos].fSpeed == 0.0)
+    auto& ball = m_balls[nPos];
+
+    if (ball.fSpeed == 0.0)
     {
         return;
     }
     if (bRotate == false)
     {
-        m_vecBalls[nPos].nAngle   += 360 - 90 + a::rnd().Get(90);
+        ball.nAngle += 360 - 90 + a::rnd().Get(90);
     }
     else
     {
-        m_vecBalls[nPos].nAngle   += 45;    //180;
+        ball.nAngle += 45; //180;
     }
 
-    //m_vecBalls[nPos].bAlreadyImpact   = true;
+    //ball.bAlreadyImpact = true;
 }
 
 void CBall::ChangeAllBallsSpeed(bool bIncrease)
 {
-    for (size_t i = 0; i < m_vecBalls.size(); i++)
+    for (auto& ball : m_balls)
     {
-        if (m_vecBalls[i].fSpeed != 0)
+        if (ball.fSpeed != 0.0f)
         {
             if (bIncrease == true)
             {
-                if (m_vecBalls[i].fSpeed < INIT_BALL_SPEED + 5.0)
+                if (ball.fSpeed < INIT_BALL_SPEED + 5.0f)
                 {
-                    m_vecBalls[i].fSpeed  += .5;
+                    ball.fSpeed += 0.5f;
                 }
             }
             else
             {
-                if (m_vecBalls[i].fSpeed > INIT_BALL_SPEED)
+                if (ball.fSpeed > INIT_BALL_SPEED)
                 {
-                    m_vecBalls[i].fSpeed  -= .5;
+                    ball.fSpeed -= 0.5f;
                 }
             }
         }
@@ -620,13 +623,13 @@ void CBall::ChangeAllBallsSpeed(bool bIncrease)
 
 bool CBall::RemoveOne(int& nX, int& nY)
 {
-    if (m_vecBalls.size() > 0)
+    if (m_balls.size() > 0)
     {
         PlaySound(14);
-        nX  = (int)m_vecBalls[0].x;
-        nY  = (int)m_vecBalls[0].y;
-        m_vecBalls[0] = m_vecBalls[m_vecBalls.size() - 1];
-        m_vecBalls.pop_back();
+        const auto& ball = m_balls.back();
+        nX = ball.x;
+        nY = ball.y;
+        m_balls.pop_back();
         return true;
     }
 
@@ -635,85 +638,97 @@ bool CBall::RemoveOne(int& nX, int& nY)
 
 void CBall::IncrementBallSpeed(int nPos)
 {
-    m_vecBalls[nPos].nImpacts++;
-    if (m_vecBalls[nPos].nImpacts > 20)
+    auto& ball = m_balls[nPos];
+
+    ball.nImpacts++;
+    if (ball.nImpacts > 20)
     {
-        m_vecBalls[nPos].nImpacts   = 0;
-        if (m_vecBalls[nPos].fSpeed < INIT_BALL_SPEED + 5.0)
+        ball.nImpacts = 0;
+        if (ball.fSpeed < INIT_BALL_SPEED + 5.0)
         {
-            m_vecBalls[nPos].fSpeed   += .1;
+            ball.fSpeed += .1;
         }
     }
-    m_vecBalls[nPos].nAngle += 360;
+    ball.nAngle += 360;
 }
 
 void CBall::AddFBs(int nPos)
 {
-    int nDiameter   = CalcDiameter(m_vecBalls[nPos].nDiameter);
+    auto& ball = m_balls[nPos];
+
+    int nDiameter = getDiameter(ball);
     for (int i = 0; i < nDiameter / 6; i++)
     {
-        int nR      = nDiameter / 2 - 4;
-        int nXb = (int)(m_vecBalls[nPos].x + nDiameter / 2);
-        int nYb = (int)(m_vecBalls[nPos].y + nDiameter / 2);
+        int nR = nDiameter / 2 - 4;
+        int nXb = ball.x + nDiameter / 2;
+        int nYb = ball.y + nDiameter / 2;
 
-        _FB fb;
-        fb.nType        = m_nType;
-        fb.nX           = nXb + nR - a::rnd().Get(nR * 2) - 6;
-        fb.nY           = nYb + nR - a::rnd().Get(nR * 2) - 6;
-        fb.nFrame   = 0;
-        m_vecFBalls.push_back(fb);
+        sFb fb;
+        fb.type = m_type;
+        fb.nX = nXb + nR - a::rnd().Get(nR * 2) - 6;
+        fb.nY = nYb + nR - a::rnd().Get(nR * 2) - 6;
+        fb.nFrame = 0;
+        m_fbs.push_back(fb);
     }
 }
 
 void CBall::ChangeAngle(int nPos, bool bIncrease)
 {
-    if (m_vecBalls[nPos].fSpeed != 0.0)
+    auto& ball = m_balls[nPos];
+
+    if (ball.fSpeed != 0.0)
     {
-        float   fAngle  = 0.5 * g_fSpeedCorrection;
+        float fAngle = 0.5 * g_fSpeedCorrection;
         if (bIncrease == true)
         {
-            m_vecBalls[nPos].nAngle += fAngle;
+            ball.nAngle += fAngle;
         }
         else
         {
-            m_vecBalls[nPos].nAngle += (360 - fAngle);
+            ball.nAngle += (360 - fAngle);
         }
-        //if(m_vecBalls[nPos].nAngle > 359) m_vecBalls[nPos].nAngle -= 359;
+        //if(ball.nAngle > 359) ball.nAngle -= 359;
     }
 }
 
-int CBall::GetAngle(int nPos)
+int CBall::getAngle(const sBall& ball) const
 {
-    return (int)(m_vecBalls[nPos].nAngle + 360) % 360;
+    return (int)(ball.nAngle + 360) % 360;
+}
+
+int CBall::getAngle(size_t idx) const
+{
+    return getAngle(m_balls[idx]);
 }
 
 void CBall::SlowDown()
 {
-    for (size_t i = 0; i < m_vecBalls.size(); i++)
+    for (auto& ball : m_balls)
     {
-        if (m_vecBalls[i].fSpeed != 0.0)
+        if (ball.fSpeed != 0.0)
         {
-            m_vecBalls[i].fSpeed  = INIT_BALL_SPEED;
+            ball.fSpeed = INIT_BALL_SPEED;
         }
     }
 }
 
-int CBall::CalcDiameter(int nIndex)
+int CBall::getDiameter(const sBall& ball) const
 {
-    const int   anDiameters[]   = { 12, 20, 24, 32, 40 };
-    if (nIndex >= 0 && nIndex < 5)
+    auto idx = ball.nDiameter;
+    const int anDiameters[] = { 12, 20, 24, 32, 40 };
+    if (idx >= 0 && idx < 5)
     {
-        return anDiameters[nIndex];
+        return anDiameters[idx];
     }
     return 0;
 }
 
-int CBall::GetType()
+eBallType CBall::GetType()
 {
-    return m_nType;
+    return m_type;
 }
 
-int CBall::GetTypeCount()
+size_t CBall::GetTypeCount()
 {
     return m_nPrevTypeCount;
 }
@@ -726,23 +741,30 @@ int CBall::GetTypeCount()
  */
 void CBall::BallCaptured(int nIndex, bool bIsCaptured)
 {
-    if (nIndex >= 0 && nIndex < (int)m_vecBalls.size())
+    if (nIndex >= 0 && nIndex < (int)m_balls.size())
     {
-        if (bIsCaptured == false && m_vecBalls[nIndex].bIsCaptured == true)
+        auto& ball = m_balls[nIndex];
+
+        if (bIsCaptured == false && ball.bIsCaptured == true)
         {
-            m_vecBalls[nIndex].fSpeed   += 0.5;
-            m_vecBalls[nIndex].nAngle   = 30 + a::rnd().Get(120);
+            ball.fSpeed += 0.5;
+            ball.nAngle = 30 + a::rnd().Get(120);
         }
-        m_vecBalls[nIndex].bIsCaptured  = bIsCaptured;
+        ball.bIsCaptured = bIsCaptured;
     }
 }
 
 void CBall::SetCapturedBallPos(int nIndex, float fX, float fY)
 {
-    if (nIndex >= 0 && nIndex < (int)m_vecBalls.size() && m_vecBalls[nIndex].bIsCaptured == true)
+    if (nIndex >= 0 && nIndex < (int)m_balls.size())
     {
-        int nRadius = CalcDiameter(m_vecBalls[nIndex].nDiameter) / 2;
-        m_vecBalls[nIndex].x    = fX + 26 - nRadius;
-        m_vecBalls[nIndex].y    = fY + 33 - nRadius;
+        auto& ball = m_balls[nIndex];
+
+        if (ball.bIsCaptured == true)
+        {
+            int nRadius = getDiameter(ball) / 2;
+            ball.x = fX + 26 - nRadius;
+            ball.y = fY + 33 - nRadius;
+        }
     }
 }

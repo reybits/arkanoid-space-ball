@@ -10,6 +10,7 @@
 #include "accessor.h"
 #include "defines.h"
 #include "mystring.h"
+#include "videosystem/videosystem.h"
 
 #include <SDL.h>
 
@@ -27,11 +28,11 @@ void CTutorialDlg::AddDialog(int nX, int nY, int nCategory, int nMsgId)
     if (m_options.tutorialMode == true && m_abShownDialogs[nCategory][nMsgId] == false)
     {
         m_abShownDialogs[nCategory][nMsgId] = true; // do not show this dialog again
-        sTutorial   tut;
-        tut.nX          = nX;
-        tut.nY          = nY;
-        tut.nCategory   = nCategory;
-        tut.nMsgId      = nMsgId;
+        sTutorial tut;
+        tut.nX = nX;
+        tut.nY = nY;
+        tut.nCategory = nCategory;
+        tut.nMsgId = nMsgId;
         m_vecTutorialDlg.push_back(tut);
         m_tutorialMode = m_options.tutorialMode;
     }
@@ -39,8 +40,7 @@ void CTutorialDlg::AddDialog(int nX, int nY, int nCategory, int nMsgId)
 
 bool CTutorialDlg::ShowDialog()
 {
-    const char* pachText[] =
-    {
+    const char* pachText[] = {
         "CANNON\n\nDANGER! Cannons fire on you (it's shots are inverted your mouse for 3 seconds).",
         "SELF DESTRUCTION\n\nWhen on level stay 5 bricks or less self destruction activated and starts within 20 seconds.",
         "CATCH BONUS\n\nYou catched bonus placed in to stack. Use right mouse button to use bonus. Use mouse scroll to select bonus.",
@@ -51,8 +51,7 @@ bool CTutorialDlg::ShowDialog()
         "BONUS BRICK\n\nATTENTION! This brick always has a bonus.",
         "STRONG BRICKS\n\n15 - hit-bricks. These bricks not need to be cleared.",
     };
-    const char* pachMonsters[] =
-    {
+    const char* pachMonsters[] = {
         "KAMIKAZE\n\nDANGER! It�s a kamikaze - this monster blows up the paddle.",
         "HELICOPTER\n\nFollows the nearest ball.",
         "ROBOTIC EYE\n\nATTENTION! Robotic eye follows your paddle.",
@@ -64,8 +63,7 @@ bool CTutorialDlg::ShowDialog()
         "FIERY METEORITE\n\nDANGER! Fiery meteorite blows up the paddle.",
         "ICE-METEORITE\n\nDANGER! Ice-meteorite freezes up the paddle for 3 seconds.",
     };
-    const char* pachBonuses[] =
-    {
+    const char* pachBonuses[] = {
         "SPLIT BALL\n\nThis bonus doubles number of your balls.",
         "FIREBALL\n\nYour ball will burn through bricks for 8 seconds.",
         "GHOST BALL\n\nATTENTION! Your ball will crossing through bricks for 8 seconds. (Bad bonus!)",
@@ -86,21 +84,21 @@ bool CTutorialDlg::ShowDialog()
     if (m_options.tutorialMode == true && m_vecTutorialDlg.size() > 0)
     {
         EnableCursor(true);
-        int x   = m_vecTutorialDlg[0].nX + 15;
-        int y   = m_vecTutorialDlg[0].nY - 188 - 15;
+        int x = m_vecTutorialDlg[0].nX + 15;
+        int y = m_vecTutorialDlg[0].nY - 188 - 15;
         int ndy = 20;
 
-        SDL_Rect    rc;
+        SDL_Rect rc;
         SetRect(&rc, 0, 0, 256, 188);
         if (m_vecTutorialDlg[0].nX > SCREEN_WIDTH / 2)
         {
-            rc.x    = 256;
-            x       = m_vecTutorialDlg[0].nX - 256 - 15;
+            rc.x = 256;
+            x = m_vecTutorialDlg[0].nX - 256 - 15;
         }
         if (m_vecTutorialDlg[0].nY < SCREEN_HEIGHT / 2)
         {
-            rc.y    = 188;
-            y       = m_vecTutorialDlg[0].nY + 15;
+            rc.y = 188;
+            y = m_vecTutorialDlg[0].nY + 15;
             ndy += 26;
         }
 
@@ -117,19 +115,19 @@ bool CTutorialDlg::ShowDialog()
             }
         }
         // show dialog
-        Blit(x, y, g_pTutorialDlg, &rc);
+        render(x, y, eImage::TutorialDlg, &rc);
         // show labels
         SetRect(&rc, 115 + (nButton == 0 ? 256 : 0), 376, 100, 20);
-        Blit(x + 115, y + ndy + 110, g_pTutorialDlg, &rc);
+        render(x + 115, y + ndy + 110, eImage::TutorialDlg, &rc);
         SetRect(&rc, 220 + (nButton == 1 ? 256 : 0), 376, 25, 20);
-        Blit(x + 220, y + ndy + 110, g_pTutorialDlg, &rc);
+        render(x + 220, y + ndy + 110, eImage::TutorialDlg, &rc);
         if (!m_tutorialMode)
         {
             SetRect(&rc, 0, 376, 12, 20);
-            Blit(x + 197, y + ndy + 110, g_pTutorialDlg, &rc);
+            render(x + 197, y + ndy + 110, eImage::TutorialDlg, &rc);
         }
         // show message
-        const char*  pchText    = 0;
+        const char* pchText = 0;
         switch (m_vecTutorialDlg[0].nCategory)
         {
         case 0:
@@ -148,7 +146,7 @@ bool CTutorialDlg::ShowDialog()
 
         if (nButton == 0 && g_bMouseLB == true)
         {
-            g_bMouseLB  = false;
+            g_bMouseLB = false;
             m_tutorialMode = !m_tutorialMode;
         }
 
