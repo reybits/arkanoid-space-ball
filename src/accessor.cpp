@@ -61,7 +61,7 @@ namespace a
 
             snprintf(buffer, sizeof(UserProfile), "%sconfig", UserProfile);
             FILE* file = fopen(buffer, "rb");
-            if (file)
+            if (file != nullptr)
             {
                 fread(&Options, sizeof(Options), 1, file);
                 Options.bppIdx %= sizeof(g_bppList) / sizeof(g_bppList[0]);
@@ -70,7 +70,7 @@ namespace a
 
             snprintf(buffer, sizeof(UserProfile), "%sscores", UserProfile);
             file = fopen(buffer, "rb");
-            if (file)
+            if (file != nullptr)
             {
                 fread(&Highscores, sizeof(Highscores), 1, file);
                 fclose(file);

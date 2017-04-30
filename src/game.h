@@ -96,12 +96,6 @@ private:
     int m_nLaserX;
     std::vector<_BRICK> m_vecLevelBricks;
     int m_nLevelPrev; // store previous level number: -1 - usualy, -2 - inform, that we restore game
-    struct _STARS
-    {
-        float fX, fY, fSpeed;
-        int nType, nFrame;
-    };
-    std::vector<_STARS> m_vecStars;
     int m_nBonusLevelType;
     int m_nBonusLevelTicks;
     int m_nSndWall; // store channel number for stop

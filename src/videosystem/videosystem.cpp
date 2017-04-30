@@ -115,7 +115,7 @@ void beginFrame()
         fpsTime = currentTime;
     }
 
-    g_fSpeedCorrection = 1.0f / 60; //(float)(currentTime - lastTime) / (DESIRED_FPS / 10.0f);
+    g_fSpeedCorrection = (float)(currentTime - lastTime) / (DESIRED_FPS / 10.0f);
     lastTime = currentTime;
 }
 
