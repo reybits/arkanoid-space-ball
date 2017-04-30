@@ -8,8 +8,11 @@
 
 #pragma once
 
-void CommonQuit();
+void initializeAudio();
+void deinitializeAudio();
+void loadAudio();
+void playMenuMusic();
+
 void updateKeys();
-void PlayMusic2();
 bool DrawIntro();
 void gameLoop();

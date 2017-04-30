@@ -7,8 +7,8 @@
 \**********************************************/
 
 #include "arkanoidsb.h"
-#include "assets.h"
 #include "accessor.h"
+#include "assets.h"
 #include "bonus.h"
 #include "defines.h"
 #include "game.h"
@@ -24,6 +24,7 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
 
@@ -59,6 +60,8 @@ int g_nGameMode = APPS_INTRO;
 
 CLevelEditor m_LevelEditor;
 
+bool g_bIsAudioSupported = false;
+
 const char* SoundNames[] = {
     "snd_electric.wav", //  0
     "snd_applause.wav", //  1
@@ -86,9 +89,7 @@ const char* MusicNames[] = {
 };
 std::vector<Mix_Music*> g_musicList;
 
-bool g_bIsAudioSupported = true;
-
-int main(int argc, char* argv[])
+int main(int /*argc*/, char** /*argv*/)
 {
     printf("%s by 'WE' Group. Copyright (c) 2006.\n", APP_Title);
     printf("version %d.%d.%d.\n", APP_VerMajor, APP_VerMinor, APP_VerRelease);
@@ -96,16 +97,15 @@ int main(int argc, char* argv[])
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("Couldn't initialize SDL-video: %s\n", SDL_GetError());
-        exit(-2);
+        assert(0);
     }
-    atexit(CommonQuit);
 
     const int imgFlags = IMG_INIT_PNG;
     const int imgInitted = IMG_Init(imgFlags);
     if ((imgInitted & imgFlags) != imgFlags)
     {
         printf("Couldn't initialize SDL_Image: %s\n", SDL_GetError());
-        exit(-2);
+        assert(0);
     }
 
     a::initialize();
@@ -113,28 +113,10 @@ int main(int argc, char* argv[])
 
     if (a::res()->Open(assets::makePath("arkanoidsb.pak")) == false)
     {
-        exit(-1);
+        assert(0);
     }
 
     EnableCursor(false);
-
-    if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
-    {
-        printf("Couldn't initialize SDL-audio: %s\n", SDL_GetError());
-        printf("  continuing without audio support.\n");
-        g_bIsAudioSupported = false;
-    }
-    else
-    {
-        // open 44.1KHz, signed 16bit, system byte order,
-        //      stereo audio, using 1024 byte chunks
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
-        {
-            printf("Couldn't OpenAudio: %s\n", Mix_GetError());
-            printf("  continuing without audio support.\n");
-            g_bIsAudioSupported = false;
-        }
-    }
 
 #ifndef __MACOSX__
     unsigned size;
@@ -157,60 +139,6 @@ int main(int argc, char* argv[])
     setVideoMode();
     SDL_WarpMouse(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-    if (g_bIsAudioSupported == true)
-    {
-        // loading sound effects
-        for (auto name : SoundNames)
-        {
-            printf("Loading sound '%s'", name);
-            // try to load image from resource from
-            unsigned size;
-            auto data = a::res()->GetDataAllocMem(name, size);
-            if (data == nullptr)
-            {
-                printf(" error.\n");
-                exit(-2);
-            }
-
-            auto rwops = SDL_RWFromConstMem(data, size);
-            auto sound = Mix_LoadWAV_RW(rwops, 1);
-            a::res()->FreeMem(data);
-
-            if (sound != nullptr)
-            {
-                g_soundList.push_back(sound);
-                printf(" done.\n");
-            }
-            else
-            {
-                printf(" %s.\n", SDL_GetError());
-                exit(-2);
-            }
-        }
-
-//loading musics
-#if !defined(EMSCRIPTEN)
-        for (auto name : MusicNames)
-        {
-            const char* path = assets::makePath(name);
-            printf("Loading music '%s'", path);
-            auto music = Mix_LoadMUS(path);
-            if (music != nullptr)
-            {
-                g_musicList.push_back(music);
-                printf(" done.\n");
-            }
-            else
-            {
-                printf(" error '%s'\n", SDL_GetError());
-                exit(-1);
-            }
-        }
-
-        PlayMusic2();
-#endif
-    }
-
     for (int i = 0; i < 360; i++)
     {
         g_fCos[i] = cosf((M_PI / 180.0f) * i);
@@ -221,7 +149,8 @@ int main(int argc, char* argv[])
     g_keysStateLast = new Uint8[g_keysStateCount];
     memset(g_keysStateLast, 0, g_keysStateCount * sizeof(Uint8));
 
-//g_nGameMode = APPS_EDITOR;
+    initializeAudio();
+    loadAudio();
 
 #if defined(EMSCRIPTEN)
     emscripten_set_main_loop(gameLoop, 0, 0);
@@ -231,28 +160,16 @@ int main(int argc, char* argv[])
 
     delete[] g_keysStateLast;
 
-    for (auto m : g_musicList)
-    {
-        Mix_FreeMusic(m);
-    }
-
-    for (auto s : g_soundList)
-    {
-        Mix_FreeChunk(s);
-    }
+    deinitializeAudio();
 
     unsetVideoMode();
 
-    exit(0);
-}
-
-void CommonQuit()
-{
     assets::deinitialize();
     a::deinitialize();
 
-    Mix_CloseAudio();
     SDL_Quit();
+
+    return 0;
 }
 
 void SetRect(SDL_Rect* pRc, int nX, int nY, int nW, int nH)
@@ -457,12 +374,11 @@ void PlayMusic(bool restart)
     }
 }
 
-// menu music
-void PlayMusic2()
+void playMenuMusic()
 {
     if (g_bIsAudioSupported)
     {
-        Mix_HookMusicFinished([]() { PlayMusic2(); });
+        Mix_HookMusicFinished([]() { playMenuMusic(); });
         Mix_PlayMusic(g_musicList.back(), 0);
 
         SetVolumeMusic(a::opt().musicVolume);
@@ -582,6 +498,113 @@ void EnableCursor(bool enable)
     g_bIsCursorVisible = enable;
 }
 
+void initializeAudio()
+{
+    g_bIsAudioSupported = false;
+
+    if (SDL_InitSubSystem(SDL_INIT_AUDIO) >= 0)
+    {
+        const int flags = MIX_INIT_MOD | MIX_INIT_OGG;
+        Mix_Init(flags);
+        if (Mix_Init(flags) & flags)
+        {
+            // open 44.1KHz, signed 16bit, system byte order,
+            //      stereo audio, using 1024 byte chunks
+            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != -1)
+            {
+                g_bIsAudioSupported = true;
+            }
+            else
+            {
+                printf("Mix_OpenAudio: %s\n", Mix_GetError());
+            }
+        }
+        else
+        {
+            printf("Mix_Init: %s\n", Mix_GetError());
+        }
+    }
+    else
+    {
+        printf("SDL-audio: %s\n", SDL_GetError());
+    }
+}
+
+void deinitializeAudio()
+{
+    if (g_bIsAudioSupported)
+    {
+        for (auto m : g_musicList)
+        {
+            Mix_FreeMusic(m);
+        }
+
+        for (auto s : g_soundList)
+        {
+            Mix_FreeChunk(s);
+        }
+
+        Mix_CloseAudio();
+    }
+}
+
+void loadAudio()
+{
+    if (g_bIsAudioSupported)
+    {
+        // loading sound effects
+        for (auto name : SoundNames)
+        {
+            printf("Loading sound '%s'", name);
+            // try to load image from resource from
+            unsigned size;
+            auto data = a::res()->GetDataAllocMem(name, size);
+            if (data == nullptr)
+            {
+                printf(" error.\n");
+                assert(0);
+            }
+
+            auto rwops = SDL_RWFromConstMem(data, size);
+            auto sound = Mix_LoadWAV_RW(rwops, 1);
+            a::res()->FreeMem(data);
+
+            if (sound != nullptr)
+            {
+                g_soundList.push_back(sound);
+                printf(" done.\n");
+            }
+            else
+            {
+                printf(" %s.\n", SDL_GetError());
+                assert(0);
+            }
+        }
+
+//loading musics
+#if !defined(EMSCRIPTEN)
+        for (auto name : MusicNames)
+        {
+            const char* path = assets::makePath(name);
+            printf("Loading music '%s'", path);
+            auto music = Mix_LoadMUS(path);
+            if (music != nullptr)
+            {
+                g_musicList.push_back(music);
+                printf(" done.\n");
+            }
+            else
+            {
+                printf(" error '%s'\n", SDL_GetError());
+                assert(0);
+            }
+        }
+
+        playMenuMusic();
+#endif
+    }
+}
+
 void gameLoop()
 {
 #if !defined(EMSCRIPTEN)
@@ -653,7 +676,7 @@ void gameLoop()
             {
                 if (a::ark()->DrawScreen() == true)
                 {
-                    PlayMusic2();
+                    playMenuMusic();
                     g_nGameMode = APPS_SHOULDGETNAME;
                 }
             }
@@ -690,15 +713,6 @@ void gameLoop()
                 }
             }
 
-            /*          // save screenshot to profile dir
-                        if((g_modState & KMOD_CTRL) && IsKeyPressed(SDLK_s) && IsKeyStateChanged(SDLK_s)) {
-                            char    achPath[MAX_PATH];
-                            time_t  osTime  = time(0);
-                            struct tm   local   = *localtime(&osTime);
-                            sprintf(achPath, "%sarkanoidsb-%4d%2d%2d-%2d%2d.bmp", g_achUserProfile, local.tm_year + 1900, local.tm_mon + 1, local.tm_mday, local.tm_hour, local.tm_min);
-                            SDL_SaveBMP(g_psurfScreen, achPath);
-                        }
-            */
             if (IsKeyPressed(SDLK_f) && IsKeyStateChanged(SDLK_f))
             {
                 a::opt().showFps = !a::opt().showFps;
@@ -709,7 +723,7 @@ void gameLoop()
             {
                 render(g_nCursorX - 8, g_nCursorY, eImage::Cursor);
             }
-            // if (a::opt().showFps == true)
+            if (a::opt().showFps == true)
             {
                 a::fnt1()->DrawNumber(getFps(), 5, 5, CMyString::eAlign::Right);
             }

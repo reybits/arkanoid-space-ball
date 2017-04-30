@@ -41,7 +41,7 @@ namespace assets
             if (p != nullptr)
             {
                 p[1] = 0;
-                ::strcat(m_assetsPath, "Resources/assets/");
+                ::strcat(m_assetsPath, "Resources/");
             }
         }
 

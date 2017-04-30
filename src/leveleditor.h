@@ -23,10 +23,10 @@ public:
     void Save();
 
 private:
-    Uint8* m_pbyLevels;
+    Uint8* m_levels;
     int m_nCurrentLevel;
     int m_nLevelsCount;
     bool m_bIsSelectBrickMode;
     int m_nBrickType;
-    Uint8 m_abyLevel[BRICKS_WIDTH][BRICKS_HEIGHT];
+    Uint8 m_level[BRICKS_WIDTH][BRICKS_HEIGHT];
 };

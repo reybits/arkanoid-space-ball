@@ -17,7 +17,7 @@
 #include <cstdio>
 
 CLevelEditor::CLevelEditor()
-    : m_pbyLevels(nullptr)
+    : m_levels(nullptr)
     , m_nCurrentLevel(0)
     , m_nLevelsCount(0)
     , m_bIsSelectBrickMode(false)
@@ -28,7 +28,7 @@ CLevelEditor::CLevelEditor()
 CLevelEditor::~CLevelEditor()
 {
     Save();
-    delete[] m_pbyLevels;
+    delete[] m_levels;
 }
 
 void CLevelEditor::Draw()
@@ -42,7 +42,7 @@ void CLevelEditor::Draw()
     {
         for (int y = 0; y < BRICKS_HEIGHT; y++)
         {
-            a::menu()->DrawBrick(BRICK_X + x * BRICK_W, BRICK_Y + y * BRICK_H, m_abyLevel[x][y]);
+            a::menu()->DrawBrick(BRICK_X + x * BRICK_W, BRICK_Y + y * BRICK_H, m_level[x][y]);
         }
     }
     a::fnt2()->SetRect(97, 0, 56, SCREEN_HEIGHT);
@@ -96,11 +96,11 @@ void CLevelEditor::Draw()
             render(BRICK_X + nX * BRICK_W, BRICK_Y + nY * BRICK_H, eImage::Transp, &rc);
             if (g_bMouseLB == true)
             {
-                m_abyLevel[nX][nY] = m_nBrickType;
+                m_level[nX][nY] = m_nBrickType;
             }
             if (g_bMouseRB == true)
             {
-                m_abyLevel[nX][nY] = BOX_NONE;
+                m_level[nX][nY] = BOX_NONE;
             }
         }
         rc.w = 160;
@@ -121,77 +121,77 @@ void CLevelEditor::Draw()
 
         if (IsKeyPressed(SDLK_DELETE) && IsKeyStateChanged(SDLK_DELETE))
         {
-            memset(m_abyLevel, 0, sizeof(m_abyLevel));
+            memset(m_level, 0, sizeof(m_level));
         }
         if (((true == a::menu()->DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 30, WALL_Y2 - 30, CMainMenu::B_PREV) && g_bMouseLB == true) || (IsKeyPressed(SDLK_PAGEUP) && IsKeyStateChanged(SDLK_PAGEUP))) && m_nCurrentLevel > 0)
         {
             g_bMouseLB = false;
-            memcpy(m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_abyLevel, sizeof(m_abyLevel));
+            memcpy(m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_level, sizeof(m_level));
             m_nCurrentLevel--;
-            memcpy(m_abyLevel, m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_abyLevel));
+            memcpy(m_level, m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_level));
         }
         if ((true == a::menu()->DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 100, WALL_Y2 - 30, CMainMenu::B_NEXT) && g_bMouseLB == true) || (IsKeyPressed(SDLK_PAGEDOWN) && IsKeyStateChanged(SDLK_PAGEDOWN)))
         {
             g_bMouseLB = false;
-            memcpy(m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_abyLevel, sizeof(m_abyLevel));
+            memcpy(m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_level, sizeof(m_level));
             if (m_nCurrentLevel == m_nLevelsCount - 1)
             {
                 Uint8* pTmp = new Uint8[(m_nLevelsCount + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT)];
-                memcpy(pTmp, m_pbyLevels, m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT));
-                delete[] m_pbyLevels;
-                m_pbyLevels = pTmp;
+                memcpy(pTmp, m_levels, m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT));
+                delete[] m_levels;
+                m_levels = pTmp;
                 m_nLevelsCount++;
-                memset(m_pbyLevels + (m_nCurrentLevel + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT), 0, sizeof(m_abyLevel));
+                memset(m_levels + (m_nCurrentLevel + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT), 0, sizeof(m_level));
             }
             m_nCurrentLevel++;
-            memcpy(m_abyLevel, m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_abyLevel));
+            memcpy(m_level, m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_level));
         }
         if (IsKeyPressed(SDLK_UP) && IsKeyStateChanged(SDLK_UP))
         {
             for (int x = 0; x < BRICKS_WIDTH; x++)
             {
-                Uint8 byTemp = m_abyLevel[x][0];
+                Uint8 byTemp = m_level[x][0];
                 for (int y = 0; y < BRICKS_HEIGHT - 1; y++)
                 {
-                    m_abyLevel[x][y] = m_abyLevel[x][y + 1];
+                    m_level[x][y] = m_level[x][y + 1];
                 }
-                m_abyLevel[x][BRICKS_HEIGHT - 1] = byTemp;
+                m_level[x][BRICKS_HEIGHT - 1] = byTemp;
             }
         }
         if (IsKeyPressed(SDLK_DOWN) && IsKeyStateChanged(SDLK_DOWN))
         {
             for (int x = 0; x < BRICKS_WIDTH; x++)
             {
-                Uint8 byTemp = m_abyLevel[x][BRICKS_HEIGHT - 1];
+                Uint8 byTemp = m_level[x][BRICKS_HEIGHT - 1];
                 for (int y = BRICKS_HEIGHT - 1; y > 0; y--)
                 {
-                    m_abyLevel[x][y] = m_abyLevel[x][y - 1];
+                    m_level[x][y] = m_level[x][y - 1];
                 }
-                m_abyLevel[x][0] = byTemp;
+                m_level[x][0] = byTemp;
             }
         }
         if (IsKeyPressed(SDLK_LEFT) && IsKeyStateChanged(SDLK_LEFT))
         {
             for (int y = 0; y < BRICKS_HEIGHT; y++)
             {
-                Uint8 byTemp = m_abyLevel[0][y];
+                Uint8 byTemp = m_level[0][y];
                 for (int x = 1; x < BRICKS_WIDTH; x++)
                 {
-                    m_abyLevel[x - 1][y] = m_abyLevel[x][y];
+                    m_level[x - 1][y] = m_level[x][y];
                 }
-                m_abyLevel[BRICKS_WIDTH - 1][y] = byTemp;
+                m_level[BRICKS_WIDTH - 1][y] = byTemp;
             }
         }
         if (IsKeyPressed(SDLK_RIGHT) && IsKeyStateChanged(SDLK_RIGHT))
         {
             for (int y = 0; y < BRICKS_HEIGHT; y++)
             {
-                Uint8 byTemp = m_abyLevel[BRICKS_WIDTH - 1][y];
+                Uint8 byTemp = m_level[BRICKS_WIDTH - 1][y];
                 for (int x = BRICKS_WIDTH - 1; x > 0; x--)
                 {
-                    m_abyLevel[x][y] = m_abyLevel[x - 1][y];
+                    m_level[x][y] = m_level[x - 1][y];
                 }
-                m_abyLevel[0][y] = byTemp;
+                m_level[0][y] = byTemp;
             }
         }
         if (g_modState & KMOD_CTRL && IsKeyPressed(SDLK_DELETE) && IsKeyStateChanged(SDLK_DELETE))
@@ -200,23 +200,23 @@ void CLevelEditor::Draw()
             {
                 m_nLevelsCount--;
                 Uint8* pTmp = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
-                memcpy(pTmp, m_pbyLevels, m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT));
-                memcpy(pTmp + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_pbyLevels + (m_nCurrentLevel + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT), (m_nLevelsCount - m_nCurrentLevel) * (BRICKS_WIDTH * BRICKS_HEIGHT));
-                delete[] m_pbyLevels;
-                m_pbyLevels = pTmp;
+                memcpy(pTmp, m_levels, m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT));
+                memcpy(pTmp + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_levels + (m_nCurrentLevel + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT), (m_nLevelsCount - m_nCurrentLevel) * (BRICKS_WIDTH * BRICKS_HEIGHT));
+                delete[] m_levels;
+                m_levels = pTmp;
                 m_nCurrentLevel = std::min(m_nCurrentLevel, m_nLevelsCount - 1);
-                memcpy(m_abyLevel, m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_abyLevel));
+                memcpy(m_level, m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_level));
             }
         }
         if (g_modState & KMOD_CTRL && IsKeyPressed(SDLK_INSERT) && IsKeyStateChanged(SDLK_INSERT))
         {
             m_nLevelsCount++;
             Uint8* pTmp = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
-            memcpy(pTmp, m_pbyLevels, m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT));
-            memcpy(pTmp + (m_nCurrentLevel + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT), m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), (m_nLevelsCount - m_nCurrentLevel - 1) * (BRICKS_WIDTH * BRICKS_HEIGHT));
-            delete[] m_pbyLevels;
-            m_pbyLevels = pTmp;
-            memset(m_abyLevel, 0, sizeof(m_abyLevel));
+            memcpy(pTmp, m_levels, m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT));
+            memcpy(pTmp + (m_nCurrentLevel + 1) * (BRICKS_WIDTH * BRICKS_HEIGHT), m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), (m_nLevelsCount - m_nCurrentLevel - 1) * (BRICKS_WIDTH * BRICKS_HEIGHT));
+            delete[] m_levels;
+            m_levels = pTmp;
+            memset(m_level, 0, sizeof(m_level));
         }
     }
 
@@ -227,7 +227,7 @@ void CLevelEditor::Draw()
 
 void CLevelEditor::Load()
 {
-    delete[] m_pbyLevels;
+    delete[] m_levels;
 
     char buffer[MAX_PATH];
     snprintf(buffer, sizeof(buffer), "%scustomlevels", a::userProfile());
@@ -240,38 +240,41 @@ void CLevelEditor::Load()
         if (m_nLevelsCount > 0)
         {
             rewind(file);
-            m_pbyLevels = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
-            fread(m_pbyLevels, (BRICKS_WIDTH * BRICKS_HEIGHT), m_nLevelsCount, file);
+            m_levels = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
+            fread(m_levels, (BRICKS_WIDTH * BRICKS_HEIGHT), m_nLevelsCount, file);
         }
         else
         {
             m_nLevelsCount = 1;
-            m_pbyLevels = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
-            memset(m_abyLevel, 0, sizeof(m_abyLevel));
+            m_levels = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
+            memset(m_level, 0, sizeof(m_level));
         }
         fclose(file);
     }
     else
     {
         m_nLevelsCount = 1;
-        m_pbyLevels = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
-        memset(m_pbyLevels, 0, sizeof(m_abyLevel));
+        m_levels = new Uint8[m_nLevelsCount * (BRICKS_WIDTH * BRICKS_HEIGHT)];
+        memset(m_levels, 0, sizeof(m_level));
     }
     m_nCurrentLevel %= m_nLevelsCount;
-    memcpy(m_abyLevel, m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_abyLevel));
+    memcpy(m_level, m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), sizeof(m_level));
     printf("Custom levels: %d loaded.\n", m_nLevelsCount);
 }
 
 void CLevelEditor::Save()
 {
-    char buffer[MAX_PATH];
-    snprintf(buffer, sizeof(buffer), "%scustomlevels", a::userProfile());
-    FILE* file = fopen(buffer, "wb");
-    memcpy(m_pbyLevels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_abyLevel, sizeof(m_abyLevel));
-    if (file != nullptr)
+    if (m_levels != nullptr)
     {
-        fwrite(m_pbyLevels, (BRICKS_WIDTH * BRICKS_HEIGHT), m_nLevelsCount, file);
-        fclose(file);
+        char buffer[MAX_PATH];
+        snprintf(buffer, sizeof(buffer), "%scustomlevels", a::userProfile());
+        FILE* file = fopen(buffer, "wb");
+        if (file != nullptr)
+        {
+            memcpy(m_levels + m_nCurrentLevel * (BRICKS_WIDTH * BRICKS_HEIGHT), m_level, sizeof(m_level));
+            fwrite(m_levels, (BRICKS_WIDTH * BRICKS_HEIGHT), m_nLevelsCount, file);
+            fclose(file);
+        }
+        printf("Custom levels: %d saved.\n", m_nLevelsCount);
     }
-    printf("Custom levels: %d saved.\n", m_nLevelsCount);
 }
