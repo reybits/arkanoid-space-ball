@@ -86,7 +86,12 @@ const char* MusicNames[] = {
     "module02.ogg",
     "module03.s3m",
 };
-std::vector<Mix_Music*> g_musicList;
+struct MusicProperty
+{
+    Mix_Music* music;
+    unsigned char* data;
+};
+std::vector<MusicProperty> g_musicList;
 
 int main(int /*argc*/, char** /*argv*/)
 {
@@ -367,7 +372,7 @@ void PlayMusic(bool restart)
         }
 
         Mix_HookMusicFinished([]() { PlayMusic(false); });
-        Mix_PlayMusic(g_musicList[Index++], 0);
+        Mix_PlayMusic(g_musicList[Index++].music, 0);
         Index %= g_musicList.size() - 1;
 
         SetVolumeMusic(a::opt().musicVolume);
@@ -379,7 +384,7 @@ void playMenuMusic()
     if (g_bIsAudioSupported)
     {
         Mix_HookMusicFinished([]() { playMenuMusic(); });
-        Mix_PlayMusic(g_musicList.back(), 0);
+        Mix_PlayMusic(g_musicList.back().music, 0);
 
         SetVolumeMusic(a::opt().musicVolume);
     }
@@ -501,16 +506,13 @@ void EnableCursor(bool enable)
 void initializeAudio()
 {
     g_bIsAudioSupported = false;
-    return;
 
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) >= 0)
     {
         const int flags = MIX_INIT_MOD | MIX_INIT_OGG;
         if (Mix_Init(flags) & flags)
         {
-            // open 44.1KHz, signed 16bit, system byte order,
-            //      stereo audio, using 1024 byte chunks
-            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != -1)
+            if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) != -1)
             {
                 g_bIsAudioSupported = true;
             }
@@ -536,13 +538,16 @@ void deinitializeAudio()
     {
         for (auto m : g_musicList)
         {
-            Mix_FreeMusic(m);
+            Mix_FreeMusic(m.music);
+            a::res()->FreeMem(m.data);
         }
+        g_musicList.clear();
 
         for (auto s : g_soundList)
         {
             Mix_FreeChunk(s);
         }
+        g_soundList.clear();
 
         Mix_CloseAudio();
     }
@@ -583,18 +588,23 @@ void loadAudio()
 
         for (auto name : MusicNames)
         {
-            const char* path = assets::makePath(name);
-            printf("Loading music '%s'", path);
-            auto music = Mix_LoadMUS(path);
-            if (music != nullptr)
+            unsigned size;
+            auto data = a::res()->GetDataAllocMem(name, size);
+            if (data != nullptr)
             {
-                g_musicList.push_back(music);
-                printf(" done.\n");
-            }
-            else
-            {
-                printf(" error '%s'\n", SDL_GetError());
-                assert(0);
+                auto rwops = SDL_RWFromConstMem(data, size);
+                auto music = Mix_LoadMUS_RW(rwops);
+                if (music != nullptr)
+                {
+                    g_musicList.push_back({ music, data });
+                    printf(" done.\n");
+                }
+                else
+                {
+                    a::res()->FreeMem(data);
+                    printf(" error '%s'\n", SDL_GetError());
+                    assert(0);
+                }
             }
         }
 

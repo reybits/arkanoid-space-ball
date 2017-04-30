@@ -1670,7 +1670,7 @@ bool CGame::DrawGetReady()
     a::fnt2()->DrawString(0, 170, achBuf, CMyString::eAlign::Center);
 
     // do not show that info while we restore game
-    if (m_nLevelPrev != -2)
+    if (m_nLevelPrev != -2 && m_nCurrentLevel > 0)
     {
         a::fnt1()->DrawString(200, 240 + 2, "Bricks destroyed");
         a::fnt2()->DrawNumber(m_nGetReadyBricks, 200, 240, CMyString::eAlign::Right);

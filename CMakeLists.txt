@@ -7,6 +7,8 @@ include(CheckLibraryExists)
 set(CMAKE_COLOR_MAKEFILE ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
+message(STATUS "=== ${CMAKE_SYSTEM_NAME} ===")
+
 if( CMAKE_BUILD_TYPE STREQUAL "Release" )
     message(STATUS "=== RELEASE MODE ===")
     add_definitions( "-DNDEBUG" )
@@ -15,7 +17,7 @@ else()
     message(STATUS "=== DEBUG MODE ===")
     add_definitions( "-DDEBUG" )
     add_definitions( "-Wall -Wextra -pedantic -O0 -g" )
-    if( CMAKE_BUILD_PLATFORM STREQUAL "Emscripten" )
+    if( ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten" )
         set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s ASSERTIONS=2" )
         set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s DEMANGLE_SUPPORT=1" )
     endif()
@@ -23,24 +25,26 @@ endif()
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
-if( CMAKE_BUILD_PLATFORM STREQUAL "Emscripten" )
-    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1 -s USE_SDL_IMAGE=1 -s STB_IMAGE=1 -s TOTAL_MEMORY=33554432" )
-    set( CMAKE_EXE_LINKER_FLAGS "-o index.html --embed-file assets" )
-endif()
+if( ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten" )
 
-if(NOT CMAKE_BUILD_PLATFORM)
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1 -s USE_SDL_IMAGE=1 -s STB_IMAGE=1 -s TOTAL_MEMORY=33554432" )
+    set( CMAKE_EXE_LINKER_FLAGS "-o index.html --embed-file arkanoidsb.pak" )
+
+else()
+
     find_package(SDL REQUIRED)
     find_package(SDL_image REQUIRED)
     find_package(SDL_mixer REQUIRED)
     find_package(X11)
-endif()
 
-include_directories(
-    ${X11_INCLUDE_DIR}
-    ${SDL_INCLUDE_DIR}
-    ${SDL_IMAGE_INCLUDE_DIRS}
-    ${SDL_MIXER_INCLUDE_DIRS}
-    )
+    include_directories(
+        ${X11_INCLUDE_DIR}
+        ${SDL_INCLUDE_DIR}
+        ${SDL_IMAGE_INCLUDE_DIRS}
+        ${SDL_MIXER_INCLUDE_DIRS}
+        )
+
+endif()
 
 set(APP_TITLE           "Arkanoid: Space Ball" CACHE STRING "Application name")
 set(APP_VERSION_MAJOR   "1" CACHE STRING "Application major version")
@@ -56,15 +60,13 @@ configure_file(
 
 file( GLOB_RECURSE APP_SOURCES "src/*.c" "src/*.cpp")
 
-if(APPLE AND NOT CMAKE_BUILD_PLATFORM)
+if(APPLE AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
+
     file( GLOB_RECURSE APP_SOURCES ${APP_SOURCES} "src/*.m*")
     list( REMOVE_ITEM APP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/assets.cpp")
 
     set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.icns)
-    set(APP_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/assets/arkanoidsb.pak)
-    set(APP_RESOURCES ${APP_RESOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/assets/module01.ogg)
-    set(APP_RESOURCES ${APP_RESOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/assets/module02.ogg)
-    set(APP_RESOURCES ${APP_RESOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/assets/module03.s3m)
+    set(APP_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.pak)
     set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
     set_source_files_properties(${APP_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
@@ -76,8 +78,11 @@ if(APPLE AND NOT CMAKE_BUILD_PLATFORM)
         MACOSX_BUNDLE_SHORT_VERSION_STRING ${VERSION}
         MACOSX_BUNDLE_BUNDLE_VERSION ${VERSION}
         )
+
 else()
+
     add_executable(arkanoidsb ${APP_SOURCES})
+
 endif()
 
 target_link_libraries( arkanoidsb

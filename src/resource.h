@@ -74,6 +74,7 @@ public:
 public:
     void EncodeData(void* data, unsigned length) const;
     SDL_Surface* loadImage(const char* filename) const;
+    void unloadImage(SDL_Surface* surface) const;
 
 public:
     static const unsigned RES_SIGNATURE;

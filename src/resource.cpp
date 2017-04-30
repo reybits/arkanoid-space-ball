@@ -119,7 +119,7 @@ void CResource::purgeImages()
 {
     for (size_t i = 0; i < sizeof(m_images) / sizeof(m_images[0]); i++)
     {
-        SDL_FreeSurface(m_images[i]);
+        unloadImage(m_images[i]);
         m_images[i] = nullptr;
     }
 }
@@ -196,4 +196,9 @@ SDL_Surface* CResource::loadImage(const char* filename) const
     }
 
     return nullptr;
+}
+
+void CResource::unloadImage(SDL_Surface* surface) const
+{
+    SDL_FreeSurface(surface);
 }

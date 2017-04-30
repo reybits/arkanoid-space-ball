@@ -38,10 +38,7 @@ public:
 
 private:
     int GetWordWidth(const char* str, int& nCharsCount);
-    bool isTransparent(int x) const;
     int GetXpos(int nX, const char* str, eAlign align);
-    Uint32 RegisterFrame(const SDL_Rect& rc);
-    Uint32 GetFrameWidth(Uint32 index);
     bool LoadProps(const char* pchName);
 
 private:
@@ -57,9 +54,8 @@ private:
     int m_nShadowDx;
     int m_nShadowDy;
 
-    int m_anSymbDy[256];
-    uint32_t m_symbIndex[256];
-    std::vector<SDL_Rect> m_frames;
+    int m_symbolsOffset[256];
+    SDL_Rect m_symbols[256];
 
     SDL_Rect m_winRect;
 };
