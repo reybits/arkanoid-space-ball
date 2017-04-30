@@ -8,8 +8,10 @@
 
 #pragma once
 
-void CommonQuit();
-void updateKeys();
-void PlayMusic2();
-bool DrawIntro();
-void gameLoop();
+namespace assets
+{
+    void initialize();
+    void deinitialize();
+
+    const char* makePath(const char* path);
+}

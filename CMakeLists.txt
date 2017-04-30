@@ -56,6 +56,9 @@ if(APPLE AND NOT CMAKE_BUILD_PLATFORM)
 endif()
 
 if(APPLE AND NOT CMAKE_BUILD_PLATFORM)
+    list( REMOVE_ITEM APP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/assets.cpp")
+    set(APP_SOURCES ${GAME_SOURCES} "src/assets.m")
+
     set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.icns)
     set(APP_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/res/arkanoidsb.pak)
     set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")

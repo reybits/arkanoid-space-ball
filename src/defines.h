@@ -32,7 +32,7 @@
 
 #define DESIRED_FPS 60
 
-enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR, APPS_EXIT };
+enum { APPS_INTRO, APPS_MAINMENU, APPS_GAME, APPS_SHOULDGETNAME, APPS_EDITOR };
 enum { BOX_NONE,
        BOX_0,     BOX_1,     BOX_2,     BOX_3,     BOX_4,     BOX_5,     BOX_6,     BOX_7,     BOX_8,     BOX_9,   // static series
        BOX_10,    BOX_11,    BOX_12,    BOX_13,    BOX_14,    BOX_15,     BOX_16,    BOX_17,    BOX_18,    BOX_19,
@@ -154,8 +154,6 @@ extern int          g_nCursorX;
 extern int          g_nCursorY;
 extern bool         g_bIsCursorVisible;
 
-extern Mix_Chunk*    g_apSnd[];
-extern Mix_Music*    g_apMod[];
 extern int          g_nVolumeM;
 extern int          g_nVolumeS;
 

@@ -7,6 +7,7 @@
 \**********************************************/
 
 #include "arkanoidsb.h"
+#include "assets.h"
 #include "accessor.h"
 #include "bonus.h"
 #include "defines.h"
@@ -38,11 +39,12 @@ float g_fSpeedCorrection;
 float g_fCos[360];
 float g_fSin[360];
 
+bool g_quitRequested = false;
 bool g_bActive = true;
 
 int g_keysStateCount = 0;
-Uint8* g_keysState = 0;
-Uint8* g_keysStateLast = 0;
+Uint8* g_keysState = nullptr;
+Uint8* g_keysStateLast = nullptr;
 Uint32 g_modState = 0;
 
 bool g_bMouseRB = false;
@@ -57,7 +59,7 @@ int g_nGameMode = APPS_INTRO;
 
 CLevelEditor m_LevelEditor;
 
-const char* g_pachSnd[] = {
+const char* SoundNames[] = {
     "snd_electric.wav", //  0
     "snd_applause.wav", //  1
     "snd_patrol.wav",   //  2
@@ -75,8 +77,15 @@ const char* g_pachSnd[] = {
     "snd_lostball.wav", // 14
     "snd_explode.wav",  // 15
 };
-Mix_Chunk* g_apSnd[sizeof(g_pachSnd) / sizeof(const char*)];
-Mix_Music* g_apMod[3];
+std::vector<Mix_Chunk*> g_soundList;
+
+const char* MusicNames[] = {
+    "module01.ogg",
+    "module02.ogg",
+    "module03.s3m",
+};
+std::vector<Mix_Music*> g_musicList;
+
 bool g_bIsAudioSupported = true;
 
 int main(int argc, char* argv[])
@@ -100,36 +109,11 @@ int main(int argc, char* argv[])
     }
 
     a::initialize();
+    assets::initialize();
 
-    char achPath[MAX_PATH];
-    strcpy(achPath, argv[0]);
-
-    const char* resPath = nullptr;
-#if defined(__MACOSX__)
-    resPath = "arkanoidsb.app/Contents/Resources/arkanoidsb.pak";
-#elif defined(EMSCRIPTEN)
-    resPath = "arkanoidsb.pak";
-#else
-    resPath = "res/arkanoidsb.pak";
-#endif
-
-    if (a::res()->Open(resPath) == false)
+    if (a::res()->Open(assets::makePath("arkanoidsb.pak")) == false)
     {
-        char* pchEnd;
-        if ((pchEnd = strrchr(achPath, '\\')) == 0 && (pchEnd = strrchr(achPath, '/')) == 0)
-        {
-            exit(-1);
-        }
-        *(pchEnd + 1) = 0;
-#ifdef __MACOSX__
-        strcat(achPath, "../Resources/arkanoidsb.pak");
-#else
-        strcat(achPath, "res/arkanoidsb.pak");
-#endif
-        if (false == a::res()->Open(achPath))
-        {
-            exit(-1);
-        }
+        exit(-1);
     }
 
     EnableCursor(false);
@@ -152,13 +136,12 @@ int main(int argc, char* argv[])
         }
     }
 
-    unsigned nDataLen;
-    unsigned char* pbyData;
 #ifndef __MACOSX__
-    pbyData = a::res()->GetDataAllocMem("icon.bmp", nDataLen);
-    SDL_Surface* pIcon = SDL_LoadBMP_RW(SDL_RWFromConstMem(pbyData, nDataLen), 1);
-    a::res()->FreeMem(pbyData);
-    if (0 != pIcon)
+    unsigned size;
+    unsigned char* data = a::res()->GetDataAllocMem("icon.bmp", size);
+    auto icon = SDL_LoadBMP_RW(SDL_RWFromConstMem(data, size), 1);
+    a::res()->FreeMem(data);
+    if (icon != nullptr)
     {
         printf(" done.\n");
     }
@@ -167,108 +150,63 @@ int main(int argc, char* argv[])
         printf("  %s\n", SDL_GetError());
     }
 
-    SDL_SetColorKey(pIcon, SDL_SRCCOLORKEY, SDL_MapRGB(pIcon->format, 0, 0, 0));
-    SDL_WM_SetIcon(pIcon, NULL);
+    SDL_SetColorKey(icon, SDL_SRCCOLORKEY, SDL_MapRGB(icon->format, 0, 0, 0));
+    SDL_WM_SetIcon(icon, nullptr);
 #endif
 
     setVideoMode();
     SDL_WarpMouse(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
-    char achTemp[MAX_PATH];
-
     if (g_bIsAudioSupported == true)
     {
         // loading sound effects
-        for (size_t i = 0; i < sizeof(g_pachSnd) / sizeof(g_pachSnd[0]); i++)
+        for (auto name : SoundNames)
         {
+            printf("Loading sound '%s'", name);
             // try to load image from resource from
-            pbyData = a::res()->GetDataAllocMem(g_pachSnd[i], nDataLen);
-            if (pbyData)
+            unsigned size;
+            auto data = a::res()->GetDataAllocMem(name, size);
+            if (data == nullptr)
             {
-                auto rwops = SDL_RWFromConstMem(pbyData, nDataLen);
-                g_apSnd[i] = Mix_LoadWAV_RW(rwops, 1);
-                a::res()->FreeMem(pbyData);
-                if (g_apSnd[i] != nullptr)
-                {
-                    printf(" done.\n");
-                }
-                else
-                {
-                    printf("  %s\n", SDL_GetError());
-                }
+                printf(" error.\n");
+                exit(-2);
             }
-        }
 
-//loading modules
-#if !defined(EMSCRIPTEN)
-        for (size_t i = 0; i < sizeof(g_apMod) / sizeof(g_apMod[0]); i++)
-        {
-#if defined(__MACOSX__)
-            if (i != 2)
+            auto rwops = SDL_RWFromConstMem(data, size);
+            auto sound = Mix_LoadWAV_RW(rwops, 1);
+            a::res()->FreeMem(data);
+
+            if (sound != nullptr)
             {
-                sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module%.2d.ogg", (int)i + 1);
-            }
-            else
-            {
-                sprintf(achTemp, "arkanoidsb.app/Contents/Resources/module03.s3m");
-            }
-#else
-            if (i != 2)
-            {
-                sprintf(achTemp, "res/module%.2d.ogg", (int)i + 1);
-            }
-            else
-            {
-                sprintf(achTemp, "res/module03.s3m");
-            }
-#endif
-            printf("Loading module %s", achTemp);
-            g_apMod[i] = Mix_LoadMUS(achTemp);
-            if (0 != g_apMod[i])
-            {
+                g_soundList.push_back(sound);
                 printf(" done.\n");
             }
             else
             {
-                char* pchEnd;
-                if ((pchEnd = strrchr(achPath, '\\')) == 0 && (pchEnd = strrchr(achPath, '/')) == 0)
-                {
-                    achPath[0] = 0;
-                }
-                *(pchEnd + 1) = 0;
-#ifdef __MACOSX__
-                if (i != 2)
-                {
-                    sprintf(achTemp, "../Resources/module%.2d.ogg", (int)i + 1);
-                    strcat(achPath, achTemp);
-                }
-                else
-                {
-                    strcat(achPath, "../Resources/module03.s3m");
-                }
-#else
-                if (i != 2)
-                {
-                    sprintf(achTemp, "res/module%.2d.ogg", (int)i + 1);
-                    strcat(achPath, achTemp);
-                }
-                else
-                {
-                    strcat(achPath, "res/module03.s3m");
-                }
-#endif
-                g_apMod[i] = Mix_LoadMUS(achPath);
-                if (0 != g_apMod[i])
-                {
-                    printf(" done.\n");
-                }
-                else
-                {
-                    printf("  %s\n", SDL_GetError());
-                }
+                printf(" %s.\n", SDL_GetError());
+                exit(-2);
             }
         }
-        SetVolumeSound(a::opt().soundVolume);
+
+//loading musics
+#if !defined(EMSCRIPTEN)
+        for (auto name : MusicNames)
+        {
+            const char* path = assets::makePath(name);
+            printf("Loading music '%s'", path);
+            auto music = Mix_LoadMUS(path);
+            if (music != nullptr)
+            {
+                g_musicList.push_back(music);
+                printf(" done.\n");
+            }
+            else
+            {
+                printf(" error '%s'\n", SDL_GetError());
+                exit(-1);
+            }
+        }
+
         PlayMusic2();
 #endif
     }
@@ -293,20 +231,14 @@ int main(int argc, char* argv[])
 
     delete[] g_keysStateLast;
 
-    for (size_t i = 0; i < sizeof(g_apMod) / sizeof(Mix_Music*); i++)
+    for (auto m : g_musicList)
     {
-        if (g_apMod[i])
-        {
-            Mix_FreeMusic(g_apMod[i]);
-        }
+        Mix_FreeMusic(m);
     }
 
-    for (size_t i = 0; i < sizeof(g_apSnd) / sizeof(Mix_Chunk*); i++)
+    for (auto s : g_soundList)
     {
-        if (g_apSnd[i])
-        {
-            Mix_FreeChunk(g_apSnd[i]);
-        }
+        Mix_FreeChunk(s);
     }
 
     unsetVideoMode();
@@ -316,6 +248,7 @@ int main(int argc, char* argv[])
 
 void CommonQuit()
 {
+    assets::deinitialize();
     a::deinitialize();
 
     Mix_CloseAudio();
@@ -340,7 +273,7 @@ bool IsKeyStateChanged(int key)
     return g_keysStateLast[key] != g_keysState[key];
 }
 
-bool UpdateKeys()
+void updateKeys()
 {
     g_nMouseDX = 0;
     g_nMouseDY = 0;
@@ -426,11 +359,7 @@ bool UpdateKeys()
                 ((evt.key.keysym.mod & (KMOD_RMETA | KMOD_LMETA)) && evt.key.keysym.sym == SDLK_q)
                 || ((evt.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) && (evt.key.keysym.sym == SDLK_x || evt.key.keysym.sym == SDLK_F4)))
             {
-                // Alt+X or Command+Q pressed - quit game
-                if (g_nGameMode != APPS_INTRO)
-                {
-                    return true;
-                }
+                g_quitRequested = true;
             }
             else if ((evt.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) && evt.key.keysym.sym == SDLK_RETURN)
             {
@@ -499,7 +428,7 @@ bool UpdateKeys()
         //break;
 
         case SDL_QUIT:
-            return true;
+            g_quitRequested = true;
             break;
         }
     }
@@ -508,91 +437,78 @@ bool UpdateKeys()
     g_nCursorX = std::min(g_nCursorX, SCREEN_WIDTH);
     g_nCursorY = std::max(g_nCursorY, 0);
     g_nCursorY = std::min(g_nCursorY, SCREEN_HEIGHT);
-
-    return false;
 }
 
-void musicFinished()
-{
-    PlayMusic(false);
-}
-
-void PlayMusic(bool bFromFirst)
-{
-    if (g_bIsAudioSupported == false)
-    {
-        return;
-    }
-    static int nModule = 0;
-    if (bFromFirst == true)
-    {
-        nModule = 0;
-    }
-    Mix_HookMusicFinished(musicFinished);
-    Mix_PlayMusic(g_apMod[nModule++], 0);
-    nModule %= (sizeof(g_apMod) / sizeof(Mix_Music*) - 1);
-    SetVolumeMusic(a::opt().musicVolume);
-}
-
-// menu music
-void musicFinished2()
-{
-    PlayMusic2();
-}
-
-void PlayMusic2()
-{
-    if (g_bIsAudioSupported == false)
-    {
-        return;
-    }
-    Mix_HookMusicFinished(musicFinished2);
-    Mix_PlayMusic(g_apMod[sizeof(g_apMod) / sizeof(Mix_Music*) - 1], 0);
-    SetVolumeMusic(a::opt().musicVolume);
-}
-
-int PlaySound(int nSndIndex, int nLoopsCount)
-{
-    if (g_bIsAudioSupported == false)
-    {
-        return -1;
-    }
-    if (nSndIndex > (int)(sizeof(g_pachSnd) / sizeof(const char*)))
-    {
-        return -1;
-    }
-    return Mix_PlayChannel(-1, g_apSnd[nSndIndex], nLoopsCount);
-}
-
-void StopSound(int& nChannel)
-{
-    if (g_bIsAudioSupported == false)
-    {
-        return;
-    }
-    if (nChannel != -1)
-    {
-        Mix_HaltChannel(nChannel);
-        nChannel = -1;
-    }
-}
-
-void SetVolumeMusic(int nVolume)
+void PlayMusic(bool restart)
 {
     if (g_bIsAudioSupported)
     {
-        a::opt().musicVolume = std::min(10, std::max(0, nVolume));
+        static size_t Index = 0;
+        if (restart == true)
+        {
+            Index = 0;
+        }
+
+        Mix_HookMusicFinished([]() { PlayMusic(false); });
+        Mix_PlayMusic(g_musicList[Index++], 0);
+        Index %= g_musicList.size() - 1;
+
+        SetVolumeMusic(a::opt().musicVolume);
+    }
+}
+
+// menu music
+void PlayMusic2()
+{
+    if (g_bIsAudioSupported)
+    {
+        Mix_HookMusicFinished([]() { PlayMusic2(); });
+        Mix_PlayMusic(g_musicList.back(), 0);
+
+        SetVolumeMusic(a::opt().musicVolume);
+    }
+}
+
+int PlaySound(int index, int loopCount)
+{
+    if (g_bIsAudioSupported)
+    {
+        if ((size_t)index < g_soundList.size())
+        {
+            return Mix_PlayChannel(-1, g_soundList[index], loopCount);
+        }
+    }
+    return -1;
+}
+
+void StopSound(int& channel)
+{
+    if (g_bIsAudioSupported)
+    {
+        if (channel != -1)
+        {
+            Mix_HaltChannel(channel);
+            channel = -1;
+        }
+    }
+}
+
+void SetVolumeMusic(int volume)
+{
+    if (g_bIsAudioSupported)
+    {
+        a::opt().musicVolume = std::min(10, std::max(0, volume));
         printf("Music volume %d\n", a::opt().musicVolume);
         const float coeff = MIX_MAX_VOLUME / 10.0f;
         Mix_VolumeMusic(a::opt().musicVolume * coeff);
     }
 }
 
-void SetVolumeSound(int nVolume)
+void SetVolumeSound(int volume)
 {
     if (g_bIsAudioSupported)
     {
-        a::opt().soundVolume = std::min(10, std::max(0, nVolume));
+        a::opt().soundVolume = std::min(10, std::max(0, volume));
         printf("Sound volume %d\n", a::opt().soundVolume);
         const float coeff = MIX_MAX_VOLUME / 10.0f;
         Mix_Volume(-1, a::opt().soundVolume * coeff);
@@ -668,12 +584,11 @@ void EnableCursor(bool enable)
 
 void gameLoop()
 {
-#if defined(EMSCRIPTEN)
-    UpdateKeys();
-#else
-    while (UpdateKeys() == false && g_nGameMode != APPS_EXIT)
+#if !defined(EMSCRIPTEN)
+    while (g_quitRequested == false)
 #endif
     {
+        updateKeys();
         beginFrame();
 
         if (g_bActive == true)
@@ -706,7 +621,7 @@ void gameLoop()
                 switch (a::menu()->DrawMenu())
                 {
                 case 0:
-                    g_nGameMode = APPS_EXIT;
+                    g_quitRequested = true;
                     break;
                 case 1:
                     a::tutDlg()->Reset();
