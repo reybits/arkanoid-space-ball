@@ -43,9 +43,8 @@ float g_fSin[360];
 bool g_quitRequested = false;
 bool g_bActive = true;
 
-int g_keysStateCount = 0;
 Uint8* g_keysState = nullptr;
-Uint8* g_keysStateLast = nullptr;
+std::vector<Uint8> g_keysStateLast;
 Uint32 g_modState = 0;
 
 bool g_bMouseRB = false;
@@ -118,7 +117,7 @@ int main(int /*argc*/, char** /*argv*/)
 
     EnableCursor(false);
 
-#ifndef __MACOSX__
+#if !defined(__MACOSX__) && !defined(EMSCRIPTEN)
     unsigned size;
     unsigned char* data = a::res()->GetDataAllocMem("icon.bmp", size);
     auto icon = SDL_LoadBMP_RW(SDL_RWFromConstMem(data, size), 1);
@@ -145,20 +144,21 @@ int main(int /*argc*/, char** /*argv*/)
         g_fSin[i] = sinf((M_PI / 180.0f) * i);
     }
 
-    g_keysState = SDL_GetKeyState(&g_keysStateCount);
-    g_keysStateLast = new Uint8[g_keysStateCount];
-    memset(g_keysStateLast, 0, g_keysStateCount * sizeof(Uint8));
+    int count;
+    g_keysState = SDL_GetKeyState(&count);
+    g_keysStateLast.resize(count);
 
     initializeAudio();
     loadAudio();
 
 #if defined(EMSCRIPTEN)
-    emscripten_set_main_loop(gameLoop, 0, 0);
+    emscripten_set_main_loop(gameLoop, 0, 1);
 #else
-    gameLoop();
+    while (g_quitRequested == false)
+    {
+        gameLoop();
+    }
 #endif
-
-    delete[] g_keysStateLast;
 
     deinitializeAudio();
 
@@ -195,7 +195,7 @@ void updateKeys()
     g_nMouseDX = 0;
     g_nMouseDY = 0;
 
-    memcpy(g_keysStateLast, g_keysState, g_keysStateCount * sizeof(Uint8));
+    memcpy(g_keysStateLast.data(), g_keysState, g_keysStateLast.size());
     g_modState = SDL_GetModState();
 
     SDL_Event evt;
@@ -501,11 +501,11 @@ void EnableCursor(bool enable)
 void initializeAudio()
 {
     g_bIsAudioSupported = false;
+    return;
 
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) >= 0)
     {
         const int flags = MIX_INIT_MOD | MIX_INIT_OGG;
-        Mix_Init(flags);
         if (Mix_Init(flags) & flags)
         {
             // open 44.1KHz, signed 16bit, system byte order,
@@ -555,34 +555,32 @@ void loadAudio()
         // loading sound effects
         for (auto name : SoundNames)
         {
-            printf("Loading sound '%s'", name);
-            // try to load image from resource from
             unsigned size;
             auto data = a::res()->GetDataAllocMem(name, size);
-            if (data == nullptr)
+            if (data != nullptr)
+            {
+                auto rwops = SDL_RWFromConstMem(data, size);
+                auto sound = Mix_LoadWAV_RW(rwops, 1);
+                a::res()->FreeMem(data);
+
+                if (sound != nullptr)
+                {
+                    g_soundList.push_back(sound);
+                    printf(" done.\n");
+                }
+                else
+                {
+                    printf(" %s.\n", SDL_GetError());
+                    assert(0);
+                }
+            }
+            else
             {
                 printf(" error.\n");
                 assert(0);
             }
-
-            auto rwops = SDL_RWFromConstMem(data, size);
-            auto sound = Mix_LoadWAV_RW(rwops, 1);
-            a::res()->FreeMem(data);
-
-            if (sound != nullptr)
-            {
-                g_soundList.push_back(sound);
-                printf(" done.\n");
-            }
-            else
-            {
-                printf(" %s.\n", SDL_GetError());
-                assert(0);
-            }
         }
 
-//loading musics
-#if !defined(EMSCRIPTEN)
         for (auto name : MusicNames)
         {
             const char* path = assets::makePath(name);
@@ -601,134 +599,128 @@ void loadAudio()
         }
 
         playMenuMusic();
-#endif
     }
 }
 
 void gameLoop()
 {
-#if !defined(EMSCRIPTEN)
-    while (g_quitRequested == false)
-#endif
-    {
-        updateKeys();
-        beginFrame();
+    updateKeys();
+    beginFrame();
 
-        if (g_bActive == true)
+    if (g_bActive == true)
+    {
+        // volume manager
+        if (g_modState & KMOD_SHIFT)
         {
-            // volume manager
-            if (g_modState & KMOD_SHIFT)
+            if (IsKeyPressed(SDLK_MINUS) && IsKeyStateChanged(SDLK_MINUS))
             {
-                if (IsKeyPressed(SDLK_MINUS) && IsKeyStateChanged(SDLK_MINUS))
-                {
-                    SetVolumeMusic(--a::opt().musicVolume);
-                }
-                if (IsKeyPressed(SDLK_EQUALS) && IsKeyStateChanged(SDLK_EQUALS))
-                {
-                    SetVolumeMusic(++a::opt().musicVolume);
-                }
+                SetVolumeMusic(--a::opt().musicVolume);
+            }
+            if (IsKeyPressed(SDLK_EQUALS) && IsKeyStateChanged(SDLK_EQUALS))
+            {
+                SetVolumeMusic(++a::opt().musicVolume);
+            }
+        }
+        else
+        {
+            if (IsKeyPressed(SDLK_MINUS) && IsKeyStateChanged(SDLK_MINUS))
+            {
+                SetVolumeSound(--a::opt().soundVolume);
+            }
+            if (IsKeyPressed(SDLK_EQUALS) && IsKeyStateChanged(SDLK_EQUALS))
+            {
+                SetVolumeSound(++a::opt().soundVolume);
+            }
+        }
+        if (g_nGameMode == APPS_MAINMENU)
+        {
+            switch (a::menu()->DrawMenu())
+            {
+            case 0:
+                g_quitRequested = true;
+                break;
+            case 1:
+                a::tutDlg()->Reset();
+                a::ark()->InitNewGame(false);
+                g_nGameMode = APPS_GAME;
+                PlayMusic(true);
+                break;
+            case 2:
+                a::tutDlg()->Reset();
+                a::ark()->RestoreGame();
+                g_nGameMode = APPS_GAME;
+                PlayMusic(true);
+                break;
+            case 3:
+                // TODO check for valid custom levels
+
+                a::tutDlg()->Reset();
+                a::ark()->InitNewGame(true);
+                g_nGameMode = APPS_GAME;
+                PlayMusic(true);
+                break;
+            case 4: // enter to level editor mode
+                m_LevelEditor.Load();
+                g_nGameMode = APPS_EDITOR;
+                break;
+            }
+        }
+        else if (g_nGameMode == APPS_GAME)
+        {
+            if (a::ark()->DrawScreen() == true)
+            {
+                playMenuMusic();
+                g_nGameMode = APPS_SHOULDGETNAME;
+            }
+        }
+        else if (g_nGameMode == APPS_SHOULDGETNAME)
+        {
+            auto& h = a::high();
+            h.lastScore = a::ark()->getScore();
+            h.lastLevel = a::ark()->getLevel();
+            if (h.lastScore > h.entries[9].score)
+            {
+                a::menu()->SetEnterNameMode();
             }
             else
             {
-                if (IsKeyPressed(SDLK_MINUS) && IsKeyStateChanged(SDLK_MINUS))
-                {
-                    SetVolumeSound(--a::opt().soundVolume);
-                }
-                if (IsKeyPressed(SDLK_EQUALS) && IsKeyStateChanged(SDLK_EQUALS))
-                {
-                    SetVolumeSound(++a::opt().soundVolume);
-                }
+                a::menu()->SetMenuType(CMainMenu::MT_MAIN);
             }
-            if (g_nGameMode == APPS_MAINMENU)
+            g_nGameMode = APPS_MAINMENU;
+        }
+        else if (g_nGameMode == APPS_INTRO)
+        {
+            if (true == DrawIntro())
             {
-                switch (a::menu()->DrawMenu())
-                {
-                case 0:
-                    g_quitRequested = true;
-                    break;
-                case 1:
-                    a::tutDlg()->Reset();
-                    a::ark()->InitNewGame(false);
-                    g_nGameMode = APPS_GAME;
-                    PlayMusic(true);
-                    break;
-                case 2:
-                    a::tutDlg()->Reset();
-                    a::ark()->RestoreGame();
-                    g_nGameMode = APPS_GAME;
-                    PlayMusic(true);
-                    break;
-                case 3:
-                    // TODO check for valid custom levels
-
-                    a::tutDlg()->Reset();
-                    a::ark()->InitNewGame(true);
-                    g_nGameMode = APPS_GAME;
-                    PlayMusic(true);
-                    break;
-                case 4: // enter to level editor mode
-                    m_LevelEditor.Load();
-                    g_nGameMode = APPS_EDITOR;
-                    break;
-                }
-            }
-            else if (g_nGameMode == APPS_GAME)
-            {
-                if (a::ark()->DrawScreen() == true)
-                {
-                    playMenuMusic();
-                    g_nGameMode = APPS_SHOULDGETNAME;
-                }
-            }
-            else if (g_nGameMode == APPS_SHOULDGETNAME)
-            {
-                auto& h = a::high();
-                h.lastScore = a::ark()->getScore();
-                h.lastLevel = a::ark()->getLevel();
-                if (h.lastScore > h.entries[9].score)
-                {
-                    a::menu()->SetEnterNameMode();
-                }
-                else
-                {
-                    a::menu()->SetMenuType(CMainMenu::MT_MAIN);
-                }
                 g_nGameMode = APPS_MAINMENU;
             }
-            else if (g_nGameMode == APPS_INTRO)
-            {
-                if (true == DrawIntro())
-                {
-                    g_nGameMode = APPS_MAINMENU;
-                }
-            }
-            else if (g_nGameMode == APPS_EDITOR)
-            {
-                m_LevelEditor.Draw();
-                if ((true == a::menu()->DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 200, WALL_Y2 - 30, CMainMenu::B_OK) && g_bMouseLB == true) || IsKeyPressed(SDLK_ESCAPE))
-                {
-                    g_bMouseLB = false;
-                    m_LevelEditor.Save();
-                    g_nGameMode = APPS_MAINMENU;
-                }
-            }
-
-            if (IsKeyPressed(SDLK_f) && IsKeyStateChanged(SDLK_f))
-            {
-                a::opt().showFps = !a::opt().showFps;
-                //printf("show fps %s\n", a::opt().showFps == true ? "on" : "off");
-            }
-
-            if (g_bIsCursorVisible == true)
-            {
-                render(g_nCursorX - 8, g_nCursorY, eImage::Cursor);
-            }
-            if (a::opt().showFps == true)
-            {
-                a::fnt1()->DrawNumber(getFps(), 5, 5, CMyString::eAlign::Right);
-            }
-
-            endFrame();
         }
+        else if (g_nGameMode == APPS_EDITOR)
+        {
+            m_LevelEditor.Draw();
+            if ((true == a::menu()->DrawMenuButton(BRICKS_WIDTH * BRICK_W + WALL_X1 + 200, WALL_Y2 - 30, CMainMenu::B_OK) && g_bMouseLB == true) || IsKeyPressed(SDLK_ESCAPE))
+            {
+                g_bMouseLB = false;
+                m_LevelEditor.Save();
+                g_nGameMode = APPS_MAINMENU;
+            }
+        }
+
+        if (IsKeyPressed(SDLK_f) && IsKeyStateChanged(SDLK_f))
+        {
+            a::opt().showFps = !a::opt().showFps;
+            //printf("show fps %s\n", a::opt().showFps == true ? "on" : "off");
+        }
+
+        if (g_bIsCursorVisible == true)
+        {
+            render(g_nCursorX - 8, g_nCursorY, eImage::Cursor);
+        }
+        if (a::opt().showFps == true)
+        {
+            a::fnt1()->DrawNumber(getFps(), 5, 5, CMyString::eAlign::Right);
+        }
+
+        endFrame();
     }
 }

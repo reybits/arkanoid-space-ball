@@ -20,7 +20,7 @@
  */
 
 /* We're still using SDL datatypes here - we just add some stuff. */
-#include "SDL.h"
+#include <SDL/SDL.h>
 
 /*
  * Ignore the flag from SDL w/ glSDL backend, since we're going

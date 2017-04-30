@@ -9,6 +9,7 @@
 #include "assets.h"
 
 #include <cstring>
+#include <cstdio>
 
 namespace assets
 {
@@ -20,7 +21,7 @@ namespace assets
 
     void initialize()
     {
-        ::strncpy(m_assetsPath, "", sizeof(m_assetsPath));
+        ::strncpy(m_assetsPath, "assets/", sizeof(m_assetsPath));
         m_assetsPathLength = ::strlen(m_assetsPath);
     }
 

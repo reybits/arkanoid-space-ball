@@ -20,6 +20,7 @@ armeabi/
 assets/
 bin/
 gen/
+html/
 local.properties
 obj/
 project.xcworkspace/

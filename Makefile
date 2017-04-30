@@ -23,6 +23,8 @@ all:
 
 package:
 	cd tools/rescompiler && make && cd ../../res && ../tools/rescompiler/rescompiler arkanoidsb
+	rm -fr assets && mkdir assets
+	cp res/arkanoidsb.pak res/module01.ogg res/module02.ogg res/module03.s3m assets/
 
 release: package
 	$(shell if [ ! -d $(BUILD_DIR_RELEASE) ]; then mkdir $(BUILD_DIR_RELEASE); fi)
@@ -42,13 +44,15 @@ debug: package
 
 emscripten: package
 	$(shell if [ ! -d $(BUILD_DIR_EMSCRIPTEN) ]; then mkdir $(BUILD_DIR_EMSCRIPTEN); fi)
-	cp res/arkanoidsb.pak $(BUILD_DIR_EMSCRIPTEN)/
+	rm -fr $(BUILD_DIR_EMSCRIPTEN)/assets
+	cp -r assets $(BUILD_DIR_EMSCRIPTEN)/
 	cd $(BUILD_DIR_EMSCRIPTEN) \
-		&& cmake -DCMAKE_BUILD_PLATFORM=Emscripten -DCMAKE_BUILD_TYPE=Release \
+		&& emcmake cmake -DCMAKE_BUILD_PLATFORM=Emscripten -DCMAKE_BUILD_TYPE=Release \
 		-DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. \
-		&& make
+		&& emmake make
 	rm -fr html && mkdir html
 	cp $(BUILD_DIR_EMSCRIPTEN)/index.* html/
+	cp -f res/index.html html/
 
 cppcheck:
 	cppcheck -j 1 --enable=all -f -I src src/ 2> cppcheck-output

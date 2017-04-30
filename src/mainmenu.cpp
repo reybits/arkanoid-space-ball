@@ -117,6 +117,9 @@ int CMainMenu::DrawMenuMain()
 
     int nItem = -1;
     int nCount = 5;
+#if defined(EMSCRIPTEN)
+    nCount = 4;
+#endif
     for (int i = 0; i < nCount; i++)
     {
         if (true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y + i * 29, i))

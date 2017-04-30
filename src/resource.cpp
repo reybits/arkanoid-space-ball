@@ -126,20 +126,20 @@ void CResource::purgeImages()
 
 unsigned char* CResource::GetDataAllocMem(const char* name, unsigned& length) const
 {
+    printf("Opening '%s' resource...", name);
     if (m_filename.empty() == false)
     {
-        printf("Opening '%s' resource...", name);
-        for (size_t i = 0, size = m_listFiles.size(); i < size; i++)
+        for (auto& file : m_listFiles)
         {
-            if (strcmp(m_listFiles[i].name, name) == 0)
+            if (strcmp(file.name, name) == 0)
             {
-                length = m_listFiles[i].length;
-                unsigned char* data = new unsigned char[length];
+                length = file.length;
+                auto data = new unsigned char[length];
 
                 FILE* f = fopen(m_filename.c_str(), "rb");
-                if (f)
+                if (f != nullptr)
                 {
-                    fseek(f, m_listFiles[i].position, SEEK_SET);
+                    fseek(f, file.position, SEEK_SET);
                     fread(data, 1, length, f);
                     fclose(f);
                     EncodeData(data, length);
@@ -147,14 +147,14 @@ unsigned char* CResource::GetDataAllocMem(const char* name, unsigned& length) co
                 }
             }
         }
-        printf("\n  file '%s' not found\n", name);
+        printf(" not found.\n");
     }
     else
     {
-        printf("Resource file not loaded\n");
+        printf(" resource file not loaded.\n");
     }
 
-    return 0;
+    return nullptr;
 }
 
 void CResource::FreeMem(unsigned char* data) const
