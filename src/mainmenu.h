@@ -41,6 +41,7 @@ private:
     int DrawMenuMain();
     int DrawStartGame();
     void DrawBackground();
+    void renderTypeValue(int idx, int offset, const char* title);
 
 protected:
     sOptions& m_options;

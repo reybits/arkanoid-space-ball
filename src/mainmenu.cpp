@@ -116,15 +116,19 @@ int CMainMenu::DrawMenuMain()
     SetRect(&rc, 0, 0, 248, 29);
 
     int nItem = -1;
-    int nCount = 5;
+
 #if defined(EMSCRIPTEN)
-    nCount = 4;
+    const int Buttons[] = { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP };
+#else
+    const int Buttons[] = { B_STARTGAME, B_HIGHSCORE, B_OPTIONS, B_HELP, B_EXIT };
 #endif
-    for (int i = 0; i < nCount; i++)
+
+    for (size_t i = 0; i < sizeof(Buttons) / sizeof(Buttons[0]); i++)
     {
-        if (true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y + i * 29, i))
+        auto btn = Buttons[i];
+        if (true == DrawMenuButton(MENU_ITEM_X, MENU_ITEM_Y + i * 29, btn))
         {
-            nItem = i;
+            nItem = btn;
         }
     }
 
@@ -575,39 +579,97 @@ void CMainMenu::DrawMenuHighScore()
     }
 }
 
+void CMainMenu::renderTypeValue(int idx, int offset, const char* title)
+{
+        a::fnt1()->DrawString(0, offset - 15, title, CMyString::eAlign::Center);
+
+    char buffer[10];
+
+    switch (idx)
+    {
+    case 0:
+        sprintf(buffer, "%d%%", m_options.musicVolume * 10);
+        a::fnt2()->DrawString(0, offset + 2, buffer, CMyString::eAlign::Center); //    a::fnt2()->DrawNumber(m_options.musicVolume, 82, 180, 2);
+        break;
+
+    case 1:
+        sprintf(buffer, "%d%%", m_options.soundVolume * 10);
+        a::fnt2()->DrawString(0, offset + 2, buffer, CMyString::eAlign::Center); //a::fnt2()->DrawNumber(m_options.soundVolume, 82, 210, 2);
+        break;
+
+    case 2:
+        a::fnt2()->DrawString(0, offset + 2, (m_options.fullscreen == true ? "YES" : "NO"), CMyString::eAlign::Center);
+        break;
+
+    case 3:
+        a::fnt2()->DrawNumber(g_bppList[m_options.bppIdx], 0, offset + 2, CMyString::eAlign::Center);
+        break;
+
+    case 4:
+        a::fnt2()->DrawString(0, offset + 2, (m_options.opengl == true ? "YES" : "NO"), CMyString::eAlign::Center);
+        break;
+    }
+}
+
 void CMainMenu::DrawMenuOptions()
 {
-    int nPos = -1;
-    int nButton = -1;
-    for (int i = 0; i < 5; i++)
+    static const char* Types[] = {
+        "Music volume",
+        "Sound Effects volume",
+#if !defined(EMSCRIPTEN)
+        "Fullscreen mode",
+        "Color depth (bits-per-pixel)",
+        "Use OpenGL rendering",
+#endif
+    };
+
+    int type = -1;
+    int button = -1;
+    int offset = 100;
+
+    const auto size = sizeof(Types) / sizeof(Types[0]);
+    for (size_t i = 0; i < size; i++)
     {
-        if (DrawMenuButton(SCREEN_WIDTH / 2 - 77 - 40, 100 + i * 50, B_PREV))
+        offset += 50;
+
+        renderTypeValue(i, offset, Types[i]);
+
+        if (DrawMenuButton(SCREEN_WIDTH / 2 - 77 - 40, offset, B_PREV))
         {
-            nPos = i;
-            nButton = 0;
+            type = i;
+            button = B_PREV;
         }
-        if (DrawMenuButton(SCREEN_WIDTH / 2 + 40, 100 + i * 50, B_NEXT))
+        if (DrawMenuButton(SCREEN_WIDTH / 2 + 40, offset, B_NEXT))
         {
-            nPos = i;
-            nButton = 1;
+            type = i;
+            button = B_NEXT;
         }
     }
+
+    offset += 40;
+
+    if (m_optionsDirty)
+    {
+        a::fnt3()->DrawString(0, offset, "Apply settings", CMyString::eAlign::Center);
+    }
+
+    offset += 20;
 
     int nItem = -1;
     if (m_optionsDirty)
     {
-        if (DrawMenuButton(MENU_ITEM_X, 360, B_OK))
+        if (DrawMenuButton(MENU_ITEM_X, offset, B_OK))
         {
             nItem = 0;
         }
-        if (DrawMenuButton(MENU_ITEM_X + 124, 360, B_CANCEL))
+        if (DrawMenuButton(MENU_ITEM_X + 124, offset, B_CANCEL))
         {
             nItem = 1;
         }
     }
     else
     {
-        if (DrawMenuButton(MENU_ITEM_X + 62, 360, B_OK))
+        if (DrawMenuButton(MENU_ITEM_X + 62, offset, B_OK))
         {
             nItem = 0;
         }
@@ -635,14 +697,14 @@ void CMainMenu::DrawMenuOptions()
             }
         }
 
-        switch (nPos)
+        switch (type)
         {
         case 0:
-            if (nButton == 0)
+            if (button == B_PREV)
             {
                 m_options.musicVolume--;
             }
-            else if (nButton == 1)
+            else if (button == B_NEXT)
             {
                 m_options.musicVolume++;
             }
@@ -650,11 +712,11 @@ void CMainMenu::DrawMenuOptions()
             break;
 
         case 1:
-            if (nButton == 0)
+            if (button == B_PREV)
             {
                 m_options.soundVolume--;
             }
-            else if (nButton == 1)
+            else if (button == B_NEXT)
             {
                 m_options.soundVolume++;
             }
@@ -662,7 +724,7 @@ void CMainMenu::DrawMenuOptions()
             break;
 
         case 2:
-            if (nButton != -1)
+            if (button != -1)
             {
                 m_options.fullscreen = !m_options.fullscreen;
                 m_optionsDirty = true;
@@ -670,10 +732,10 @@ void CMainMenu::DrawMenuOptions()
             break;
 
         case 3:
-            if (nButton != -1)
+            if (button != -1)
             {
                 const uint32_t bppCount = sizeof(g_bppList) / sizeof(g_bppList[0]);
-                if (nButton == 0)
+                if (button == B_PREV)
                 {
                     m_options.bppIdx = (m_options.bppIdx + 1) % bppCount;
                 }
@@ -686,7 +748,7 @@ void CMainMenu::DrawMenuOptions()
             break;
 
         case 4:
-            if (nButton == 0 || nButton == 1)
+            if (button != -1)
             {
                 m_options.opengl = !m_options.opengl;
                 m_optionsDirty = true;
@@ -694,25 +756,6 @@ void CMainMenu::DrawMenuOptions()
             break;
         }
     }
-
-    a::fnt1()->DrawString(0, 100 - 15, "Music volume", CMyString::eAlign::Center);
-    a::fnt1()->DrawString(0, 150 - 15, "Sound Effects volume", CMyString::eAlign::Center);
-    a::fnt1()->DrawString(0, 200 - 15, "Fullscreen mode", CMyString::eAlign::Center);
-    a::fnt1()->DrawString(0, 250 - 15, "Color depth (bits-per-pixel)", CMyString::eAlign::Center);
-    a::fnt1()->DrawString(0, 300 - 15, "Use OpenGL rendering", CMyString::eAlign::Center);
-    if (m_optionsDirty)
-    {
-        a::fnt3()->DrawString(0, 340, "Apply settings", CMyString::eAlign::Center);
-    }
-
-    char achBuf[10];
-    sprintf(achBuf, "%d%%", m_options.musicVolume * 10);
-    a::fnt2()->DrawString(0, 100 + 2, achBuf, CMyString::eAlign::Center); //    a::fnt2()->DrawNumber(m_options.musicVolume, 82, 180, 2);
-    sprintf(achBuf, "%d%%", m_options.soundVolume * 10);
-    a::fnt2()->DrawString(0, 150 + 2, achBuf, CMyString::eAlign::Center); //a::fnt2()->DrawNumber(m_options.soundVolume, 82, 210, 2);
-    a::fnt2()->DrawString(0, 200 + 2, (m_options.fullscreen == true ? "YES" : "NO"), CMyString::eAlign::Center);
-    a::fnt2()->DrawNumber(g_bppList[m_options.bppIdx], 0, 250 + 2, CMyString::eAlign::Center);
-    a::fnt2()->DrawString(0, 300 + 2, (m_options.opengl == true ? "YES" : "NO"), CMyString::eAlign::Center);
 
     a::fnt1()->DrawString(0, SCREEN_HEIGHT - 52, "<Shift> + <+> or <Shift> + <-> - increase/decrease music volume.\n"
                                                  "<+> or <->  - increase/decrease effects volume",
