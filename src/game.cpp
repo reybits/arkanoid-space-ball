@@ -43,7 +43,7 @@ CGame::CGame(const sOptions& options)
     , m_pchGetReeadyInfo(nullptr)
     , m_bIsCustomLevels(false)
 {
-    m_vecLevelBricks.reserve(BRICKS_WIDTH * BRICKS_HEIGHT);
+    m_bricks.reserve(BRICKS_WIDTH * BRICKS_HEIGHT);
 }
 
 CGame::~CGame()
@@ -144,28 +144,38 @@ void CGame::DoGameActive()
 
     if (m_bCanMovePaddle == true)
     {
-        const float fMultipler = 1.1; // * g_fSpeedCorrection;
-        if (m_bPaddleIsInvert == false)
+        const float speed = (m_bPaddleIsInvert ? -1.0f : 1.0f) * 1.1f; // * g_fSpeedCorrection;
+        m_nRacketY += g_nMouseDY * speed;
+
+        if (IsKeyPressed(SDLK_UP))
         {
-            m_nRacketY += g_nMouseDY * fMultipler;
-            if (m_nRacketType == RT_ENGINE)
-            {
-                m_nRacketX += g_nMouseDX * fMultipler;
-            }
+            m_nRacketY -= g_fSpeedCorrection;
         }
-        else
+        else if (IsKeyPressed(SDLK_DOWN))
         {
-            m_nRacketY -= g_nMouseDY * fMultipler;
-            if (m_nRacketType == RT_ENGINE)
+            m_nRacketY += g_fSpeedCorrection;
+        }
+
+        if (m_nRacketType == RT_ENGINE)
+        {
+            m_nRacketX += g_nMouseDX * speed;
+
+            if (IsKeyPressed(SDLK_LEFT))
             {
-                m_nRacketX -= g_nMouseDX * fMultipler;
+                m_nRacketX -= g_fSpeedCorrection;
+            }
+            else if (IsKeyPressed(SDLK_RIGHT))
+            {
+                m_nRacketX += g_fSpeedCorrection;
             }
         }
     }
+
     m_nRacketY = std::max<int>(m_nRacketY, WALL_Y1);
     m_nRacketY = std::min<int>(m_nRacketY, WALL_Y2 - PADDLE_HEIGHT);
     m_nRacketX = std::max<int>(m_nRacketX, WALL_X1 + 50);
     m_nRacketX = std::min<int>((m_nRacketType == RT_ENGINE ? m_nRacketX : RACKET_X), RACKET_X + 5);
+
     static Uint32 dwRacketTime = 0;
     if (m_nRacketX > RACKET_X)
     {
@@ -181,7 +191,7 @@ void CGame::DoGameActive()
         if (m_bIsCustomLevels == true)
         {
             //          if(IsKeyPressed(SDLK_n) && IsKeyStateChanged(SDLK_n)) {
-            //              m_vecLevelBricks.clear();
+            //              m_bricks.clear();
             //              //InitLevel(++m_nCurrentLevel);
             //          }
         }
@@ -208,12 +218,14 @@ void CGame::DoGameActive()
             AddGetReeadyInfo("You lost balls");
             RemoveOneLives();
         }
-        if (g_bMouseLB == true)
+
+        if (g_bMouseLB == true || (IsKeyPressed(SDLK_SPACE) && IsKeyStateChanged(SDLK_SPACE)))
         {
             g_bMouseLB = false;
             DoShoot();
             a::ball()->StartBall((int)m_nRacketY, (int)m_nRacketY + PADDLE_HEIGHT);
         }
+
         if (m_options.autoBonusMode == false && g_bMouseRB == true)
         {
             g_bMouseRB = false;
@@ -594,18 +606,18 @@ void CGame::DrawBricks()
         bSecondOut = true;
     }
 
-    for (size_t i = 0, size = m_vecLevelBricks.size(); i < size;)
+    for (size_t i = 0, size = m_bricks.size(); i < size;)
     {
-        auto& lb = m_vecLevelBricks[i];
+        auto& lb = m_bricks[i];
 
-        int nX = lb.fX;
-        int nY = lb.fY;
+        int nX = lb.x;
+        int nY = lb.y;
         DrawBrick(i, bBrickAnimate2);
         // remove brick from list
         if (lb.byType == BOX_NONE)
         {
-            m_vecLevelBricks[i] = m_vecLevelBricks[--size];
-            m_vecLevelBricks.pop_back();
+            m_bricks[i] = m_bricks[--size];
+            m_bricks.pop_back();
             continue;
         }
 
@@ -615,12 +627,11 @@ void CGame::DrawBricks()
             float fSpeed = g_fSpeedCorrection * 0.5f;
             do
             {
-                int nY = lb.fY;
                 if (lb.bDir == true)
                 {
-                    if (nY + BRICK_H < WALL_Y2 && IsEmptyBrickPos(i, nX, nY + BRICK_H) == true)
+                    if (lb.y + BRICK_H < WALL_Y2 && IsEmptyBrickPos(i, nX, lb.y + BRICK_H) == true)
                     {
-                        lb.fY += 1;
+                        lb.y += 1;
                     }
                     else
                     {
@@ -633,9 +644,9 @@ void CGame::DrawBricks()
                 }
                 else
                 {
-                    if (nY > WALL_Y1 && IsEmptyBrickPos(i, nX, nY - BRICK_H) == true)
+                    if (lb.y > WALL_Y1 && IsEmptyBrickPos(i, nX, lb.y - BRICK_H) == true)
                     {
-                        lb.fY -= 1;
+                        lb.y -= 1;
                     }
                     else
                     {
@@ -670,8 +681,8 @@ void CGame::DrawBricks()
                     if (m_nBonusLevelType == -1)
                     {
                         sBrickBullet bb;
-                        bb.fX = lb.fX + (BRICK_W - 20) / 2; // 20 - diameter of bullet
-                        bb.fY = lb.fY + (BRICK_H - 20) / 2;
+                        bb.fX = lb.x + (BRICK_W - 20) / 2; // 20 - diameter of bullet
+                        bb.fY = lb.y + (BRICK_H - 20) / 2;
                         bb.nFrame = 0;
                         if (lb.byType == BOX_SHOOT_0) // do shoot on paddle
                         {
@@ -779,12 +790,10 @@ void CGame::DrawBricks()
 
 void CGame::DrawBrick(size_t idx, bool bNextFrameAnim)
 {
-    auto& lb = m_vecLevelBricks[idx];
+    auto& lb = m_bricks[idx];
 
     SDL_Rect src;
     int type = lb.byType;
-    int nX = lb.fX;
-    int nY = lb.fY;
     static int nFrame = 0;
     static Uint32 dwTime = 0;
     static bool bDir = true;
@@ -821,7 +830,7 @@ void CGame::DrawBrick(size_t idx, bool bNextFrameAnim)
     src.x = ((type - 1) % 10) * BRICK_W;
     src.w = BRICK_W;
     src.h = BRICK_H;
-    render(nX, nY, eImage::Bricks, &src);
+    render(lb.x, lb.y, eImage::Bricks, &src);
     if (lb.nAnimateType != -1)
     {
         src.x = lb.nAnimateType * 20;
@@ -833,35 +842,31 @@ void CGame::DrawBrick(size_t idx, bool bNextFrameAnim)
                 lb.nAnimateType = -1;
             }
         }
-        render(nX, nY, eImage::Exploision, &src);
+        render(lb.x, lb.y, eImage::Exploision, &src);
     }
 }
 
 void CGame::DoBomb(size_t idx)
 {
-    auto& lb = m_vecLevelBricks[idx];
+    const auto& target = m_bricks[idx];
 
-    int nX = lb.fX;
-    int nY = lb.fY;
-    Uint8 byType = lb.byType;
-    a::tutDlg()->AddDialog(nX + BRICK_W / 2, nY + BRICK_H / 2, 0, 6);
+    Uint8 byType = target.byType;
+    a::tutDlg()->AddDialog(target.x + BRICK_W / 2, target.y + BRICK_H / 2, 0, 6);
 
-    for (size_t i = 0, size = m_vecLevelBricks.size(); i < size; i++)
+    for (auto& brick : m_bricks)
     {
-        int x = lb.fX;
-        int y = lb.fY;
-        if (abs(nX - x) <= BRICK_W && abs(nY - y) <= BRICK_H)
+        if (fabsf(target.x - brick.x) <= BRICK_W && fabsf(target.y - brick.y) <= BRICK_H)
         {
-            if (lb.byType >= BOX_BOMB_0 && lb.nCountToDie != 0)
+            if (brick.byType >= BOX_BOMB_0 && brick.nCountToDie != 0)
             {
-                lb.nCountToDie = 1;
-                lb.byType = byType;
+                brick.nCountToDie = 1;
+                brick.byType = byType;
             }
             else
             {
                 AddScore(5);
-                ChangeBrick(i, BOX_NONE, true);
-                a::expl()->AddExploision(x - 12, y - 5, 0);
+                ChangeBrick(brick, BOX_NONE, true);
+                a::expl()->AddExploision(brick.x - 12, brick.y - 5, 0);
             }
         }
     }
@@ -869,7 +874,7 @@ void CGame::DoBomb(size_t idx)
 
 void CGame::InitLevel(int nLevel, bool bRestore)
 {
-    m_vecLevelBricks.clear();
+    m_bricks.clear();
     a::coolstr()->Clear();
     //a::tutDlg()->Reset();
     m_nCurrentLevel = nLevel;
@@ -906,12 +911,12 @@ void CGame::InitLevel(int nLevel, bool bRestore)
                     m_nLives = str.lives;
                     m_nScoreToAdditionalBall = str.scoreToAdditionalBall;
                     m_nBonusLevelType = str.bonusLevelType;
-                    _BRICK brick;
+                    sBrick brick;
                     for (int i = 0; i < str.bricksCount; i++)
                     {
-                        fread(&brick, sizeof(_BRICK), 1, file);
-                        EncodeDecode(&brick, sizeof(_BRICK));
-                        m_vecLevelBricks.push_back(brick);
+                        fread(&brick, sizeof(sBrick), 1, file);
+                        EncodeDecode(&brick, sizeof(sBrick));
+                        m_bricks.push_back(brick);
                     }
                     if (m_options.autoBonusMode == false)
                     {
@@ -983,24 +988,24 @@ void CGame::InitLevel(int nLevel, bool bRestore)
     else if (m_nBonusLevelType == 0)
     {
         // TODO: place bricks without intersect one by other and symmetrically
-        _BRICK brick;
-        m_vecLevelBricks.clear();
+        sBrick brick;
+        m_bricks.clear();
         for (int i = 0; i < 5; i++)
         {
-            brick.fX = BRICK_X + a::rnd().Get(BRICKS_WIDTH / 4) * BRICK_W * 4;
-            brick.fY = BRICK_Y + a::rnd().Get(BRICKS_HEIGHT / 4) * BRICK_H * 4;
+            brick.x = BRICK_X + a::rnd().Get(BRICKS_WIDTH / 4) * BRICK_W * 4;
+            brick.y = BRICK_Y + a::rnd().Get(BRICKS_HEIGHT / 4) * BRICK_H * 4;
             brick.byType = BOX_SHOOT_0 + a::rnd().Get(2);
             brick.nCountToDie = 10;
             brick.nFrame = 0;
             brick.nAnimateType = -1;
             brick.nCountToShoot = 2 + i;
-            m_vecLevelBricks.push_back(brick);
+            m_bricks.push_back(brick);
         }
         m_nGetReadyBallsLose = 0; // used for counting lost balls
     }
     else if (m_nBonusLevelType == 1)
     {
-        m_vecLevelBricks.clear();
+        m_bricks.clear();
         m_nBonusLevelTicks = 3 * 60; // 3 minutes
         // TODO: add paddle power
     }
@@ -1022,17 +1027,17 @@ void CGame::InitLevel(int nLevel, bool bRestore)
                 str.bonusLevelType = m_nBonusLevelType;
                 str.bonusLevelTicks = m_nBonusLevelTicks;
                 str.getReadyBallsLose = m_nGetReadyBallsLose;
-                str.bricksCount = m_vecLevelBricks.size();
+                str.bricksCount = m_bricks.size();
                 str.bonusesCount = a::bonus()->GetCountInStack();
                 str.bonusLevelType = m_nBonusLevelType;
                 EncodeDecode(&str, sizeof(sSave));
                 fwrite(&str, sizeof(sSave), 1, file);
-                _BRICK brick;
-                for (size_t i = 0; i < m_vecLevelBricks.size(); i++)
+                sBrick brick;
+                for (size_t i = 0; i < m_bricks.size(); i++)
                 {
-                    memcpy(&brick, &m_vecLevelBricks[i], sizeof(_BRICK));
-                    EncodeDecode(&brick, sizeof(_BRICK));
-                    fwrite(&brick, sizeof(_BRICK), 1, file);
+                    memcpy(&brick, &m_bricks[i], sizeof(sBrick));
+                    EncodeDecode(&brick, sizeof(sBrick));
+                    fwrite(&brick, sizeof(sBrick), 1, file);
                 }
                 for (int i = 0; i < a::bonus()->GetCountInStack(); i++)
                 {
@@ -1231,13 +1236,13 @@ void CGame::DoShoot()
         switch (m_nRacketType)
         {
         case RT_LASER:
-            for (size_t i = 0; i < m_vecLevelBricks.size(); i++)
+            for (auto& brick : m_bricks)
             {
-                int nY = (int)m_vecLevelBricks[i].fY;
+                int nY = (int)brick.y;
                 if (nY <= nLaserY + 2 && nY + BRICK_H >= nLaserY)
                 {
                     //if(abs(nY - nLaserY) <= abs(4 - nH)) {
-                    m_nLaserX = std::max<int>(m_nLaserX, m_vecLevelBricks[i].fX + BRICK_W);
+                    m_nLaserX = std::max<int>(m_nLaserX, brick.x + BRICK_W);
                 }
             }
             a::bullet()->AddBullets((int)m_nRacketY + (PADDLE_HEIGHT - 20) / 2, eBulletType::LASER);
@@ -1366,26 +1371,26 @@ void CGame::ProcessBonus(CBonus::eType type)
         }
         break;
     case CBonus::eType::DESTROY:
-        for (size_t x = 0; x < m_vecLevelBricks.size(); x++)
+        for (auto& brick : m_bricks)
         {
-            Uint8 byType = m_vecLevelBricks[x].byType;
-            if (byType < BOX_BOMB_0)
+            const auto type = brick.byType;
+            if (type < BOX_BOMB_0)
             {
-                if (byType >= BOX_IM_0)
+                if (type >= BOX_IM_0)
                 {
-                    ChangeBrick(x, BOX_0 + (byType - BOX_IM_0));
+                    ChangeBrick(brick, BOX_0 + (type - BOX_IM_0));
                 }
-                else if (byType >= BOX_FOU_0)
+                else if (type >= BOX_FOU_0)
                 {
-                    ChangeBrick(x, BOX_0 + (byType - BOX_FOU_0));
+                    ChangeBrick(brick, BOX_0 + (type - BOX_FOU_0));
                 }
-                else if (byType >= BOX_TRD_0)
+                else if (type >= BOX_TRD_0)
                 {
-                    ChangeBrick(x, BOX_0 + (byType - BOX_TRD_0));
+                    ChangeBrick(brick, BOX_0 + (type - BOX_TRD_0));
                 }
-                else if (byType >= BOX_DBL_0)
+                else if (type >= BOX_DBL_0)
                 {
-                    ChangeBrick(x, BOX_0 + (byType - BOX_DBL_0));
+                    ChangeBrick(brick, BOX_0 + (type - BOX_DBL_0));
                 }
             }
         }
@@ -1405,7 +1410,8 @@ void CGame::DoImpact(int nIndex, bool bRemoveAll)
     m_nCombosBricks++;
     m_dwCombosTime = SDL_GetTicks();
 
-    Uint8 byType = m_vecLevelBricks[nIndex].byType;
+    auto& brick = m_bricks[nIndex];
+    auto byType = brick.byType;
 
     if (byType >= BOX_BOMB_0)
     {
@@ -1416,39 +1422,39 @@ void CGame::DoImpact(int nIndex, bool bRemoveAll)
     {
         if (byType < BOX_MOV_0)
         {
-            a::tutDlg()->AddDialog((int)m_vecLevelBricks[nIndex].fX + BRICK_W / 2, (int)m_vecLevelBricks[nIndex].fY + BRICK_H / 2, 0, 8);
+            a::tutDlg()->AddDialog((int)brick.x + BRICK_W / 2, (int)brick.y + BRICK_H / 2, 0, 8);
         }
-        m_vecLevelBricks[nIndex].nCountToDie--;
-        if (bRemoveAll == true || m_vecLevelBricks[nIndex].nCountToDie == 0)
+        brick.nCountToDie--;
+        if (bRemoveAll == true || brick.nCountToDie == 0)
         {
             AddScore(30);
-            ChangeBrick(nIndex, BOX_NONE, bRemoveAll);
+            ChangeBrick(brick, BOX_NONE, bRemoveAll);
         }
         else
         {
-            m_vecLevelBricks[nIndex].nAnimateType = 0;
-            m_vecLevelBricks[nIndex].nFrame = 0;
+            brick.nAnimateType = 0;
+            brick.nFrame = 0;
         }
     }
     else if (byType >= BOX_FOU_0)
     {
         AddScore(5);
-        ChangeBrick(nIndex, BOX_TRD_0 + (byType - BOX_FOU_0), bRemoveAll);
+        ChangeBrick(brick, BOX_TRD_0 + (byType - BOX_FOU_0), bRemoveAll);
     }
     else if (byType >= BOX_TRD_0)
     {
         AddScore(5);
-        ChangeBrick(nIndex, BOX_DBL_0 + (byType - BOX_TRD_0), bRemoveAll);
+        ChangeBrick(brick, BOX_DBL_0 + (byType - BOX_TRD_0), bRemoveAll);
     }
     else if (byType >= BOX_DBL_0)
     {
         AddScore(5);
-        ChangeBrick(nIndex, BOX_0 + (byType - BOX_DBL_0), bRemoveAll);
+        ChangeBrick(brick, BOX_0 + (byType - BOX_DBL_0), bRemoveAll);
     }
     else
     {
         AddScore(m_bSelfDestructStarted == false ? 5 : 100);
-        ChangeBrick(nIndex, BOX_NONE, true);
+        ChangeBrick(brick, BOX_NONE, true);
     }
     if (byType < BOX_BOMB_0)
     {
@@ -1456,7 +1462,7 @@ void CGame::DoImpact(int nIndex, bool bRemoveAll)
     }
 }
 
-void CGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveAll)
+void CGame::ChangeBrick(sBrick& brick, Uint8 byToBrickType, bool bRemoveAll)
 {
     if (bRemoveAll == true)
     {
@@ -1464,36 +1470,34 @@ void CGame::ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveAll)
     }
     else
     {
-        m_vecLevelBricks[nIndex].nAnimateType = 1;
-        m_vecLevelBricks[nIndex].nFrame = 0;
+        brick.nAnimateType = 1;
+        brick.nFrame = 0;
     }
 
     // add bonus. only for non bonus level
     if (byToBrickType == BOX_NONE)
     {
         m_nGetReadyBricks++;
-        int nX = (int)m_vecLevelBricks[nIndex].fX;
-        int nY = (int)m_vecLevelBricks[nIndex].fY;
-        a::expl()->AddExploision(nX - 12, nY - 5, 3);
+        a::expl()->AddExploision(brick.x - 12, brick.y - 5, 3);
         if (m_nBonusLevelType == -1)
         {
             static Uint32 dwTime = 0;
             // brick 47 adds bonus always
-            if (m_vecLevelBricks[nIndex].byType == BOX_47 || dwTime + 5000 < SDL_GetTicks())
+            if (brick.byType == BOX_47 || dwTime + 5000 < SDL_GetTicks())
             {
-                if (m_vecLevelBricks[nIndex].byType == BOX_47)
+                if (brick.byType == BOX_47)
                 {
-                    a::tutDlg()->AddDialog(nX + BRICK_W / 2, nY + BRICK_H / 2, 0, 7);
+                    a::tutDlg()->AddDialog(brick.x + BRICK_W / 2, brick.y + BRICK_H / 2, 0, 7);
                 }
                 dwTime = SDL_GetTicks();
                 const auto type = (CBonus::eType)a::rnd().Get((unsigned)CBonus::eType::Count);
-                a::bonus()->AddBonus(nX, nY, type);
+                a::bonus()->AddBonus(brick.x, brick.y, type);
                 PlaySound(10);
             }
         }
     }
 
-    m_vecLevelBricks[nIndex].byType = byToBrickType;
+    brick.byType = byToBrickType;
 }
 
 void CGame::AddScore(int nScore)
@@ -1608,11 +1612,13 @@ void CGame::MoveBrickBullets()
 
 int CGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY)
 {
+    const auto& brick = m_bricks[nIndex];
+
     int nAngle = 0;
-    int nCatet1 = nX - ((int)m_vecLevelBricks[nIndex].fX + BRICK_W / 2);
-    int nCatet2 = nY - ((int)m_vecLevelBricks[nIndex].fY + BRICK_H / 2);
+    int nCatet1 = nX - ((int)brick.x + BRICK_W / 2);
+    int nCatet2 = nY - ((int)brick.y + BRICK_H / 2);
     float fDist = sqrt(nCatet1 * nCatet1 + nCatet2 * nCatet2);
-    nAngle = (int)(57.3 * asin(nCatet2 / fDist));
+    nAngle = (int)(57.3f * asinf(nCatet2 / fDist));
     if (nCatet1 > 0)
     {
         nAngle = 90 + nAngle;
@@ -1624,19 +1630,17 @@ int CGame::CalcBrickBulletsAngle(int nIndex, int nX, int nY)
     return ((360 + nAngle) % 360);
 }
 
-bool CGame::IsEmptyBrickPos(const int nSkipPos, const int nX, const int nY)
+bool CGame::IsEmptyBrickPos(int nSkipPos, int nX, int nY)
 {
-    for (size_t i = 0; i < m_vecLevelBricks.size(); i++)
+    for (size_t i = 0; i < m_bricks.size(); i++)
     {
-        if ((int)i == nSkipPos)
+        if ((int)i != nSkipPos)
         {
-            continue; // skip checking itself
-        }
-        int nBx = int(m_vecLevelBricks[i].fX);
-        int nBy = int(m_vecLevelBricks[i].fY);
-        if (abs(nX - nBx) == 0 && abs(nY - nBy) == 0)
-        {
-            return false;
+            const auto& brick = m_bricks[i];
+            if (abs(nX - (int)brick.x) == 0 && abs(nY - (int)brick.y) == 0)
+            {
+                return false;
+            }
         }
     }
 
@@ -1892,7 +1896,7 @@ void CGame::DrawRestoreGame() {
 //      int             nScore;
 //      int             nLives;
 //      char    achName[MAX_SAVE_NAME + 1];
-//      struct CLevel::_BRICK   astrLevel[LEVEL_WIDTH][LEVEL_HEIGHT];
+//      struct CLevel::sBrick   astrLevel[LEVEL_WIDTH][LEVEL_HEIGHT];
 //  } m_astrSavedGames[10];
 
     int nItem   = -1;

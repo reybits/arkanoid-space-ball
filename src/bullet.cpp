@@ -137,19 +137,18 @@ bool CBullet::IsAcross(int nX, int nY, int nWidth, int nHeight, bool& bRemoveAll
         {
             if (bullet.x + 54 >= nX && bullet.x <= nX + nWidth && bullet.y + 20 >= nY && bullet.y <= nY + nHeight)
             {
-                switch (bullet.type)
+                type = bullet.type;
+                switch (type)
                 {
                 case eBulletType::MISSILE:
                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 0);
                     RemoveByPos(i);
                     bRemoveAll = true;
-                    type = bullet.type;
                     break;
 
                 case eBulletType::PLASMA:
                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 1);
                     bRemoveAll = true;
-                    type = bullet.type;
                     break;
 
                 case eBulletType::LASER: // do nothing

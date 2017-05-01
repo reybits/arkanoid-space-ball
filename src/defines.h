@@ -80,16 +80,17 @@ struct sBulletDescription
     float h;
 };
 
-struct _BRICK
+struct sBrick
 {
-    float   fX, fY;             // brick's position on screen in px
-    unsigned char byType;//, byDesiredType;
-    int     nCountToDie;        // count to die brick
-    int     nFrame;
-    int     nAnimateType;           // -1 - don't animate, 0 - forward, 1 - backward
-    bool    bDir;                   // for movable bricks
-    int     nDirChangeCount;    //
-    int     nCountToShoot;      // for shooting bricks
+    float x; // brick's position on screen in px
+    float y;
+    unsigned char byType; // byDesiredType;
+    int nCountToDie;  // count to die brick
+    int nFrame;
+    int nAnimateType; // -1 - don't animate, 0 - forward, 1 - backward
+    bool bDir;         // for movable bricks
+    int nDirChangeCount;
+    int nCountToShoot; // for shooting bricks
 };
 
 struct sSave

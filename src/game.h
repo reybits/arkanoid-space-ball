@@ -73,7 +73,7 @@ public:
 private:
     void DrawPause();
     void _Cheater();
-    void ChangeBrick(int nIndex, Uint8 byToBrickType, bool bRemoveAll = false);
+    void ChangeBrick(sBrick& brick, Uint8 byToBrickType, bool bRemoveAll = false);
     void DoShoot();
     void DrawStatistic();
     bool DoGameOver();
@@ -87,14 +87,14 @@ private:
     void DrawBrickBullets();
     void MoveBrickBullets();
     int CalcBrickBulletsAngle(int nIndex, int nX, int nY);
-    bool IsEmptyBrickPos(const int nSkipPos, const int nX, const int nY);
+    bool IsEmptyBrickPos(int nSkipPos, int nX, int nY);
     void DrawAreYouSure();
     //void DrawRestoreGame();
 
 private:
     const sOptions& m_options;
     int m_nLaserX;
-    std::vector<_BRICK> m_vecLevelBricks;
+    std::vector<sBrick> m_bricks;
     int m_nLevelPrev; // store previous level number: -1 - usualy, -2 - inform, that we restore game
     int m_nBonusLevelType;
     int m_nBonusLevelTicks;

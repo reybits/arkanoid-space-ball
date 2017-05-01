@@ -722,10 +722,12 @@ void gameLoop()
             //printf("show fps %s\n", a::opt().showFps == true ? "on" : "off");
         }
 
+#if !defined(EMSCRIPTEN)
         if (g_bIsCursorVisible == true)
         {
             render(g_nCursorX - 8, g_nCursorY, eImage::Cursor);
         }
+#endif
         if (a::opt().showFps == true)
         {
             a::fnt1()->DrawNumber(getFps(), 5, 5, CMyString::eAlign::Right);

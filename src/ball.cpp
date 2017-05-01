@@ -105,10 +105,10 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                     m_vecBrickIndex.clear();
                     if (m_type != eBallType::BLUE)
                     {
-                        for (size_t nBrick = 0; nBrick < a::ark()->m_vecLevelBricks.size(); nBrick++)
+                        for (size_t nBrick = 0; nBrick < a::ark()->m_bricks.size(); nBrick++)
                         {
-                            int nX = a::ark()->m_vecLevelBricks[nBrick].fX;
-                            int nY = a::ark()->m_vecLevelBricks[nBrick].fY;
+                            int nX = a::ark()->m_bricks[nBrick].x;
+                            int nY = a::ark()->m_bricks[nBrick].y;
                             if (IsThisBallOverObject(nPos, nX, nY, BRICK_W, BRICK_H) > 0)
                             {
                                 if (m_type == eBallType::RED)

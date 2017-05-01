@@ -30,7 +30,7 @@ CGenerateLevel::~CGenerateLevel()
 void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
 {
     // clear level
-    a::ark()->m_vecLevelBricks.clear();
+    a::ark()->m_bricks.clear();
     memset(m_abyLevel, 0, sizeof(m_abyLevel));
 
     int nCustomLevelsCount  = 0;
@@ -121,7 +121,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
 
     // fill actual level
     //printf("(II) Generated level data below:\n");
-    _BRICK  brick;
+    sBrick brick;
     int nCountToShoot   = 0;
     int nBricksCount    = 0;
     for (int y = 0; y < BRICKS_HEIGHT; y++)
@@ -134,8 +134,8 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
             if (byType > BOX_NONE && byType < BOX_END)
             {
                 nBricksCount++;
-                brick.fX                = BRICK_X + x * BRICK_W;
-                brick.fY                = BRICK_Y + y * BRICK_H;
+                brick.x                 = BRICK_X + x * BRICK_W;
+                brick.y                 = BRICK_Y + y * BRICK_H;
                 brick.byType            = byType;
                 brick.nCountToDie       = ((byType >= BOX_IM_0 && byType < BOX_BOMB_0) ? 15 : -1);
                 brick.nFrame            = 0;
@@ -143,7 +143,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
                 brick.bDir              = byType == BOX_MOV_0 ? (a::rnd().Get(2) == 0 ? false : true) : (byType == BOX_MOV_1 ? true : false);
                 brick.nDirChangeCount   = 0;
                 brick.nCountToShoot     = 5 + nCountToShoot;
-                a::ark()->m_vecLevelBricks.push_back(brick);
+                a::ark()->m_bricks.push_back(brick);
                 if (byType >= BOX_SHOOT_0 && byType < BOX_BOMB_0)
                 {
                     nCountToShoot += 5;
@@ -168,7 +168,7 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
         }
     }
 
-    printf("Total bricks on level %u\n", (uint32_t)a::ark()->m_vecLevelBricks.size());
+    printf("Total bricks on level %u\n", (uint32_t)a::ark()->m_bricks.size());
 }
 
 void CGenerateLevel::_FillLevel(int nLevel, int nPos)
