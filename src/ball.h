@@ -78,6 +78,6 @@ private:
         int nFrame;
     };
     std::vector<sFb> m_fbs;
-    std::vector<int> m_vecBrickIndex;
+    std::vector<sBrick*> m_vecBrickIndex;
     int m_nBack;
 };

@@ -28,4 +28,3 @@ void dimScreen();
 
 void render(int x, int y, SDL_Surface* img, SDL_Rect* src = nullptr);
 void render(int x, int y, eImage id, SDL_Rect* src = nullptr);
-// void renderEx(int x, int y, eImage id, SDL_Rect* src, float scale);

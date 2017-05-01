@@ -731,7 +731,7 @@ void CGame::DrawBricks()
                 lb.nCountToDie--;
                 if (lb.nCountToDie == 0)
                 {
-                    DoBomb(i);
+                    DoBomb(lb);
                 }
             }
         }
@@ -754,11 +754,11 @@ void CGame::DrawBricks()
                 {
                     if (type != eBulletType::MISSILE)
                     {
-                        DoImpact(i, bRemove);
+                        DoImpact(lb, bRemove);
                     }
                     else
                     {
-                        DoBomb(i);
+                        DoBomb(lb);
                     }
                 }
             }
@@ -846,10 +846,8 @@ void CGame::DrawBrick(size_t idx, bool bNextFrameAnim)
     }
 }
 
-void CGame::DoBomb(size_t idx)
+void CGame::DoBomb(const sBrick& target)
 {
-    const auto& target = m_bricks[idx];
-
     Uint8 byType = target.byType;
     a::tutDlg()->AddDialog(target.x + BRICK_W / 2, target.y + BRICK_H / 2, 0, 6);
 
@@ -1405,18 +1403,17 @@ void CGame::ProcessBonus(CBonus::eType type)
     }
 }
 
-void CGame::DoImpact(int nIndex, bool bRemoveAll)
+void CGame::DoImpact(sBrick& brick, bool bRemoveAll)
 {
     m_nCombosBricks++;
     m_dwCombosTime = SDL_GetTicks();
 
-    auto& brick = m_bricks[nIndex];
     auto byType = brick.byType;
 
     if (byType >= BOX_BOMB_0)
     {
         AddScore(5);
-        DoBomb(nIndex);
+        DoBomb(brick);
     }
     else if (byType >= BOX_IM_0) // and BOX_SHOOT_ and BOX_MOV_ too
     {

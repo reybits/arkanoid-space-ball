@@ -164,23 +164,3 @@ void render(int x, int y, eImage id, SDL_Rect* src)
     auto img = a::res()->getImage(id);
     render(x, y, img, src);
 }
-
-// void renderEx(int x, int y, eImage id, SDL_Rect* src, float scale)
-// {
-// SDL_Rect dst;
-// int w = (int)(scale * src->w);
-// int h = (int)(scale * src->h);
-// int dx = (src->w - w) / 2;
-// int dy = (src->h - h) / 2;
-// src->x += dx;
-// src->y += dy;
-// src->w = w;
-// src->h = h;
-
-// dst.x = x + dx;
-// dst.y = y + dy;
-
-// auto img = a::res()->getImage(id);
-
-// SDL_BlitSurface(img, src, ScreenSurface, &dst);
-// }

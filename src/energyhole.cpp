@@ -94,7 +94,7 @@ void CEnergyHole::Move()
                     a::tutDlg()->AddDialog(desc.x + radius, desc.y + radius, 0, 5);
 
                     v.is_over = true;
-                    int angle = (int)(57.3 * asinf(c2 / distance));
+                    int angle = (int)(57.3f * asinf(c2 / distance));
                     if (c1 > 0)
                     {
                         angle = balls->getAngle(idx) - (90 + angle) % 360;

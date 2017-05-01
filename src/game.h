@@ -47,7 +47,7 @@ public:
     void SetPause();
     bool DrawReminder(int nReminderType);
     void AddScore(int nScore);
-    void DoImpact(int nIndex, bool bRemoveAll);
+    void DoImpact(sBrick& brick, bool bRemoveAll);
     //void DoImpact2(int nBx, int nBy, int nBrick, bool bRemoveAll);
     void ProcessBonus(CBonus::eType nBonusType);
     int getScore() const
@@ -80,7 +80,7 @@ private:
     void DoGameActive();
     void DrawPaddle();
     void InitLevel(int nLevel, bool bRestore = false);
-    void DoBomb(size_t idx);
+    void DoBomb(const sBrick& target);
     void DrawBrick(size_t idx, bool bNextFrameAnim);
     void DrawBricks();
     void ResetAll();

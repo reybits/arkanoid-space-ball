@@ -105,20 +105,20 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                     m_vecBrickIndex.clear();
                     if (m_type != eBallType::BLUE)
                     {
-                        for (size_t nBrick = 0; nBrick < a::ark()->m_bricks.size(); nBrick++)
+                        for (auto& brick : a::ark()->m_bricks)
                         {
-                            int nX = a::ark()->m_bricks[nBrick].x;
-                            int nY = a::ark()->m_bricks[nBrick].y;
+                            int nX = brick.x;
+                            int nY = brick.y;
                             if (IsThisBallOverObject(nPos, nX, nY, BRICK_W, BRICK_H) > 0)
                             {
                                 if (m_type == eBallType::RED)
                                 {
-                                    a::ark()->DoImpact(nBrick, true);
+                                    a::ark()->DoImpact(brick, true);
                                     a::expl()->AddExploision(nX - (45 - BRICK_W) / 2, nY - (41 - BRICK_H) / 2, 0);
                                 }
                                 else
                                 {
-                                    m_vecBrickIndex.push_back(nBrick);
+                                    m_vecBrickIndex.push_back(&brick);
                                     if (rc.x < nX)
                                     {
                                         rc.x = nX;
@@ -165,9 +165,9 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                             ball.y = int(ball.y);
                             //printf("ball pos corrected (%.2d x %.2d)\n", (int)ball.x, (int)ball.y);
 
-                            for (size_t nBrickIndex = 0; nBrickIndex < m_vecBrickIndex.size(); nBrickIndex++)
+                            for (auto brick : m_vecBrickIndex)
                             {
-                                a::ark()->DoImpact(m_vecBrickIndex[nBrickIndex], false);
+                                a::ark()->DoImpact(*brick, false);
                             }
                         }
                     }
@@ -239,20 +239,21 @@ void CBall::Draw(int nPaddleType)
             rc.y = 0;
             rc.w = 4;
             rc.h = 4;
-            int nFrame2 = 0;
-            float x = ball.x + (getDiameter(ball) - 4) / 2;
-            float y = ball.y + (getDiameter(ball) - 4) / 2;
+            float x = ball.x + (getDiameter(ball) - 4) * 0.5f;
+            float y = ball.y + (getDiameter(ball) - 4) * 0.5f;
             /*          x   += g_fSin[getAngle(ball)] * nStep;
                         y   -= g_fCos[getAngle(ball)] * nStep;
                         nStep++;
                         nStep   %= 15;*/
+            int frame = 0;
             do
             {
-                rc.x = nFrame2++ * 4;
-                nFrame2 %= 5;
+                rc.x = frame * 4;
+                frame = (frame + 1) % 5;
+
                 render(x, y, eImage::Vector, &rc);
-                x += g_fSin[getAngle(ball)] * 15;
-                y -= g_fCos[getAngle(ball)] * 15;
+                x += g_fSin[getAngle(ball)] * 15.0f;
+                y -= g_fCos[getAngle(ball)] * 15.0f;
             } while (x > WALL_X1 && x + 4 < (m_bBackWall == true ? WALL_X2 : SCREEN_WIDTH) && y > WALL_Y1 && y + 4 < WALL_Y2);
         }
 
