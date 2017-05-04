@@ -50,10 +50,7 @@ Uint32 g_modState = 0;
 bool g_bMouseRB = false;
 bool g_bMouseLB = false;
 bool g_bIsCursorVisible = false;
-float g_nMouseDX = 0;
-float g_nMouseDY = 0;
-int g_nCursorX = SCREEN_WIDTH / 2;
-int g_nCursorY = SCREEN_HEIGHT / 2;
+sVector<float> g_cursorPosition{ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
 
 int g_nGameMode = APPS_INTRO;
 
@@ -197,9 +194,6 @@ bool IsKeyStateChanged(int key)
 
 void updateKeys()
 {
-    g_nMouseDX = 0;
-    g_nMouseDY = 0;
-
     memcpy(g_keysStateLast.data(), g_keysState, g_keysStateLast.size());
     g_modState = SDL_GetModState();
 
@@ -270,10 +264,10 @@ void updateKeys()
             break;
 
         case SDL_MOUSEMOTION:
-            g_nMouseDX += evt.motion.xrel;
-            g_nMouseDY += evt.motion.yrel;
-            g_nCursorX = evt.motion.x;
-            g_nCursorY = evt.motion.y;
+            g_cursorPosition = {
+                std::min<float>(evt.motion.x, SCREEN_WIDTH),
+                std::min<float>(evt.motion.y, SCREEN_HEIGHT)
+            };
             break;
 
         case SDL_KEYDOWN:
@@ -339,11 +333,11 @@ void updateKeys()
         //if((evt.jaxis.value < -3200) || (evt.jaxis.value > 3200)) {
         //int nDelta = int(evt.jaxis.value / 32768.0 * g_fSpeedCorrection * 10);
         //if(evt.jaxis.axis == 0) {
-        //g_nCursorX += nDelta;
+        //g_cursorPosition.x += nDelta;
         //g_nMouseDX += nDelta;
         //}
         //if(evt.jaxis.axis == 1) {
-        //g_nCursorY += nDelta;
+        //g_cursorPosition.y += nDelta;
         //g_nMouseDY += nDelta;
         //}
         //}
@@ -354,11 +348,6 @@ void updateKeys()
             break;
         }
     }
-
-    g_nCursorX = std::max(g_nCursorX, 0);
-    g_nCursorX = std::min(g_nCursorX, SCREEN_WIDTH);
-    g_nCursorY = std::max(g_nCursorY, 0);
-    g_nCursorY = std::min(g_nCursorY, SCREEN_HEIGHT);
 }
 
 void PlayMusic(bool restart)
@@ -725,7 +714,7 @@ void gameLoop()
 #if !defined(EMSCRIPTEN)
         if (g_bIsCursorVisible == true)
         {
-            render(g_nCursorX - 8, g_nCursorY, eImage::Cursor);
+            render(g_cursorPosition.x - 8, g_cursorPosition.y, eImage::Cursor);
         }
 #endif
         if (a::opt().showFps == true)

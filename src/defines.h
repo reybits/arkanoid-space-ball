@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 #include <cstdint>
 
 #ifndef MAX_PATH
@@ -149,10 +151,7 @@ extern int          g_nGameMode;
 extern unsigned     g_modState;
 extern bool         g_bMouseRB;
 extern bool         g_bMouseLB;
-extern float        g_nMouseDX;
-extern float        g_nMouseDY;
-extern int          g_nCursorX;
-extern int          g_nCursorY;
+extern sVector<float> g_cursorPosition;
 extern bool         g_bIsCursorVisible;
 
 extern int          g_nVolumeM;

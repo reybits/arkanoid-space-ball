@@ -103,13 +103,13 @@ bool CTutorialDlg::ShowDialog()
         }
 
         int nButton = -1;
-        if (g_nCursorY >= y + ndy + 110 && g_nCursorY <= y + ndy + 110 + 20)
+        if (g_cursorPosition.y >= y + ndy + 110 && g_cursorPosition.y <= y + ndy + 110 + 20)
         {
-            if (g_nCursorX > x + 115 && g_nCursorX < x + 115 + 100)
+            if (g_cursorPosition.x > x + 115 && g_cursorPosition.x < x + 115 + 100)
             {
                 nButton = 0;
             }
-            if (g_nCursorX > x + 220 && g_nCursorX < x + 220 + 25)
+            if (g_cursorPosition.x > x + 220 && g_cursorPosition.x < x + 220 + 25)
             {
                 nButton = 1;
             }

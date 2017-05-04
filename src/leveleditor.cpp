@@ -72,8 +72,8 @@ void CLevelEditor::Draw()
                 y += BRICK_H;
             }
         }
-        nX = (g_nCursorX - S_BRICK_X) / BRICK_W;
-        nY = (g_nCursorY - S_BRICK_Y) / BRICK_H;
+        nX = (g_cursorPosition.x - S_BRICK_X) / BRICK_W;
+        nY = (g_cursorPosition.y - S_BRICK_Y) / BRICK_H;
         if (nX >= 0 && nX < 10 && nY >= 0 && nY < 9)
         {
             SetRect(&rc, 0, 0, BRICK_W, BRICK_H);
@@ -88,8 +88,8 @@ void CLevelEditor::Draw()
     }
     else
     {
-        nX = (g_nCursorX - BRICK_X) / BRICK_W;
-        nY = (g_nCursorY - BRICK_Y) / BRICK_H;
+        nX = (g_cursorPosition.x - BRICK_X) / BRICK_W;
+        nY = (g_cursorPosition.y - BRICK_Y) / BRICK_H;
         SetRect(&rc, 0, 0, BRICK_W, BRICK_H);
         if (nX >= 0 && nX < BRICKS_WIDTH && nY >= 0 && nY < BRICKS_HEIGHT)
         {

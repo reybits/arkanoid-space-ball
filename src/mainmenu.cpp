@@ -66,28 +66,25 @@ int CMainMenu::DrawMenu()
         break;
     }
 
-    const char achTips[] = "TIP: Try change video mode to increase performance.   "
-                           "TIP: Kamikaze and fiery meteorite blows up the paddle.   "
-                           "TIP: Ice-meteorite freezes up the paddle for 3 seconds.   "
-                           "TIP: To gain additional scores try to destroy very strong bricks.   "
-                           "TIP: Nuclear bomb blows up some bricks around.   "
-                           "TIP: Cannon fires on you (shots are frozen or invert paddle movement).   "
-                           "TIP: Red brick always has a bonus.   "
-                           "TIP: Right mouse button - return to main menu.   "
-                           " ";
-    static bool bInit = true;
-    if (bInit == true)
-    {
-        bInit = false;
-        a::fntSin()->SetString(achTips, SCREEN_WIDTH, 420);
-    }
     if (m_nMenuType == MT_MAIN)
     {
+        const char achTips[] = "TIP: Try change video mode to increase performance.   "
+            "TIP: Kamikaze and fiery meteorite blows up the paddle.   "
+            "TIP: Ice-meteorite freezes up the paddle for 3 seconds.   "
+            "TIP: To gain additional scores try to destroy very strong bricks.   "
+            "TIP: Nuclear bomb blows up some bricks around.   "
+            "TIP: Cannon fires on you (shots are frozen or invert paddle movement).   "
+            "TIP: Red brick always has a bonus.   "
+            "TIP: Right mouse button - return to main menu.   "
+            " ";
+        static bool bInit = true;
+        if (bInit == true)
+        {
+            bInit = false;
+            a::fntSin()->SetString(achTips, SCREEN_WIDTH, 420);
+        }
         a::fntSin()->Draw();
-    }
 
-    if (m_nMenuType == MT_MAIN)
-    {
         a::fnt1()->DrawString(5, SCREEN_HEIGHT - 5 - 14, VersionString);
     }
     else if ((IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)) || g_bMouseRB == true)
@@ -630,8 +627,6 @@ void CMainMenu::DrawMenuOptions()
     const auto size = sizeof(Types) / sizeof(Types[0]);
     for (size_t i = 0; i < size; i++)
     {
-        offset += 50;
-
         renderTypeValue(i, offset, Types[i]);
 
         if (DrawMenuButton(SCREEN_WIDTH / 2 - 77 - 40, offset, B_PREV))
@@ -644,9 +639,9 @@ void CMainMenu::DrawMenuOptions()
             type = i;
             button = B_NEXT;
         }
-    }
 
-    offset += 40;
+        offset += 50;
+    }
 
     if (m_optionsDirty)
     {
@@ -887,10 +882,10 @@ bool CMainMenu::DrawMenuButton(int nX, int nY, int nButtonId)
     };
     const int w = buttons[nButtonId].w;
     bool bIsOver = false;
-    if (g_nCursorX > nX
-        && g_nCursorX < (nX + w)
-        && g_nCursorY > nY
-        && g_nCursorY < (nY + 24))
+    if (g_cursorPosition.x > nX
+        && g_cursorPosition.x < (nX + w)
+        && g_cursorPosition.y > nY
+        && g_cursorPosition.y < (nY + 24))
     {
         bIsOver = true;
         PlaySFX(nButtonId);

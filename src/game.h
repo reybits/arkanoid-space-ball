@@ -10,8 +10,10 @@
 
 #include "bonus.h"
 #include "generatelevel.h"
+#include "vector.h"
 
 #include <SDL.h>
+#include <string>
 #include <vector>
 
 class CGame final
@@ -62,13 +64,18 @@ public:
     void InitNewGame(bool bIsCustomLevels);
     void Unload();
     bool DrawGetReady();
-    void AddGetReeadyInfo(const char* pchString);
+    void addGetReadyInfo(const char* pchString);
     void RemoveOneLives();
     void DrawBackground();
     void RestoreGame();
     void SendEsc();
     void LoadBackground();
     void FreeBackground();
+
+    const sVector<float>& getPaddlePosition() const
+    {
+        return m_paddlePosition;
+    }
 
 private:
     void DrawPause();
@@ -126,8 +133,7 @@ private:
     int m_nClockFrame;
     int m_nLives;
     int m_nGameState;
-    float m_nRacketX;
-    float m_nRacketY;
+    sVector<float> m_paddlePosition;
     int m_nRacketSize;
     int m_nRacketType;
     int m_nPaddleMissileCount;
@@ -142,7 +148,7 @@ private:
     int m_nGetReadyBallsLose;
     Uint32 m_dwCombosTime;
     int m_nCombosBricks;
-    char* m_pchGetReeadyInfo;
+    std::string m_getReadyInfo;
     bool m_bTutorialPause;
     bool m_bIsCustomLevels;
 

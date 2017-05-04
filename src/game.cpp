@@ -40,7 +40,6 @@ CGame::CGame(const sOptions& options)
     , m_nGameState(-1)
     , m_nCurrentLevel(0)
     , m_nLevelImage(-1)
-    , m_pchGetReeadyInfo(nullptr)
     , m_bIsCustomLevels(false)
 {
     m_bricks.reserve(BRICKS_WIDTH * BRICKS_HEIGHT);
@@ -48,7 +47,6 @@ CGame::CGame(const sOptions& options)
 
 CGame::~CGame()
 {
-    delete[] m_pchGetReeadyInfo;
 }
 
 void CGame::InitNewGame(bool bIsCustomLevels)
@@ -92,7 +90,7 @@ void CGame::DoGameActive()
                 if (--nCountCopter == 0)
                 {
                     nCountCopter = 50 + a::rnd().Get(30);
-                    a::monst()->AddMonster(50, (int)m_nRacketY + (PADDLE_HEIGHT - 48) / 2, CMonster::eMonsters::PATROL);
+                    a::monst()->AddMonster(50, m_paddlePosition.y + (PADDLE_HEIGHT - 48) / 2, CMonster::eMonsters::PATROL);
                 }
             }
             if (++m_nAddNewMonsterCount == 10)
@@ -144,45 +142,48 @@ void CGame::DoGameActive()
 
     if (m_bCanMovePaddle == true)
     {
-        const float speed = (m_bPaddleIsInvert ? -1.0f : 1.0f) * 1.1f; // * g_fSpeedCorrection;
-        m_nRacketY += g_nMouseDY * speed;
+        m_paddlePosition.y = g_cursorPosition.y;
+        // const float speed = (m_bPaddleIsInvert ? -1.0f : 1.0f) * 1.1f; // * g_fSpeedCorrection;
+        // m_paddlePosition.y += g_nMouseDY * speed;
 
-        if (IsKeyPressed(SDLK_UP))
-        {
-            m_nRacketY -= g_fSpeedCorrection;
-        }
-        else if (IsKeyPressed(SDLK_DOWN))
-        {
-            m_nRacketY += g_fSpeedCorrection;
-        }
+        // if (IsKeyPressed(SDLK_UP))
+        // {
+            // m_paddlePosition.y -= g_fSpeedCorrection;
+        // }
+        // else if (IsKeyPressed(SDLK_DOWN))
+        // {
+            // m_paddlePosition.y += g_fSpeedCorrection;
+        // }
 
         if (m_nRacketType == RT_ENGINE)
         {
-            m_nRacketX += g_nMouseDX * speed;
+            m_paddlePosition.x = g_cursorPosition.x;
+            // m_paddlePosition.x += g_nMouseDX * speed;
 
-            if (IsKeyPressed(SDLK_LEFT))
-            {
-                m_nRacketX -= g_fSpeedCorrection;
-            }
-            else if (IsKeyPressed(SDLK_RIGHT))
-            {
-                m_nRacketX += g_fSpeedCorrection;
-            }
+            // if (IsKeyPressed(SDLK_LEFT))
+            // {
+                // m_paddlePosition.x -= g_fSpeedCorrection;
+            // }
+            // else if (IsKeyPressed(SDLK_RIGHT))
+            // {
+                // m_paddlePosition.x += g_fSpeedCorrection;
+            // }
         }
+
+        m_paddlePosition.x = std::max<float>(m_paddlePosition.x, WALL_X1 + 50);
+        m_paddlePosition.x = std::min<float>((m_nRacketType == RT_ENGINE ? m_paddlePosition.x : RACKET_X), RACKET_X + 5);
+
+        m_paddlePosition.y = std::max<float>(m_paddlePosition.y, WALL_Y1);
+        m_paddlePosition.y = std::min<float>(m_paddlePosition.y, WALL_Y2 - PADDLE_HEIGHT);
     }
 
-    m_nRacketY = std::max<int>(m_nRacketY, WALL_Y1);
-    m_nRacketY = std::min<int>(m_nRacketY, WALL_Y2 - PADDLE_HEIGHT);
-    m_nRacketX = std::max<int>(m_nRacketX, WALL_X1 + 50);
-    m_nRacketX = std::min<int>((m_nRacketType == RT_ENGINE ? m_nRacketX : RACKET_X), RACKET_X + 5);
-
     static Uint32 dwRacketTime = 0;
-    if (m_nRacketX > RACKET_X)
+    if (m_paddlePosition.x > RACKET_X)
     {
         if (dwRacketTime + 15 < SDL_GetTicks())
         {
             dwRacketTime = SDL_GetTicks();
-            m_nRacketX--;
+            m_paddlePosition.x--;
         }
     }
 
@@ -201,7 +202,7 @@ void CGame::DoGameActive()
             a::tutDlg()->AddDialog(WALL_X2, WALL_Y1, 0, 4);
             if (a::expl()->GetCount() == 0 && (m_options.autoBonusMode == true || a::bonus()->GetBonusesOnScreen() == 0) /* && a::coolstr()->GetCount() == 0*/)
             {
-                AddGetReeadyInfo("You have destroyed all bricks!");
+                addGetReadyInfo("You have destroyed all bricks!");
                 InitLevel(++m_nCurrentLevel);
             }
         }
@@ -215,7 +216,7 @@ void CGame::DoGameActive()
         }
         if (a::ball()->GetBallsCount() == 0)
         {
-            AddGetReeadyInfo("You lost balls");
+            addGetReadyInfo("You lost balls");
             RemoveOneLives();
         }
 
@@ -223,7 +224,7 @@ void CGame::DoGameActive()
         {
             g_bMouseLB = false;
             DoShoot();
-            a::ball()->StartBall((int)m_nRacketY, (int)m_nRacketY + PADDLE_HEIGHT);
+            a::ball()->StartBall((int)m_paddlePosition.y, (int)m_paddlePosition.y + PADDLE_HEIGHT);
         }
 
         if (m_options.autoBonusMode == false && g_bMouseRB == true)
@@ -237,24 +238,24 @@ void CGame::DoGameActive()
             g_fSpeedCorrection *= 0.4f;
         }
 
-        rc.x = (int)m_nRacketX;
-        rc.y = (int)m_nRacketY;
+        rc.x = (int)m_paddlePosition.x;
+        rc.y = (int)m_paddlePosition.y;
         rc.h = PADDLE_HEIGHT;
         //if(IsKeyPressed(SDLK_n) && IsKeyStateChanged(SDLK_n) || IsKeyPressed(SDLK_m)) {
         if (m_nBrickCount > 0) // don't move balls if no bricks on screen
         {
-            int nPx = (int)m_nRacketX;
+            int nPx = (int)m_paddlePosition.x;
             m_nGetReadyBallsLose += a::ball()->Move(m_bBackWall, rc, m_nRacketType, nPx);
-            m_nRacketX = nPx;
+            m_paddlePosition.x = nPx;
         }
         a::bullet()->Move();
-        a::monst()->Move(m_bBackWall, m_nRacketY, PADDLE_HEIGHT);
+        a::monst()->Move(m_bBackWall, m_paddlePosition.y, PADDLE_HEIGHT);
         MoveBrickBullets();
         a::hole()->Move();
         a::bonus()->Move(m_nRacketType);
 
         CBonus::eType bonusType;
-        if ((bonusType = a::bonus()->IsAcross(m_nRacketX, m_nRacketY, 12, PADDLE_HEIGHT)) != CBonus::eType::Count)
+        if ((bonusType = a::bonus()->IsAcross(m_paddlePosition.x, m_paddlePosition.y, 12, PADDLE_HEIGHT)) != CBonus::eType::Count)
         {
             if (m_options.autoBonusMode == true)
             {
@@ -266,7 +267,7 @@ void CGame::DoGameActive()
             }
         }
 
-        if (true == a::monst()->IsAcrossPaddle(m_nRacketX, m_nRacketY, 12, PADDLE_HEIGHT))
+        if (true == a::monst()->IsAcrossPaddle(m_paddlePosition.x, m_paddlePosition.y, 12, PADDLE_HEIGHT))
         {
             AddScore(15);
         }
@@ -274,7 +275,7 @@ void CGame::DoGameActive()
         for (size_t i = 0, size = m_vecBrickBullets.size(); i < size;)
         {
             auto& bb = m_vecBrickBullets[i];
-            if (bb.fX + 10 > m_nRacketX && bb.fX < m_nRacketX + 12 && bb.fY + 10 > m_nRacketY && bb.fY < m_nRacketY + PADDLE_HEIGHT)
+            if (bb.fX + 10 > m_paddlePosition.x && bb.fX < m_paddlePosition.x + 12 && bb.fY + 10 > m_paddlePosition.y && bb.fY < m_paddlePosition.y + PADDLE_HEIGHT)
             {
                 a::expl()->AddExploision(bb.fX - 12, bb.fY - 10, 0);
                 if (bb.nType == 0)
@@ -352,21 +353,21 @@ void CGame::DoGameActive()
     }
     else if (m_nBonusLevelType == 0)
     {
-        rc.x = (int)m_nRacketX;
-        rc.y = (int)m_nRacketY;
+        rc.x = (int)m_paddlePosition.x;
+        rc.y = (int)m_paddlePosition.y;
         rc.h = PADDLE_HEIGHT;
-        int nPx = (int)m_nRacketX;
+        int nPx = (int)m_paddlePosition.x;
         m_nGetReadyBallsLose += a::ball()->Move(m_bBackWall, rc, m_nRacketType, nPx);
-        m_nRacketX = nPx;
+        m_paddlePosition.x = nPx;
         if (m_nBrickCount == 0 && a::expl()->GetCount() == 0 && a::coolstr()->GetCount() == 0)
         {
-            AddGetReeadyInfo("All cannons destroyed, bonus 3000 score!");
+            addGetReadyInfo("All cannons destroyed, bonus 3000 score!");
             AddScore(3000);
             InitLevel(++m_nCurrentLevel);
         }
         if (m_nGetReadyBallsLose == 5)
         {
-            AddGetReeadyInfo("You lost 5 balls, no bonus score");
+            addGetReadyInfo("You lost 5 balls, no bonus score");
             PlaySound(99); //g_pMainFrame->m_pImix->SamplePlay(m_nSampleGetReady);
             InitLevel(++m_nCurrentLevel);
         }
@@ -376,18 +377,18 @@ void CGame::DoGameActive()
         if (g_bMouseLB == true)
         {
             g_bMouseLB = false;
-            a::ball()->StartBall((int)m_nRacketY, (int)m_nRacketY + PADDLE_HEIGHT);
+            a::ball()->StartBall((int)m_paddlePosition.y, (int)m_paddlePosition.y + PADDLE_HEIGHT);
         }
-        rc.x = m_nRacketX;
-        rc.y = m_nRacketY;
+        rc.x = m_paddlePosition.x;
+        rc.y = m_paddlePosition.y;
         rc.h = PADDLE_HEIGHT;
-        int nPx = m_nRacketX;
+        int nPx = m_paddlePosition.x;
         m_nGetReadyBallsLose += a::ball()->Move(m_bBackWall, rc, m_nRacketType, nPx);
-        m_nRacketX = nPx;
-        a::monst()->Move(m_bBackWall, (int)m_nRacketY, PADDLE_HEIGHT);
-        if (true == a::monst()->IsAcrossPaddle2((int)m_nRacketX, (int)m_nRacketY, 12, PADDLE_HEIGHT) || a::ball()->GetBallsCount() == 0)
+        m_paddlePosition.x = nPx;
+        a::monst()->Move(m_bBackWall, (int)m_paddlePosition.y, PADDLE_HEIGHT);
+        if (true == a::monst()->IsAcrossPaddle2((int)m_paddlePosition.x, (int)m_paddlePosition.y, 12, PADDLE_HEIGHT) || a::ball()->GetBallsCount() == 0)
         {
-            AddGetReeadyInfo("Your paddle destroyed, no bonus score");
+            addGetReadyInfo("Your paddle destroyed, no bonus score");
             PlaySound(99); //g_pMainFrame->m_pImix->SamplePlay(m_nSampleGetReady);
             InitLevel(++m_nCurrentLevel);
         }
@@ -408,7 +409,7 @@ void CGame::DoGameActive()
 
         if (m_nBonusLevelTicks == 0)
         {
-            AddGetReeadyInfo("You are strong, bonus 3000 score!");
+            addGetReadyInfo("You are strong, bonus 3000 score!");
             AddScore(3000);
             InitLevel(++m_nCurrentLevel);
         }
@@ -514,7 +515,7 @@ bool CGame::DrawScreen()
         }
         if (IsKeyPressed(SDLK_b) && IsKeyStateChanged(SDLK_b))
         {
-            a::ball()->AddBall(m_nRacketX - 20, (int)m_nRacketY + (PADDLE_HEIGHT - 20) / 2);
+            a::ball()->AddBall(m_paddlePosition.x - 20, (int)m_paddlePosition.y + (PADDLE_HEIGHT - 20) / 2);
         }
         if (IsKeyPressed(SDLK_o) && IsKeyStateChanged(SDLK_o))
         {
@@ -555,10 +556,10 @@ bool CGame::DoGameOver()
 
     dimScreen();
 
-    char achBuf[50];
+    char buffer[100];
     a::fnt2()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 - 10, "GAME OVER", CMyString::eAlign::Center);
-    sprintf(achBuf, "Your achieve %d level, and gain %d score points", m_nCurrentLevel + 1, m_nScore);
-    a::fnt1()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 + 20, achBuf, CMyString::eAlign::Center);
+    ::snprintf(buffer, sizeof(buffer), "Your achieve %d level, and gain %d score points", m_nCurrentLevel + 1, m_nScore);
+    a::fnt1()->DrawString(0, (SCREEN_HEIGHT - 15) / 2 + 20, buffer, CMyString::eAlign::Center);
 
     bool bIsOver = a::menu()->DrawMenuButton(GO_ITEM_X, GO_ITEM_Y + 40, CMainMenu::B_OK);
     if (g_bMouseRB == true || (g_bMouseLB == true && true == bIsOver) || (IsKeyPressed(SDLK_ESCAPE) && IsKeyStateChanged(SDLK_ESCAPE)))
@@ -689,7 +690,7 @@ void CGame::DrawBricks()
                             a::tutDlg()->AddDialog(bb.fX + 10, bb.fY + 10, 0, 0);
                             lb.nCountToShoot = 30 + a::rnd().Get(20);
                             bb.nType = 0;
-                            bb.nAngle = CalcBrickBulletsAngle(i, m_nRacketX, m_nRacketY + PADDLE_HEIGHT / 2);
+                            bb.nAngle = CalcBrickBulletsAngle(i, m_paddlePosition.x, m_paddlePosition.y + PADDLE_HEIGHT / 2);
                         }
                         else // do shoot on ball
                         {
@@ -1061,8 +1062,8 @@ void CGame::DrawPaddle()
     src.y = m_bPaddleIsInvert == true ? 140 : 0;
     src.w = 12;
     src.h = PADDLE_HEIGHT;
-    render(m_nRacketX, m_nRacketY, eImage::Paddle, &src);
-    a::fnt1()->SetRect(m_nRacketX, 0, 14, SCREEN_HEIGHT);
+    render(m_paddlePosition.x, m_paddlePosition.y, eImage::Paddle, &src);
+    a::fnt1()->SetRect(m_paddlePosition.x, 0, 14, SCREEN_HEIGHT);
     src.x = 0;
     src.h = 50;
     switch (m_nRacketType)
@@ -1070,26 +1071,26 @@ void CGame::DrawPaddle()
     case RT_LASER:
         src.y = 380;
         src.w = 32;
-        render(m_nRacketX - 15, m_nRacketY + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
+        render(m_paddlePosition.x - 15, m_paddlePosition.y + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
         break;
     case RT_MISSILE:
-    //a::fnt1()->DrawNumber(m_nPaddleMissileCount, 0, (int)m_nRacketY - 15, 2);
+    //a::fnt1()->DrawNumber(m_nPaddleMissileCount, 0, (int)m_paddlePosition.y - 15, 2);
     case RT_PLASMA:
         src.y = 330;
         src.w = 36;
-        render(m_nRacketX - 17, m_nRacketY + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
+        render(m_paddlePosition.x - 17, m_paddlePosition.y + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
         break;
     case RT_MAGNET:
         break;
     case RT_ENGINE:
         src.y = 280;
         src.w = 21;
-        render(m_nRacketX, m_nRacketY + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
+        render(m_paddlePosition.x, m_paddlePosition.y + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
         src.x = 48;
         src.y = 30 * nEngine;
         src.w = 30;
         src.h = 30;
-        render(m_nRacketX + 12, m_nRacketY + (PADDLE_HEIGHT - 30) / 2, eImage::Paddle, &src);
+        render(m_paddlePosition.x + 12, m_paddlePosition.y + (PADDLE_HEIGHT - 30) / 2, eImage::Paddle, &src);
         if (dwEngine + 50 < SDL_GetTicks())
         {
             dwEngine = SDL_GetTicks();
@@ -1100,7 +1101,7 @@ void CGame::DrawPaddle()
     }
     if (m_bPaddleIsInvert == true)
     {
-        a::fnt1()->DrawNumber(m_nPaddleInvertCount, 0, (int)m_nRacketY + PADDLE_HEIGHT, CMyString::eAlign::Center);
+        a::fnt1()->DrawNumber(m_nPaddleInvertCount, 0, (int)m_paddlePosition.y + PADDLE_HEIGHT, CMyString::eAlign::Center);
     }
     a::fnt1()->SetRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     if (m_bCanMovePaddle == false)
@@ -1109,14 +1110,14 @@ void CGame::DrawPaddle()
         src.h = 50;
         src.y = 430;
         src.w = 36;
-        render((int)m_nRacketX - 12, (int)m_nRacketY + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
-        a::fnt1()->DrawNumber(m_nCanMovePaddleCount, (int)m_nRacketX + 18, (int)m_nRacketY + (PADDLE_HEIGHT - 15) / 2);
+        render((int)m_paddlePosition.x - 12, (int)m_paddlePosition.y + (PADDLE_HEIGHT - 50) / 2, eImage::Paddle, &src);
+        a::fnt1()->DrawNumber(m_nCanMovePaddleCount, (int)m_paddlePosition.x + 18, (int)m_paddlePosition.y + (PADDLE_HEIGHT - 15) / 2);
     }
 }
 
 void CGame::DrawStatistic()
 {
-    char achBuff[20];
+    char buffer[20];
     a::fnt2()->SetRect(97, 0, 56, SCREEN_HEIGHT);
     a::fnt2()->DrawNumber(m_nCurrentLevel + 1, 99, 19, CMyString::eAlign::Center);
 
@@ -1215,16 +1216,16 @@ void CGame::DrawStatistic()
     }
     else if (m_nBonusLevelType == 1)
     {
-        sprintf(achBuff, "%d:%02d", m_nBonusLevelTicks / 60, m_nBonusLevelTicks % 60);
-        a::fnt1()->DrawString(5, 10, achBuff, CMyString::eAlign::Right);
-        //sprintf(achBuff, "power: %d%%", 100 / m_nGetReadyBallsLose);
-        //a::fnt1()->DrawString(5, 10, achBuff, CMyString::eAlign::Right);
+        ::snprintf(buffer, sizeof(buffer), "%d:%02d", m_nBonusLevelTicks / 60, m_nBonusLevelTicks % 60);
+        a::fnt1()->DrawString(5, 10, buffer, CMyString::eAlign::Right);
+        //::snprintf(buffer, sizeof(buffer), "power: %d%%", 100 / m_nGetReadyBallsLose);
+        //a::fnt1()->DrawString(5, 10, buffer, CMyString::eAlign::Right);
     }
 }
 
 void CGame::DoShoot()
 {
-    int nLaserY = (int)m_nRacketY + (PADDLE_HEIGHT - 2) / 2;
+    int nLaserY = (int)m_paddlePosition.y + (PADDLE_HEIGHT - 2) / 2;
 
     if ((m_nRacketType == RT_LASER || m_nRacketType == RT_MISSILE || m_nRacketType == RT_PLASMA))
     {
@@ -1243,15 +1244,15 @@ void CGame::DoShoot()
                     m_nLaserX = std::max<int>(m_nLaserX, brick.x + BRICK_W);
                 }
             }
-            a::bullet()->AddBullets((int)m_nRacketY + (PADDLE_HEIGHT - 20) / 2, eBulletType::LASER);
+            a::bullet()->AddBullets((int)m_paddlePosition.y + (PADDLE_HEIGHT - 20) / 2, eBulletType::LASER);
             PlaySound(8);
             break;
         case RT_MISSILE:
-            a::bullet()->AddBullets((int)m_nRacketY + (PADDLE_HEIGHT - 20) / 2, eBulletType::MISSILE);
+            a::bullet()->AddBullets((int)m_paddlePosition.y + (PADDLE_HEIGHT - 20) / 2, eBulletType::MISSILE);
             PlaySound(12);
             break;
         case RT_PLASMA:
-            a::bullet()->AddBullets((int)m_nRacketY + (PADDLE_HEIGHT - 20) / 2, eBulletType::PLASMA);
+            a::bullet()->AddBullets((int)m_paddlePosition.y + (PADDLE_HEIGHT - 20) / 2, eBulletType::PLASMA);
             PlaySound(13);
             break;
         }
@@ -1301,7 +1302,7 @@ void CGame::ProcessBonus(CBonus::eType type)
         a::coolstr()->Add("expand balls");
         break;
     case CBonus::eType::PADDLE_LASER:
-        while (true == a::ball()->StartBall((int)m_nRacketY, (int)m_nRacketY + PADDLE_HEIGHT))
+        while (true == a::ball()->StartBall((int)m_paddlePosition.y, (int)m_paddlePosition.y + PADDLE_HEIGHT))
             ;
         if (RT_LASER != m_nRacketType)
         {
@@ -1312,7 +1313,7 @@ void CGame::ProcessBonus(CBonus::eType type)
         a::coolstr()->Add("laser");
         break;
     case CBonus::eType::PADDLE_FIRE:
-        while (true == a::ball()->StartBall((int)m_nRacketY, (int)m_nRacketY + PADDLE_HEIGHT))
+        while (true == a::ball()->StartBall((int)m_paddlePosition.y, (int)m_paddlePosition.y + PADDLE_HEIGHT))
             ;
         if (RT_PLASMA != m_nRacketType)
         {
@@ -1323,7 +1324,7 @@ void CGame::ProcessBonus(CBonus::eType type)
         a::coolstr()->Add("plasmagun");
         break;
     case CBonus::eType::PADDLE_MISSILE:
-        while (true == a::ball()->StartBall((int)m_nRacketY, (int)m_nRacketY + PADDLE_HEIGHT))
+        while (true == a::ball()->StartBall((int)m_paddlePosition.y, (int)m_paddlePosition.y + PADDLE_HEIGHT))
             ;
         if (RT_MISSILE != m_nRacketType)
         {
@@ -1348,7 +1349,7 @@ void CGame::ProcessBonus(CBonus::eType type)
         a::coolstr()->Add("expand paddle");
         break;
     case CBonus::eType::PADDLE_ENGINE:
-        while (true == a::ball()->StartBall((int)m_nRacketY, (int)m_nRacketY + PADDLE_HEIGHT))
+        while (true == a::ball()->StartBall((int)m_paddlePosition.y, (int)m_paddlePosition.y + PADDLE_HEIGHT))
             ;
         m_nPaddleMissileCount = 0;
         m_nRacketType = RT_ENGINE;
@@ -1543,8 +1544,8 @@ void CGame::ResetAll()
     }
     m_nRacketType = RT_NORMAL;
     m_nPaddleMissileCount = 0;
-    m_nRacketY = WALL_Y1 + ((WALL_Y2 - WALL_Y1) - PADDLE_HEIGHT) / 2;
-    m_nRacketX = RACKET_X;
+    m_paddlePosition.y = WALL_Y1 + ((WALL_Y2 - WALL_Y1) - PADDLE_HEIGHT) / 2;
+    m_paddlePosition.x = RACKET_X;
 
     m_vecBrickBullets.clear();
     m_vecBrickBullets.reserve(10);
@@ -1555,7 +1556,7 @@ void CGame::ResetAll()
     a::ball()->RemoveAll();
     if (m_nBonusLevelType == -1 || m_nBonusLevelType == 1)
     {
-        a::ball()->AddBall((int)m_nRacketX - 20, (int)m_nRacketY + (PADDLE_HEIGHT - 20) / 2);
+        a::ball()->AddBall((int)m_paddlePosition.x - 20, (int)m_paddlePosition.y + (PADDLE_HEIGHT - 20) / 2);
     }
 }
 
@@ -1646,29 +1647,29 @@ bool CGame::IsEmptyBrickPos(int nSkipPos, int nX, int nY)
 
 bool CGame::DrawGetReady()
 {
-    char achBuf[50];
+    char buffer[100];
 
     dimScreen();
 
     if (m_nBonusLevelType == -1)
     {
-        sprintf(achBuf, "LEVEL %d\nGET READY!", m_nCurrentLevel + 1);
-        if (m_pchGetReeadyInfo != 0 && m_nLevelPrev != -2)
+        ::snprintf(buffer, sizeof(buffer), "LEVEL %d\nGET READY!", m_nCurrentLevel + 1);
+        if (m_getReadyInfo.empty() == false && m_nLevelPrev != -2 && m_nCurrentLevel > 0)
         {
-            a::fnt3()->DrawString(0, 218, m_pchGetReeadyInfo, CMyString::eAlign::Center);
+            a::fnt3()->DrawString(0, 218, m_getReadyInfo.c_str(), CMyString::eAlign::Center);
         }
     }
     else if (m_nBonusLevelType == 0)
     {
-        sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
+        ::snprintf(buffer, sizeof(buffer), "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
         a::fnt3()->DrawString(0, 218, "You should destroy all cannons, don't lost more than 5 balls!", CMyString::eAlign::Center);
     }
     else if (m_nBonusLevelType == 1)
     {
-        sprintf(achBuf, "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
+        ::snprintf(buffer, sizeof(buffer), "BONUS LEVEL %d\nGET READY!", (m_nCurrentLevel + 1) / 5);
         a::fnt3()->DrawString(0, 218, "You should destroy all wreckage!", CMyString::eAlign::Center);
     }
-    a::fnt2()->DrawString(0, 170, achBuf, CMyString::eAlign::Center);
+    a::fnt2()->DrawString(0, 170, buffer, CMyString::eAlign::Center);
 
     // do not show that info while we restore game
     if (m_nLevelPrev != -2 && m_nCurrentLevel > 0)
@@ -1698,11 +1699,11 @@ bool CGame::DrawGetReady()
     return false;
 }
 
-void CGame::AddGetReeadyInfo(const char* pchString)
+void CGame::addGetReadyInfo(const char* pchString)
 {
-    delete[] m_pchGetReeadyInfo;
-    m_pchGetReeadyInfo = new char[strlen(pchString) + 5];
-    sprintf(m_pchGetReeadyInfo, "[ %s ]", pchString);
+    m_getReadyInfo = "[ ";
+    m_getReadyInfo += pchString;
+    m_getReadyInfo += " ]";
 }
 
 void CGame::RemoveOneLives()
@@ -1728,17 +1729,17 @@ void CGame::LoadBackground()
     if (m_nLevelImage != m_nCurrentLevel)
     {
         m_nLevelImage = m_nCurrentLevel;
-        char achBuf[20];
+        char buffer[20];
         if (m_nBonusLevelType == -1)
         {
-            sprintf(achBuf, "gamebg%d.jpg", m_nCurrentLevel % 5);
+            ::snprintf(buffer, sizeof(buffer), "gamebg%d.jpg", m_nCurrentLevel % 5);
         }
         else
         {
-            strcpy(achBuf, "gamebg5.jpg");
+            strcpy(buffer, "gamebg5.jpg");
         }
         SDL_FreeSurface(m_background);
-        m_background = a::res()->loadImage(achBuf);
+        m_background = a::res()->loadImage(buffer);
     }
 }
 

@@ -467,7 +467,7 @@ bool CMonster::IsAcrossPaddle(int nX, int nY, int nWidth, int nHeight)
                 {
                     a::expl()->AddExploision(nX - (45 - 12) / 2 + (10 - a::rnd().Get(20)), nY - (41 - nHeight) / 2 + (nHeight / 2 - a::rnd().Get(nHeight)), 0);
                 }
-                a::ark()->AddGetReeadyInfo(v.type == eMonsters::PATROL ? "Kamikaze impact paddle" : "Meteor impact paddle");
+                a::ark()->addGetReadyInfo(v.type == eMonsters::PATROL ? "Kamikaze impact paddle" : "Meteor impact paddle");
                 a::ark()->RemoveOneLives();
             }
             a::expl()->AddExploision(v.x + (v.w - 45) / 2, v.y + (v.h - 41) / 2, 0);

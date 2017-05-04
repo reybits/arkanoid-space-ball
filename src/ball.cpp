@@ -320,7 +320,8 @@ void CBall::AddBall(int x, int y)
     sBall ball;
     ball.x = (float)x;
     ball.y = (float)y;
-    ball.nYoffset = y - (int)a::ark()->m_nRacketY;
+    auto paddlePosition = a::ark()->getPaddlePosition();
+    ball.nYoffset = y - (int)paddlePosition.y;
     ball.nDiameter = 1;
     ball.fSpeed = 0;
     ball.fOldSpeed = -1;
