@@ -1,6 +1,6 @@
 /**********************************************\
 *
-*  Andrey A. Ugolnik
+*  Copyright (C) 2006 by Andrey A. Ugolnik
 *  http://www.ugolnik.info
 *  andrey@ugolnik.info
 *
