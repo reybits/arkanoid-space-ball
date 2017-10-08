@@ -9,7 +9,7 @@
     <key>CFBundleGetInfoString</key>
     <string>© 2006, Andrey A. Ugolnik</string>
     <key>CFBundleIconFile</key>
-    <string>Icon.icns</string>
+    <string>arkanoidsb.icns</string>
     <key>CFBundleIdentifier</key>
     <string>info.ugolnik.arkanoidsb</string>
     <key>CFBundleInfoDictionaryVersion</key>
