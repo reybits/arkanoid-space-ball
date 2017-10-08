@@ -1,6 +1,6 @@
 ###Arkanoid: Space Ball###
 
-> note: This is very old unsupported project. I just slightly refactor code to building it for recent Linux, macOS and Web (Emscripten).
+> note: This is very old unsupported project. I just slightly refactor code to support recent Linux, macOS and Emscripten.
 
 Arkanoid is still as fun now as it ever was. Whether on a big old arcade box or on your Mac, the game always manages to keep its fun and excitement.
 Arkanoid: Space Ball puts you in control of a little spaceship, with your goal being to destroy as many colored tiles as you can by hitting a ball back and forth. Arkanoid: Space Ball comes with plenty of bonuses and varying difficulty levels.
@@ -22,7 +22,8 @@ You can get a copy using git with the following command:
 ```bash
 $ git clone https://bitbucket.org/andreyu/arkanoid-space-ball.git
 $ cd arkanoid-space-ball
-$ make release
+$ make release # Linux or macOS
+$ make emscripten # Web (Emscripten)
 ```
 
 ***
@@ -30,6 +31,7 @@ $ make release
 
 `CMake`, `SDL`, `SDL-mixer`, `SDL-image`
 
+***
 ```
 Copyright © 2006 Andrey A. Ugolnik. All Rights Reserved.
 http://www.ugolnik.info
