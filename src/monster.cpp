@@ -18,6 +18,7 @@
 #include "videosystem/videosystem.h"
 
 #include <cmath>
+#include <limits>
 #include <cstdlib>
 
 CMonster::CMonster()
@@ -106,7 +107,8 @@ void CMonster::AddMonster(int x, int y, eMonsters type)
         int w;
         int h;
     };
-    const sDescription Descriptions[(unsigned)eMonsters::Count] = {
+    const sDescription Descriptions[(unsigned)eMonsters::Count] =
+    {
         { 10, eImage::MonsterPatrol, 64, 48 },
         { 5, eImage::MonsterCopter, 64, 48 },
         { 30, eImage::MonsterEye, 32, 32 },
