@@ -49,7 +49,7 @@ void CEnergyHole::AddEnergyHole()
     hole.x = WALL_X1 + a::rnd().Get(WALL_X2 - WALL_X1 - 100);
     hole.y = WALL_Y1 + a::rnd().Get(WALL_Y2 - WALL_Y1 - 100);
     hole.frame = 0;
-    hole.time = 0;
+    hole.frameTime = 0;
     hole.move_time = 0;
     hole.angle = a::rnd().Get(360);
     m_holes.push_back(hole);

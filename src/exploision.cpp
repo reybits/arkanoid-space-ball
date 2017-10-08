@@ -76,7 +76,7 @@ void CExploision::RemoveAll()
     m_exlosions.clear();
 }
 
-size_t CExploision::GetCount()
+size_t CExploision::GetCount() const
 {
     return m_exlosions.size();
 }

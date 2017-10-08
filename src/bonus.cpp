@@ -19,7 +19,7 @@ CBonus::CBonus()
 {
     m_bounses.reserve(20);
     m_stack.reserve(20);
-    m_nStackPos = 0;
+    m_stackIdx = 0;
 }
 
 CBonus::~CBonus()
@@ -72,27 +72,24 @@ void CBonus::Move(int nRacketType)
 
 void CBonus::Draw()
 {
-    SDL_Rect rc;
-    bool bNewFrame = false;
-    static int nFrameStack = 0;
-    static Uint32 dwFrameTime = 0;
-    if (dwFrameTime + 60 < SDL_GetTicks())
+    static int frameIndex = 0;
+    static Uint32 lastTime = 0;
+    const bool nextFrame = lastTime + 60 < SDL_GetTicks();
+    if (nextFrame)
     {
-        dwFrameTime = SDL_GetTicks();
-        nFrameStack++;
-        nFrameStack %= 15;
-        bNewFrame = true;
+        lastTime = SDL_GetTicks();
+        frameIndex = (frameIndex + 1) % 15;
     }
 
+    SDL_Rect rc;
     for (auto& bonus : m_bounses)
     {
         const auto type = bonus.type;
-        if (bNewFrame == true)
+        if (nextFrame == true)
         {
-            bonus.nFrame++;
-            bonus.nFrame %= 15;
+            bonus.frame = (bonus.frame + 1) % 15;
         }
-        rc.x = bonus.nFrame * 36;
+        rc.x = bonus.frame * 36;
         rc.y = (int)type * 36;
         rc.w = rc.h = 36;
         render(bonus.x, bonus.y, eImage::Bonuses, &rc);
@@ -111,46 +108,42 @@ void CBonus::Draw()
     }
 
     rc.w = rc.h = 24;
-    int nCount = m_stack.size();
+    const size_t size = m_stack.size();
     bool bFist2 = true;
-    if (nCount > 0)
+    if (size > 0)
     {
-        int nCountOnScreen = nCount > 2 ? 3 : nCount;
-        m_nStackPos %= nCount;
-        int nPos = m_nStackPos - 1;
+        size_t countOnScreen = std::min<size_t>(3, size);
+        m_stackIdx %= size;
+        size_t pos = (m_stackIdx + size - 1) % size;
+
 #define SMALL_BONUS_X 532
         int nX = SMALL_BONUS_X;
-        if (nPos == -1)
-        {
-            nPos = nCount - 1;
-        }
         do
         {
-            if (nCount == 1)
+            if (size == 1)
             {
                 nX += 24;
             }
-            else if (nCount == 2 && m_nStackPos == 0 && bFist2 == true)
+            else if (size == 2 && m_stackIdx == 0 && bFist2 == true)
             {
                 bFist2 = false;
                 nX += 24;
-                nPos = 0;
+                pos = 0;
             }
+
             if (nX == SMALL_BONUS_X + 24)
             {
                 rc.x = rc.y = 0;
                 render(nX, 445, eImage::Transp, &rc);
                 a::tutDlg()->AddDialog(SMALL_BONUS_X + 24 + 12, 445, 0, 2);
             }
-            rc.x = nFrameStack * 24;
-            rc.y = (int)m_stack[nPos] * 24;
+
+            rc.x = frameIndex * 24;
+            rc.y = (int)m_stack[pos] * 24;
             render(nX, 445 + (nX == SMALL_BONUS_X + 24 ? 0 : 6), eImage::BonusesSmall, &rc);
             nX += 24;
-            nPos++;
-            nPos %= nCount;
-        } while (--nCountOnScreen);
-        /*      g_FontTutorial.SetRect(SMALL_BONUS_X + 24, 470, 24, 80);
-                g_FontTutorial.DrawString(0, 0, "test", 2);*/
+            pos = (pos + 1) % size;
+        } while (--countOnScreen);
     }
 }
 
@@ -159,7 +152,7 @@ void CBonus::RemoveAll(bool bAndStackToo)
     m_bounses.clear();
     if (bAndStackToo == true)
     {
-        m_nStackPos = 0;
+        m_stackIdx = 0;
         m_stack.clear();
     }
 }
@@ -168,7 +161,7 @@ void CBonus::AddBonus(int x, int y, eType type)
 {
     sBonus bonus;
     bonus.type = type;
-    bonus.nFrame = a::rnd().Get(10);
+    bonus.frame = a::rnd().Get(10);
     bonus.nRadius = 0;
     bonus.nSin = 0;
     bonus.nCos = 0;
@@ -203,28 +196,23 @@ size_t CBonus::GetBonusesOnScreen() const
     return m_bounses.size();
 }
 
-void CBonus::SetPosStack(bool bNext)
+void CBonus::SetPosStack(bool next)
 {
-    int nCount = m_stack.size();
-    if (nCount > 0)
+    size_t size = m_stack.size();
+    if (size > 0)
     {
-        if (bNext == true)
+        if (next == true)
         {
-            m_nStackPos++;
-            m_nStackPos %= nCount;
+            m_stackIdx = (m_stackIdx + 1) % size;
         }
         else
         {
-            m_nStackPos--;
-            if (m_nStackPos < 0)
-            {
-                m_nStackPos = nCount - 1;
-            }
+            m_stackIdx = (m_stackIdx + size - 1) % size;
         }
     }
     else
     {
-        m_nStackPos = 0;
+        m_stackIdx = 0;
     }
 }
 
@@ -235,11 +223,11 @@ void CBonus::AddToStack(eType type)
 
 CBonus::eType CBonus::GetBonusFromStack()
 {
-    int nCount = m_stack.size();
-    if (nCount > 0)
+    size_t size = m_stack.size();
+    if (size > 0)
     {
-        eType type = m_stack[m_nStackPos];
-        m_stack[m_nStackPos] = m_stack[m_stack.size() - 1];
+        eType type = m_stack[m_stackIdx];
+        m_stack[m_stackIdx] = m_stack[size - 1];
         m_stack.pop_back();
         return type;
     }
@@ -254,7 +242,5 @@ size_t CBonus::GetCountInStack() const
 
 CBonus::eType CBonus::GetTypeInStack(size_t nPos) const
 {
-    //if(nPos >= 0 && nPos < m_stack.size())
     return m_stack[nPos];
-    //return -1;
 }

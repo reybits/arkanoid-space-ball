@@ -19,23 +19,29 @@ public:
     ~CGenerateLevel();
 
     void LoadPatterns();
-    void Generate(int nLevel, bool bUseCustom);
+    void Generate(int level, bool bUseCustom);
 
-protected:
-    Uint8* m_pbyLevelPatterns;
-    int m_nPatterns;
-    bool m_bClonedByHorizontal;
-    bool m_bClonedByVertical;
-    enum { CLONE_VERTICAL, CLONE_HORIZONTAL };
-    void _CloneLevelBy(int nType);
-    int m_anPrevPatterns[10];
-    bool _IsPatternExist(int nPattern);
-    void _FillLevel(int nLevel, int nPos);
+private:
+    void _CloneLevelBy(int type);
+    bool _IsPatternExist(int pattern);
+    void _FillLevel(int level, int nPos);
     void _RollVertical();
     void _RollHorizontal();
     int _CalculateBricksCount();
     void _RollLevel();
-    int GetBrick(int nX, int nY);
-    void SetBrick(int nX, int nY, int nType);
-    Uint8 m_abyLevel[BRICKS_WIDTH][BRICKS_HEIGHT];
+    int GetBrick(int nX, int nY) const;
+    void SetBrick(int nX, int nY, int type);
+
+private:
+    Uint8* m_patterns;
+    unsigned m_patternsCount;
+    bool m_bClonedByHorizontal;
+    bool m_bClonedByVertical;
+    enum eClone
+    {
+        CLONE_VERTICAL,
+        CLONE_HORIZONTAL
+    };
+    int m_anPrevPatterns[10];
+    Uint8 m_level[BRICKS_WIDTH][BRICKS_HEIGHT];
 };
