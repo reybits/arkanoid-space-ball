@@ -17,7 +17,7 @@ public:
     CExploision();
     ~CExploision();
 
-    size_t GetCount();
+    size_t GetCount() const;
     void RemoveAll();
     void AddExploision(int x, int y, int type);
     void Draw(bool bBricks);

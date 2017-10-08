@@ -18,22 +18,22 @@ CGenerateLevel::CGenerateLevel()
     {
         m_anPrevPatterns[i] = -1;
     }
-    m_pbyLevelPatterns  = 0;
-    m_nPatterns         = 0;
+    m_patterns = 0;
+    m_patternsCount = 0;
 }
 
 CGenerateLevel::~CGenerateLevel()
 {
-    a::res()->FreeMem((unsigned char*)m_pbyLevelPatterns);
+    a::res()->FreeMem((unsigned char*)m_patterns);
 }
 
-void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
+void CGenerateLevel::Generate(int level, bool bUseCustom)
 {
     // clear level
     a::ark()->m_bricks.clear();
-    memset(m_abyLevel, 0, sizeof(m_abyLevel));
+    memset(m_level, 0, sizeof(m_level));
 
-    int nCustomLevelsCount  = 0;
+    int nCustomLevelsCount = 0;
     if (bUseCustom == true)
     {
         printf("Use custom levels mode.\n");
@@ -43,15 +43,15 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
         if (file != nullptr)
         {
             fseek(file, 0, SEEK_END);
-            nCustomLevelsCount  = ftell(file) / (BRICKS_WIDTH * BRICKS_HEIGHT);
-            fseek(file, (nLevel % nCustomLevelsCount) * (BRICKS_WIDTH * BRICKS_HEIGHT), SEEK_SET);
-            fread(m_abyLevel, (BRICKS_WIDTH * BRICKS_HEIGHT), 1, file);
+            nCustomLevelsCount = ftell(file) / (BRICKS_WIDTH * BRICKS_HEIGHT);
+            fseek(file, (level % nCustomLevelsCount) * (BRICKS_WIDTH * BRICKS_HEIGHT), SEEK_SET);
+            fread(m_level, (BRICKS_WIDTH * BRICKS_HEIGHT), 1, file);
             fclose(file);
         }
         else
         {
             printf("  No custom levels found, using internal levels set.\n");
-            memcpy(m_abyLevel, &m_pbyLevelPatterns[nLevel % m_nPatterns], BRICKS_WIDTH * BRICKS_HEIGHT);
+            memcpy(m_level, &m_patterns[level % m_patternsCount], BRICKS_WIDTH * BRICKS_HEIGHT);
         }
     }
     else
@@ -64,25 +64,25 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
         }*/
 
         EnableCursor(true);
-        if (nLevel < 10)
+        if (level < 10)
         {
             for (int x = 0; x < BRICKS_WIDTH; x++)
             {
                 for (int y = 0; y < BRICKS_HEIGHT; y++)
                 {
-                    SetBrick(x, y, *(m_pbyLevelPatterns + nLevel * BRICKS_WIDTH * BRICKS_HEIGHT + BRICKS_HEIGHT * x + y));
+                    SetBrick(x, y, *(m_patterns + level * BRICKS_WIDTH * BRICKS_HEIGHT + BRICKS_HEIGHT * x + y));
                 }
             }
         }
         else
         {
-            int nMaxIterations  = 100;
+            int nMaxIterations = 100;
             //do {
             for (int i = 0; i < 4; i++)
             {
                 _FillLevel(1, i);
             }
-            /*if(_CalculateBricksCount() > 100) {// && nLevel < 15) {
+            /*if(_CalculateBricksCount() > 100) {// && level < 15) {
                 int nDx = (1 + a::rnd().Get(6));
                 int nDy = (1 + a::rnd().Get(5));
 
@@ -93,10 +93,10 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
                 }
             }
             */
-            _RollLevel();   // Roll level
+            _RollLevel(); // Roll level
 
-            m_bClonedByVertical     = false;
-            m_bClonedByHorizontal   = false;
+            m_bClonedByVertical = false;
+            m_bClonedByHorizontal = false;
             switch (a::rnd().Get(4))
             {
             case 0:
@@ -122,27 +122,27 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
     // fill actual level
     //printf("(II) Generated level data below:\n");
     sBrick brick;
-    int nCountToShoot   = 0;
-    int nBricksCount    = 0;
+    int nCountToShoot = 0;
+    int nBricksCount = 0;
     for (int y = 0; y < BRICKS_HEIGHT; y++)
     {
         for (int x = 0; x < BRICKS_WIDTH; x++)
         {
-            Uint8   byType  = GetBrick(x, y);
+            Uint8 byType = GetBrick(x, y);
             //printf("%s", !byType ? " " : "O");
             //printf("%2d", byType);
             if (byType > BOX_NONE && byType < BOX_END)
             {
                 nBricksCount++;
-                brick.x                 = BRICK_X + x * BRICK_W;
-                brick.y                 = BRICK_Y + y * BRICK_H;
-                brick.byType            = byType;
-                brick.nCountToDie       = ((byType >= BOX_IM_0 && byType < BOX_BOMB_0) ? 15 : -1);
-                brick.nFrame            = 0;
-                brick.nAnimateType      = -1;
-                brick.bDir              = byType == BOX_MOV_0 ? (a::rnd().Get(2) == 0 ? false : true) : (byType == BOX_MOV_1 ? true : false);
-                brick.nDirChangeCount   = 0;
-                brick.nCountToShoot     = 5 + nCountToShoot;
+                brick.x = BRICK_X + x * BRICK_W;
+                brick.y = BRICK_Y + y * BRICK_H;
+                brick.byType = byType;
+                brick.nCountToDie = ((byType >= BOX_IM_0 && byType < BOX_BOMB_0) ? 15 : -1);
+                brick.nFrame = 0;
+                brick.nAnimateType = -1;
+                brick.bDir = byType == BOX_MOV_0 ? (a::rnd().Get(2) == 0 ? false : true) : (byType == BOX_MOV_1 ? true : false);
+                brick.nDirChangeCount = 0;
+                brick.nCountToShoot = 5 + nCountToShoot;
                 a::ark()->m_bricks.push_back(brick);
                 if (byType >= BOX_SHOOT_0 && byType < BOX_BOMB_0)
                 {
@@ -156,43 +156,42 @@ void CGenerateLevel::Generate(int nLevel, bool bUseCustom)
     // if ustom level empty, we use internal levels
     if (bUseCustom == true && nBricksCount == 0)
     {
-        if (nCustomLevelsCount < nLevel)
+        if (nCustomLevelsCount < level)
         {
             printf("Custom level empty, switch to internal levels\n");
-            return Generate(nLevel, false);
+            return Generate(level, false);
         }
         else
         {
-            printf("Now bricks on custom level %d, skip to next\n", nLevel++);
-            return Generate(nLevel, true);
+            printf("Now bricks on custom level %d, skip to next\n", level++);
+            return Generate(level, true);
         }
     }
 
     printf("Total bricks on level %u\n", (uint32_t)a::ark()->m_bricks.size());
 }
 
-void CGenerateLevel::_FillLevel(int nLevel, int nPos)
+void CGenerateLevel::_FillLevel(int level, int nPos)
 {
-    int nPattern;
+    int pattern;
     do
     {
-        nPattern    = a::rnd().Get(m_nPatterns);
-    }
-    while (_IsPatternExist(nPattern) == true);
+        pattern = a::rnd().Get(m_patternsCount);
+    } while (_IsPatternExist(pattern) == true);
 
     for (int x = nPos * 3; x < nPos * 3 + 3; x++)
     {
         for (int y = 0; y < BRICKS_HEIGHT; y++)
         {
-            Uint8   byType  = *(m_pbyLevelPatterns + nPattern * BRICKS_WIDTH * BRICKS_HEIGHT + BRICKS_HEIGHT * x + y);
+            Uint8 byType = *(m_patterns + pattern * BRICKS_WIDTH * BRICKS_HEIGHT + BRICKS_HEIGHT * x + y);
             //byType    = min(byType, a::rnd().Get(BOX_END));
 
-            /*if(nLevel < 5) {
+            /*if(level < 5) {
                 if(byType >= BOX_DBL_0 && byType < BOX_TRD_0) {
                     SetBrick(x, y, BOX_NONE);
                 }
             }
-            else if(nLevel < 25) {
+            else if(level < 25) {
                 if(byType >= BOX_TRD_0 && byType < BOX_IM_0) {
                     SetBrick(x, y, BOX_DBL_0 + (BOX_TRD_0 - BOX_DBL_0));
                 }
@@ -207,9 +206,9 @@ void CGenerateLevel::_FillLevel(int nLevel, int nPos)
     }
 }
 
-void CGenerateLevel::_CloneLevelBy(int nType)
+void CGenerateLevel::_CloneLevelBy(int type)
 {
-    if (nType == CLONE_VERTICAL)
+    if (type == CLONE_VERTICAL)
     {
         m_bClonedByVertical = true;
         for (int y = 0; y < BRICKS_HEIGHT; y++)
@@ -220,9 +219,9 @@ void CGenerateLevel::_CloneLevelBy(int nType)
             }
         }
     }
-    else if (nType == CLONE_HORIZONTAL)
+    else if (type == CLONE_HORIZONTAL)
     {
-        m_bClonedByHorizontal   = true;
+        m_bClonedByHorizontal = true;
         for (int x = 0; x < BRICKS_WIDTH; x++)
         {
             for (int y = 0; y < BRICKS_HEIGHT / 2; y++)
@@ -233,15 +232,15 @@ void CGenerateLevel::_CloneLevelBy(int nType)
     }
 }
 
-bool CGenerateLevel::_IsPatternExist(int nPattern)
+bool CGenerateLevel::_IsPatternExist(int pattern)
 {
     int i;
 
     for (i = 0; i < 8; i++)
     {
-        if (m_anPrevPatterns[i] == nPattern)
+        if (m_anPrevPatterns[i] == pattern)
         {
-            printf("pattern %d already used\n", nPattern);
+            printf("pattern %d already used\n", pattern);
             return true;
         }
     }
@@ -250,35 +249,35 @@ bool CGenerateLevel::_IsPatternExist(int nPattern)
         m_anPrevPatterns[i] = m_anPrevPatterns[i + 1];
     }
 
-    m_anPrevPatterns[7] = nPattern;
+    m_anPrevPatterns[7] = pattern;
 
-    return  false;
+    return false;
 }
 
-void CGenerateLevel::SetBrick(int nX, int nY, int nType)
+void CGenerateLevel::SetBrick(int nX, int nY, int type)
 {
-    m_abyLevel[nX][nY]  = nType;
+    m_level[nX][nY] = type;
 }
 
-int CGenerateLevel::GetBrick(int nX, int nY)
+int CGenerateLevel::GetBrick(int nX, int nY) const
 {
-    return  m_abyLevel[nX][nY];
+    return m_level[nX][nY];
 }
 
 void CGenerateLevel::_RollLevel()
 {
     if (a::rnd().Get(2) == 0)
     {
-        int nRollCount  = a::rnd().Get(BRICKS_WIDTH - 1);
-        for (int i = 0; i < nRollCount; i++)
+        int count = a::rnd().Get(BRICKS_WIDTH - 1);
+        for (int i = 0; i < count; i++)
         {
             _RollHorizontal();
         }
     }
     else
     {
-        int nRollCount  = a::rnd().Get(BRICKS_HEIGHT - 1);
-        for (int i = 0; i < nRollCount; i++)
+        int count = a::rnd().Get(BRICKS_HEIGHT - 1);
+        for (int i = 0; i < count; i++)
         {
             _RollVertical();
         }
@@ -287,21 +286,21 @@ void CGenerateLevel::_RollLevel()
 
 int CGenerateLevel::_CalculateBricksCount()
 {
-    int     nCount  = 0;
+    int count = 0;
 
     for (int x = 0; x < BRICKS_WIDTH; x++)
     {
         for (int y = 0; y < BRICKS_HEIGHT; y++)
         {
-            Uint8   byType  = GetBrick(x, y);
-            if (byType > BOX_NONE) // && (byType < BOX_IM_0 || byType >= BOX_BOMB_0)) {
+            Uint8 type = GetBrick(x, y);
+            if (type > BOX_NONE) // && (type < BOX_IM_0 || type >= BOX_BOMB_0)) {
             {
-                nCount++;
+                count++;
             }
         }
     }
 
-    return  nCount;
+    return count;
 }
 
 void CGenerateLevel::_RollHorizontal()
@@ -311,24 +310,23 @@ void CGenerateLevel::_RollHorizontal()
         return;
     }
 
-    Uint8   abyLine[BRICKS_HEIGHT];
-    int i, x, y;
-    for (i = 0; i < BRICKS_HEIGHT; i++)
+    Uint8 line[BRICKS_HEIGHT];
+    for (int i = 0; i < BRICKS_HEIGHT; i++)
     {
-        abyLine[i]  = GetBrick(0, i);
+        line[i] = GetBrick(0, i);
     }
 
-    for (x = 1; x < BRICKS_WIDTH; x++)
+    for (int x = 1; x < BRICKS_WIDTH; x++)
     {
-        for (y = 0; y < BRICKS_HEIGHT; y++)
+        for (int y = 0; y < BRICKS_HEIGHT; y++)
         {
             SetBrick(x - 1, y, GetBrick(x, y));
         }
     }
 
-    for (i = 0; i < BRICKS_HEIGHT; i++)
+    for (int i = 0; i < BRICKS_HEIGHT; i++)
     {
-        SetBrick(BRICKS_WIDTH - 1, i, abyLine[i]);
+        SetBrick(BRICKS_WIDTH - 1, i, line[i]);
     }
 }
 
@@ -339,34 +337,33 @@ void CGenerateLevel::_RollVertical()
         return;
     }
 
-    Uint8   abyLine[BRICKS_WIDTH];
-    int i, x, y;
-    for (i = 0; i < BRICKS_WIDTH; i++)
+    Uint8 line[BRICKS_WIDTH];
+    for (int i = 0; i < BRICKS_WIDTH; i++)
     {
-        abyLine[i]  = GetBrick(i, 0);
+        line[i] = GetBrick(i, 0);
     }
 
-    for (y = 1; y < BRICKS_HEIGHT; y++)
+    for (int y = 1; y < BRICKS_HEIGHT; y++)
     {
-        for (x = 0; x < BRICKS_WIDTH; x++)
+        for (int x = 0; x < BRICKS_WIDTH; x++)
         {
             SetBrick(x, y - 1, GetBrick(x, y));
         }
     }
 
-    for (i = 0; i < BRICKS_WIDTH; i++)
+    for (int i = 0; i < BRICKS_WIDTH; i++)
     {
-        SetBrick(i, BRICKS_HEIGHT - 1, abyLine[i]);
+        SetBrick(i, BRICKS_HEIGHT - 1, line[i]);
     }
 }
 
 void CGenerateLevel::LoadPatterns()
 {
-    unsigned int    nDataLen;
-    m_pbyLevelPatterns  = (Uint8*)a::res()->GetDataAllocMem("patterns.bin", nDataLen);
-    if (m_pbyLevelPatterns)
+    unsigned size;
+    m_patterns = (Uint8*)a::res()->GetDataAllocMem("patterns.bin", size);
+    if (m_patterns)
     {
-        m_nPatterns = nDataLen / (BRICKS_WIDTH * BRICKS_HEIGHT);
+        m_patternsCount = size / (BRICKS_WIDTH * BRICKS_HEIGHT);
     }
-    printf("loaded %d patterns\n", m_nPatterns);
+    printf("loaded %u patterns\n", m_patternsCount);
 }

@@ -27,7 +27,7 @@ private:
     {
         float x;
         float y;
-        Uint32 time;
+        Uint32 frameTime;
         int frame;
         Uint32 move_time;
         int angle;

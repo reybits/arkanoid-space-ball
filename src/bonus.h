@@ -44,7 +44,7 @@ public:
     void AddBonus(int x, int y, eType type);
     void RemoveAll(bool bAndStackToo);
     void Draw();
-    void SetPosStack(bool bNext);
+    void SetPosStack(bool next);
     void AddToStack(eType type);
     eType GetBonusFromStack();
     size_t GetCountInStack() const;
@@ -54,7 +54,7 @@ private:
     struct sBonus
     {
         eType type;
-        int nFrame;
+        int frame;
         int nRadius;
         int nSin, nCos;
         float origx, origy;
@@ -62,5 +62,5 @@ private:
     };
     std::vector<sBonus> m_bounses;
     std::vector<eType> m_stack;
-    int m_nStackPos;
+    int m_stackIdx;
 };
