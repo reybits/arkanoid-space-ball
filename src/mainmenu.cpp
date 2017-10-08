@@ -383,10 +383,10 @@ void CMainMenu::DrawMenuRules()
     else if (nPage == 5)
     {
         a::fnt2()->DrawString(0, 100, "CREDITS", CMyString::eAlign::Center);
-        a::fnt3()->DrawString(0, 130, "'WE' Group", CMyString::eAlign::Center);
+        a::fnt3()->DrawString(0, 130, "Andrey A. Ugolnik", CMyString::eAlign::Center);
 #if !defined(REMOVE_URLS)
-        a::fnt1()->DrawString(0, 150, "http://www.wegroup.org", CMyString::eAlign::Center);
-        a::fnt1()->DrawString(0, 170, "Copyright (c) 2006-2012. All Rights Reserved.", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 150, "http://www.ugolnik.info", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 170, "Copyright (c) 2006. All Rights Reserved.", CMyString::eAlign::Center);
         a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", CMyString::eAlign::Center);
         a::fnt1()->DrawString(0, 270, "http://www.libsdl.org", CMyString::eAlign::Center);
@@ -395,7 +395,7 @@ void CMainMenu::DrawMenuRules()
         a::fnt3()->DrawString(0, 330, "Music / Sergey Eybog", CMyString::eAlign::Center);
         a::fnt1()->DrawString(0, 350, "http://www.lesser-vibes.com", CMyString::eAlign::Center);
 #else
-        a::fnt1()->DrawString(0, 150, "Copyright (c) 2006-2007. All Rights Reserved.", CMyString::eAlign::Center);
+        a::fnt1()->DrawString(0, 150, "Copyright (c) 2006. All Rights Reserved.", CMyString::eAlign::Center);
         a::fnt2()->DrawString(0, 220, "THANKS TO", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 250, "SDL, SDL-image, SDL-mixer projects", CMyString::eAlign::Center);
         a::fnt3()->DrawString(0, 270, "glSDL / David Olofson", CMyString::eAlign::Center);

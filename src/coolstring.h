@@ -25,14 +25,8 @@ protected:
 #define COOLSTRING_MAX_LEN  20
     struct _COOL_STRING
     {
-        /*
-           float   fX, fY;
-           float   fDelta;
-           int nPos;
-           int nLen;
-           unsigned char   byPoint[8][COOLSTRING_MAX_LEN * 8];*/
-        char*    pchString;
-        int nSeconds;
+        char* string;
+        int seconds;
     };
-    std::vector<_COOL_STRING>m_vecCoolString;
+    std::vector<_COOL_STRING> m_strings;
 };

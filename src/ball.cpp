@@ -21,8 +21,8 @@ const float INIT_BALL_SPEED = 1.5f;
 
 CBall::CBall()
 {
-    m_nBack = 0;
-    m_vecBrickIndex.reserve(8);
+    m_back = 0;
+    m_brickIndex.reserve(8);
     m_balls.reserve(10);
     m_fbs.reserve(200);
     RemoveAll();
@@ -32,10 +32,10 @@ CBall::~CBall()
 {
 }
 
-int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddleX)
+int CBall::Move(bool showBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddleX)
 {
     int nBallsLose = 0;
-    m_bBackWall = bBackWall;
+    m_showBackWall = showBackWall;
 
     Uint32 dwTime = SDL_GetTicks();
 
@@ -43,7 +43,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
     if (dwBlueTime + 1000 < dwTime)
     {
         dwBlueTime = dwTime;
-        if (m_type != eBallType::WHITE && --m_nPrevTypeCount == 0)
+        if (m_type != eBallType::WHITE && --m_prevTypeCount == 0)
         {
             m_type = eBallType::WHITE;
         }
@@ -73,8 +73,6 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                 float fSpeed = ball.fSpeed * g_fSpeedCorrection;
                 ball.x += fSpeed * g_fSin[getAngle(ball)];
                 ball.y -= fSpeed * g_fCos[getAngle(ball)];
-                //if(getAngle(nPos) > 0 && getAngle(nPos) < 180) {
-                // ��� �������� �� ������������ � ������ ��������
                 if (IsThisBallOverObject(nPos, rcRacket.x, rcRacket.y, 16, rcRacket.h) > 0)
                 {
                     nPaddleX += 5;
@@ -102,7 +100,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                     // calculate object size
                     SDL_Rect rc;
                     memset(&rc, 0, sizeof(SDL_Rect));
-                    m_vecBrickIndex.clear();
+                    m_brickIndex.clear();
                     if (m_type != eBallType::BLUE)
                     {
                         for (auto& brick : a::ark()->m_bricks)
@@ -118,7 +116,7 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                                 }
                                 else
                                 {
-                                    m_vecBrickIndex.push_back(&brick);
+                                    m_brickIndex.push_back(&brick);
                                     if (rc.x < nX)
                                     {
                                         rc.x = nX;
@@ -154,18 +152,18 @@ int CBall::Move(bool bBackWall, SDL_Rect rcRacket, int nRacketType, int& nPaddle
                             //printf(" -> %d%s\n", getAngle(nPos), getAngle(nPos) > 359 ? " !" : "");
                             IncrementBallSpeed(nPos);
                             //printf(" -> %d\n", getAngle(nPos));
-                            m_nBack = 1;
+                            m_back = 1;
                             while (IsThisBallOverObject(nPos, rc.x, rc.y, rc.w - rc.x, rc.h - rc.y) > 0)
                             {
                                 ball.x += (g_fSin[nAngle180]);
                                 ball.y -= (g_fCos[nAngle180]);
                             }
-                            m_nBack = 0;
+                            m_back = 0;
                             ball.x = int(ball.x);
                             ball.y = int(ball.y);
                             //printf("ball pos corrected (%.2d x %.2d)\n", (int)ball.x, (int)ball.y);
 
-                            for (auto brick : m_vecBrickIndex)
+                            for (auto brick : m_brickIndex)
                             {
                                 a::ark()->DoImpact(*brick, false);
                             }
@@ -254,7 +252,7 @@ void CBall::Draw(int nPaddleType)
                 render(x, y, eImage::Vector, &rc);
                 x += g_fSin[getAngle(ball)] * 15.0f;
                 y -= g_fCos[getAngle(ball)] * 15.0f;
-            } while (x > WALL_X1 && x + 4 < (m_bBackWall == true ? WALL_X2 : SCREEN_WIDTH) && y > WALL_Y1 && y + 4 < WALL_Y2);
+            } while (x > WALL_X1 && x + 4 < (m_showBackWall == true ? WALL_X2 : SCREEN_WIDTH) && y > WALL_Y1 && y + 4 < WALL_Y2);
         }
 
         switch (ball.nDiameter)
@@ -312,7 +310,7 @@ void CBall::RemoveAll()
     m_balls.clear();
     m_fbs.clear();
     m_type = eBallType::WHITE;
-    m_nPrevTypeCount = 0;
+    m_prevTypeCount = 0;
 }
 
 void CBall::AddBall(int x, int y)
@@ -350,7 +348,7 @@ void CBall::AddBall(int x, int y, int nAngle)
     m_balls.push_back(ball);
 }
 
-int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight)
+int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight) const
 {
     const auto& ball = m_balls[nPos];
 
@@ -419,7 +417,7 @@ int CBall::IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeigh
         nIsOver = 8;
     }
 
-    if (fDist2 + nBallR + m_nBack > fDist1)
+    if (fDist2 + nBallR + m_back > fDist1)
     {
         return nIsOver;
     }
@@ -469,7 +467,7 @@ void CBall::ImpactWithWallAngle(int nPos)
         }
         IncrementBallSpeed(nPos);
     }
-    else if (ball.x + getDiameter(ball) >= WALL_X2 && m_bBackWall == true)
+    else if (ball.x + getDiameter(ball) >= WALL_X2 && m_showBackWall == true)
     {
         if (m_type == eBallType::RED)
         {
@@ -524,7 +522,7 @@ void CBall::ImpactWithWallAngle(int nPos)
     }
 
     ball.x = std::max<int>(ball.x, WALL_X1);
-    ball.x = std::min<int>(ball.x, (m_bBackWall == true ? WALL_X2 - getDiameter(ball) : SCREEN_WIDTH + 1));
+    ball.x = std::min<int>(ball.x, (m_showBackWall == true ? WALL_X2 - getDiameter(ball) : SCREEN_WIDTH + 1));
     ball.y = std::max<int>(ball.y, WALL_Y1);
     ball.y = std::min<int>(ball.y, (WALL_Y2 - getDiameter(ball)));
 }
@@ -557,13 +555,13 @@ sBallDescription CBall::getDescription(size_t idx) const
 void CBall::SetAllBallsToBlue()
 {
     m_type = eBallType::BLUE;
-    m_nPrevTypeCount = 8;
+    m_prevTypeCount = 8;
 }
 
 void CBall::SetAllBallsToFire()
 {
     m_type = eBallType::RED;
-    m_nPrevTypeCount = 8;
+    m_prevTypeCount = 8;
 }
 
 void CBall::SplitBalls()
@@ -725,14 +723,14 @@ int CBall::getDiameter(const sBall& ball) const
     return 0;
 }
 
-eBallType CBall::GetType()
+eBallType CBall::GetType() const
 {
     return m_type;
 }
 
-size_t CBall::GetTypeCount()
+size_t CBall::GetTypeCount() const
 {
-    return m_nPrevTypeCount;
+    return m_prevTypeCount;
 }
 
 /*!

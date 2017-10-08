@@ -19,7 +19,7 @@ public:
     CBall();
     ~CBall();
 
-    int IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight);
+    int IsThisBallOverObject(int nPos, int nX, int nY, int nWidth, int nHeight) const;
     bool RemoveOne(int& nX, int& nY);
     void ChangeAllBallsSpeed(bool bIncrease);
     void ChangeBallAngle(int nPos, bool bRotate);
@@ -38,8 +38,8 @@ public:
     void Draw(int nPaddleType);
     void ChangeAngle(int nPos, bool bIncrease);
     void SlowDown();
-    eBallType GetType();
-    size_t GetTypeCount();
+    eBallType GetType() const;
+    size_t GetTypeCount() const;
     void BallCaptured(int nIndex, bool bIsCaptured);
     void SetCapturedBallPos(int nIndex, float fX, float fY);
 
@@ -55,9 +55,9 @@ private:
     int getDiameter(const sBall& ball) const;
 
 private:
-    bool m_bBackWall;
+    bool m_showBackWall;
     eBallType m_type;
-    int m_nPrevTypeCount;
+    int m_prevTypeCount;
     struct sBall
     {
         float x, y;
@@ -78,6 +78,6 @@ private:
         int nFrame;
     };
     std::vector<sFb> m_fbs;
-    std::vector<sBrick*> m_vecBrickIndex;
-    int m_nBack;
+    std::vector<sBrick*> m_brickIndex;
+    int m_back;
 };
