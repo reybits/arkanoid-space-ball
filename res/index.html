@@ -6,6 +6,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Arkanoid: Space Ball</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /* to remove the top and left whitespace */
+
         html,
         body {
             width: 100%;
@@ -78,6 +84,14 @@
                     alert('WebGL context lost. You will need to reload the page.');
                     e.preventDefault();
                 }, false);
+
+                window.addEventListener('resize', resizeCanvas, false);
+
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+                resizeCanvas();
 
                 return canvas;
             })(),
