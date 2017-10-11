@@ -27,8 +27,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 if( ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten" )
 
-    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1 -s USE_SDL_IMAGE=1 -s STB_IMAGE=1 -s TOTAL_MEMORY=33554432" )
-    set( CMAKE_EXE_LINKER_FLAGS "-o index.html --embed-file arkanoidsb.pak" )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1 -s USE_SDL_IMAGE=1 -s STB_IMAGE=1" )
+    set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --embed-file ../res/arkanoidsb.pak@arkanoidsb.pak --shell-file ../res/index.html" )
 
 else()
 
@@ -82,6 +82,7 @@ if(APPLE AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
 else()
 
     add_executable(arkanoidsb ${APP_SOURCES})
+    set_target_properties(arkanoidsb PROPERTIES SUFFIX ".html")
 
 endif()
 

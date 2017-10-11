@@ -21,7 +21,7 @@ void endFrame();
 
 int getFps();
 
-void clear(unsigned color);
+void clear(unsigned r, unsigned g, unsigned b, unsigned a);
 
 void scissor(SDL_Rect* rc = nullptr);
 void dimScreen();

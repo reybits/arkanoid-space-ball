@@ -92,7 +92,7 @@ std::vector<MusicProperty> g_musicList;
 
 int main(int /*argc*/, char** /*argv*/)
 {
-    printf("%s by 'WE' Group. Copyright (c) 2006.\n", APP_Title);
+    printf("%s by Andrey A. Ugolnik. Copyright (c) 2006.\n", APP_Title);
     printf("version %d.%d.%d.\n", APP_VerMajor, APP_VerMinor, APP_VerRelease);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -427,58 +427,45 @@ void SetVolumeSound(int volume)
 
 bool DrawIntro()
 {
-    static int nRotates = 0;
-    static int nFrame = 0;
-    static SDL_Surface* intro = nullptr;
-    static SDL_Surface* intro2 = nullptr;
+    static Uint32 lastTime = SDL_GetTicks();
+    static Uint32 idleTime = 0;
+
+    const Uint32 currentTime = SDL_GetTicks();
+    const Uint32 dt = currentTime - lastTime;
+    lastTime = currentTime;
+    idleTime += dt;
+
+    clear(0, 0, 0, 255);
+
+    static SDL_Surface* logo = nullptr;
     static SDL_Surface* sdlLogo = nullptr;
-    if (intro == nullptr)
+    if (logo == nullptr)
     {
-        intro = a::res()->loadImage("intro.png");
-        intro2 = a::res()->loadImage("intro2.png");
+        logo = a::res()->loadImage("logo.png");
         sdlLogo = a::res()->loadImage("sdl_minibox.png");
     }
 
-    clear(0);
-    render((SCREEN_WIDTH - 80) / 2, (SCREEN_HEIGHT - 106) / 2, intro2, 0);
-    SDL_Rect rc;
-    rc.w = 64;
-    rc.h = 64;
-    rc.x = (nFrame % 4) * 64;
-    rc.y = (nFrame / 4) * 64;
-    render((SCREEN_WIDTH - 64) / 2, (SCREEN_HEIGHT - 106) / 2 + 8, intro, &rc);
+    const Uint32 transitionTime = 500;
+    const float ratio = 1.0f - std::min<float>(transitionTime, idleTime) / transitionTime;
+    const float offset = ::sinf(M_PI_2 * ratio) * ratio * (SCREEN_HEIGHT * 0.5f);
+    render((SCREEN_WIDTH - 128) / 2, (SCREEN_HEIGHT - 128) / 2 - offset, logo, 0);
+
     render(SCREEN_WIDTH - 88 - 5, SCREEN_HEIGHT - 44 - 5, sdlLogo, 0);
 
-    static Uint32 dwTime = 0;
-    if (IsKeyPressed(SDLK_ESCAPE) || g_bMouseRB || g_bMouseLB)
+    const Uint32 maxIdleTime = 2000;
+    const bool done = idleTime >= maxIdleTime || IsKeyPressed(SDLK_ESCAPE) || g_bMouseRB || g_bMouseLB;
+    if (done)
     {
         g_bMouseRB = false;
         g_bMouseLB = false;
-        nFrame = 14;
-        nRotates = 100;
-        dwTime = 0;
-    }
-    if (dwTime + 60 < SDL_GetTicks())
-    {
-        dwTime = SDL_GetTicks();
-        nFrame++;
-        nFrame %= 16;
-        if (nFrame == 15)
-        {
-            nRotates++;
-            if (nRotates > 10)
-            {
-                EnableCursor(true);
-                SDL_FreeSurface(sdlLogo);
-                SDL_FreeSurface(intro2);
-                SDL_FreeSurface(intro);
-                intro = nullptr;
-                return true;
-            }
-        }
+
+        EnableCursor(true);
+        SDL_FreeSurface(sdlLogo);
+        SDL_FreeSurface(logo);
+        logo = nullptr;
     }
 
-    return false;
+    return done;
 }
 
 void EnableCursor(bool enable)

@@ -1,6 +1,6 @@
 VER_MAJOR=1
 VER_MINOR=3
-VER_RELEASE=6
+VER_RELEASE=7
 VERSION=$(VER_MAJOR).$(VER_MINOR)$(VER_RELEASE)
 BUILD_DIR_RELEASE=.build_release
 BUILD_DIR_DEBUG=.build_debug
@@ -43,14 +43,13 @@ debug: package
 
 emscripten: package
 	$(shell if [ ! -d $(BUILD_DIR_EMSCRIPTEN) ]; then mkdir $(BUILD_DIR_EMSCRIPTEN); fi)
-	cp -f res/arkanoidsb.pak $(BUILD_DIR_EMSCRIPTEN)/
 	cd $(BUILD_DIR_EMSCRIPTEN) \
 		&& emcmake cmake -DCMAKE_BUILD_TYPE=Release \
 		-DAPP_VERSION_MAJOR:STRING=$(VER_MAJOR) -DAPP_VERSION_MINOR:STRING=$(VER_MINOR) -DAPP_VERSION_RELEASE:STRING=$(VER_RELEASE) .. \
 		&& emmake make
-	rm -fr html && mkdir html
-	cp $(BUILD_DIR_EMSCRIPTEN)/index.* html/
-	cp -f res/index.html html/
+	rm -fr html && mkdir html \
+		&& cp $(BUILD_DIR_EMSCRIPTEN)/arkanoidsb.* html/ \
+		&& mv html/arkanoidsb.html html/index.html
 
 cppcheck:
 	cppcheck -j 1 --enable=all -f -I src src/ 2> cppcheck-output

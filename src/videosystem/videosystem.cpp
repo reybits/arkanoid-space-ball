@@ -129,8 +129,9 @@ int getFps()
     return fps;
 }
 
-void clear(unsigned color)
+void clear(unsigned r, unsigned g, unsigned b, unsigned a)
 {
+    Uint32 color = SDL_MapRGBA(ScreenSurface->format, r, g, b, a);
     SDL_FillRect(ScreenSurface, nullptr, color);
 }
 
