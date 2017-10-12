@@ -32,6 +32,8 @@ if( ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten" )
 
 else()
 
+    add_definitions( "-DHAVE_OPENGL" )
+
     find_package(SDL REQUIRED)
     find_package(SDL_image REQUIRED)
     find_package(SDL_mixer REQUIRED)
@@ -82,7 +84,10 @@ if(APPLE AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
 else()
 
     add_executable(arkanoidsb ${APP_SOURCES})
-    set_target_properties(arkanoidsb PROPERTIES SUFFIX ".html")
+
+    if(${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
+        set_target_properties(arkanoidsb PROPERTIES SUFFIX ".html")
+    endif()
 
 endif()
 
