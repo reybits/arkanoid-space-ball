@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include <SDL.h>
+#include "defines.h"
+
 #include <vector>
 
 class CMyString final
@@ -42,8 +43,8 @@ private:
     bool LoadProps(const char* pchName);
 
 private:
-    SDL_Surface* m_fnt;
-    SDL_Surface* m_shadow;
+    SDL_Surface* m_fnt = nullptr;
+    SDL_Surface* m_shadow = nullptr;
 
     int m_lineHeight;
 

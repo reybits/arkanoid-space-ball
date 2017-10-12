@@ -10,8 +10,6 @@
 #include "defines.h"
 #include "videosystem/videosystem.h"
 
-#include <SDL.h>
-
 #define NUM_OF_FRAMES 9
 
 CExploision::CExploision()

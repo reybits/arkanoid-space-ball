@@ -11,7 +11,6 @@
 #include "defines.h"
 #include "resource.h"
 
-#include <SDL.h>
 #include <vector>
 
 class CMonster final

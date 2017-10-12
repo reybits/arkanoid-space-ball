@@ -12,8 +12,6 @@
 #include "../game.h"
 #include "../mystring.h"
 
-#include "../glSDL.h"
-
 #include <cstdlib>
 
 namespace

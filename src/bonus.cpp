@@ -13,8 +13,6 @@
 #include "tutorialdlg.h"
 #include "videosystem/videosystem.h"
 
-#include <SDL.h>
-
 CBonus::CBonus()
 {
     m_bounses.reserve(20);

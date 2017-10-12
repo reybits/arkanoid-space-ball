@@ -317,6 +317,12 @@ int CMyString::GetStringWidth(const char* str, int& spacesCount)
 
 void CMyString::Unload()
 {
+    if (m_shadow != nullptr)
+    {
+        a::res()->unloadImage(m_shadow);
+        m_shadow = nullptr;
+    }
+
     if (m_fnt != nullptr)
     {
         a::res()->unloadImage(m_fnt);

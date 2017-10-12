@@ -10,8 +10,6 @@
 
 #include "defines.h"
 
-#include <SDL.h>
-
 class CLevelEditor final
 {
 public:

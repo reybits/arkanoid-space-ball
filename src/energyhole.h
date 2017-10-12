@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include <SDL.h>
+#include "defines.h"
+
 #include <vector>
 
 class CEnergyHole final

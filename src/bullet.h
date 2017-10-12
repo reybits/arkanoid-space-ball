@@ -10,7 +10,6 @@
 
 #include "defines.h"
 
-#include <SDL.h>
 #include <vector>
 
 class CBullet final

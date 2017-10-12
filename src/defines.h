@@ -9,6 +9,7 @@
 #pragma once
 
 #include "vector.h"
+#include "glSDL.h"
 
 #include <cstdint>
 

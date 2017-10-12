@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include <SDL.h>
-
 class CSinusString final
 {
 public:
@@ -20,7 +18,7 @@ public:
     void Draw();
 
 protected:
-    Uint8* m_pbySymbs;
+    unsigned char* m_pbySymbs;
     int m_nSinPos;
     int m_nAmplifier;
     int m_nY;

@@ -12,8 +12,6 @@
 #include "mystring.h"
 #include "videosystem/videosystem.h"
 
-#include <SDL.h>
-
 CTutorialDlg::CTutorialDlg(sOptions& options)
     : m_options(options)
 {

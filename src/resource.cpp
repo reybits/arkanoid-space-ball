@@ -185,7 +185,7 @@ SDL_Surface* CResource::loadImage(const char* filename) const
         {
             auto optimizedImage = SDL_DisplayFormatAlpha(tmp);
             SDL_FreeSurface(tmp);
-            printf(" done.\n");
+            printf(" (%d x %d x %d) done.\n", optimizedImage->w, optimizedImage->h, optimizedImage->format->BitsPerPixel);
 
             return optimizedImage;
         }

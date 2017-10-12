@@ -22,11 +22,10 @@ public:
     int GetCount();
 
 protected:
-#define COOLSTRING_MAX_LEN  20
-    struct _COOL_STRING
+    struct sString
     {
         char* string;
         int seconds;
     };
-    std::vector<_COOL_STRING> m_strings;
+    std::vector<sString> m_strings;
 };

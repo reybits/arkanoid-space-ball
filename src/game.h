@@ -11,8 +11,8 @@
 #include "bonus.h"
 #include "generatelevel.h"
 #include "vector.h"
+#include "defines.h"
 
-#include <SDL.h>
 #include <string>
 #include <vector>
 

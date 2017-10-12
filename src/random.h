@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include "defines.h"
 
 class CRandom final
 {

@@ -13,7 +13,6 @@
 #include "mystring.h"
 #include "videosystem/videosystem.h"
 
-#include <SDL.h>
 #include <cstdio>
 
 CCoolString::CCoolString()
@@ -35,7 +34,7 @@ void CCoolString::Add(const char* fmt, ...)
     vsnprintf(buffer, sizeof(buffer), fmt, ap);
     va_end(ap);
 
-    _COOL_STRING cs;
+    sString cs;
     cs.string = new char[strlen(buffer) + 1];
     cs.seconds = 2; // 1/2 seconds to show
     strcpy(cs.string, buffer);
