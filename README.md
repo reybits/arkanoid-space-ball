@@ -1,4 +1,4 @@
-###Arkanoid: Space Ball###
+# Arkanoid: Space Ball
 
 > note: This is very old unsupported project. I just slightly refactor code to support recent Linux, macOS and Emscripten.
 
@@ -8,14 +8,16 @@ The quality of the graphics and sound isn't amazing, and I have to admit I expec
 Arkanoid: Space Ball comes with a level generator and editor, good for coming up with your own challenges, but most players will probably not matter with it.
 
 ***
-##Screenshot##
+
+## Screenshot
 
 ![Arkanoid: Space Ball](https://bitbucket.org/andreyu/arkanoid-space-ball/downloads/arkanoid-space-ball-1.jpg)
 ![Arkanoid: Space Ball](https://bitbucket.org/andreyu/arkanoid-space-ball/downloads/arkanoid-space-ball-2.jpg)
 ![Arkanoid: Space Ball](https://bitbucket.org/andreyu/arkanoid-space-ball/downloads/arkanoid-space-ball-3.jpg)
 
 ***
-##Download and build from sources##
+
+## Download and build from sources
 
 You can get a copy using git with the following command:
 
@@ -27,11 +29,13 @@ $ make emscripten # Web (Emscripten)
 ```
 
 ***
-##Dependencies##
+
+## Dependencies
 
 `CMake`, `SDL`, `SDL-mixer`, `SDL-image`
 
 ***
+
 ```
 Copyright © 2006 Andrey A. Ugolnik. All Rights Reserved.
 http://www.ugolnik.info
