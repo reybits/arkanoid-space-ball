@@ -1,19 +1,18 @@
 # Arkanoid: Space Ball
 
-> note: This is very old unsupported project. I just slightly refactor code to support recent Linux, macOS and Emscripten.
+> Note: This is a very old and unsupported project. I’ve only made minor refactoring to ensure compatibility with recent Linux, macOS, and Emscripten.
 
-Arkanoid is still as fun now as it ever was. Whether on a big old arcade box or on your Mac, the game always manages to keep its fun and excitement.
-Arkanoid: Space Ball puts you in control of a little spaceship, with your goal being to destroy as many colored tiles as you can by hitting a ball back and forth. Arkanoid: Space Ball comes with plenty of bonuses and varying difficulty levels.
-The quality of the graphics and sound isn't amazing, and I have to admit I expected something a little better, at least to separate Arkanoid: Space Ball from other games of the same genre.
-Arkanoid: Space Ball comes with a level generator and editor, good for coming up with your own challenges, but most players will probably not matter with it.
+Arkanoid: Space Ball brings back the timeless fun of Arkanoid, whether you’re playing on an arcade machine or your Mac.
+
+In this version, you pilot a small spaceship, bouncing a ball to break as many colored tiles as possible. The game offers various difficulty levels and a range of power-ups to keep the action engaging.
+
+While the graphics and sound are fairly basic and don’t stand out from other games in the genre, Arkanoid: Space Ball does include a level generator and editor—perfect for creating custom challenges, though casual players may overlook this feature.
 
 ***
 
 ## Screenshot
 
-![Arkanoid: Space Ball](https://bitbucket.org/andreyu/arkanoid-space-ball/downloads/arkanoid-space-ball-1.jpg)
-![Arkanoid: Space Ball](https://bitbucket.org/andreyu/arkanoid-space-ball/downloads/arkanoid-space-ball-2.jpg)
-![Arkanoid: Space Ball](https://bitbucket.org/andreyu/arkanoid-space-ball/downloads/arkanoid-space-ball-3.jpg)
+![Arkanoid: Space Ball](https://camo.githubusercontent.com/a4f02b2dc646d804faa53ea7db141df8234a4b18c46e7a5bad790f4cf916ba9a/68747470733a2f2f6269746275636b65742e6f72672f616e64726579752f61726b616e6f69642d73706163652d62616c6c2f646f776e6c6f6164732f61726b616e6f69642d73706163652d62616c6c2d312e6a7067) ![Arkanoid: Space Ball](https://camo.githubusercontent.com/e6e8ca7e765ac28fb743591e157f47c6acb3c248fa1ff9a2281c1095af186228/68747470733a2f2f6269746275636b65742e6f72672f616e64726579752f61726b616e6f69642d73706163652d62616c6c2f646f776e6c6f6164732f61726b616e6f69642d73706163652d62616c6c2d322e6a7067) ![Arkanoid: Space Ball](https://camo.githubusercontent.com/f818832c9320e31b429032f31b66fe8ac2d97c281e87a19f0b675a00b555f251/68747470733a2f2f6269746275636b65742e6f72672f616e64726579752f61726b616e6f69642d73706163652d62616c6c2f646f776e6c6f6164732f61726b616e6f69642d73706163652d62616c6c2d332e6a7067)
 
 ***
 
@@ -21,11 +20,11 @@ Arkanoid: Space Ball comes with a level generator and editor, good for coming up
 
 You can get a copy using git with the following command:
 
-```bash
-$ git clone https://bitbucket.org/andreyu/arkanoid-space-ball.git
-$ cd arkanoid-space-ball
-$ make release # Linux or macOS
-$ make emscripten # Web (Emscripten)
+```sh
+git clone https://github.com/andreyugolnik/arkanoid-space-ball.git
+cd arkanoid-space-ball
+make release # Linux or macOS
+make emscripten # Web (Emscripten)
 ```
 
 ***
