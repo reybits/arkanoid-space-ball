@@ -21,7 +21,7 @@ While the graphics and sound are fairly basic and don’t stand out from other g
 You can get a copy using git with the following command:
 
 ```sh
-git clone https://github.com/andreyugolnik/arkanoid-space-ball.git
+git clone https://github.com/reybits/arkanoid-space-ball.git
 cd arkanoid-space-ball
 make release # Linux or macOS
 make emscripten # Web (Emscripten)
