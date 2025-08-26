@@ -1,12 +1,12 @@
 # Arkanoid: Space Ball
 
-> Note: This is a very old and unsupported project. I’ve only made minor refactoring to ensure compatibility with recent Linux, macOS, and Emscripten.
+> Arkanoid: Space Ball is an unmaintained, legacy codebase based on SDL/glSDL. The sources are dated and rough around the edges, yet the game remains available for Linux, macOS, Windows, and the Web through Emscripten.
 
-Arkanoid: Space Ball brings back the timeless fun of Arkanoid, whether you’re playing on an arcade machine or your Mac.
+Arkanoid: Space Ball revives the timeless fun of Arkanoid, whether you’re playing on an arcade cabinet or your Mac.
 
-In this version, you pilot a small spaceship, bouncing a ball to break as many colored tiles as possible. The game offers various difficulty levels and a range of power-ups to keep the action engaging.
+In this version, you pilot a small spaceship, bouncing a ball to smash as many colorful tiles as possible. The game features multiple difficulty levels and a variety of power-ups that keep the action lively and engaging.
 
-While the graphics and sound are fairly basic and don’t stand out from other games in the genre, Arkanoid: Space Ball does include a level generator and editor—perfect for creating custom challenges, though casual players may overlook this feature.
+Although the graphics and sound are fairly simple and don’t particularly stand out within the genre, Arkanoid: Space Ball offers a built-in level generator and editor—perfect for designing custom challenges, even if casual players may overlook it.
 
 ***
 
@@ -18,7 +18,7 @@ While the graphics and sound are fairly basic and don’t stand out from other g
 
 ## Download and build from sources
 
-You can get a copy using git with the following command:
+Clone the repository with the following command:
 
 ```sh
 git clone https://github.com/reybits/arkanoid-space-ball.git

@@ -1,10 +1,17 @@
-project(arkanoidsb)
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.22)
+
+set(APPLICATION_NAME "arkanoidsb")
+project(${APPLICATION_NAME})
 
 include(FindPkgConfig)
 include(CheckLibraryExists)
 
 set(CMAKE_COLOR_MAKEFILE ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
 message(STATUS "=== ${CMAKE_SYSTEM_NAME} ===")
@@ -27,12 +34,14 @@ else()
     endif()
 endif()
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17" )
 
 if( ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten" )
 
-    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=1 -s USE_SDL_IMAGE=1 -s STB_IMAGE=1" )
-    set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --embed-file ../res/arkanoidsb.pak@arkanoidsb.pak --shell-file ../res/index.html" )
+    # set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sUSE_SDL -sUSE_SDL_IMAGE" )
+    add_definitions( "-sUSE_SDL" )
+    set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --embed-file ${PROJECT_SOURCE_DIR}/res/arkanoidsb.pak@arkanoidsb.pak" )
+    set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --shell-file ${PROJECT_SOURCE_DIR}/res/index.html" )
 
 else()
 
@@ -76,9 +85,9 @@ if(APPLE AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
     set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
     set_source_files_properties(${APP_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
-    add_executable(arkanoidsb MACOSX_BUNDLE ${APP_ICON} ${APP_RESOURCES} ${APP_SOURCES})
+    add_executable(${APPLICATION_NAME} MACOSX_BUNDLE ${APP_ICON} ${APP_RESOURCES} ${APP_SOURCES})
 
-    set_target_properties(arkanoidsb PROPERTIES
+    set_target_properties(${APPLICATION_NAME} PROPERTIES
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/src/Info.plist.in
         MACOSX_BUNDLE_LONG_VERSION_STRING ${VERSION}
         MACOSX_BUNDLE_SHORT_VERSION_STRING ${VERSION}
@@ -87,15 +96,15 @@ if(APPLE AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
 
 else()
 
-    add_executable(arkanoidsb ${APP_SOURCES})
+    add_executable(${APPLICATION_NAME} ${APP_SOURCES})
 
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
-        set_target_properties(arkanoidsb PROPERTIES SUFFIX ".html")
+        set_target_properties(${APPLICATION_NAME} PROPERTIES SUFFIX ".html")
     endif()
 
 endif()
 
-target_link_libraries( arkanoidsb
+target_link_libraries( ${APPLICATION_NAME}
     ${X11_LIBRARIES}
     ${SDL_LIBRARY}
     ${SDL_IMAGE_LIBRARIES}
@@ -103,7 +112,7 @@ target_link_libraries( arkanoidsb
     )
 
 if(X11_Xinerama_FOUND)
-    target_link_libraries( arkanoidsb
+    target_link_libraries( ${APPLICATION_NAME}
         ${X11_Xinerama_LIB}
         )
 endif()

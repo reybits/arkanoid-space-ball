@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
             {
                 CResource::sItemHeader& item = listFiles[pos];
 
-                sprintf(achS, "./%s", item.name);
+                snprintf(achS, sizeof(achS), "./%s", item.name);
                 printf("adding '%s' file...", item.name);
 
                 FILE* infile = fopen(item.name, "rb");
@@ -99,8 +99,7 @@ int main(int argc, char* argv[])
                             resource.EncodeData(buffer, readed);
                             fwrite(buffer, 1, readed, out);
                         }
-                    }
-                    while (!feof(infile));
+                    } while (!feof(infile));
                     fclose(infile);
                     printf(" len %u [ OK ]\n", item.length);
                 }

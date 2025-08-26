@@ -26,7 +26,8 @@ all:
 	@echo "    make <clean>              - cleanup directory"
 
 package:
-	cd tools/rescompiler && make && cd ../../res && ../tools/rescompiler/rescompiler arkanoidsb
+	cd tools/rescompiler && make
+	cd res && ../tools/rescompiler/rescompiler arkanoidsb
 	cp res/arkanoidsb.pak .
 
 release: package
